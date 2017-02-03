@@ -40,7 +40,3 @@ com_crashlytics_export_strings.xml
 crashlytics.properties
 crashlytics-build.properties
 fabric.properties
-
-/Volunti/volunti.iml
-Volunti/target/
-/Volunti/src/main/resources/application.properties
