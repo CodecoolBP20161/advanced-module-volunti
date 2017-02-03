@@ -1,28 +1,3 @@
-Volunti/target/
-!.mvn/wrapper/maven-wrapper.jar
-
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-
-### IntelliJ IDEA ###
-.idea
-*.iws
-*.iml
-*.ipr
-
-### NetBeans ###
-nbproject/private/
-build/
-nbbuild/
-dist/
-nbdist/
-.nb-gradle/
-
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and Webstorm
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
@@ -37,14 +12,17 @@ nbdist/
 .idea/**/dataSources.local.xml
 .idea/**/sqlDataSources.xml
 .idea/**/dynamic.xml
-
+.idea/**/uiDesigner.xml
 
 # Gradle:
 .idea/**/gradle.xml
-
+.idea/**/libraries
 
 # Mongo Explorer plugin:
 .idea/**/mongoSettings.xml
+
+## File-based project format:
+*.iws
 
 ## Plugin-specific files:
 
@@ -63,3 +41,6 @@ crashlytics.properties
 crashlytics-build.properties
 fabric.properties
 /Volunti/src/main/resources/application.properties
+.idea/
+Volunti/target/
+Volunti/volunti.iml
