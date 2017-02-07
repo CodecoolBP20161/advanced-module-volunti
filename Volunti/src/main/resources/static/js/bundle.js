@@ -10425,14 +10425,13 @@ module.exports = g;
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_redux__ = __webpack_require__(32);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__reducer_users__ = __webpack_require__(96);
-/**
- * Created by csibi on 2017.02.06..
- */
+
+
 
 
 // This file is to combine all our reducers and give them a reference name
 const allReducers = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_redux__["c" /* combineReducers */])({
-  users: __WEBPACK_IMPORTED_MODULE_1__reducer_users__["a" /* default */]
+    users: __WEBPACK_IMPORTED_MODULE_1__reducer_users__["a" /* default */]
 });
 
 /* harmony default export */ __webpack_exports__["a"] = allReducers;
@@ -10472,6 +10471,8 @@ module.exports = __webpack_require__(134);
 /* harmony default export */ __webpack_exports__["a"] = function () {
     return [{
         name: 'John'
+    }, {
+        name: 'Pete'
     }];
 };
 
