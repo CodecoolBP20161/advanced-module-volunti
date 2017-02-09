@@ -1,24 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"></link>
 
     <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"></link>
 
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8"></meta>
     <title>Title</title>
 
     <div>
-        <img src="https://upload.wikimedia.org/wikipedia/commons/0/01/Polish_Wikinews_header_image.png" width="100%" height="15%">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/0/01/Polish_Wikinews_header_image.png" width="100%" height="15%"></img>
     </div>
 
 </head>
 <body>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"></link>
 <div class="section">
     <div class="container">
         <div class="row">
@@ -32,7 +32,10 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12 well">
-                <a class="btn btn-primary" data-toggle="modal" data-target="#usuario"><i class="fa fa-fw -square -circle fa-plus-square"></i>New Oppurtinity</a>
+                <!-- NEEDS TO BE FIXED, DOESN'T DO ANYTHINGN -->
+                <form method="get" action="/org/{id}/opp/delete/{op.id}">
+                    <a class="btn btn-primary" data-toggle="modal" data-target="#usuario"><i class="fa fa-fw -square -circle fa-plus-square"></i>New Oppurtinity</a>
+                </form>
             </div>
         </div>
     </div>
@@ -51,32 +54,36 @@
                     <th>Edit</th>
                     </thead>
                     <tbody>
-                    <tr>
+                    <tr th:each="op : ${opps}">
                         <td>
-                            <h4><b>Job title</b></h4>
-                            <p>More detailed description</p>
+                            <h4><b th:text="${op.title}">Job title</b></h4>
+                            <p th:text="${op.desc}">More detailed description</p>
                         </td>
                         <td>
                             <h4>
-                                <b>5</b>
+                                <b th:text="${op.reqs}">5</b>
                             </h4>
                         </td>
-                        <td>
+                        <td th:text="${op.from}">
                             2017-12-01
                         </td>
-                        <td>
+                        <td th:text="${op.to}">
                             2018-06-23
                         </td>
                         <td>
                             <div class="btn-group">
-                                <button class="btn btn-default" value="left" type="button">
-                                    <i class="fa fa-fw s fa-remove"></i>Delete</button>
+                                <form method="get" action="/org/{id}/opp/delete/{op.id}">
+                                    <button class="btn btn-default" value="left" type="submit">
+                                        <i class="fa fa-fw s fa-remove"></i>Delete</button>
+                                </form>
                             </div>
                         </td>
                         <td>
                             <div class="btn-group">
-                                <button class="btn btn-default" value="right" type="button">
-                                    <i class="fa fa-fw fa-cog"></i>Edit</button>
+                                <form method="get" action="/org/{id}/opp/edit/{op.id}">
+                                    <button class="btn btn-default" value="right" type="submit">
+                                        <i class="fa fa-fw fa-cog"></i>Edit</button>
+                                </form>
                             </div>
                         </td>
                     </tr>
