@@ -2,7 +2,11 @@ package com.codecool.volunti.models;
 
 import lombok.Data;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Data
@@ -12,7 +16,7 @@ public class Skill {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @Column(name = "name", nullable = false)
+    @NotNull
     private String name;
 
 }
