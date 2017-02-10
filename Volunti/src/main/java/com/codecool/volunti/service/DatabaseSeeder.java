@@ -1,11 +1,14 @@
-package com.codecool.volunti.model;
+package com.codecool.volunti.service;
 
 
+import com.codecool.volunti.model.Organisation;
+import com.codecool.volunti.model.User;
+import com.codecool.volunti.model.Volunteer;
 import com.codecool.volunti.model.enums.Category;
 import com.codecool.volunti.model.enums.SpokenLanguage;
-import com.codecool.volunti.model.repository.OrganisationRepository;
-import com.codecool.volunti.model.repository.UserRepository;
-import com.codecool.volunti.model.repository.VolunteerRepository;
+import com.codecool.volunti.repository.OrganisationRepository;
+import com.codecool.volunti.repository.UserRepository;
+import com.codecool.volunti.repository.VolunteerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;

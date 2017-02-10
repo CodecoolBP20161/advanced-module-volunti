@@ -1,4 +1,4 @@
-package com.codecool.volunti.model.repository;
+package com.codecool.volunti.repository;
 
 import com.codecool.volunti.model.Organisation;
 import org.springframework.data.jpa.repository.JpaRepository;
