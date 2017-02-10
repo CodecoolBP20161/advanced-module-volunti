@@ -8,10 +8,11 @@ import java.util.List;
 
 @Entity
 @Data
+@Table(name = "organisations")
 public class Organisation {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     private String something;

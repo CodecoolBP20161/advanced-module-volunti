@@ -8,14 +8,15 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
+@Table(name = "opportunities")
 @Data
 public class Opportunity{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "organisation_id")
     private Organisation organisation;
 
@@ -34,5 +35,7 @@ public class Opportunity{
     private Date dateAvailabilityTo;
     private String costs;
     private String requirements;
+
+
 
 }
