@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"></link>
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"></link>
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <meta charset="UTF-8"></meta>
+    <title>Title</title>
+    <div>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/0/01/Polish_Wikinews_header_image.png" width="100%" height="15%"></img>
+    </div>
+</head>
+<body>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"></link>
+<div class="section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="text-center">New Opportunity</h1>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 well">
+                <!-- NEEDS TO BE FIXED, DOESN'T DO ANYTHINGN -->
+                <form method="get" action="/org/{id}/opp/delete/{op.id}">
+                    <input class="form-control form-control-success" id="inputHorizontalSuccess" type="text" placeholder="Opportunity title"/>
+                    <input class="form-control" type="number" placeholder="Number of Volunteers"/>
+                    <select class="form-control">
+                        <option>Default select</option>
+                        <label th:each="id : ${idList}" th:for="${'id' + idStat.index}" th:text="{id.id}"/>
+                        <option th:each="id : ${idList}" th:for="${'id' + idStat.index}" th:text="{id.id}"></option>
+                    </select>
+                    <select  field="Number of volunteers" >
+                        <option th:each="opp : ${opportunity.id}"
+                                th:value="${opp}"
+                                th:text="${opp}">
+
+                        </option>
+                    </select>
+                    <input class="form-control form-control-sm" type="text" placeholder="Accomodation type"/>
+                    <input class="form-control" type="text" placeholder="Skills"/>
+                    <input class="form-control form-control-sm" type="text" placeholder="Food type"/>
+                    <input class="form-control" type="number" placeholder="Hours per Day"/>
+                    <input class="form-control form-control-sm" type="number" placeholder="Minimum stays in day"/>
+                    <input class="form-control" type="date" placeholder="Availability from"/><input class="form-control form-control-sm" type="date" placeholder="Availability to"/>
+                    <input class="form-control" type="text" placeholder="Costs"/>
+                    <input class="form-control form-control-sm" type="text" placeholder="Other Requirements"/>
+                    <a class="btn btn-primary" data-toggle="modal" data-target="#usuario"><i class="fa fa-fw -square -circle fa-plus-square"></i>Submit</a>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
