@@ -55,17 +55,17 @@
                     <tr th:each="op : ${opps}">
                         <td>
                             <h4><b th:text="${op.title}">Job title</b></h4>
-                            <p th:text="${op.desc}">More detailed description</p>
+                            <!--<p th:text="${op.desc}">More detailed description</p>-->
                         </td>
                         <td>
                             <h4>
-                                <b th:text="${op.reqs}">5</b>
+                                <b th:text="${op.requirements}">5</b>
                             </h4>
                         </td>
-                        <td th:text="${op.from}">
+                        <td th:text="${op.availabilityFrom}">
                             2017-12-01
                         </td>
-                        <td th:text="${op.to}">
+                        <td th:text="${op.dateAvailabilityTo}">
                             2018-06-23
                         </td>
                         <td>
