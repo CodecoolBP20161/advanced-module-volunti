@@ -46,3 +46,6 @@ Volunti/target/
 Volunti/volunti.iml
 
 advanced-module-volunti.iml
+
+# OS-X files
+.DS_Store
