@@ -1,9 +1,12 @@
 package com.codecool.volunti.model;
 
+import lombok.Data;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name="Volunteer")
+@Data
 public class Volunteer {
 
     @Id
@@ -12,14 +15,6 @@ public class Volunteer {
     private int id;
 
     public Volunteer() {
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 }
 
