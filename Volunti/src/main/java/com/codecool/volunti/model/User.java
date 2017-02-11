@@ -47,7 +47,7 @@ public class User {
     private Volunteer volunteer;
 
 
-    private User() {
+    public User() {
     }
 
     public User(String firstName, String lastName, String email, String password, String salt) {
