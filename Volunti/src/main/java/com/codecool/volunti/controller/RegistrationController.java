@@ -18,7 +18,7 @@ public class RegistrationController {
     private NotificationService notificationService;
 
     @RequestMapping("/signup-success")
-    public String signupSuccess(){
+    public String signupSuccess() throws Exception {
 
         // create user
         User user = new User();
@@ -27,12 +27,8 @@ public class RegistrationController {
         user.setEmail("lombos.monika@gmail.com");
 
         // send a notification
-        try {
-            notificationService.sendNotification(user);
-        }catch( Exception e ){
-            // catch error
-            LOGGER.warn("Error Sending Email: " + e.getMessage());
-        }
+        notificationService.sendNotification(user);
+
 
         return "Thank you for registering with us.";
     }
