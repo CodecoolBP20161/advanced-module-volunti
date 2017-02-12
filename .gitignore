@@ -45,6 +45,8 @@ fabric.properties
 Volunti/target/
 Volunti/volunti.iml
 
-advanced-module-volunti.iml
 /Volunti/src/main/resources/application.properties
 /advanced-module-volunti.iml
+
+# OS-X files
+.DS_Store
