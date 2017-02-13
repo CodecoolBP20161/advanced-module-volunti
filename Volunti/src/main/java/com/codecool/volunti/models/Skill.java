@@ -2,14 +2,13 @@ package com.codecool.volunti.models;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Entity
 @Data
+@Table(name = "skills")
 public class Skill {
 
     @Id
@@ -18,5 +17,8 @@ public class Skill {
 
     @NotNull
     private String name;
+
+    @ManyToMany(mappedBy = "skills")
+    private List<Opportunity> opportunities;
 
 }
