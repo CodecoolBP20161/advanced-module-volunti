@@ -44,13 +44,13 @@ public class MainController {
     private class Opportunity {
         public int id = 0;
         public String title = null;
-        public String accomodationType = "tent";
+        public String accommodationType = "tent";
         public String foodType = "halal";
-        public int hoursexpected = 100;
+        public int hoursExpected = 100;
         public String hoursExpectedType = "hrs";
         public int minimumStayInDays = 2;
         public Date availabilityFrom = new Date();
-        public Date dateAvailabilityTo = new Date();;
+        public Date dateAvailabilityTo = new Date();
         public String costs = "százezer";
         public String requirements = "szükségletek";
         public int numberOfVolunteers = 23423;

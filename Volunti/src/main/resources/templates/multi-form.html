@@ -43,39 +43,39 @@
     <body>
 
 		<!-- Top menu -->
-		<nav class="navbar navbar-inverse navbar-no-bg" role="navigation">
-			<div class="container">
-				<div class="navbar-header">
-					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#top-navbar-1">
-						<span class="sr-only">Toggle navigation</span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-					</button>
-					<a class="navbar-brand" href="index.html">Bootstrap Multi Step Registration Form Template</a>
-				</div>
-				<!-- Collect the nav links, forms, and other content for toggling -->
-				<div class="collapse navbar-collapse" id="top-navbar-1">
-					<ul class="nav navbar-nav navbar-right">
-						<li>
-							<span class="li-text">
-								Put some text or
-							</span> 
-							<a href="#"><strong>links</strong></a> 
-							<span class="li-text">
-								here, or some icons: 
-							</span> 
-							<span class="li-social">
-								<a href="#"><i class="fa fa-facebook"></i></a> 
-								<a href="#"><i class="fa fa-twitter"></i></a> 
-								<a href="#"><i class="fa fa-envelope"></i></a> 
-								<a href="#"><i class="fa fa-skype"></i></a>
-							</span>
-						</li>
-					</ul>
-				</div>
-			</div>
-		</nav>
+		<!--<nav class="navbar navbar-inverse navbar-no-bg" role="navigation">-->
+			<!--<div class="container">-->
+				<!--<div class="navbar-header">-->
+					<!--<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#top-navbar-1">-->
+						<!--<span class="sr-only">Toggle navigation</span>-->
+						<!--<span class="icon-bar"></span>-->
+						<!--<span class="icon-bar"></span>-->
+						<!--<span class="icon-bar"></span>-->
+					<!--</button>-->
+					<!--<a class="navbar-brand" href="index.html">Bootstrap Multi Step Registration Form Template</a>-->
+				<!--</div>-->
+				<!--&lt;!&ndash; Collect the nav links, forms, and other content for toggling &ndash;&gt;-->
+				<!--<div class="collapse navbar-collapse" id="top-navbar-1">-->
+					<!--<ul class="nav navbar-nav navbar-right">-->
+						<!--<li>-->
+							<!--<span class="li-text">-->
+								<!--Put some text or-->
+							<!--</span> -->
+							<!--<a href="#"><strong>links</strong></a> -->
+							<!--<span class="li-text">-->
+								<!--here, or some icons: -->
+							<!--</span> -->
+							<!--<span class="li-social">-->
+								<!--<a href="#"><i class="fa fa-facebook"></i></a> -->
+								<!--<a href="#"><i class="fa fa-twitter"></i></a> -->
+								<!--<a href="#"><i class="fa fa-envelope"></i></a> -->
+								<!--<a href="#"><i class="fa fa-skype"></i></a>-->
+							<!--</span>-->
+						<!--</li>-->
+					<!--</ul>-->
+				<!--</div>-->
+			<!--</div>-->
+		<!--</nav>-->
 
         <!-- Top content -->
         <div class="top-content">
@@ -102,7 +102,7 @@
 		                        	<div class="form-top">
 		                        		<div class="form-top-left">
 		                        			<h3>Step 1 / 4</h3>
-		                            		<p>Tell us who you are:</p>
+		                            		<p>Set up your Opportunity:</p>
 		                        		</div>
 		                        		<div class="form-top-right">
 		                        			<i class="fa fa-user"></i>
@@ -112,13 +112,13 @@
 									<div class="form-bottom">
 				                    	<div class="form-group">
 				                    		<p>Opportunity title</p>
-				                        	<input type="text" name="title" id = "title" placeholder="What are you looking for? " class="form-first-name form-control" th:value="${opportunity.title != null} ? ${opportunity.title} : '' "/>
+				                        	<input type="text" name="title" id = "title" autofocus = "autofocus" required="required" placeholder="What are you looking for? " class="form-first-name form-control" th:value="${opportunity.title != null} ? ${opportunity.title} : '' "/>
 											<p>Lorem ipsum ...</p>
 				                        </div>
 				                        <div class="form-group">
 				                        	<label class="sr-only" for="skills">Skills</label>
 											<p>Skills</p>
-				                        	<input type="text" name="skills" placeholder="What skills do you require?" class="form-last-name form-control" id="skills" th:value="${opportunity.title != null} ? ${opportunity.title} : '' "/>
+				                        	<input type="text" name="skills"  required="required" placeholder="What skills do you require?" class="form-last-name form-control" id="skills" th:value="${opportunity.title != null} ? ${opportunity.title} : '' "/>
 											<!--<select class="selectpicker" multiple>-->
 												<!--<option>Mustard</option>-->
 												<!--<option>Ketchup</option>-->
@@ -128,9 +128,11 @@
 											<p>Lorem ipsum ...</p>
 										</div>
 				                        <div class="form-group">
-				                        	<label class="sr-only" for="form-about-yourself">About yourself</label>
-				                        	<textarea name="form-about-yourself" placeholder="About yourself..." 
-				                        				class="form-about-yourself form-control" id="form-about-yourself"></textarea>
+				                        	<label class="sr-only" for="numberOfVolunteers">Number of volunteers</label>
+											<p>Number of volunteers</p>
+											<input type="number" name="skills" required="required" placeholder="What skills do you require?" class="numberOfVolunteers" id="numberOfVolunteers" th:value="${opportunity.numberOfVolunteers != null} ? ${opportunity.numberOfVolunteers} : '' "/>
+
+											<p>Lorem ipsum ...</p>
 				                        </div>
 				                        <button type="button" class="btn btn-next">Next</button>
 				                    </div>
@@ -140,26 +142,26 @@
 		                        	<div class="form-top">
 		                        		<div class="form-top-left">
 		                        			<h3>Step 2 / 4</h3>
-		                            		<p>Set up your account:</p>
+		                            		<p>Set up your Opportunity:</p>
 		                        		</div>
 		                        		<div class="form-top-right">
-		                        			<i class="fa fa-key"></i>
+		                        			<i class="fa fa-user"></i>
 		                        		</div>
 		                            </div>
 		                            <div class="form-bottom">
 				                        <div class="form-group">
-				                        	<label class="sr-only" for="form-email">Email</label>
-				                        	<input type="text" name="form-email" placeholder="Email..." class="form-email form-control" id="form-email"/>
-				                        </div>
+				                        	<label class="sr-only" for="accommodationType">Accomodation</label>
+											<p>Accomodation</p>
+				                        	<input type="text" name="form-email" autofocus = "autofocus" placeholder="Type of accomodation?" class="accommodationType" id="accommodationType" th:value="${opportunity.accommodationType != null} ? ${opportunity.accommodationType} : '' "/>
+											<p>Lorem ipsum ...</p>
+										</div>
 				                        <div class="form-group">
-				                    		<label class="sr-only" for="form-password">Password</label>
-				                        	<input type="password" name="form-password" placeholder="Password..." class="form-password form-control" id="form-password"/>
-				                        </div>
-				                        <div class="form-group">
-				                        	<label class="sr-only" for="form-repeat-password">Repeat password</label>
-				                        	<input type="password" name="form-repeat-password" placeholder="Repeat password..." 
-				                        				class="form-repeat-password form-control" id="form-repeat-password"/>
-				                        </div>
+				                    		<label class="sr-only" for="foodType">Food</label>
+											<p>Food</p>
+				                        	<input type="text" name="form-password" placeholder="Type of food / meals?" class="foodType" id="foodType" th:value="${opportunity.foodType != null} ? ${opportunity.foodType} : '' "/>
+											<p>Lorem ipsum ...</p>
+										</div>
+
 				                        <button type="button" class="btn btn-previous">Previous</button>
 				                        <button type="button" class="btn btn-next">Next</button>
 				                    </div>
@@ -169,25 +171,31 @@
 		                        	<div class="form-top">
 		                        		<div class="form-top-left">
 		                        			<h3>Step 3 / 4</h3>
-		                            		<p>Social media profiles:</p>
+		                            		<p>Set up your Opportunity:</p>
 		                        		</div>
 		                        		<div class="form-top-right">
-		                        			<i class="fa fa-twitter"></i>
+		                        			<i class="fa fa-user"></i>
 		                        		</div>
 		                            </div>
 		                            <div class="form-bottom">
 				                    	<div class="form-group">
-				                    		<label class="sr-only" for="form-facebook">Facebook</label>
-				                        	<input type="text" name="form-facebook" placeholder="Facebook..." class="form-facebook form-control" id="form-facebook"/>
-				                        </div>
+				                    		<label class="sr-only" for="hoursExpected">Expected hours</label>
+											<p>Expected hours </p>
+				                        	<input type="number" name="hoursExpected" autofocus = "autofocus" placeholder="Volunteer hours expected (per day or week)" class="form-facebook form-control" id="hoursExpected" th:value="${opportunity.hoursExpected != null} ? ${opportunity.hoursExpected} : '' "/>
+											<p>Lorem ipsum ...</p>
+										</div>
 				                        <div class="form-group">
-				                        	<label class="sr-only" for="form-twitter">Twitter</label>
-				                        	<input type="text" name="form-twitter" placeholder="Twitter..." class="form-twitter form-control" id="form-twitter"/>
-				                        </div>
+				                        	<label class="sr-only" for="hoursExpectedType">Expected stay</label>
+											<p>Expected stay</p>
+				                        	<input type="number" name="hoursExpectedType" placeholder="Minimum stay expected (number of days)" class="form-twitter form-control" id="hoursExpectedType" th:value="${opportunity.hoursExpectedType != null} ? ${opportunity.hoursExpectedType} : '' "/>
+											<p>Lorem ipsum ...</p>
+										</div>
 				                        <div class="form-group">
-				                        	<label class="sr-only" for="form-google-plus">Google plus</label>
-				                        	<input type="text" name="form-google-plus" placeholder="Google plus..." class="form-google-plus form-control" id="form-google-plus"/>
-				                        </div>
+				                        	<label class="sr-only" for="availabilityFrom">Available from - to</label>
+											<p>Available from - to</p>
+				                        	<input type="date" name="availabilityFrom" placeholder="Availablity  from " class="form-google-plus form-control" id="availabilityFrom" th:value="${opportunity.availabilityFrom != null} ? ${opportunity.availabilityFrom} : '' "/><input type="date" name="dateAvailabilityTo" placeholder="Availablity  to " class="form-google-plus form-control" id="dateAvailabilityTo" th:value="${opportunity.dateAvailabilityTo != null} ? ${opportunity.dateAvailabilityTo} : '' "/>
+											<p>Lorem ipsum ...</p>
+										</div>
 										<button type="button" class="btn btn-previous">Previous</button>
 										<button type="button" class="btn btn-next">Next</button>
 				                    </div>
@@ -196,25 +204,28 @@
 									<div class="form-top">
 										<div class="form-top-left">
 											<h3>Step 4 / 4</h3>
-											<p>Social media profiles:</p>
+											<p>Set up your Opportunity:</p>
 										</div>
 										<div class="form-top-right">
-											<i class="fa fa-twitter"></i>
+											<i class="fa fa-user"></i>
 										</div>
 									</div>
 									<div class="form-bottom">
 										<div class="form-group">
-											<label class="sr-only" for="form-facebook">Facebook</label>
-											<input type="text" name="form-facebook" placeholder="Facebook..." class="form-facebook form-control" id="form-facebook"/>
+											<label class="sr-only" for="costs">Costs</label>
+											<p>Costs</p>
+											<input type="text" name="costs" autofocus = "autofocus" placeholder="What costs can you cover?" class="form-facebook form-control" id="costs" th:value="${opportunity.costs != null} ? ${opportunity.costs} : '' "/>
+											<p>Lorem ipsum ...</p>
 										</div>
 										<div class="form-group">
-											<label class="sr-only" for="form-twitter">Twitter</label>
-											<input type="text" name="form-twitter" placeholder="Twitter..." class="form-twitter form-control" id="form-twitter"/>
+											<label class="sr-only" for="requirements">Requirements</label>
+											<p>Requirements</p>
+											<!--<input type="text" name="requirements" placeholder="Other requirements" class="form-twitter form-control" id="requirements"/>-->
+											<textarea name="requirements" placeholder="Other requirements"
+											class="numberOfVolunteers" id="requirements" th:value="${opportunity.requirements != null} ? ${opportunity.requirements} : '' "></textarea>
+											<p>Lorem ipsum ...</p>
 										</div>
-										<div class="form-group">
-											<label class="sr-only" for="form-google-plus">Google plus</label>
-											<input type="text" name="form-google-plus" placeholder="Google plus..." class="form-google-plus form-control" id="form-google-plus"/>
-										</div>
+
 										<button type="button" class="btn btn-previous">Previous</button>
 										<button type="submit" class="btn">Sign me up!</button>
 									</div>
