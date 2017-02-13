@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragment/head :: head"> </head>
+
+<body>
+    <div id="main-wrapper">
+
+        <div  class="col-sm-4"></div>
+
+        <form action="#" th:action="@{/registration/organisation/step1}" th:object="${organisation}" method="post" class="col-sm-4">
+            <div>
+                <h2>
+                    name
+                </h2>
+                <p>
+                    the name of your organisation
+                </p>
+                <input type="text" required="required" autofocus="autofocus" value="name" th:field="*{name}"/>
+            </div>
+
+            <div>
+                <h4>
+                    category
+                </h4>
+                <p>
+                    the category of your organisation
+                </p>
+                <input type="text" required="required" value="TEACHING" th:field="*{category}"/>
+            </div>
+
+            <div>
+                <h4>
+                    zipcode
+                </h4>
+                <p>
+                    the zipcode of your organisation
+                </p>
+                <input type="text" required="required" value="zipcode" />
+            </div>
+
+            <div>
+                <h4>
+                    country
+                </h4>
+                <p>
+                    the country of your organisation
+                </p>
+                <input type="text" required="required" value="country" th:field="*{country}"/>
+            </div>
+
+            <div>
+                <h4>
+                    city
+                </h4>
+                <p>
+                    the city of your organisation
+                </p>
+                <input type="text" required="required" value="city" th:field="*{city}"/>
+            </div>
+
+            <div>
+                <h4>
+                    address
+                </h4>
+                <p>
+                    street name, house number etc.
+                </p>
+                <input type="text" required="required" value="address" th:field="*{address}"/>
+            </div>
+
+            <div>
+                <h4>
+                    mission
+                </h4>
+                <p>
+                    the mission of your organisation
+                </p>
+                <input type="text" required="required" value="mission impossible" th:field="*{mission}"/>
+            </div>
+
+            <div>
+                <h4>
+                    description1
+                </h4>
+                <p>
+                    What kind of help do you need
+                </p>
+                <input type="text" required="required" value="help me" th:field="*{helpType}"/>
+            </div>
+
+            <div>
+                <h4>
+                    description2
+                </h4>
+                <p>
+                    What can volunteers learn here?
+                </p>
+                <input type="text" required="required" value="learn" th:field="*{whatLearn}"/>
+            </div>
+
+            <div>
+                <h4>
+                    spoken languages
+                </h4>
+                <p>
+                    spoken languages at your organisation
+                </p>
+                <input type="text" required="required" value="ENGLISH" th:field="*{spokenLanguage}"/>
+            </div>
+
+            <button type="submit" class="btn mb20 btn-large btn-primary">submit</button>
+        </form>
+
+        <div  class="col-sm-4"></div>
+    </div>
+</body>
+</html>
