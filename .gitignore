@@ -40,9 +40,13 @@ com_crashlytics_export_strings.xml
 crashlytics.properties
 crashlytics-build.properties
 fabric.properties
-/Volunti/src/main/resources/application.properties
+
 .idea/
 Volunti/target/
 Volunti/volunti.iml
 
-advanced-module-volunti.iml
+/Volunti/src/main/resources/application.properties
+/advanced-module-volunti.iml
+
+# OS-X files
+.DS_Store
