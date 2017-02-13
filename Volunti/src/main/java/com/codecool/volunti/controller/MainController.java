@@ -2,6 +2,7 @@ package com.codecool.volunti.controller;
 
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.ArrayList;
@@ -14,6 +15,13 @@ public class MainController {
     @GetMapping("/")
     public String getRoute(){
         return "index";
+    }
+
+    @GetMapping("/org/{id}/opp/form")
+    public String form(Model model){
+        Opportunity opportunity = new Opportunity();
+        model.addAttribute("opportunity", opportunity);
+        return "multi-form";
     }
 
     // for tests, but route and return value legit for the final product
@@ -35,7 +43,7 @@ public class MainController {
     // for tests
     private class Opportunity {
         public int id = 0;
-        public String title = "Title";
+        public String title = null;
         public String accomodationType = "tent";
         public String foodType = "halal";
         public int hoursexpected = 100;
