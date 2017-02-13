@@ -19,7 +19,11 @@ public class OrganisationService {
     }
 
     public Organisation saveOrganisation(Organisation organisation){
-
         return organisationRepository.save(organisation);
     }
+
+    public Organisation get(Integer id) {
+        return organisationRepository.findOne(id);
+    }
+
 }
