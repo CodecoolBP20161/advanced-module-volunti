@@ -49,7 +49,7 @@ public class RegistrationController {
     //save organisation registration
     @RequestMapping( value = "/registration/organisation/step1", method = RequestMethod.POST )
     public String saveStep1(Organisation organisation) {
-        LOGGER.info("benne van" + organisation);
+        LOGGER.info("saveStep1() method called...");
         Organisation savedOrganisation = organisationService.saveOrganisation(organisation);
         LOGGER.info("savedOrganisation: " + savedOrganisation);
         return "redirect:/registration/organisation/step2/" + organisation.getId();
@@ -58,35 +58,32 @@ public class RegistrationController {
     //render user registration
     @RequestMapping( value = "/registration/organisation/step2/{organisation_id}", method = RequestMethod.GET )
     public String step2(@PathVariable Integer organisation_id ,Model model) {
+        LOGGER.info("step2() method called...");
         User user = new User();
         model.addAttribute("user", user);
         model.addAttribute("organisation_id", organisation_id);
-        LOGGER.info("render registration page 2");
         return "registration/user";
     }
 
     //save user registration
     @RequestMapping( value = "/registration/organisation/step2/{organisation_id}", method = RequestMethod.POST )
-    public String save(@PathVariable Integer organisation_id, User user) {
+    public String saveStep2(@PathVariable Integer organisation_id, User user) {
+        LOGGER.info("saveStep2() method called...");
         user.setOrganisation(organisationService.get(organisation_id));
         User savedUser = userService.saveUser(user);
-        LOGGER.info("savedUser: " + savedUser);
         return "/registration/organisation/confirmation";   //Should I redirect somewhere else?
     }
 
     @RequestMapping("/signup-success")
     public String signupSuccess() throws Exception {
-
+        LOGGER.info("signupSuccess() method called...");
         // create user
         User user = new User();
         user.setFirstName("Moni");
         user.setLastName("Lombos");
         user.setEmail("lombos.monika@gmail.com");
-
         // send a notification
         notificationService.sendNotification(user);
-
-
         return "Thank you for registering with us.";
     }
 
