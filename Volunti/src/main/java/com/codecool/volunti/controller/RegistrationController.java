@@ -40,9 +40,9 @@ public class RegistrationController {
     //render organisation registration
     @RequestMapping( value = "/registration/organisation/step1", method = RequestMethod.GET )
     public String step1(Model model) {
+        LOGGER.info("step1() method called ...");
         Organisation organisation = new Organisation();
         model.addAttribute("organisation", organisation);
-        LOGGER.info("render registration page 1");
         return "registration/organisation/step1";
     }
 
@@ -71,19 +71,23 @@ public class RegistrationController {
         LOGGER.info("saveStep2() method called...");
         user.setOrganisation(organisationService.get(organisation_id));
         User savedUser = userService.saveUser(user);
+
+        signupSuccess(user);
+
         return "/registration/organisation/confirmation";   //Should I redirect somewhere else?
     }
 
-    @RequestMapping("/signup-success")
-    public String signupSuccess() throws Exception {
+    //@RequestMapping("/signup-success")
+    public String signupSuccess(User user) {
         LOGGER.info("signupSuccess() method called...");
+
         // create user
-        User user = new User();
-        user.setFirstName("Moni");
-        user.setLastName("Lombos");
-        user.setEmail("lombos.monika@gmail.com");
-        // send a notification
-        notificationService.sendNotification(user);
+        try {
+            // send a notification
+            notificationService.sendNotification(user);
+        } catch (Exception e) {
+            LOGGER.warn("Email not sent");
+        }
         return "Thank you for registering with us.";
     }
 
