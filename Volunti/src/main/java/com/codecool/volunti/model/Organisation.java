@@ -61,7 +61,7 @@ public class Organisation {
     @Column(name="what_learn")
     private String whatLearn;
 
-    private Organisation(){}
+    public Organisation(){}
 
     public Organisation(String name, Category category, String country, String city, String address, SpokenLanguage spokenLanguage, String mission, String helpType, String whatLearn) {
         this.name = name;
