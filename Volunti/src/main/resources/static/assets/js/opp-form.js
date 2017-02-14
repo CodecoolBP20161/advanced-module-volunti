@@ -27,15 +27,16 @@ jQuery(document).ready(function() {
     	var parent_fieldset = $(this).parents('fieldset');
     	var next_step = true;
     	
-    	parent_fieldset.find('input[type="text"], input[type="password"], textarea').each(function() {
-    		if( $(this).val() == "" ) {
-    			$(this).addClass('input-error');
-    			next_step = false;
-    		}
-    		else {
-    			$(this).removeClass('input-error');
-    		}
-    	});
+    	// parent_fieldset.find('input[type="text"], option:selected, input[type="number"]').each(function() {
+    	// 	if( $(this).val() == "" ) {
+    	// 		$(this).addClass('input-error');
+    	// 		next_step = false;
+			// 	console.log("next Step1");
+    	// 	}
+    	// 	else {
+    	// 		$(this).removeClass('input-error');
+    	// 	}
+    	// });
     	
     	if( next_step ) {
     		parent_fieldset.fadeOut(400, function() {
@@ -53,19 +54,23 @@ jQuery(document).ready(function() {
     });
     
     // submit
-    $('.opportunity-form').on('submit', function(e) {
-    	
-    	$(this).find('input[type="text"], input[type="password"], textarea').each(function() {
-    		if( $(this).val() == "" ) {
-    			e.preventDefault();
-    			$(this).addClass('input-error');
-    		}
-    		else {
-    			$(this).removeClass('input-error');
-    		}
-    	});
-    	
-    });
+    // $('.opportunity-form').on('submit', function(e) {
+    //
+    // 	$(this).find('input[type="text"], input[type="password"], textarea').each(function() {
+    // 		if( $(this).val() == "" ) {
+    // 			e.preventDefault();
+    // 			$(this).addClass('input-error');
+    // 		}
+    // 		else {
+    // 			$(this).removeClass('input-error');
+    // 		}
+    // 	});
+    //
+    // });
+
+	$('#select-state').selectize({
+		maxItems: 5
+	});
     
     
 });
