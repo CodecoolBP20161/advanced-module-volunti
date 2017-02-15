@@ -52,7 +52,7 @@ public class RegistrationController {
         LOGGER.info("saveStep1() method called...");
         Organisation savedOrganisation = organisationService.saveOrganisation(organisation);
         LOGGER.info("savedOrganisation: " + savedOrganisation);
-        return "redirect:/registration/organisation/step2/" + organisation.getId();
+        return "redirect:/registration/organisation/step2/" + organisation.getOrganisationId();
     }
 
     //render user registration

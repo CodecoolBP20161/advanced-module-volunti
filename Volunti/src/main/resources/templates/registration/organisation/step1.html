@@ -9,7 +9,7 @@
 
         <form action="#" th:action="@{/registration/organisation/step1}" th:object="${organisation}" method="post" class="col-sm-4">
 
-            <input type="hidden" th:field="*{id}" />
+            <input type="hidden" th:field="*{organisationId}" />
 
             <div>
                 <h2>
@@ -88,7 +88,7 @@
                 <p>
                     What kind of help do you need
                 </p>
-                <input type="text" required="required" value="help me" th:field="*{helpType}"/>
+                <input type="text" required="required" value="help me" th:field="*{description1}"/>
             </div>
 
             <div>
@@ -98,7 +98,7 @@
                 <p>
                     What can volunteers learn here?
                 </p>
-                <input type="text" required="required" value="learn" th:field="*{whatLearn}"/>
+                <input type="text" required="required" value="learn" th:field="*{description2}"/>
             </div>
 
             <div>
