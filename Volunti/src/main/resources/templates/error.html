@@ -1,8 +1,11 @@
 <!doctype html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragment/head :: head"></head>
+<head th:replace="fragments/head :: head"></head>
 
 <body>
+
+    <!-- Navbar -->
+    <div th:replace="fragments/navbar :: navbar"></div>
 
 	<div id="main-wrapper">
 
@@ -12,5 +15,7 @@
 
 	</div>
 
+    <!--  Footer -->
+    <div th:replace="fragments/footer :: footer"></div>
 </body>
 </html>
