@@ -3430,8 +3430,8 @@ address {
 	border: 2px solid #509171;
 }
 .btn-primary:hover, .btn-primary.hover, .btn-primary:focus, .btn-primary.focus, .btn-primary:active, .btn-primary.active {
-	background-color: #008fef;
-	border-color: #008fef;
+	background-color: #2ad482;
+	border-color: #2ad482;
 }
 .btn-primary-second {
 	background-color: #0099fe;

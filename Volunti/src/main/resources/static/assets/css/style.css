@@ -3239,3 +3239,8 @@ vivid green: #2ad482
 .home-pro .col-sm-7 .col-md-10 h1, .home-pro .col-sm-7 .col-md-10 h2 {
     color: #FFFFFF;
 }
+
+/* form text-input color overwrite because it was white for some reason */
+form input[type="text"]{
+	color: #333333;
+}
