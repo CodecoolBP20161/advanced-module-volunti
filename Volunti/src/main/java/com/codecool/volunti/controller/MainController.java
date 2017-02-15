@@ -28,7 +28,7 @@ public class MainController {
     }
 
     @PostMapping("/opp")
-    public String saveOpportunity(@ModelAttribute("opportunity") Opportunity opportunity){
+    public String saveOpportunity(Opportunity opportunity){
         System.out.println("opportunity = " + opportunity.title);
         return "redirect:/";
     }
