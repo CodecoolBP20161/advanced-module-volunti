@@ -1,20 +1,12 @@
 <!doctype html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragment/head :: head"> </head>
+<head th:replace="fragments/head :: head"> </head>
 <body>
 <div id="main-wrapper">
-    <div class="box-shadow-for-ui">
-        <div class="uou-block-2b">
-            <div class="container">
-                <a href="#" class="logo"><img src="/assets/images/logo.png" alt="" /></a>
-                <a href="#" class="mobile-sidebar-button mobile-sidebar-toggle"><span></span></a>
 
-                <div th:replace="fragment/navbar :: navbar"></div>
+    <!-- Navbar -->
+    <div th:replace="fragments/navbar :: navbar"></div>
 
-            </div>
-        </div>
-        <!--  end .uou-block-2b -->
-    </div>
     <!--  HOME PRO -->
     <div class="home-pro">
         <!--  PRO BANNER HEAD -->
@@ -314,8 +306,9 @@
         </div>
     </div>
 </div>
+
 <!--  Footer -->
-<div th:replace="fragment/footer :: footer"></div>
+<div th:replace="fragments/footer :: footer"></div>
 
 </body>
 </html>

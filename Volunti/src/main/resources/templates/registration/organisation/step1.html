@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragment/head :: head"> </head>
+<head th:replace="fragments/head :: head"> </head>
 
 <body>
     <div id="main-wrapper">
+
+        <!-- Navbar -->
+        <div th:replace="fragments/navbar :: navbar"></div>
 
         <div  class="col-sm-4"></div>
 
@@ -18,7 +21,7 @@
                 <p>
                     the name of your organisation
                 </p>
-                <input type="text" required="required" autofocus="autofocus" value="name" th:field="*{name}"/>
+                <input type="email" required="required" autofocus="autofocus" value="name" th:field="*{name}"/>
             </div>
 
             <div>
@@ -116,5 +119,8 @@
 
         <div  class="col-sm-4"></div>
     </div>
+
+    <!--  Footer -->
+    <div th:replace="fragments/footer :: footer"></div>
 </body>
 </html>
