@@ -42,6 +42,21 @@ public class Opportunity{
     @JoinTable(name = "opportunities_skills", joinColumns = @JoinColumn(name = "opportunity_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "skill_id", referencedColumnName = "id"))
     private List<Skill> skills;
 
+    public Opportunity() {
+    }
 
+    public Opportunity(String title, int numberOfVolunteers, String accommodationType, String foodType, int hoursExpected, int minimumStayInDays, Date availabilityFrom, Date dateAvailabilityTo, String costs, String requirements, List<Skill> skills) {
 
+        this.title = title;
+        this.numberOfVolunteers = numberOfVolunteers;
+        this.accommodationType = accommodationType;
+        this.foodType = foodType;
+        this.hoursExpected = hoursExpected;
+        this.minimumStayInDays = minimumStayInDays;
+        this.availabilityFrom = availabilityFrom;
+        this.dateAvailabilityTo = dateAvailabilityTo;
+        this.costs = costs;
+        this.requirements = requirements;
+        this.skills = skills;
+    }
 }
