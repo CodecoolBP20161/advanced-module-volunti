@@ -2,58 +2,64 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragment/head :: head"> </head>
 <body>
-<div id="main-wrapper">
+    <div id="main-wrapper">
 
-    <div  class="col-sm-4"></div>
+        <!-- Navbar -->
+        <div th:replace="fragments/navbar :: navbar"></div>
 
-    <form action="#" th:action="@{/registration/organisation/step2/} + ${organisation_id}" th:object="${user}" method="post" class="col-sm-4">
-        <div>
-            <h2>
-                first name
-            </h2>
-            <p>
-                your first name
-            </p>
-            <input type="text" required="required" autofocus="autofocus" value="name" th:field="*{firstName}"/>
-        </div>
+        <div  class="col-sm-4"></div>
 
-        <div>
-            <h2>
-                last name
-            </h2>
-            <p>
-                your last name
-            </p>
-            <input type="text" required="required" autofocus="autofocus" value="name" th:field="*{lastName}"/>
-        </div>
+        <form action="#" th:action="@{/registration/organisation/step2/} + ${organisation_id}" th:object="${user}" method="post" class="col-sm-4">
+            <div>
+                <h2>
+                    first name
+                </h2>
+                <p>
+                    your first name
+                </p>
+                <input type="text" required="required" autofocus="autofocus" value="name" th:field="*{firstName}"/>
+            </div>
 
-        <div>
-            <h2>
-                email
-            </h2>
-            <p>
-                your email
-            </p>
-            <input type="text" required="required" autofocus="autofocus" value="name" th:field="*{email}"/>
-        </div>
+            <div>
+                <h2>
+                    last name
+                </h2>
+                <p>
+                    your last name
+                </p>
+                <input type="text" required="required" autofocus="autofocus" value="name" th:field="*{lastName}"/>
+            </div>
 
-        <div>
-            <h2>
-                password
-            </h2>
-            <p>
-                your password
-            </p>
-            <input type="password" required="required" autofocus="autofocus" value="name" th:field="*{password}"/>
-        </div>
+            <div>
+                <h2>
+                    email
+                </h2>
+                <p>
+                    your email
+                </p>
+                <input type="text" required="required" autofocus="autofocus" value="name" th:field="*{email}"/>
+            </div>
+
+            <div>
+                <h2>
+                    password
+                </h2>
+                <p>
+                    your password
+                </p>
+                <input type="password" required="required" autofocus="autofocus" value="name" th:field="*{password}"/>
+            </div>
 
 
 
-        <button type="submit" class="btn mb20 btn-large btn-primary">submit</button>
-    </form>
+            <button type="submit" class="btn mb20 btn-large btn-primary">submit</button>
+        </form>
 
-    <div  class="col-sm-4"></div>
-</div>
+        <div  class="col-sm-4"></div>
+    </div>
+
+    <!--  Footer -->
+    <div th:replace="fragments/footer :: footer"></div>
 
 </body>
 </html>
