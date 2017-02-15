@@ -8,116 +8,91 @@
         <!-- Navbar -->
         <div th:replace="fragments/navbar :: navbar"></div>
 
-        <div  class="col-sm-4"></div>
+        <!-- Main content -->
+        <div class="compny-profile">
 
-        <form action="#" th:action="@{/registration/organisation/step1}" th:object="${organisation}" method="post" class="col-sm-4">
-
-            <input type="hidden" th:field="*{organisationId}" />
-
-            <div>
-                <h2>
-                    name
-                </h2>
-                <p>
-                    the name of your organisation
-                </p>
-                <input type="text" required="required" autofocus="autofocus" value="name" th:field="*{name}"/>
+            <!-- SUB Banner -->
+            <div class="profile-bnr user-profile-bnr">
+                <div class="container">
+                    <div class="pull-left">
+                        <h2>Registration</h2>
+                    </div>
+                </div>
             </div>
 
-            <div>
-                <h4>
-                    category
-                </h4>
-                <p>
-                    the category of your organisation
-                </p>
-                <input type="text" required="required" value="TEACHING" th:field="*{category}"/>
+            <!-- Profile Company Content -->
+            <div class="profile-company-content user-profile main-user" data-bg-color="f5f5f5">
+                <div class="container">
+                    <div class="row">
+
+                        <!-- Nav Tabs -->
+                        <div class="col-md-12">
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a data-toggle="tab" href="#step1">Step 1</a></li>
+                                <li><a data-toggle="tab" href="#step2">Step 2</a></li>
+                            </ul>
+                        </div>
+
+                        <!-- Tab Content -->
+                        <div class="col-md-12">
+                            <div class="tab-content">
+
+                                <!-- Registration form -->
+                                <div id="contact" class="tab-pane fade in active">
+                                    <div class="profile-main">
+                                        <h3>Register your organisation!</h3>
+                                        <div class="profile-in">
+                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptate quis tenetur velit! Provident eum molestias aperiam suscipit distinctio ipsum cupiditate quasi, dolor sunt, cum reprehenderit quibusdam, repellendus eaque, quas magni.</p>
+
+
+
+            <form action="#" th:action="@{/registration/organisation/step1}" th:object="${organisation}" method="post">
+
+                <input type="hidden" th:field="*{organisationId}" />
+
+                <input type="text" required="required" autofocus="autofocus" placeholder="name of your organisation" value="" th:field="*{name}"/>
+
+                <input type="text" required="required" value="" placeholder="category of your organisation" th:field="*{category}"/>
+
+                <h4>Address</h4>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <input type="text" required="required" value="" placeholder="country" th:field="*{country}"/>
+                    </div>
+                    <div class="col-sm-4">
+                        <input type="text" required="required" value="" placeholder="ZIP" />
+                    </div>
+                    <div class="col-sm-4">
+                        <input type="text" required="required" value="" placeholder="city" th:field="*{city}"/>
+                    </div>
+                </div>
+                <input type="text" required="required" value="" placeholder="address" th:field="*{address}"/>
+
+                <input type="text" required="required" value="" placeholder="spoken languages at your organisation" th:field="*{spokenLanguage}"/>
+
+                <h4>Purpose and mission</h4>
+                <input type="text" required="required" value="" placeholder="the organisation's mission statement" th:field="*{mission}"/>
+                <input type="text" required="required" value="" placeholder="What kind of help do you need?" th:field="*{description1}"/>
+                <input type="text" required="required" value="" placeholder="What can volunteers learn here?" th:field="*{description2}"/>
+
+                <button type="submit" class="btn mb20 btn-large btn-primary">next</button>
+            </form>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- / Registration form -->
+
+                            </div>
+                        </div>
+                        <!-- / Tab Content -->
+                    </div>
+                </div>
             </div>
-
-            <div>
-                <h4>
-                    zipcode
-                </h4>
-                <p>
-                    the zipcode of your organisation
-                </p>
-                <input type="text" required="required" value="zipcode" />
-            </div>
-
-            <div>
-                <h4>
-                    country
-                </h4>
-                <p>
-                    the country of your organisation
-                </p>
-                <input type="text" required="required" value="country" th:field="*{country}"/>
-            </div>
-
-            <div>
-                <h4>
-                    city
-                </h4>
-                <p>
-                    the city of your organisation
-                </p>
-                <input type="text" required="required" value="city" th:field="*{city}"/>
-            </div>
-
-            <div>
-                <h4>
-                    address
-                </h4>
-                <p>
-                    street name, house number etc.
-                </p>
-                <input type="text" required="required" value="address" th:field="*{address}"/>
-            </div>
-
-            <div>
-                <h4>
-                    mission
-                </h4>
-                <p>
-                    the mission of your organisation
-                </p>
-                <input type="text" required="required" value="mission impossible" th:field="*{mission}"/>
-            </div>
-
-            <div>
-                <h4>
-                    description1
-                </h4>
-                <p>
-                    What kind of help do you need
-                </p>
-                <input type="text" required="required" value="help me" th:field="*{description1}"/>
-            </div>
-
-            <div>
-                <h4>
-                    description2
-                </h4>
-                <p>
-                    What can volunteers learn here?
-                </p>
-                <input type="text" required="required" value="learn" th:field="*{description2}"/>
-            </div>
-
-            <div>
-                <h4>
-                    spoken languages
-                </h4>
-                <p>
-                    spoken languages at your organisation
-                </p>
-                <input type="text" required="required" value="ENGLISH" th:field="*{spokenLanguage}"/>
-            </div>
-
-            <button type="submit" class="btn mb20 btn-large btn-primary">submit</button>
-        </form>
-
-        <div  class="col-sm-4"></div>
+            <!-- / Profile Company Content -->
+        </div>
+        <!-- / Main content -->
     </div>
 
     <!--  Footer -->
