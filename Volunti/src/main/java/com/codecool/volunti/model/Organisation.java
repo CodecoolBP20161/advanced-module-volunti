@@ -16,7 +16,7 @@ public class Organisation {
     @Id
     @Column(name="organisation_id", unique=true)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private int organisationId;
 
     @Size(min=2, max=100)
     @Column(name="name")
@@ -53,17 +53,17 @@ public class Organisation {
 
     @NotEmpty
     @Size(min=3)
-    @Column(name="needed_help")
-    private String helpType;
+    @Column(name="description_1")
+    private String description1;
 
     @NotEmpty
     @Size(min=3)
-    @Column(name="what_learn")
-    private String whatLearn;
+    @Column(name="description_2")
+    private String description2;
 
     public Organisation(){}
 
-    public Organisation(String name, Category category, String country, String city, String address, SpokenLanguage spokenLanguage, String mission, String helpType, String whatLearn) {
+    public Organisation(String name, Category category, String country, String city, String address, SpokenLanguage spokenLanguage, String mission, String description1, String description2) {
         this.name = name;
         this.category = category;
         this.country = country;
@@ -71,8 +71,8 @@ public class Organisation {
         this.address = address;
         this.spokenLanguage = spokenLanguage;
         this.mission = mission;
-        this.helpType = helpType;
-        this.whatLearn = whatLearn;
+        this.description1 = description1;
+        this.description2 = description2;
     }
 
 }
