@@ -3240,7 +3240,6 @@ vivid green: #2ad482
     color: #FFFFFF;
 }
 
-/* form text-input color overwrite because it was white for some reason */
-form input[type="text"]{
-	color: #333333;
+.login-sec .content form p {
+	color: white;
 }
