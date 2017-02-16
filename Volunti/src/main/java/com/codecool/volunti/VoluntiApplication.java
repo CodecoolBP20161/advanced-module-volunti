@@ -24,7 +24,6 @@ public class VoluntiApplication {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(VoluntiApplication.class);
 
-    @Autowired
     DataLoader dataLoader;
 
     @Autowired
