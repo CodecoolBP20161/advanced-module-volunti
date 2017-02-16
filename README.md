@@ -40,3 +40,8 @@ psql -U postgres -c "grant all privileges on database volunti_dev to volunti_dev
 - [Spring Integration Mail Support](http://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-email.html)
 
 
+## Load static files without server restart
+1. There is a new dependency in the maven xml called Spring Boot Dev Tools, make sure to reload the dependencies
+2. Press Ctrl + Shift + A, and in the search field, look for 'Registry'
+3. Check the attribute 'compiler.automake.allow.when.app.running'
+4. Restart IntelliJ
