@@ -3902,6 +3902,9 @@ input[type="radio"][disabled], input[type="checkbox"][disabled], input[type="rad
 .uou-tabs.accordion-xs .tabs {
 	display: none;
 }
+.uou-tabs.accordion-xs .tabs.register {
+	display: block;
+}
 .uou-tabs.accordion-xs .accordion-link {
 	display: block;
 }
