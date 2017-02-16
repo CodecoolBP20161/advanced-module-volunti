@@ -7,55 +7,85 @@
         <!-- Navbar -->
         <div th:replace="fragments/navbar :: navbar"></div>
 
-        <div  class="col-sm-4"></div>
+        <!-- Main content -->
+        <div class="compny-profile">
 
-        <form action="#" th:action="@{/registration/organisation/step2/} + ${organisation_id}" th:object="${user}" method="post" class="col-sm-4">
-            <div>
-                <h2>
-                    first name
-                </h2>
-                <p>
-                    your first name
-                </p>
-                <input type="text" required="required" autofocus="autofocus" value="name" th:field="*{firstName}"/>
+            <!-- SUB Banner -->
+            <div class="profile-bnr user-profile-bnr">
+                <div class="container">
+                    <div class="pull-left">
+                        <h2>Registration</h2>
+                    </div>
+                </div>
             </div>
 
-            <div>
-                <h2>
-                    last name
-                </h2>
-                <p>
-                    your last name
-                </p>
-                <input type="text" required="required" autofocus="autofocus" value="name" th:field="*{lastName}"/>
+            <!-- Profile User Content -->
+            <div class="profile-company-content user-profile main-user" data-bg-color="f5f5f5">
+                <div class="container">
+                    <div class="row">
+
+                        <!-- Nav Tabs -->
+                        <div class="col-md-12">
+                            <ul class="nav nav-tabs">
+                                <li><a data-toggle="tab" href="#step1">Step 1</a></li>
+                                <li class="active"><a data-toggle="tab" href="#step2">Step 2</a></li>
+                            </ul>
+                        </div>
+
+                        <!-- Tab Content -->
+                        <div class="col-md-12">
+                            <div class="tab-content">
+
+                                <!-- Registration form -->
+                                <div id="contact" class="tab-pane fade in active">
+                                    <div class="profile-main">
+                                        <h3>Register yourself!</h3>
+                                        <div class="profile-in">
+                                            <p>Yuccie air plant edison bulb authentic. Listicle 3 wolf moon put a bird on it, plaid brunch copper mug taxidermy narwhal street art echo park knausgaard you probably haven't heard of them. Ethical roof party tacos, fam bushwick hoodie asymmetrical hashtag try-hard. +1 waistcoat yr iPhone. XOXO shabby chic messenger bag, kogi chambray everyday carry cray mustache air plant shoreditch kickstarter prism you probably haven't heard of them. Tofu tousled XOXO, try-hard waistcoat snackwave photo booth farm-to-table. Vexillologist narwhal literally, street art tilde ramps chambray master cleanse copper mug wayfarers.</p>
+
+
+        <form action="#" th:action="@{/registration/organisation/step2/} + ${organisation_id}" th:object="${user}" method="post">
+            <h4>Name</h4>
+            <div class="row">
+                <div class="col-sm-4">
+                    <input type="text" required="required" placeholder="first name" value="" th:field="*{firstName}"/>
+                </div>
+                <div class="col-sm-4">
+                    <input type="text" required="required" placeholder="last name" value="" th:field="*{lastName}"/>
+                </div>
             </div>
 
-            <div>
-                <h2>
-                    email
-                </h2>
-                <p>
-                    your email
-                </p>
-                <input type="text" required="required" autofocus="autofocus" value="name" th:field="*{email}"/>
+            <h4>Email</h4>
+            <div class="row">
+                <div class="col-sm-4">
+                    <input type="email" required="required" placeholder="email" value="" th:field="*{email}"/>
+                </div>
             </div>
 
-            <div>
-                <h2>
-                    password
-                </h2>
-                <p>
-                    your password
-                </p>
-                <input type="password" required="required" autofocus="autofocus" value="name" th:field="*{password}"/>
+            <h4>Password</h4>
+            <div class="row">
+                <div class="col-sm-4">
+                    <input type="password" required="required" placeholder="password" value="" th:field="*{password}"/>
+                </div>
             </div>
-
-
 
             <button type="submit" class="btn mb20 btn-large btn-primary">submit</button>
         </form>
 
-        <div  class="col-sm-4"></div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- / Registration form -->
+                            </div>
+                        </div>
+                        <!-- / Tab Content -->
+                    </div>
+                </div>
+            </div>
+            <!-- / Profile Company Content -->
+        </div>
+        <!-- / Main content -->
     </div>
 
     <!--  Footer -->
