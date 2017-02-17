@@ -1,7 +1,6 @@
-package com.codecool.volunti.models;
+package com.codecool.volunti.model;
 
 import lombok.Data;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.List;
