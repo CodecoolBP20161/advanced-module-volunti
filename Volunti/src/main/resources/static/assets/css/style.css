@@ -3243,3 +3243,13 @@ vivid green: #2ad482
 .login-sec .content form p {
 	color: white;
 }
+
+.profile-company-content.main-user .nav-tabs.not-clickable li a:hover {
+	color: #a2a2a2;
+	background: #eeeeee;
+}
+.profile-company-content.main-user .nav-tabs.not-clickable li.active a:hover {
+	background: #f8f8f8;
+	color: #333333;
+}
+
