@@ -5,6 +5,7 @@ import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 
@@ -17,15 +18,16 @@ public class Opportunity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+
     @JoinColumn(name = "organisation_id")
     private Organisation organisation;
 
     @NotEmpty(message = "Title is empty")
     private String title;
 
-    @NotEmpty(message = "numberOfVolunteers is empty")
-    private int numberOfVolunteers;
+    @NotNull(message = "numberOfVolunteers is null")
+    private Integer numberOfVolunteers;
 
     private String accommodationType;
     private String foodType;
@@ -45,13 +47,59 @@ public class Opportunity{
     public Opportunity() {
     }
 
-    public Opportunity(String title, int numberOfVolunteers, String accommodationType, String foodType, int hoursExpected, int minimumStayInDays, Date availabilityFrom, Date dateAvailabilityTo, String costs, String requirements, List<Skill> skills) {
+    public Opportunity(String title, Integer numberOfVolunteers, String accommodationType, String foodType, int hoursExpected, int minimumStayInDays, Date availabilityFrom, Date dateAvailabilityTo, String costs, String requirements, List<Skill> skills) {
 
         this.title = title;
         this.numberOfVolunteers = numberOfVolunteers;
         this.accommodationType = accommodationType;
         this.foodType = foodType;
         this.hoursExpected = hoursExpected;
+        this.minimumStayInDays = minimumStayInDays;
+        this.availabilityFrom = availabilityFrom;
+        this.dateAvailabilityTo = dateAvailabilityTo;
+        this.costs = costs;
+        this.requirements = requirements;
+        this.skills = skills;
+    }
+
+
+/*    public Opportunity(Organisation organisation, String title, Integer numberOfVolunteers, String accommodationType, String foodType, int hoursExpected, String hoursExpectedType, int minimumStayInDays, Date availabilityFrom, Date dateAvailabilityTo, String costs, String requirements) {
+        this.organisation = organisation;
+        this.title = title;
+        this.numberOfVolunteers = numberOfVolunteers;
+        this.accommodationType = accommodationType;
+        this.foodType = foodType;
+        this.hoursExpected = hoursExpected;
+        this.hoursExpectedType = hoursExpectedType;
+        this.minimumStayInDays = minimumStayInDays;
+        this.availabilityFrom = availabilityFrom;
+        this.dateAvailabilityTo = dateAvailabilityTo;
+        this.costs = costs;
+        this.requirements = requirements;
+    }*/
+
+    public Opportunity(String title, Integer numberOfVolunteers, String accommodationType, String foodType, int hoursExpected, String hoursExpectedType, int minimumStayInDays, Date availabilityFrom, Date dateAvailabilityTo, String costs, String requirements) {
+        this.title = title;
+        this.numberOfVolunteers = numberOfVolunteers;
+        this.accommodationType = accommodationType;
+        this.foodType = foodType;
+        this.hoursExpected = hoursExpected;
+        this.hoursExpectedType = hoursExpectedType;
+        this.minimumStayInDays = minimumStayInDays;
+        this.availabilityFrom = availabilityFrom;
+        this.dateAvailabilityTo = dateAvailabilityTo;
+        this.costs = costs;
+        this.requirements = requirements;
+    }
+
+    public Opportunity(Organisation organisation, String title, Integer numberOfVolunteers, String accommodationType, String foodType, int hoursExpected, String hoursExpectedType, int minimumStayInDays, Date availabilityFrom, Date dateAvailabilityTo, String costs, String requirements, List<Skill> skills) {
+        this.organisation = organisation;
+        this.title = title;
+        this.numberOfVolunteers = numberOfVolunteers;
+        this.accommodationType = accommodationType;
+        this.foodType = foodType;
+        this.hoursExpected = hoursExpected;
+        this.hoursExpectedType = hoursExpectedType;
         this.minimumStayInDays = minimumStayInDays;
         this.availabilityFrom = availabilityFrom;
         this.dateAvailabilityTo = dateAvailabilityTo;

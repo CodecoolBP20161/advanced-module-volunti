@@ -20,4 +20,7 @@ public class Organisation {
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "organisation", fetch = FetchType.EAGER)
     private List<Opportunity> opportunities;
 
+    public Organisation(String something) {
+        this.something = something;
+    }
 }
