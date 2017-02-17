@@ -49,24 +49,24 @@
             <h4>Name</h4>
             <div class="row">
                 <div class="col-sm-4">
-                    <input type="text" maxlength="255" required="required" placeholder="first name" value="" th:field="*{firstName}"/>
+                    <input type="text" minlength="1" maxlength="255" required="required" placeholder="first name" value="" th:field="*{firstName}"/>
                 </div>
                 <div class="col-sm-4">
-                    <input type="text" maxlength="255" required="required" placeholder="last name" value="" th:field="*{lastName}"/>
+                    <input type="text" minlength="1" maxlength="255" required="required" placeholder="last name" value="" th:field="*{lastName}"/>
                 </div>
             </div>
 
             <h4>Email</h4>
             <div class="row">
                 <div class="col-sm-4">
-                    <input type="email" required="required" placeholder="email" value="" th:field="*{email}"/>
+                    <input type="email" minlength="1" required="required" placeholder="email" value="" th:field="*{email}"/>
                 </div>
             </div>
 
             <h4>Password</h4>
             <div class="row">
                 <div class="col-sm-4">
-                    <input type="password" required="required" placeholder="password" value="" th:field="*{password}"/>
+                    <input type="password" minlength="1" required="required" placeholder="password" value="" th:field="*{password}"/>
                 </div>
             </div>
 
