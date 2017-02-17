@@ -3239,3 +3239,7 @@ vivid green: #2ad482
 .home-pro .col-sm-7 .col-md-10 h1, .home-pro .col-sm-7 .col-md-10 h2 {
     color: #FFFFFF;
 }
+
+.login-sec .content form p {
+	color: white;
+}
