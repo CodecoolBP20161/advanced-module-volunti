@@ -70,7 +70,7 @@ public class RegistrationController {
         return "registration/user";
     }
 
-    //save user registration
+    //save user registration and send the confirmation email
     @RequestMapping( value = "/registration/organisation/step2/{organisation_id}", method = RequestMethod.POST )
     public String saveStep2(@PathVariable Integer organisation_id, User user, HttpSession session, Organisation organisation) {
         LOGGER.info("saveStep2() method called...");
@@ -101,14 +101,13 @@ public class RegistrationController {
         // create user
         try {
             // send a notification
-            notificationService.sendNotification(user);
+            User savedUser = userService.saveUser(user) ;
+            user.signupSuccess(notificationService);
         } catch (Exception e) {
             LOGGER.warn("Email not sent");
         }
         return "Thank you for registering with us.";
+
     }
-
-
-
 
 }

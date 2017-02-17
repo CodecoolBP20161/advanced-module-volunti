@@ -2,8 +2,11 @@ package com.codecool.volunti.model;
 
 
 import com.codecool.volunti.model.enums.UserStatus;
+import com.codecool.volunti.service.NotificationService;
 import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
@@ -13,6 +16,9 @@ import java.util.UUID;
 @Table(name="\"User\"")
 @Data
 public class User {
+
+    @Transient
+    private Logger LOGGER = LoggerFactory.getLogger(User.class);
 
     @Id
     @Column(name="user_id", unique=true)
@@ -98,5 +104,16 @@ public class User {
         this.salt = salt;
         this.organisation = organisation;
         this.volunteer = volunteer;
+    }
+
+    public String signupSuccess(NotificationService notificationService) {
+        LOGGER.info("signupSuccess() method called...");
+        try {
+            // send a notification
+            notificationService.sendNotification(this);
+        } catch (Exception e) {
+            LOGGER.warn("Email not sent");
+        }
+        return "Thank you for registering with us.";
     }
 }

@@ -7,8 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 
 @Service
 public class NotificationService {
@@ -22,16 +26,20 @@ public class NotificationService {
 	}
 	
 	@Async
-	public void sendNotification(User user) throws MailException, InterruptedException {
+	public void sendNotification(User user) throws MessagingException {
 
         LOGGER.debug("Sending email...");
-        SimpleMailMessage mail = new SimpleMailMessage();
-		mail.setTo(user.getEmail());
-		mail.setFrom("edwinemma92@gmail.com");
-		mail.setSubject("Spring Boot is awesome!");
-		mail.setText("Why aren't you using Spring Boot?");
-		javaMailSender.send(mail);
 
+        String msg = "<html><body style='text-align: justify; color: red' ><img src=http://www.twitrcovers.com/wp-content/uploads/2014/11/Snail-l.jpg style='width: 100%'><h1>Hello from volunti, please put the activation link</h1><img src= http://www.twitrcovers.com/wp-content/uploads/2014/11/Snail-l.jpg></body></html>";
+		MimeMessage message = javaMailSender.createMimeMessage();
+
+		message.setSubject("hello from volunti");
+		MimeMessageHelper helper;
+		helper = new MimeMessageHelper(message, true);
+		helper.setFrom("edwinemma92@gmail.com");
+		helper.setTo("lombos.monika@gmail.com");
+		helper.setText(msg, true);
+		javaMailSender.send(message);
 		LOGGER.debug("Email sent...");
 	}
 	
