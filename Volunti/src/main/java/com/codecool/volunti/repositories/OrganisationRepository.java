@@ -1,8 +1,12 @@
-package com.codecool.volunti.repositories;
+package com.codecool.volunti.repository;
 
-
-import com.codecool.volunti.models.Opportunity;
+import com.codecool.volunti.model.Organisation;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
-public interface OrganisationRepository extends CrudRepository<Opportunity, Integer> {
+@Repository
+public interface OrganisationRepository extends CrudRepository<Organisation, Integer> {
+
+    Organisation findByName(String name);
+
 }
