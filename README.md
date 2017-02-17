@@ -46,4 +46,5 @@ psql -U postgres -c "grant all privileges on database volunti_test to volunti_de
 1. There is a new dependency in the maven xml called Spring Boot Dev Tools, make sure to reload the dependencies
 2. Press Ctrl + Shift + A, and in the search field, look for 'Registry'
 3. Check the attribute 'compiler.automake.allow.when.app.running'
-4. Restart IntelliJ
+4. File->Settings->Build,Execution,Deployment->Compiler: check 'Make project automatically'
+5. Restart IntelliJ
