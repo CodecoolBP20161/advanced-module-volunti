@@ -27,9 +27,10 @@
 
                         <!-- Nav Tabs -->
                         <div class="col-md-12">
-                            <ul class="nav nav-tabs">
-                                <li class="active"><a data-toggle="tab" href="#step1">Step 1</a></li>
-                                <li><a data-toggle="tab" href="#step2">Step 2</a></li>
+                            <ul class="nav nav-tabs not-clickable">
+                                <li class="active"><a>Step 1</a></li>
+                                <li><a>Step 2</a></li>
+                                <li><a>Step 3</a></li>
                             </ul>
                         </div>
 
@@ -62,8 +63,15 @@
                 <h4>Address</h4>
                 <div class="row">
                     <div class="col-sm-4">
-                        <input type="text" minlength="1" maxlength="255" required="required" value="" placeholder="country (1-255 characters)" th:field="*{country}"/>
+                        <select th:field="*{country}" required="required">
+                            <option value="" hidden="hidden" selected="selected">country</option>
+                            <option th:each="country : ${T(com.codecool.volunti.model.enums.Countries).values()}"
+                                    th:value="${country}"
+                                    th:text="${country}">
+                            </option>
+                        </select>
                     </div>
+
                     <div class="col-sm-4">
                         <input type="text" minlength="1" maxlength="255" required="required" value="" placeholder="ZIP (1-255 characters)" />
                     </div>
@@ -84,7 +92,7 @@
                 <h4>Purpose and mission</h4>
                 <textarea required="required" minlength="1" placeholder="the organisation's mission statement (min. 1 character)" th:field="*{mission}"></textarea>
                 <textarea required="required" minlength="1" placeholder="What kind of help do you need? (min. 1 character)" th:field="*{description1}"></textarea>
-                <textarea required="required" minlength="1" placeholder="What can volunteers learn here? (min. 1 character)" th:field="*{description2}"></textarea>
+                <textarea required="required" minlength="1" placeholder="What can volunteers learn here?" th:field="*{description2}"></textarea>
 
                 <button type="submit" class="btn mb20 btn-large btn-primary">next</button>
             </form>
