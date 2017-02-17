@@ -20,7 +20,9 @@ jQuery(document).ready(function() {
     		parent_fieldset.fadeOut(400, function() {
 	    		$(this).next().fadeIn();
 	    	});
-    	}
+			$( "li.active" ).removeClass( "active" ).next().addClass("active");//.addClass( "yourClass" )
+			$("html, body").animate({ scrollTop: 0 }, "slow");
+    	};
     	
     });
     
@@ -29,11 +31,8 @@ jQuery(document).ready(function() {
     	$(this).parents('fieldset').fadeOut(400, function() {
     		$(this).prev().fadeIn();
     	});
+        $( "li.active" ).removeClass( "active" ).prev().addClass("active");//.addClass( "yourClass" )
+        $("html, body").animate({ scrollTop: 0 }, "slow");
     });
-    
-	$('#select-state').selectize({
-		maxItems: 5
-	});
-    
-    
+
 });
