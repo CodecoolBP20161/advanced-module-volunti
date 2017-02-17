@@ -7,6 +7,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 
 @Entity
 @Table(name="Organisation")
@@ -42,9 +43,9 @@ public class Organisation {
     @Column(name="address")
     private String address;
 
+    @NotEmpty
     @Column(name="spoken_language")
-    @Enumerated(EnumType.STRING)
-    private SpokenLanguage spokenLanguage;
+    private ArrayList<SpokenLanguage> spokenLanguage;
 
     @NotEmpty
     @Size(min=10)
@@ -63,7 +64,7 @@ public class Organisation {
 
     public Organisation(){}
 
-    public Organisation(String name, Category category, String country, String city, String address, SpokenLanguage spokenLanguage, String mission, String description1, String description2) {
+    public Organisation(String name, Category category, String country, String city, String address, ArrayList<SpokenLanguage> spokenLanguage, String mission, String description1, String description2) {
         this.name = name;
         this.category = category;
         this.country = country;

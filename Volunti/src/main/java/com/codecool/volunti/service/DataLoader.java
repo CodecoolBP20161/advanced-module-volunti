@@ -1,7 +1,6 @@
 package com.codecool.volunti.service;
 
 
-import com.codecool.volunti.VoluntiApplication;
 import com.codecool.volunti.model.Organisation;
 import com.codecool.volunti.model.User;
 import com.codecool.volunti.model.Volunteer;
@@ -16,8 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-
-
+import java.util.ArrayList;
 
 
 @Service
@@ -38,9 +36,12 @@ public class DataLoader {
 
     @PostConstruct
     public void loadData() {
+        ArrayList<SpokenLanguage> spokenLanguages = new ArrayList<>();
+        spokenLanguages.add(SpokenLanguage.ENGLISH);
+        spokenLanguages.add(SpokenLanguage.HUNGARIAN);
 
         User user1 = new User("Anna", "Kiss", "asd@gmail.com", "asdasd", "asd");
-        Organisation organisation1 = new Organisation("UNICEF", Category.TEACHING, "Hungary", "Isaszeg", "Kossuth utca", SpokenLanguage.ENGLISH, "asdasdasdasdasdasdasd", "asdasd", "asdasd");
+        Organisation organisation1 = new Organisation("UNICEF", Category.TEACHING, "Hungary", "Isaszeg", "Kossuth utca", spokenLanguages, "mission mission mission mission mission", "description1", "description2");
         Volunteer volunteer = new Volunteer();
 
         userRepository.save(user1);
