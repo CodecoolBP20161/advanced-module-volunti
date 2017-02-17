@@ -1,9 +1,11 @@
 package com.codecool.volunti;
 
-import com.codecool.volunti.models.Opportunity;
-import com.codecool.volunti.models.Organisation;
-import com.codecool.volunti.models.Skill;
-import com.codecool.volunti.repositories.OpportunityRepository;
+import com.codecool.volunti.model.Opportunity;
+import com.codecool.volunti.model.Organisation;
+import com.codecool.volunti.model.Skill;
+import com.codecool.volunti.model.enums.Category;
+import com.codecool.volunti.model.enums.SpokenLanguage;
+import com.codecool.volunti.repository.OpportunityRepository;
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.junit.After;
 import org.junit.Before;
@@ -49,7 +51,13 @@ public class OpportunityRepositoryTest {
 
     @Before
     public void setUp() {
-        organisation = new Organisation("Something");
+
+        ArrayList<SpokenLanguage> spokenLanguages = new ArrayList<>();
+        spokenLanguages.add(SpokenLanguage.ENGLISH);
+        spokenLanguages.add(SpokenLanguage.HUNGARIAN);
+
+        organisation = new Organisation("Test 1", Category.TEACHING, "Country", "zipcode","City", "Address", spokenLanguages, "Mission minimum 10 character", "Desc 1 min 3 character", "Desc 2 min 3 character");
+
         List<Skill> skills = new ArrayList<>();
         skills.add(new Skill("new Skill"));
         opportunity = new Opportunity(organisation, "First opportunity", 10, "Tent",
