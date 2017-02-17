@@ -1,11 +1,13 @@
 package com.codecool.volunti.model;
 
 
+import com.codecool.volunti.model.enums.UserStatus;
 import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.util.UUID;
 
 @Entity
 @Table(name="\"User\"")
@@ -30,6 +32,9 @@ public class User {
     @Column(name="email")
     private String email;
 
+    @Column(name="activation_id")
+    private UUID activationID;
+
     @NotEmpty
     @Size(min=3)
     @Column(name="password")
@@ -46,8 +51,13 @@ public class User {
     @JoinColumn(name="volunteer_id")
     private Volunteer volunteer;
 
+    @Column(name="user_status")
+    @Enumerated(EnumType.STRING)
+    private UserStatus userStatus;
 
     public User() {
+        activationID = UUID.randomUUID();
+        userStatus = UserStatus.INACTIVE;
     }
 
     public User(String firstName, String lastName, String email, String password, String salt) {

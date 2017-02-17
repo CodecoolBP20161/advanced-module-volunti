@@ -16,10 +16,12 @@ import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomi
 import org.springframework.boot.web.servlet.ErrorPage;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 import javax.annotation.PostConstruct;
 
 @SpringBootApplication
+@EnableAsync
 public class VoluntiApplication {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(VoluntiApplication.class);

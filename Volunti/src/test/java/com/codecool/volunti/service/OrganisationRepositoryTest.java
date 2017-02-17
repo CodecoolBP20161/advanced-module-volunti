@@ -34,7 +34,7 @@ public class OrganisationRepositoryTest {
         spokenLanguages.add(SpokenLanguage.ENGLISH);
         spokenLanguages.add(SpokenLanguage.HUNGARIAN);
 
-        this.entityManager.persist(new Organisation("Test 1", Category.TEACHING, "Country", "City", "Address", spokenLanguages, "Mission minimum 10 character", "Desc 1 min 3 character", "Desc 2 min 3 character"));
+        this.entityManager.persist(new Organisation("Test 1", Category.TEACHING, "Country", "zipcode", "City", "Address", spokenLanguages, "Mission minimum 10 character", "Desc 1 min 3 character", "Desc 2 min 3 character"));
         Organisation org = this.repository.findByName("Test 1");
         assertThat(org.getName()).isEqualTo("Test 1");
         assertThat(org.getCategory()).isEqualTo(Category.TEACHING);
