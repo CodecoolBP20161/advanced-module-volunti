@@ -33,6 +33,10 @@ public class Organisation {
     @Column(name="country")
     private String country;
 
+    @Size(min=2)
+    @Column(name="zipcode")
+    private String zipcode;
+
     @NotEmpty
     @Size(min=3, max=50)
     @Column(name="city")
@@ -64,10 +68,11 @@ public class Organisation {
 
     public Organisation(){}
 
-    public Organisation(String name, Category category, String country, String city, String address, ArrayList<SpokenLanguage> spokenLanguage, String mission, String description1, String description2) {
+    public Organisation(String name, Category category, String country, String zipcode, String city, String address, ArrayList<SpokenLanguage> spokenLanguage, String mission, String description1, String description2) {
         this.name = name;
         this.category = category;
         this.country = country;
+        this.zipcode = zipcode;
         this.city = city;
         this.address = address;
         this.spokenLanguage = spokenLanguage;

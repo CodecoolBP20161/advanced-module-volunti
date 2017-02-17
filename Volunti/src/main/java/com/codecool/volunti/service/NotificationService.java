@@ -24,9 +24,6 @@ public class NotificationService {
 	@Async
 	public void sendNotification(User user) throws MailException, InterruptedException {
 
-		LOGGER.debug("Sleeping now...");
-        Thread.sleep(10000);
-
         LOGGER.debug("Sending email...");
         SimpleMailMessage mail = new SimpleMailMessage();
 		mail.setTo(user.getEmail());
