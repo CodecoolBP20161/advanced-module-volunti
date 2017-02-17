@@ -24,7 +24,7 @@ public class HtmlUnitTests {
     }
 
     @Test
-    public void basicTest() throws Exception {
+    public void basicTestTwo() throws Exception {
         this.mockMvc.perform(get("/")).andExpect(status().isOk());
     }
 
