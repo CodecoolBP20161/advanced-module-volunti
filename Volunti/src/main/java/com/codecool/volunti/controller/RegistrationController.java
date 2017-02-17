@@ -67,7 +67,7 @@ public class RegistrationController {
         User user = new User();
         model.addAttribute("user", user);
         model.addAttribute("organisation_id", organisation_id);
-        return "registration/user";
+        return "registration/step2";
     }
 
     //save user registration and send the confirmation email
@@ -91,7 +91,7 @@ public class RegistrationController {
         session.setAttribute("organisation", new Organisation());
         LOGGER.info("session cleaned: " + session.getAttribute("organisation").toString());
 
-        return "/registration/organisation/confirmation";   //Should I redirect somewhere else?
+        return "/registration/step3";
     }
 
     //@RequestMapping("/signup-success")
