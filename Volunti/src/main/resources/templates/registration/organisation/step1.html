@@ -49,7 +49,7 @@
 
                 <input type="hidden" th:field="*{organisationId}" />
 
-                <input type="text" maxlength="255" required="required" autofocus="autofocus" placeholder="name of your organisation" value="" th:field="*{name}"/>
+                <input type="text" minlength="1" maxlength="255" required="required" autofocus="autofocus" placeholder="name of your organisation (1-255 characters)" value="" th:field="*{name}"/>
 
                 <select th:field="*{category}" required="required">
                     <option value="" hidden="hidden" selected="selected">the category of your organisation</option>
@@ -62,18 +62,18 @@
                 <h4>Address</h4>
                 <div class="row">
                     <div class="col-sm-4">
-                        <input type="text" maxlength="255" required="required" value="" placeholder="country" th:field="*{country}"/>
+                        <input type="text" minlength="1" maxlength="255" required="required" value="" placeholder="country (1-255 characters)" th:field="*{country}"/>
                     </div>
                     <div class="col-sm-4">
-                        <input type="text" maxlength="255" required="required" value="" placeholder="ZIP" />
+                        <input type="text" minlength="1" maxlength="255" required="required" value="" placeholder="ZIP (1-255 characters)" />
                     </div>
                     <div class="col-sm-4">
-                        <input type="text" maxlength="255" required="required" value="" placeholder="city" th:field="*{city}"/>
+                        <input type="text" minlength="1" maxlength="255" required="required" value="" placeholder="city (1-255 characters)" th:field="*{city}"/>
                     </div>
                 </div>
-                <input type="text" maxlength="255" required="required" value="" placeholder="address" th:field="*{address}"/>
+                <input type="text" minlength="1" maxlength="255" required="required" value="" placeholder="address (1-255 characters)" th:field="*{address}"/>
 
-                spoken languages at your organisation (press ctrl to select multiple)
+                spoken languages at your organisation (press and hold ctrl to select multiple)
                 <select multiple="multiple" th:field="*{spokenLanguage}" required="required">
                     <option th:each="language : ${T(com.codecool.volunti.model.enums.SpokenLanguage).values()}"
                             th:value="${language}"
@@ -82,9 +82,9 @@
                 </select>
 
                 <h4>Purpose and mission</h4>
-                <input type="text" required="required" value="" placeholder="the organisation's mission statement" th:field="*{mission}"/>
-                <input type="text" required="required" value="" placeholder="What kind of help do you need?" th:field="*{description1}"/>
-                <input type="text" required="required" value="" placeholder="What can volunteers learn here?" th:field="*{description2}"/>
+                <textarea required="required" minlength="1" placeholder="the organisation's mission statement (min. 1 character)" th:field="*{mission}"></textarea>
+                <textarea required="required" minlength="1" placeholder="What kind of help do you need? (min. 1 character)" th:field="*{description1}"></textarea>
+                <textarea required="required" minlength="1" placeholder="What can volunteers learn here? (min. 1 character)" th:field="*{description2}"></textarea>
 
                 <button type="submit" class="btn mb20 btn-large btn-primary">next</button>
             </form>
