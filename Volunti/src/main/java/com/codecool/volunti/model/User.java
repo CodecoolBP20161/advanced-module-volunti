@@ -2,7 +2,8 @@ package com.codecool.volunti.model;
 
 
 import com.codecool.volunti.model.enums.UserStatus;
-import com.codecool.volunti.service.NotificationService;
+import com.codecool.volunti.service.EmailService;
+import com.codecool.volunti.service.EmailType;
 import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
@@ -49,11 +50,11 @@ public class User {
     @Column(name="salt")
     private String salt;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name="organisation_id")
     private Organisation organisation;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name="volunteer_id")
     private Volunteer volunteer;
 
@@ -106,11 +107,11 @@ public class User {
         this.volunteer = volunteer;
     }
 
-    public String signupSuccess(NotificationService notificationService) {
+    public String signupSuccess(EmailService emailService, EmailType emailType) {
         LOGGER.info("signupSuccess() method called...");
         try {
             // send a notification
-            notificationService.sendNotification(this);
+            emailService.sendEmail(this, emailType);
         } catch (Exception e) {
             LOGGER.warn("Email not sent");
         }
