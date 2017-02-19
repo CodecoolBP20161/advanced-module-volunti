@@ -41,7 +41,7 @@ public class Opportunity{
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "opportunities_skills", joinColumns = @JoinColumn(name = "opportunity_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "skill_id", referencedColumnName = "id"))
-    private List<Skill> skills;
+    private List<Skill> opportunitySkills;
 
     public Opportunity() {
     }
@@ -62,7 +62,7 @@ public class Opportunity{
 
     public Opportunity(String title, Integer numberOfVolunteers, String accommodationType, String foodType, int hoursExpected, String hoursExpectedType, int minimumStayInDays, Date availabilityFrom, Date dateAvailabilityTo, String costs, String requirements, List<Skill> skills) {
         this(title, numberOfVolunteers, accommodationType, foodType, hoursExpected, hoursExpectedType, minimumStayInDays, availabilityFrom, dateAvailabilityTo, costs, requirements);
-        this.skills = skills;
+        opportunitySkills = skills;
     }
 
     public Opportunity(Organisation organisation, String title, Integer numberOfVolunteers, String accommodationType, String foodType, int hoursExpected, String hoursExpectedType, int minimumStayInDays, Date availabilityFrom, Date dateAvailabilityTo, String costs, String requirements) {
@@ -72,6 +72,6 @@ public class Opportunity{
 
     public Opportunity(Organisation organisation, String title, Integer numberOfVolunteers, String accommodationType, String foodType, int hoursExpected, String hoursExpectedType, int minimumStayInDays, Date availabilityFrom, Date dateAvailabilityTo, String costs, String requirements, List<Skill> skills) {
         this(organisation, title, numberOfVolunteers, accommodationType, foodType, hoursExpected, hoursExpectedType, minimumStayInDays, availabilityFrom, dateAvailabilityTo, costs, requirements);
-        this.skills = skills;
+        opportunitySkills = skills;
     }
 }

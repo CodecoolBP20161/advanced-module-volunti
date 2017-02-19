@@ -3,6 +3,7 @@ package com.codecool.volunti.model;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name="Volunteer")
@@ -16,6 +17,10 @@ public class Volunteer {
 
     public Volunteer() {
     }
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "volunteers_skills", joinColumns = @JoinColumn(name = "volunteer_id", referencedColumnName = "volunteer_id"), inverseJoinColumns = @JoinColumn(name = "skill_id", referencedColumnName = "id"))
+    private List<Skill> volunteerSkills;
 }
 
 
