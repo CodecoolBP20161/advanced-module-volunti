@@ -8,5 +8,6 @@ import org.springframework.stereotype.Repository;
 public interface OrganisationRepository extends CrudRepository<Organisation, Integer> {
 
     Organisation findByName(String name);
+    Organisation findByOrganisationId(int organisationId);
 
 }
