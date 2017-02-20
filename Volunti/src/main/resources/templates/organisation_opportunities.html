@@ -33,7 +33,7 @@
                                 <ul class="nav nav-tabs">
                                 <div class="pull-left">
                                     <!--th:action="@{/organisation/} + ${organisation_id} + {/opp/delete/} + ${opportunity_id}"-->
-                                    <li class="active"><a data-toggle="tab" th:href="@{/organisation/} + ${organisation.organisationId}+ @{/opportunity/form}">New
+                                    <li class="active"><a th:href="@{/organisation/} + ${organisation.organisationId}+ @{/opportunity/new}">New
                                         Opportunity</a></li>
                                 </div>
                                 </ul>
@@ -82,7 +82,7 @@
                                                             <td>
                                                                 <div class="btn-group">
                                                                     <form method="get"
-                                                                          th:action="@{/organisation/} + ${organisation.organisationId} + {/opportunity/delete/} + ${op.id}">
+                                                                          th:action="@{/organisation/} + ${organisation.organisationId} + @{/opportunity/delete/} + ${op.id}">
                                                                         <button class="btn mb20 btn-small btn-transparent-primary" value="left"
                                                                                 type="submit">
                                                                             <i class="fa fa-fw s fa-remove"></i>Delete
@@ -93,7 +93,7 @@
                                                             <td>
                                                                 <div class="btn-group">
                                                                     <form method="get"
-                                                                          th:action="@{/organisation/} + ${organisation.organisationId} + {/opportunity/edit/} + ${op.id}">
+                                                                          th:action="@{/organisation/} + ${organisation.organisationId} + @{/opportunity/edit/} + ${op.id}">
                                                                         <button class="btn mb20 btn-small btn-transparent-primary" value="right"
                                                                                 type="submit">
                                                                             <i class="fa fa-fw fa-cog"></i>Edit
