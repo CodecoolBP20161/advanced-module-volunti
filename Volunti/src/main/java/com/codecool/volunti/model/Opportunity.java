@@ -18,7 +18,6 @@ public class Opportunity{
     private int id;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-
     @JoinColumn(name = "organisation_id")
     private Organisation organisation;
 
@@ -62,16 +61,16 @@ public class Opportunity{
 
     public Opportunity(String title, Integer numberOfVolunteers, String accommodationType, String foodType, int hoursExpected, String hoursExpectedType, int minimumStayInDays, Date availabilityFrom, Date dateAvailabilityTo, String costs, String requirements, List<Skill> skills) {
         this(title, numberOfVolunteers, accommodationType, foodType, hoursExpected, hoursExpectedType, minimumStayInDays, availabilityFrom, dateAvailabilityTo, costs, requirements);
-        opportunitySkills = skills;
+        this.opportunitySkills = skills;
     }
 
     public Opportunity(Organisation organisation, String title, Integer numberOfVolunteers, String accommodationType, String foodType, int hoursExpected, String hoursExpectedType, int minimumStayInDays, Date availabilityFrom, Date dateAvailabilityTo, String costs, String requirements) {
         this(title, numberOfVolunteers, accommodationType, foodType, hoursExpected, hoursExpectedType, minimumStayInDays, availabilityFrom, dateAvailabilityTo, costs, requirements);
-        this.organisation = organisation;
+        this.setOrganisation(organisation);
     }
 
     public Opportunity(Organisation organisation, String title, Integer numberOfVolunteers, String accommodationType, String foodType, int hoursExpected, String hoursExpectedType, int minimumStayInDays, Date availabilityFrom, Date dateAvailabilityTo, String costs, String requirements, List<Skill> skills) {
         this(organisation, title, numberOfVolunteers, accommodationType, foodType, hoursExpected, hoursExpectedType, minimumStayInDays, availabilityFrom, dateAvailabilityTo, costs, requirements);
-        opportunitySkills = skills;
+        this.opportunitySkills = skills;
     }
 }
