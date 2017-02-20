@@ -7,8 +7,8 @@ import com.codecool.volunti.model.enums.Category;
 import com.codecool.volunti.model.enums.SpokenLanguage;
 import com.codecool.volunti.repository.OpportunityRepository;
 import com.codecool.volunti.repository.OrganisationRepository;
+import com.codecool.volunti.repository.SkillRepository;
 import org.apache.tomcat.jdbc.pool.DataSource;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.validation.ConstraintViolationException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -34,6 +33,9 @@ public class OpportunityRepositoryTest extends AbstractServiceTest {
     @Autowired
     private OpportunityRepository opportunityRepository;
 
+    @Autowired
+    private SkillRepository skillRepository;
+
     private JdbcTemplate jdbcTemplate;
 
     @Autowired
@@ -44,6 +46,8 @@ public class OpportunityRepositoryTest extends AbstractServiceTest {
     private Organisation organisation;
     private Opportunity opportunity;
     private Opportunity opportunity1;
+    private Skill skill;
+
 
     @Before
     public void setUp() {
@@ -53,9 +57,9 @@ public class OpportunityRepositoryTest extends AbstractServiceTest {
         spokenLanguages.add(SpokenLanguage.HUNGARIAN);
 
         organisation = new Organisation("Test For Opps 1", Category.TEACHING, "Country", "zipcode","City", "Address", spokenLanguages, "Mission minimum 10 character", "Desc 1 min 3 character", "Desc 2 min 3 character");
-
+        skill = new Skill("new Skill");
         List<Skill> skills = new ArrayList<>();
-        skills.add(new Skill("new Skill"));
+        skills.add(skill);
         opportunity = new Opportunity(organisation, "First opportunity", 10, "Tent",
                 "Vega", 3, "none", 2,
                 new java.sql.Date(2017 - 02 - 16), new java.sql.Date(2017 - 02 - 21), "free", "English", skills);
@@ -63,8 +67,14 @@ public class OpportunityRepositoryTest extends AbstractServiceTest {
         opportunity1 = new Opportunity(organisation, "Second opportunity", 10, "Tent",
                 "Vega", 3, "none", 2,
                 new java.sql.Date(2017 - 02 - 16), new java.sql.Date(2017 - 02 - 21), "free", "English", skills);
+    }
+
+
+    @Test
+    public void testSkill() {
 
     }
+
 
     @Test
     public void testForGetters() {
@@ -81,6 +91,9 @@ public class OpportunityRepositoryTest extends AbstractServiceTest {
         assertThat(opportunity.getMinimumStayInDays()).isEqualTo(2);
         assertThat(opportunity.getAvailabilityFrom()).isEqualTo(new Timestamp(2017 - 02 - 16));
         assertThat(opportunity.getDateAvailabilityTo()).isEqualTo(new Timestamp(2017 - 02 - 21));
+        assertThat(skill.getName()).isEqualTo("new Skill");
+
+        System.out.println(opportunity.getOpportunitySkills());
     }
 
     @Test(expected = ConstraintViolationException.class)
@@ -103,12 +116,27 @@ public class OpportunityRepositoryTest extends AbstractServiceTest {
         this.opportunityRepository.save(opportunity);
     }
 
+    @Test(expected = ConstraintViolationException.class)
+    public void skillNameIsNull() {
+        skill = new Skill(null);
+        this.skillRepository.save(skill);
+    }
+
+    @Test
+    public void addMoreSkill() {
+        assertEquals(countRowsInTable("skills"), 0);
+        this.skillRepository.save(skill);
+        this.skillRepository.save(new Skill("second Skill"));
+        assertEquals(countRowsInTable("skills"), 2);
+    }
+
     @Test
     public void addMoreOpportunity() {
         assertEquals(countRowsInTable("opportunities"), 0);
         this.opportunityRepository.save(opportunity);
         this.opportunityRepository.save(opportunity1);
         assertEquals(countRowsInTable("opportunities"), 2);
+        assertEquals(countRowsInTable("skills"), 1);
     }
 
     protected int countRowsInTable(String tableName) {
