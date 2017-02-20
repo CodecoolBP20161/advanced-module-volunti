@@ -73,7 +73,7 @@
                     </div>
 
                     <div class="col-sm-4">
-                        <input type="text" minlength="1" maxlength="255" required="required" value="" placeholder="ZIP (1-255 characters)" />
+                        <input type="text" minlength="1" maxlength="255" required="required" value="" placeholder="ZIP (1-255 characters)" th:field="*{zipcode}"/>
                     </div>
                     <div class="col-sm-4">
                         <input type="text" minlength="1" maxlength="255" required="required" value="" placeholder="city (1-255 characters)" th:field="*{city}"/>
@@ -92,7 +92,7 @@
                 <h4>Purpose and mission</h4>
                 <textarea required="required" minlength="1" placeholder="the organisation's mission statement (min. 1 character)" th:field="*{mission}"></textarea>
                 <textarea required="required" minlength="1" placeholder="What kind of help do you need? (min. 1 character)" th:field="*{description1}"></textarea>
-                <textarea required="required" minlength="1" placeholder="What can volunteers learn here?" th:field="*{description2}"></textarea>
+                <textarea required="required" minlength="1" placeholder="What can volunteers learn here? (min. 1 character)" th:field="*{description2}"></textarea>
 
                 <button type="submit" class="btn mb20 btn-large btn-primary">next</button>
             </form>
