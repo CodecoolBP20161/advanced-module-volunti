@@ -52,17 +52,17 @@ public class Organisation {
     private ArrayList<SpokenLanguage> spokenLanguage;
 
     @NotEmpty
-    @Size(min=10)
+    @Size(min=1)
     @Column(name="mission")
     private String mission;
 
     @NotEmpty
-    @Size(min=3)
+    @Size(min=1)
     @Column(name="description_1")
     private String description1;
 
     @NotEmpty
-    @Size(min=3)
+    @Size(min=1)
     @Column(name="description_2")
     private String description2;
 
