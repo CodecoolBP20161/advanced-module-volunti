@@ -3,64 +3,76 @@ package com.codecool.volunti.controller;
 
 import com.codecool.volunti.model.Opportunity;
 import com.codecool.volunti.model.Organisation;
+import com.codecool.volunti.repository.OpportunityRepository;
+import com.codecool.volunti.repository.OrganisationRepository;
 import com.codecool.volunti.service.OpportunityService;
 import com.codecool.volunti.service.OrganisationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @Slf4j
+@RequestMapping(value = "/org")
 public class OpportunityController {
 
     @Autowired
-    private OpportunityService opportunityService;
+    private OpportunityRepository opportunityRepository;
 
     @Autowired
-    private OrganisationService organisationService;
+    private OrganisationRepository organisationRepository;
 
-    @GetMapping("/org/{org_id}/opp/form")
+    @GetMapping("/{org_id}/opp/form")
     public String form(@PathVariable Integer org_id, Model model){
 
         Organisation organisation;
-        organisation = organisationService.get(org_id);
+        organisation = organisationRepository.findByOrganisationId(org_id);
 
         Opportunity opportunity;
-        opportunity = new Opportunity(organisation, "First opportunity", 10, "Tent",
-                "Vega", 3, "none", 2,
-                new java.sql.Date(2017 - 02 - 16), new java.sql.Date(2017 - 02 - 21), "free", "English");
+       opportunity = new Opportunity(organisation, "First opportunity", 10, "Tent",
+              "Vega", 3, "none", 2,
+              new java.sql.Date(2017 - 02 - 16), new java.sql.Date(2017 - 02 - 21), "free", "English");
         model.addAttribute("opportunity", opportunity);
         return "multi-form";
     }
 
-    @PostMapping("/org/{org_id}/opp/form")
-    public String saveOpportunity(@Valid Opportunity opportunity){
+    @PostMapping("/{org_id}/opp/new")
+    public String saveOpportunity(@ModelAttribute @Valid Opportunity opportunity){
         log.info("opportunity = " + opportunity);
-        return "redirect:/org_opportunities";
+        opportunityRepository.save(opportunity);
+        return "redirect:org_opportunities.html";
     }
 
 
-    // for tests, but route and return value legit for the final product
-//    @GetMapping("/org/{id}/opp")
-//    public String display(HttpServletRequest req){
-//        // equals find all
-//        List<Opportunity> list = new ArrayList<>();
-//
-//        Opportunity x = new Opportunity();
-//        Opportunity y = new Opportunity();
-//        list.add(x);
-//        list.add(y);
-//
-//        //y.title = "other title";
-//        req.setAttribute("opps", list);
-//        return "org_opportunities";
-//    }
-//
-//
+    @GetMapping("/{org_id}/opportunities")
+    public String display(@PathVariable Integer org_id, Model model){
+
+        Organisation organisation;
+        organisation = organisationRepository.findByOrganisationId(org_id);
+
+        List<Opportunity> opportunities;
+        opportunities = opportunityRepository.findByOrganisation(organisation);
+
+//        Opportunity opportunity;
+//        opportunity = new Opportunity(organisation, "First opportunity", 10, "Tent",
+//                "Vega", 3, "none", 2,
+//                new java.sql.Date(2017 - 02 - 16), new java.sql.Date(2017 - 02 - 21), "free", "English");
+//        opportunityRepository.save(opportunity);
+        model.addAttribute("opportunities", opportunities);
+        model.addAttribute("organisation", organisation);
+        return "org_opportunities";
+    }
+
+    @GetMapping("/{org_id}/opp/delete/{opp_id}")
+    public String deleteOpportunity(@PathVariable Integer org_id, Integer opp_id){
+        opportunityRepository.delete(opp_id);
+        return "redirect:org_opportunities.html";
+    }
+
 }
