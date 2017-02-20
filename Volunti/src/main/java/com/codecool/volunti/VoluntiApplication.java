@@ -3,9 +3,6 @@ package com.codecool.volunti;
 import com.codecool.volunti.model.Organisation;
 import com.codecool.volunti.model.User;
 import com.codecool.volunti.model.Volunteer;
-import com.codecool.volunti.repository.OrganisationRepository;
-import com.codecool.volunti.repository.UserRepository;
-import com.codecool.volunti.repository.VolunteerRepository;
 import com.codecool.volunti.service.DataLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,13 +31,13 @@ public class VoluntiApplication {
     DataLoader dataLoader;
 
     @Autowired
-    OrganisationRepository organisationRepository;
+    com.codecool.volunti.repository.OrganisationRepository organisationRepository;
 
     @Autowired
-    UserRepository userRepository;
+    com.codecool.volunti.repository.UserRepository userRepository;
 
     @Autowired
-    VolunteerRepository volunteerRepository;
+    com.codecool.volunti.repository.VolunteerRepository volunteerRepository;
 
     @Bean
     public EmbeddedServletContainerCustomizer containerCustomizer() {
