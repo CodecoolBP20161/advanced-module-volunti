@@ -26,16 +26,18 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Size(min=2, max=100)
+    @NotEmpty
+    @Size(min=1, max=255)
     @Column(name="first_name")
     private String firstName;
 
-    @Size(min=2, max=100)
+    @NotEmpty
+    @Size(min=1, max=255)
     @Column(name="last_name")
     private String lastName;
 
     @NotEmpty
-    @Size(min=2, max=50)
+    @Size(min=1)
     @Column(name="email")
     private String email;
 
@@ -43,7 +45,7 @@ public class User {
     private UUID activationID;
 
     @NotEmpty
-    @Size(min=3)
+    @Size(min=1)
     @Column(name="password")
     private String password;
 
