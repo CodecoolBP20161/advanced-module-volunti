@@ -8,6 +8,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name="Organisation")
@@ -18,6 +19,9 @@ public class Organisation {
     @Column(name="organisation_id", unique=true)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int organisationId;
+
+//    @OneToMany(mappedBy = "organisation", cascade = CascadeType.REMOVE)
+//    private List<Opportunity> opportunities;
 
     @Size(min=2, max=100)
     @Column(name="name")

@@ -3,6 +3,8 @@ package com.codecool.volunti.model;
 
 import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -17,7 +19,7 @@ public class Opportunity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "organisation_id")
     private Organisation organisation;
 
@@ -32,7 +34,9 @@ public class Opportunity{
     private int hoursExpected;
     private String hoursExpectedType;
     private int minimumStayInDays;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date availabilityFrom;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date dateAvailabilityTo;
     private String costs;
     private String requirements;
@@ -73,4 +77,6 @@ public class Opportunity{
         this(organisation, title, numberOfVolunteers, accommodationType, foodType, hoursExpected, hoursExpectedType, minimumStayInDays, availabilityFrom, dateAvailabilityTo, costs, requirements);
         this.opportunitySkills = skills;
     }
+
+
 }
