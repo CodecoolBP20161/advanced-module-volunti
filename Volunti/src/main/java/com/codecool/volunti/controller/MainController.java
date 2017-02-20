@@ -8,7 +8,7 @@ public class MainController {
 
     @GetMapping("/")
     public String getRoute(){
-        return "org_opportunities";
+        return "index";
     }
 
 }
