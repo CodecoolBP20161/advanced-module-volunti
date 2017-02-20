@@ -13,4 +13,5 @@ import java.util.List;
 public interface OpportunityRepository extends CrudRepository<Opportunity, Integer> {
 
     List<Opportunity> findByOrganisation(Organisation organisation);
+//    void update(Opportunity opportunityNew, Opportunity opportunityOld, Organisation organisation);
 }
