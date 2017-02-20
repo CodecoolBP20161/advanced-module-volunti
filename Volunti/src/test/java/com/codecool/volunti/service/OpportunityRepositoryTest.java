@@ -1,4 +1,4 @@
-package com.codecool.volunti;
+package com.codecool.volunti.service;
 
 import com.codecool.volunti.model.Opportunity;
 import com.codecool.volunti.model.Organisation;
@@ -6,20 +6,18 @@ import com.codecool.volunti.model.Skill;
 import com.codecool.volunti.model.enums.Category;
 import com.codecool.volunti.model.enums.SpokenLanguage;
 import com.codecool.volunti.repository.OpportunityRepository;
+import com.codecool.volunti.repository.OrganisationRepository;
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.jdbc.JdbcTestUtils;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.ConstraintViolationException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -27,16 +25,14 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 
-@RunWith(SpringRunner.class)
-@DataJpaTest
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class OpportunityRepositoryTest {
+@Transactional
+public class OpportunityRepositoryTest extends AbstractServiceTest {
 
     @Autowired
-    private TestEntityManager entityManager;
+    private OrganisationRepository organisationRepository;
 
     @Autowired
-    private OpportunityRepository repository;
+    private OpportunityRepository opportunityRepository;
 
     private JdbcTemplate jdbcTemplate;
 
@@ -56,7 +52,7 @@ public class OpportunityRepositoryTest {
         spokenLanguages.add(SpokenLanguage.ENGLISH);
         spokenLanguages.add(SpokenLanguage.HUNGARIAN);
 
-        organisation = new Organisation("Test 1", Category.TEACHING, "Country", "zipcode","City", "Address", spokenLanguages, "Mission minimum 10 character", "Desc 1 min 3 character", "Desc 2 min 3 character");
+        organisation = new Organisation("Test For Opps 1", Category.TEACHING, "Country", "zipcode","City", "Address", spokenLanguages, "Mission minimum 10 character", "Desc 1 min 3 character", "Desc 2 min 3 character");
 
         List<Skill> skills = new ArrayList<>();
         skills.add(new Skill("new Skill"));
@@ -64,23 +60,16 @@ public class OpportunityRepositoryTest {
                 "Vega", 3, "none", 2,
                 new java.sql.Date(2017 - 02 - 16), new java.sql.Date(2017 - 02 - 21), "free", "English", skills);
 
-        opportunity1 = new Opportunity(organisation, "First opportunity", 10, "Tent",
+        opportunity1 = new Opportunity(organisation, "Second opportunity", 10, "Tent",
                 "Vega", 3, "none", 2,
                 new java.sql.Date(2017 - 02 - 16), new java.sql.Date(2017 - 02 - 21), "free", "English", skills);
+
     }
-
-
-    @After
-    public void tearDown() {
-        opportunity = null;
-        opportunity1 = null;
-        organisation = null;
-    }
-
 
     @Test
     public void testForGetters() {
-        this.entityManager.persist(opportunity);
+        this.opportunityRepository.save(opportunity);
+        opportunity = this.opportunityRepository.findOne(1);
         assertThat(opportunity.getTitle()).isEqualTo("First opportunity");
         assertThat(opportunity.getAccommodationType()).isEqualTo("Tent");
         assertThat(opportunity.getFoodType()).isEqualTo("Vega");
@@ -90,8 +79,8 @@ public class OpportunityRepositoryTest {
         assertThat(opportunity.getNumberOfVolunteers()).isEqualTo(10);
         assertThat(opportunity.getHoursExpected()).isEqualTo(3);
         assertThat(opportunity.getMinimumStayInDays()).isEqualTo(2);
-        assertThat(opportunity.getAvailabilityFrom()).isEqualTo(new Date(2017 - 02 - 16));
-        assertThat(opportunity.getDateAvailabilityTo()).isEqualTo(new Date(2017 - 02 - 21));
+        assertThat(opportunity.getAvailabilityFrom()).isEqualTo(new Timestamp(2017 - 02 - 16));
+        assertThat(opportunity.getDateAvailabilityTo()).isEqualTo(new Timestamp(2017 - 02 - 21));
     }
 
     @Test(expected = ConstraintViolationException.class)
@@ -101,7 +90,7 @@ public class OpportunityRepositoryTest {
         opportunity = new Opportunity(organisation, "", 10, "Tent",
                 "Vega", 3, "none", 2,
                 new java.sql.Date(2017 - 02 - 16), new java.sql.Date(2017 - 02 - 21), "free", "English", skills);
-        this.entityManager.persist(opportunity);
+        this.opportunityRepository.save(opportunity);
     }
 
     @Test(expected = ConstraintViolationException.class)
@@ -111,13 +100,14 @@ public class OpportunityRepositoryTest {
         opportunity = new Opportunity(organisation, "First opportunity", null, "Tent",
                 "Vega", 3, "none", 2,
                 new java.sql.Date(2017 - 02 - 16), new java.sql.Date(2017 - 02 - 21), "free", "English", skills);
-        this.entityManager.persist(opportunity);
+        this.opportunityRepository.save(opportunity);
     }
 
     @Test
-    public void addMorOpportunity() throws Exception {
-        repository.save(opportunity);
-        repository.save(opportunity1);
+    public void addMoreOpportunity() {
+        assertEquals(countRowsInTable("opportunities"), 0);
+        this.opportunityRepository.save(opportunity);
+        this.opportunityRepository.save(opportunity1);
         assertEquals(countRowsInTable("opportunities"), 2);
     }
 
