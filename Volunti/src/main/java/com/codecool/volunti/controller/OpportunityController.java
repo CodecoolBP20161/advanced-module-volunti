@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,25 +28,29 @@ public class OpportunityController {
     private OrganisationRepository organisationRepository;
 
     @GetMapping("/{organisation_id}/opportunity/new")
-    public String form(@PathVariable Integer organisation_id, Model model){
-
+    public String form(@PathVariable Integer organisation_id, Model model, Opportunity opportunity , final BindingResult bindingResult){
         Organisation organisation;
         organisation = organisationRepository.findByOrganisationId(organisation_id);
-
-//        Opportunity opportunity;
-//        opportunity = new Opportunity(organisation, "First opportunity", 10, "Tent",
-//              "Vega", 3, "none", 2,
-//              new java.sql.Date(2017 - 02 - 16), new java.sql.Date(2017 - 02 - 21), "free", "English");
-//        model.addAttribute("opportunity", opportunity);
         model.addAttribute("organisation", organisation);
-        return "multi-form";
+
+            if (bindingResult.hasErrors()) {
+                return "new-multi-form";
+            }
+        System.out.println("opportunity = " + opportunity);
+        return "new-multi-form";
     }
 
     @PostMapping("/{organisation_id}/opportunity/new")
-    public String saveOpportunity(@ModelAttribute @Valid Opportunity opportunity){
+    public String saveOpportunity(@PathVariable Integer organisation_id, Model model, Opportunity opportunity , final BindingResult bindingResult){
         log.info("opportunity = " + opportunity);
+        Organisation organisation;
+        organisation = organisationRepository.findByOrganisationId(organisation_id);
+        model.addAttribute("organisation", organisation);
+        if (bindingResult.hasErrors()) {
+            return "new-multi-form";
+        }
         opportunityRepository.save(opportunity);
-        return "redirect:organisation_opportunities.html";
+        return "redirect:/organisation/{organisation_id}/opportunities";
     }
 
 
@@ -55,9 +60,6 @@ public class OpportunityController {
         Organisation organisation;
         organisation = organisationRepository.findByOrganisationId(organisation_id);
         log.info("Organisation found: " + organisation);
-
-
-
         Opportunity opportunity;
         opportunity = new Opportunity(organisation, "First opportunity", 10, "Tent",
                 "Vega", 3, "none", 2,
@@ -76,15 +78,39 @@ public class OpportunityController {
     @GetMapping("/{organisation_id}/opportunity/delete/{opportunity_id}")
     public String deleteOpportunity(@PathVariable Integer organisation_id, @PathVariable Integer opportunity_id){
         opportunityRepository.delete(opportunity_id);
-        return "redirect:organisation_opportunities.html";
+        return "redirect:/organisation/{organisation_id}/opportunities";
     }
 
     @GetMapping("/{organisation_id}/opportunity/edit/{opportunity_id}")
     public String editOpportunity(@PathVariable Integer organisation_id,@PathVariable Integer opportunity_id, Model model) {
         Opportunity opportunity = opportunityRepository.findById(opportunity_id);
+        Organisation organisation = organisationRepository.findByOrganisationId(organisation_id);
         model.addAttribute("opportunity", opportunity);
+        model.addAttribute("organisation", organisation);
         log.info("opp: " + opportunity);
         return "multi-form";
+    }
+
+    @PostMapping("/{organisation_id}/opportunity/edit/{opportunity_id}")
+    public String editOpportunity(@PathVariable Integer organisation_id,@PathVariable Integer opportunity_id, Model model, Opportunity opportunity) {
+        Opportunity opportunityOld = opportunityRepository.findById(opportunity_id);
+        Organisation organisation = organisationRepository.findByOrganisationId(organisation_id);
+        opportunityOld.setTitle(opportunity.getTitle());
+        opportunityOld.setAccommodationType(opportunity.getAccommodationType());
+        opportunityOld.setAvailabilityFrom(opportunity.getAvailabilityFrom());
+        opportunityOld.setDateAvailabilityTo(opportunity.getDateAvailabilityTo());
+        opportunityOld.setAccommodationType(opportunity.getAccommodationType());
+        opportunityOld.setCosts(opportunity.getCosts());
+        opportunityOld.setHoursExpected(opportunity.getHoursExpected());
+        opportunityOld.setMinimumStayInDays(opportunity.getMinimumStayInDays());
+        opportunityOld.setNumberOfVolunteers(opportunity.getNumberOfVolunteers());
+        opportunityOld.setRequirements(opportunity.getRequirements());
+        opportunityRepository.save(opportunityOld);
+        System.out.println("opportunity = " + opportunity);
+        model.addAttribute("opportunity", opportunity);
+        model.addAttribute("organisation", organisation);
+        log.info("opp: " + opportunity);
+        return "redirect:/organisation/{organisation_id}/opportunities";
     }
 
 }
