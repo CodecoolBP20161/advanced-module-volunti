@@ -2,6 +2,7 @@ package com.codecool.volunti.model;
 
 
 import lombok.Data;
+import lombok.ToString;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -13,6 +14,7 @@ import java.util.List;
 @Entity
 @Table(name = "opportunities")
 @Data
+@ToString(exclude = "organisation")
 public class Opportunity{
 
     @Id

@@ -58,13 +58,8 @@ public class OpportunityController {
     public String display(@PathVariable Integer organisation_id, Model model){
 
         Organisation organisation;
-        organisation = organisationRepository.findByOrganisationId(organisation_id);
+        organisation = organisationRepository.findOne(organisation_id);
         log.info("Organisation found: " + organisation);
-        Opportunity opportunity;
-        opportunity = new Opportunity(organisation, "First opportunity", 10, "Tent",
-                "Vega", 3, "none", 2,
-                new java.sql.Date(2017 - 02 - 16), new java.sql.Date(2017 - 02 - 21), "free", "English");
-        opportunityRepository.save(opportunity);
 
         List<Opportunity> opportunities;
         opportunities = opportunityRepository.findByOrganisation(organisation);
@@ -83,7 +78,7 @@ public class OpportunityController {
 
     @GetMapping("/{organisation_id}/opportunity/edit/{opportunity_id}")
     public String editOpportunity(@PathVariable Integer organisation_id,@PathVariable Integer opportunity_id, Model model) {
-        Opportunity opportunity = opportunityRepository.findById(opportunity_id);
+        Opportunity opportunity = opportunityRepository.findOne(opportunity_id);
         Organisation organisation = organisationRepository.findByOrganisationId(organisation_id);
         model.addAttribute("opportunity", opportunity);
         model.addAttribute("organisation", organisation);
@@ -93,7 +88,7 @@ public class OpportunityController {
 
     @PostMapping("/{organisation_id}/opportunity/edit/{opportunity_id}")
     public String editOpportunity(@PathVariable Integer organisation_id,@PathVariable Integer opportunity_id, Model model, Opportunity opportunity) {
-        Opportunity opportunityOld = opportunityRepository.findById(opportunity_id);
+        Opportunity opportunityOld = opportunityRepository.findOne(opportunity_id);
         Organisation organisation = organisationRepository.findByOrganisationId(organisation_id);
         opportunityOld.setTitle(opportunity.getTitle());
         opportunityOld.setAccommodationType(opportunity.getAccommodationType());

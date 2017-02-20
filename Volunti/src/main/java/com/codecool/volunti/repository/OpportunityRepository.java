@@ -10,8 +10,7 @@ import java.util.List;
 
 
 @Repository
-public interface OpportunityRepository extends JpaRepository<Opportunity, Integer> {
+public interface OpportunityRepository extends CrudRepository<Opportunity, Integer> {
 
     List<Opportunity> findByOrganisation(Organisation organisation);
-    Opportunity findById(int id);
 }
