@@ -49,7 +49,7 @@
                                             quasi,
                                             dolor sunt, cum reprehenderit quibusdam, repellendus eaque, quas magni.</p>
 
-                                        <form role="form" action="@{/}" th:object="${opportunity}" method="post"
+                                        <form role="form" th:action="@{/org/{org_id}/opp/new}" th:object="${opportunity}" method="post"
                                               class="opportunity-form">
                                             <fieldset style="border: 0">
                                                 <h4>Opportunity title</h4>
@@ -81,9 +81,9 @@
                                                                         class="demo-default"
                                                                         style="width:50%"
                                                                         placeholder="What skills do you require?"
-                                                                        th:field="*{skills}">
+                                                                        th:field="*{opportunitySkills}">
                                                                     <option value="">Select a state...</option>
-                                                                    <option th:each="skill : ${opportunity.skills}"
+                                                                    <option th:each="skill : ${opportunity.opportunitySkills}"
                                                                             th:value="${skill}" th:text="${skill}"
                                                                             class="btn mb20 btn-small btn-primary">skill
                                                                     </option>
