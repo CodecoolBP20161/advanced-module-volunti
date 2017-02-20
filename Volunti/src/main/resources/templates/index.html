@@ -33,15 +33,15 @@
                             <!-- TABS -->
                             <div class="uou-tabs">
                                 <ul class="tabs">
-                                    <li><a href="#register">Register Now</a></li>
-                                    <li class="active"><a href="#log-in">Member Login</a></li>
+                                    <li class="active"><a href="#register">Register Now</a></li>
+                                    <li ><a href="#log-in">Member Login</a></li>
                                 </ul>
 
 
                                 <div class="content">
 
                                     <!-- REGISTER -->
-                                    <div id="register">
+                                    <div id="register"  class="active">
                                         <ul class="tabs register">
                                             <li>
                                                 <form th:action="@{/registration/organisation/step1}" method="get">
@@ -58,7 +58,7 @@
                                         </ul>
                                     </div>
                                     <!--  LOGIN -->
-                                    <div id="log-in" class="active">
+                                    <div id="log-in">
                                         <form action="">
                                             <input type="email" placeholder="Email Address"/>
                                             <input type="password" placeholder="Password"/>
