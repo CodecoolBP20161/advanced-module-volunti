@@ -11,7 +11,7 @@ import com.codecool.volunti.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -113,10 +113,11 @@ public class RegistrationController {
     /* Expected Request body:
     {
         entityName: entityName,
+        fieldName: fieldName,
         value: value
     }
     */
-    @RequestMapping( value = "/registration/ValidateFieldIfExists", method = RequestMethod.POST )
+    @RequestMapping( value = "/registration/ValidateFieldIfExists", method = RequestMethod.POST)
     @ResponseBody
     public String ValidateFieldIfExists(@RequestBody HashMap<String, String> payload){
         LOGGER.info("Field Validation Started.");
@@ -133,7 +134,7 @@ public class RegistrationController {
                         LOGGER.error("The given field name in " + entity + " doesnt exists.");
                         throw new NotImplementedException();
                 }
-            case "organization":
+            case "organisation":
                 switch (fieldName) {
                 case "name":
                     LOGGER.info("Entity: Organization");
