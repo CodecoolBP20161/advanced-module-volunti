@@ -12,7 +12,7 @@
         <div class="profile-bnr user-profile-bnr">
             <div class="container">
                 <div class="pull-left">
-                    <h2>Registration</h2>
+                    <h2>New Opportunity</h2>
                 </div>
             </div>
         </div>
@@ -23,14 +23,14 @@
 
                     <!-- Nav Tabs -->
                     <div class="col-md-12">
-                        <ul class="nav nav-tabs">
-                            <li class="active"><a data-toggle="tab" href="#step1">Step 1</a></li>
-                            <li><a data-toggle="tab" href="#step2">Step 2</a></li>
-                            <li><a data-toggle="tab" href="#step3">Step 3</a></li>
-                            <li><a data-toggle="tab" href="#step4">Step 4</a></li>
-
+                        <ul class="nav nav-tabs not-clickable">
+                            <li class="active"><a>Step 1</a></li>
+                            <li><a>Step 2</a></li>
+                            <li><a>Step 3</a></li>
+                            <li><a>Step 4</a></li>
                         </ul>
-                    </div>
+                        </div>
+
 
                     <!-- Tab Content -->
                     <div class="col-md-12">
@@ -59,6 +59,7 @@
                                                                required="required"
                                                                placeholder="What are you looking for? "
                                                                class="form-first-name form-control"
+                                                               data-validation="length alphanumeric" data-validation-length="min4"
                                                                th:field="*{title}"/>
                                                         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
                                                             Voluptate quis tenetur
@@ -258,6 +259,13 @@
                                                 </button>
                                             </fieldset>
                                         </form>
+                                        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+                                        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
+                                        <script>
+                                            $.validate({
+                                                lang: 'es'
+                                            });
+                                        </script>
                                     </div>
                                 </div>
                             </div>
