@@ -26,4 +26,8 @@ public class OrganisationService {
         return organisationRepository.findOne(id);
     }
 
+    public Organisation get(String name) {
+        return organisationRepository.findByName(name);
+    }
+
 }
