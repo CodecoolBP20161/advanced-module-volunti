@@ -84,12 +84,12 @@ public class RegistrationController {
         //save the organisation from the session into database
         organisation = (Organisation) session.getAttribute("organisation");
         Organisation savedOrganisation = organisationService.saveOrganisation(organisation);
+        LOGGER.info("organisation saved: {}", savedOrganisation);
 
         //save the user into database
         user.setOrganisation(organisation);
-
         User savedUser = userService.saveUser(user);
-        LOGGER.info("savedUser: " + savedUser.toString());
+        LOGGER.info("user saved: {}", savedUser);
         //email sending
         user.signupSuccess(emailService, EMAILTYPE);
 
