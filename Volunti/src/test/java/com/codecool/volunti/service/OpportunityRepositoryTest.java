@@ -124,18 +124,18 @@ public class OpportunityRepositoryTest extends AbstractServiceTest {
 
     @Test
     public void addMoreSkill() {
-        assertEquals(countRowsInTable("skills"), 0);
+        int countBefore = countRowsInTable("skills");
         this.skillRepository.save(skill);
         this.skillRepository.save(new Skill("second Skill"));
-        assertEquals(countRowsInTable("skills"), 2);
+        assertEquals(countRowsInTable("skills"), countBefore + 2);
     }
 
     @Test
     public void addMoreOpportunity() {
-        assertEquals(countRowsInTable("opportunities"), 0);
+        int countBefore = countRowsInTable("opportunities");
         this.opportunityRepository.save(opportunity);
         this.opportunityRepository.save(opportunity1);
-        assertEquals(countRowsInTable("opportunities"), 2);
+        assertEquals(countRowsInTable("opportunities"), countBefore + 2);
         assertEquals(countRowsInTable("skills"), 1);
     }
 
