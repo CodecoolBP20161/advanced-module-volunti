@@ -6,7 +6,6 @@ import com.codecool.volunti.model.Skill;
 import com.codecool.volunti.model.enums.Category;
 import com.codecool.volunti.model.enums.SpokenLanguage;
 import com.codecool.volunti.repository.OpportunityRepository;
-import com.codecool.volunti.repository.OrganisationRepository;
 import com.codecool.volunti.repository.SkillRepository;
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.junit.Before;
@@ -26,9 +25,6 @@ import static org.junit.Assert.assertEquals;
 
 @Transactional
 public class OpportunityRepositoryTest extends AbstractServiceTest {
-
-    @Autowired
-    private OrganisationRepository organisationRepository;
 
     @Autowired
     private OpportunityRepository opportunityRepository;
@@ -60,21 +56,37 @@ public class OpportunityRepositoryTest extends AbstractServiceTest {
         skill = new Skill("new Skill");
         List<Skill> skills = new ArrayList<>();
         skills.add(skill);
-        opportunity = new Opportunity(organisation, "First opportunity", 10, "Tent",
-                "Vega", 3, "none", 2,
-                new java.sql.Date(2017 - 02 - 16), new java.sql.Date(2017 - 02 - 21), "free", "English", skills);
 
-        opportunity1 = new Opportunity(organisation, "Second opportunity", 10, "Tent",
-                "Vega", 3, "none", 2,
-                new java.sql.Date(2017 - 02 - 16), new java.sql.Date(2017 - 02 - 21), "free", "English", skills);
-    }
+        opportunity = new Opportunity();
+        opportunity.setOrganisation(organisation);
+        opportunity.setTitle("First opportunity");
+        opportunity.setNumberOfVolunteers(10);
+        opportunity.setAccommodationType("Tent");
+        opportunity.setFoodType("Vega");
+        opportunity.setHoursExpected(3);
+        opportunity.setHoursExpectedType("none");
+        opportunity.setMinimumStayInDays(2);
+        opportunity.setAvailabilityFrom(new java.sql.Date(2017 - 02 - 16));
+        opportunity.setDateAvailabilityTo(new java.sql.Date(2017 - 02 - 21));
+        opportunity.setCosts("free");
+        opportunity.setRequirements("English");
+        opportunity.setOpportunitySkills(skills);
 
-
-    @Test
-    public void testSkill() {
-
-    }
-
+        opportunity1 = new Opportunity();
+        opportunity1.setOrganisation(organisation);
+        opportunity1.setTitle("Second opportunity1");
+        opportunity1.setNumberOfVolunteers(10);
+        opportunity1.setAccommodationType("Tent");
+        opportunity1.setFoodType("Vega");
+        opportunity1.setHoursExpected(3);
+        opportunity1.setHoursExpectedType("none");
+        opportunity1.setMinimumStayInDays(2);
+        opportunity1.setAvailabilityFrom(new java.sql.Date(2017 - 02 - 16));
+        opportunity1.setDateAvailabilityTo(new java.sql.Date(2017 - 02 - 21));
+        opportunity1.setCosts("free");
+        opportunity1.setRequirements("English");
+        opportunity1.setOpportunitySkills(skills);
+     }
 
     @Test
     public void testForGetters() {
@@ -98,21 +110,13 @@ public class OpportunityRepositoryTest extends AbstractServiceTest {
 
     @Test(expected = ConstraintViolationException.class)
     public void titleFieldIsEmpty() {
-        List<Skill> skills = new ArrayList<>();
-        skills.add(new Skill("First Skill"));
-        opportunity = new Opportunity(organisation, "", 10, "Tent",
-                "Vega", 3, "none", 2,
-                new java.sql.Date(2017 - 02 - 16), new java.sql.Date(2017 - 02 - 21), "free", "English", skills);
+        opportunity.setTitle("");
         this.opportunityRepository.save(opportunity);
     }
 
     @Test(expected = ConstraintViolationException.class)
     public void numberOfVolunteersFieldIsNull() {
-        List<Skill> skills = new ArrayList<>();
-        skills.add(new Skill("First Skill"));
-        opportunity = new Opportunity(organisation, "First opportunity", null, "Tent",
-                "Vega", 3, "none", 2,
-                new java.sql.Date(2017 - 02 - 16), new java.sql.Date(2017 - 02 - 21), "free", "English", skills);
+        opportunity.setNumberOfVolunteers(null);
         this.opportunityRepository.save(opportunity);
     }
 
@@ -138,6 +142,19 @@ public class OpportunityRepositoryTest extends AbstractServiceTest {
         this.opportunityRepository.save(opportunity1);
         assertEquals(countBefore + 2, countRowsInTable("opportunities"));
         assertEquals(countSkillsBefore + 1, countRowsInTable("skills"));
+    }
+
+    @Test(expected = ConstraintViolationException.class)
+    public void titleSizeIsShorterThanRequired() {
+        opportunity.setTitle("Fi");
+        this.opportunityRepository.save(opportunity);
+    }
+
+    @Test(expected = ConstraintViolationException.class)
+    public void titleSizeIsLongerThanRequired() {
+        opportunity.setTitle("First Skill First Skill First Skill First Skill First Skill First Skill " +
+                "First Skill First Skill First Skill First Skill First Skill First Skill First Skill First Skill First Skill First Skill First Skill First Skill ");
+        this.opportunityRepository.save(opportunity);
     }
 
     protected int countRowsInTable(String tableName) {
