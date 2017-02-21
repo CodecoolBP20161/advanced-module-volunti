@@ -10,12 +10,15 @@ import com.codecool.volunti.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
 
 @Controller
 @SessionAttributes("organisation")
@@ -106,6 +109,43 @@ public class RegistrationController {
             LOGGER.warn("Email not sent");
         }
         return "Thank you for registering with us.";
+    }
+    /* Expected Request body:
+    {
+        entityName: entityName,
+        value: value
+    }
+    */
+    @RequestMapping( value = "/registration/ValidateFieldIfExists", method = RequestMethod.POST )
+    @ResponseBody
+    public String ValidateFieldIfExists(@RequestBody HashMap<String, String> payload){
+        LOGGER.info("Field Validation Started.");
+        String entity = payload.get("entityName");
+        String fieldName = payload.get("fieldName");
+        String valueToCheck = payload.get("value");
+        switch (entity) {
+            case "user":
+                switch (fieldName) {
+                    case "email":
+                        LOGGER.info("Entity: User");
+                        return String.valueOf(userService.getByEmail(valueToCheck) != null);
+                    default:
+                        LOGGER.error("The given field name in " + entity + " doesnt exists.");
+                        throw new NotImplementedException();
+                }
+            case "organization":
+                switch (fieldName) {
+                case "name":
+                    LOGGER.info("Entity: Organization");
+                    return String.valueOf(organisationService.getByName(valueToCheck) != null);
+                default:
+                    LOGGER.error("The given field name in " + entity + " doesnt exists.");
+                    throw new NotImplementedException();
+                }
+            default:
+                LOGGER.error("Not implemented validation type or wrong request body.");
+                throw new NotImplementedException();
+        }
     }
 
 
