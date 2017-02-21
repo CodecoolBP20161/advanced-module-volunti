@@ -1,6 +1,8 @@
 package com.codecool.volunti.model;
 
 import lombok.Data;
+import lombok.ToString;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -8,6 +10,7 @@ import java.util.List;
 @Entity
 @Data
 @Table(name = "skills")
+@ToString(exclude = {"opportunities", "volunteers"})
 public class Skill {
 
     @Id
