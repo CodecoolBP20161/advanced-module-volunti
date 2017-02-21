@@ -90,7 +90,7 @@ public class OrganisationRepositoryTest extends AbstractServiceTest {
         int countBefore = countRowsInTable("Organisation");
         this.organisationRepository.save(organisation);
         this.organisationRepository.save(organisation2);
-        assertEquals(countRowsInTable("Organisation"), countBefore + 2);
+        assertEquals(countBefore + 2, countRowsInTable("Organisation"));
 
     }
 
