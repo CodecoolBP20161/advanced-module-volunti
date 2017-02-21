@@ -4,7 +4,8 @@ package com.codecool.volunti.controller;
 import com.codecool.volunti.model.Organisation;
 import com.codecool.volunti.model.User;
 import com.codecool.volunti.repository.OrganisationRepository;
-import com.codecool.volunti.service.NotificationService;
+import com.codecool.volunti.service.EmailService;
+import com.codecool.volunti.service.EmailType;
 import com.codecool.volunti.service.OrganisationService;
 import com.codecool.volunti.service.UserService;
 import org.slf4j.Logger;
@@ -21,23 +22,24 @@ import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 
 @Controller
-@SessionAttributes("organisation")
+@SessionAttributes({"organisation", "user"})
 public class RegistrationController {
 
     private Logger LOGGER = LoggerFactory.getLogger(RegistrationController.class);
+    private static EmailType EMAILTYPE = EmailType.CONFIRMATION;
 
     private OrganisationRepository organisationRepository;
     private OrganisationService organisationService;
     private UserService userService;
-    private NotificationService notificationService;
+    private EmailService emailService;
 
 
     @Autowired
-    public RegistrationController(OrganisationRepository organisationRepository, OrganisationService organisationService, UserService userService, NotificationService notificationService) {
+    public RegistrationController(OrganisationRepository organisationRepository, OrganisationService organisationService, UserService userService, EmailService emailService) {
         this.organisationRepository = organisationRepository;
         this.organisationService = organisationService;
         this.userService = userService;
-        this.notificationService = notificationService;
+        this.emailService = emailService;
     }
 
 
@@ -68,27 +70,31 @@ public class RegistrationController {
         LOGGER.info("step2() method called...");
         LOGGER.info("session in the step2: " + session.getAttribute("organisation").toString());
         User user = new User();
+        if ( session.getAttribute("user") != null ) {
+            user = (User) session.getAttribute("user");
+        }
         model.addAttribute("user", user);
         model.addAttribute("organisation_id", organisation_id);
         return "registration/step2";
     }
 
-    //save user registration
-    @RequestMapping( value = "/registration/organisation/step2/{organisation_id}", method = RequestMethod.POST )
-    public String saveStep2(@PathVariable Integer organisation_id, User user, HttpSession session, Organisation organisation) {
+    //save user registration and send the confirmation email
+    @RequestMapping( value = "/registration/organisation/step2/", method = RequestMethod.POST )
+    public String saveStep2(User user, HttpSession session, Organisation organisation) {
         LOGGER.info("saveStep2() method called...");
         LOGGER.info("session: " + session.getAttribute("organisation").toString());
 
         //save the organisation from the session into database
         organisation = (Organisation) session.getAttribute("organisation");
         Organisation savedOrganisation = organisationService.saveOrganisation(organisation);
+        LOGGER.info("organisation saved: {}", savedOrganisation);
 
         //save the user into database
-        user.setOrganisation(organisationService.get(organisation_id));
+        user.setOrganisation(organisation);
         User savedUser = userService.saveUser(user);
-
-        //email sending...
-        signupSuccess(user);
+        LOGGER.info("user saved: {}", savedUser);
+        //email sending
+        user.signupSuccess(emailService, EMAILTYPE);
 
         //clean the session
         session.setAttribute("organisation", new Organisation());
@@ -97,18 +103,12 @@ public class RegistrationController {
         return "/registration/step3";
     }
 
-    //@RequestMapping("/signup-success")
-    public String signupSuccess(User user) {
-        LOGGER.info("signupSuccess() method called...");
-
-        // create user
-        try {
-            // send a notification
-            notificationService.sendNotification(user);
-        } catch (Exception e) {
-            LOGGER.warn("Email not sent");
-        }
-        return "Thank you for registering with us.";
+    //render user registration confirmation
+    @RequestMapping( value = "/registration/organisation/step3/{activation_id}", method = RequestMethod.GET )
+    public String step3(@PathVariable String activation_id, Model model, HttpSession session) {
+        LOGGER.info("step3() method called...");
+        model.addAttribute("confirmation", activation_id);
+        return "registration/step4";
     }
     /* Expected Request body:
     {
@@ -147,8 +147,5 @@ public class RegistrationController {
                 throw new NotImplementedException();
         }
     }
-
-
-
 
 }

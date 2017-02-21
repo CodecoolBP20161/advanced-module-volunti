@@ -2,8 +2,12 @@ package com.codecool.volunti.model;
 
 
 import com.codecool.volunti.model.enums.UserStatus;
+import com.codecool.volunti.service.EmailService;
+import com.codecool.volunti.service.EmailType;
 import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
@@ -14,21 +18,26 @@ import java.util.UUID;
 @Data
 public class User {
 
+    @Transient
+    private Logger LOGGER = LoggerFactory.getLogger(User.class);
+
     @Id
     @Column(name="user_id", unique=true)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Size(min=2, max=100)
+    @NotEmpty
+    @Size(min=1, max=255)
     @Column(name="first_name")
     private String firstName;
 
-    @Size(min=2, max=100)
+    @NotEmpty
+    @Size(min=1, max=255)
     @Column(name="last_name")
     private String lastName;
 
     @NotEmpty
-    @Size(min=2, max=50)
+    @Size(min=1)
     @Column(name="email")
     private String email;
 
@@ -36,18 +45,18 @@ public class User {
     private UUID activationID;
 
     @NotEmpty
-    @Size(min=3)
+    @Size(min=1)
     @Column(name="password")
     private String password;
 
     @Column(name="salt")
     private String salt;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name="organisation_id")
     private Organisation organisation;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name="volunteer_id")
     private Volunteer volunteer;
 
@@ -98,5 +107,16 @@ public class User {
         this.salt = salt;
         this.organisation = organisation;
         this.volunteer = volunteer;
+    }
+
+    public String signupSuccess(EmailService emailService, EmailType emailType) {
+        LOGGER.info("signupSuccess() method called...");
+        try {
+            // send a notification
+            emailService.sendEmail(this, emailType);
+        } catch (Exception e) {
+            LOGGER.warn("Email not sent");
+        }
+        return "Thank you for registering with us.";
     }
 }

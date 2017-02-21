@@ -19,50 +19,54 @@ public class Organisation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int organisationId;
 
-    @Size(min=2, max=100)
+    @NotEmpty
+    @Size(min=1, max=255)
     @Column(name="name")
     private String name;
 
-
+    // TODO: 2017.02.20. this field should be @NotEmpty and have a @Size(min=1, max=255)
+    // annotation, but Spring throws a validation error in these cases
     @Column(name="category")
     @Enumerated(EnumType.STRING)
     private Category category;
 
     @NotEmpty
-    @Size(min=3, max=50)
+    @Size(min=1, max=255)
     @Column(name="country")
     private String country;
 
-    @Size(min=2)
+    @NotEmpty
+    @Size(min=1, max=255)
     @Column(name="zipcode")
     private String zipcode;
 
     @NotEmpty
-    @Size(min=3, max=50)
+    @Size(min=1, max=255)
     @Column(name="city")
     private String city;
 
     @NotEmpty
-    @Size(min=3, max=50)
+    @Size(min=1, max=255)
     @Column(name="address")
     private String address;
 
     @NotEmpty
+    @Size(min=1)
     @Column(name="spoken_language")
     private ArrayList<SpokenLanguage> spokenLanguage;
 
     @NotEmpty
-    @Size(min=10)
+    @Size(min=1)
     @Column(name="mission")
     private String mission;
 
     @NotEmpty
-    @Size(min=3)
+    @Size(min=1)
     @Column(name="description_1")
     private String description1;
 
     @NotEmpty
-    @Size(min=3)
+    @Size(min=1)
     @Column(name="description_2")
     private String description2;
 
