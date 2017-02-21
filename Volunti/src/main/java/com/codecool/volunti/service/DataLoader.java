@@ -45,14 +45,34 @@ public class DataLoader {
         User user1 = new User("Anna", "Kiss", "asd@gmail.com", "asdasd", "asd");
         Organisation organisation1 = new Organisation("UNICEF", Category.TEACHING, "Hungary", "1065", "Isaszeg", "Kossuth utca", spokenLanguages, "mission mission mission mission mission", "description1", "description2");
         Volunteer volunteer = new Volunteer();
-        Opportunity opportunity = new Opportunity(organisation1, "First opportunity", 10, "Tent",
-                "Vega", 3, "none", 2,
-                new java.sql.Date(2017 - 02 - 16), new java.sql.Date(2017 - 02 - 21), "free", "English");
 
-        Opportunity opportunity1 = new Opportunity(organisation1, "Second opportunity", 10, "Tent",
-                "Vega", 3, "none", 2,
-                new java.sql.Date(2017 - 02 - 16), new java.sql.Date(2017 - 02 - 21), "free", "English");
+        Opportunity opportunity = new Opportunity();
+        opportunity.setOrganisation(organisation1);
+        opportunity.setTitle("First opportunity");
+        opportunity.setNumberOfVolunteers(10);
+        opportunity.setAccommodationType("Tent");
+        opportunity.setFoodType("Vega");
+        opportunity.setHoursExpected(3);
+        opportunity.setHoursExpectedType("none");
+        opportunity.setMinimumStayInDays(2);
+        opportunity.setAvailabilityFrom(new java.sql.Date(2017 - 02 - 16));
+        opportunity.setDateAvailabilityTo(new java.sql.Date(2017 - 02 - 21));
+        opportunity.setCosts("free");
+        opportunity.setRequirements("English");
 
+        Opportunity opportunity1 = new Opportunity();
+        opportunity1.setOrganisation(organisation1);
+        opportunity1.setTitle("Second opportunity1");
+        opportunity1.setNumberOfVolunteers(10);
+        opportunity1.setAccommodationType("Tent");
+        opportunity1.setFoodType("Vega");
+        opportunity1.setHoursExpected(3);
+        opportunity1.setHoursExpectedType("none");
+        opportunity1.setMinimumStayInDays(2);
+        opportunity1.setAvailabilityFrom(new java.sql.Date(2017 - 02 - 16));
+        opportunity1.setDateAvailabilityTo(new java.sql.Date(2017 - 02 - 21));
+        opportunity1.setCosts("free");
+        opportunity1.setRequirements("English");
 
         userRepository.save(user1);
         organisationRepository.save(organisation1);
