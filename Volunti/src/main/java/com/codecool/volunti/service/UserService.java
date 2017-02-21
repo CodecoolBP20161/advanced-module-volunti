@@ -29,8 +29,9 @@ public class UserService {
     }
 
 
-    public User getByEmail(String email){
+    public User getByEmail(String email) {
         return userRepository.findByEmail(email);
+    }
 
     private User encodePassword(User user){
         String password = user.getPassword();
