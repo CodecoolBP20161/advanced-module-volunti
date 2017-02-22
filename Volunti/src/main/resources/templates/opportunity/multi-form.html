@@ -145,7 +145,6 @@
                                                 <button type="button"
                                                         class="btn btn-next mb20 btn-medium btn-primary">Next
                                                 </button>
-                                                <!--th:disabled-->
                                             </fieldset>
 
                                             <fieldset style="border: 0">
@@ -211,9 +210,12 @@
                                                                 class="hoursExpectedType"
                                                                 placeholder="Day or Week"
                                                                 th:field="*{hoursExpectedType}">
-                                                            <option selected="selected"
-                                                                    th:value="${opportunity.hoursExpectedType != null} ? ${opportunity.hoursExpectedType} : 'Day' "></option>
-                                                            <option value="Day">Day</option>
+                                                            <span th:if="${opportunity.hoursExpectedType != null}">
+                                                                <option selected="selected"
+                                                                    th:text="${opportunity.hoursExpectedType}"
+                                                                    th:value="${opportunity.hoursExpectedType}"></option>
+                                                            </span>
+                                                            <option selected="selected" value="Day">Day</option>
                                                             <option value="Week">Week</option>
                                                         </select>
                                                     </div>

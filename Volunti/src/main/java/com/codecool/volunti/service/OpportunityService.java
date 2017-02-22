@@ -25,6 +25,7 @@ public class OpportunityService {
         opportunityOld.setAccommodationType(opportunityNew.getAccommodationType());
         opportunityOld.setCosts(opportunityNew.getCosts());
         opportunityOld.setHoursExpected(opportunityNew.getHoursExpected());
+        opportunityOld.setHoursExpectedType(opportunityNew.getHoursExpectedType());
         opportunityOld.setMinimumStayInDays(opportunityNew.getMinimumStayInDays());
         opportunityOld.setNumberOfVolunteers(opportunityNew.getNumberOfVolunteers());
         opportunityOld.setFoodType(opportunityNew.getFoodType());
