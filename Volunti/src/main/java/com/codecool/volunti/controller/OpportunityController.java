@@ -40,13 +40,16 @@ public class OpportunityController {
     @GetMapping("/{organisation_id}/opportunity/new")
     public String form(@PathVariable Integer organisation_id, Model model, Opportunity opportunity , final BindingResult bindingResult){
         Organisation organisation = organisationRepository.findByOrganisationId(organisation_id);
+        String action = "/organisation/" + organisation_id + "/opportunity/new";
+        model.addAttribute("action", action);
         model.addAttribute("organisation", organisation);
+        model.addAttribute("opportunity", new Opportunity());
         log.info("Opportunity found: " + opportunity);
         if (bindingResult.hasErrors()) {
-            return "new-multi-form";
+            return "multi-form";
         }
 
-        return "new-multi-form";
+        return "multi-form";
     }
 
     @PostMapping("/{organisation_id}/opportunity/new")
@@ -56,11 +59,11 @@ public class OpportunityController {
         organisation = organisationRepository.findByOrganisationId(organisation_id);
 
         List<Skill> skill = (List<Skill>) skillRepository.findAll();
-        System.out.println("skill = " + skill);
+        log.info("skill = " + skill);
         model.addAttribute("organisation", organisation);
         model.addAttribute("skills", skill);
         if (bindingResult.hasErrors()) {
-            return "new-multi-form";
+            return "multi-form";
         }
         opportunity.setOrganisation(organisation);
         opportunityRepository.save(opportunity);
@@ -108,7 +111,8 @@ public class OpportunityController {
         Organisation organisation = organisationRepository.findByOrganisationId(organisation_id);
 
         opportunityService.update(opportunity, opportunityOld);
-
+        String action = "/organisation/" + organisation_id + "/opportunity/edit/" + opportunity_id;
+        model.addAttribute("action", action);
         System.out.println("opportunity = " + opportunity);
         model.addAttribute("opportunity", opportunity);
         model.addAttribute("organisation", organisation);

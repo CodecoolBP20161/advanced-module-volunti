@@ -50,7 +50,7 @@
                                             dolor sunt, cum reprehenderit quibusdam, repellendus eaque, quas magni.</p>
 
                                         <form role="form"
-                                              th:action="@{/organisation/} + ${organisation.organisationId} + @{/opportunity/edit/} + ${opportunity.id}"
+                                              th:action="${action}"
                                               th:object="${opportunity}" method="post" class="opportunity-form">
                                             <fieldset style="border: 0">
                                                 <h4>Opportunity title</h4>
