@@ -26,6 +26,9 @@ public class Skill {
     @ManyToMany(mappedBy = "volunteerSkills")
     private List<Volunteer> volunteers;
 
+    public Skill() {
+    }
+
     public Skill(String name) {
         this.name = name;
     }

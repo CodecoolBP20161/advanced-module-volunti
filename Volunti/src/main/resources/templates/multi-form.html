@@ -17,7 +17,7 @@
             </div>
         </div>
 
-        <div class="profile-company-content user-profile main-user" data-bg-color="f5f5f5">
+        <div class="profile-company-content user-profile main-user main-user" data-bg-color="f5f5f5">
             <div class="container">
                 <div class="row">
 
@@ -49,15 +49,19 @@
                                             quasi,
                                             dolor sunt, cum reprehenderit quibusdam, repellendus eaque, quas magni.</p>
 
-                                        <form role="form" th:action="@{/organisation/} + ${organisation.organisationId} + @{/opportunity/edit/} + ${opportunity.id}" th:object="${opportunity}" method="post" class="opportunity-form">
+                                        <form role="form"
+                                              th:action="@{/organisation/} + ${organisation.organisationId} + @{/opportunity/edit/} + ${opportunity.id}"
+                                              th:object="${opportunity}" method="post" class="opportunity-form">
                                             <fieldset style="border: 0">
                                                 <h4>Opportunity title</h4>
                                                 <div class="row">
                                                     <div class="col-sm-6 ">
-                                                        <input type="text" name="title" id="title" autofocus="autofocus"
+                                                        <input type="text" minlength="1" maxlength="255" name="title"
+                                                               id="title" autofocus="autofocus"
                                                                required="required"
                                                                placeholder="What are you looking for? "
-                                                               class="form-first-name form-control"
+                                                               class="title form-control"
+                                                               pattern="^[a-zA-Z\s]{3,}$"
                                                                th:value="${opportunity.title != null} ? ${opportunity.title} : '' "
                                                                th:field="*{title}"/>
                                                         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
@@ -78,20 +82,17 @@
                                                                 <select id="select-state" name="state[]"
                                                                         multiple="multiple"
                                                                         class="demo-default"
+                                                                        required = "required"
                                                                         style="width:50%"
                                                                         placeholder="What skills do you require?"
                                                                         th:field="*{opportunitySkills}">
-                                                                    <option value="">Select a state...</option>
-                                                                    <option th:each="skill : ${opportunity.opportunitySkills}"
-                                                                            th:value="${skill}" th:text="${skill}"
-                                                                            class="btn mb20 btn-small btn-primary">skill
+                                                                    <option th:value="${opportunity.opportunitySkills != null} ? ${opportunity.opportunitySkills} : '' "></option>
+                                                                    <option th:each="skill : ${skills}"
+                                                                    th:value="${skill.id}"
+                                                                    th:text="${skill.name}">
                                                                     </option>
                                                                 </select>
-                                                                <script>
-                                                                    $('#select-state').selectize({
-                                                                        maxItems: 5
-                                                                    });
-                                                                </script>
+                                                                <script src="/assets/js/custom.js"></script>
                                                                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing
                                                                     elit.
                                                                     Voluptate quis tenetur velit! Provident eum
@@ -108,8 +109,9 @@
                                                     volunteers</h4>
                                                 <div class="row">
                                                     <div class="col-sm-6">
-                                                        <input type="number" name="skills" required="required"
-                                                               placeholder="What skills do you require?"
+                                                        <input type="number" name="numberOfVolunteers"
+                                                               required="required"
+                                                               placeholder="How many volunteers you need?"
                                                                class="numberOfVolunteers" id="numberOfVolunteers"
                                                                th:value="${opportunity.numberOfVolunteers != null} ? ${opportunity.numberOfVolunteers} : '' "
                                                                th:field="*{numberOfVolunteers}"/>
@@ -168,13 +170,24 @@
                                             <fieldset style="border: 0">
                                                 <h4>Expected hours</h4>
                                                 <div class="row">
-                                                    <div class="col-sm-6">
+                                                    <div class="col-sm-4">
                                                         <input type="number" name="hoursExpected" autofocus="autofocus"
                                                                placeholder="Volunteer hours expected (per day or week)"
                                                                class="form-facebook form-control"
                                                                id="hoursExpected"
                                                                th:value="${opportunity.hoursExpected != null} ? ${opportunity.hoursExpected} : '' "
                                                                th:field="*{hoursExpected}"/>
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <select name="hoursExpectedType"
+                                                                placeholder="Day or Week"
+                                                                th:field="*{hoursExpectedType}">
+                                                            <option selected="selected" th:value="${opportunity.hoursExpectedType != null} ? ${opportunity.hoursExpectedType} : '' "></option>
+                                                            <option value="Day">Day</option>
+                                                            <option value="Week">Week</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-sm-6">
                                                         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
                                                             Voluptate quis tenetur velit! Provident eum molestias
                                                             aperiam
@@ -200,19 +213,23 @@
                                                 <h4>Available from -
                                                     to</h4>
                                                 <div class="row">
-                                                    <div class="col-sm-6">
+                                                    <div class="col-sm-4">
                                                         <input type="date" name="availabilityFrom"
                                                                placeholder="Availablity  from "
                                                                class="form-google-plus form-control"
                                                                id="availabilityFrom"
                                                                th:value="${opportunity.availabilityFrom != null} ? ${opportunity.availabilityFrom} : '' "
                                                                th:field="*{availabilityFrom}"/>
+                                                    </div>
+                                                    <div class="col-sm-4">
                                                         <input type="date" name="dateAvailabilityTo"
                                                                placeholder="Availablity  to "
                                                                class="form-google-plus form-control"
                                                                id="dateAvailabilityTo"
                                                                th:value="${opportunity.dateAvailabilityTo != null} ? ${opportunity.dateAvailabilityTo} : '' "
                                                                th:field="*{dateAvailabilityTo}"/>
+                                                    </div>
+                                                    <div class="col-sm-6">
                                                         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
                                                             Voluptate quis tenetur
                                                             velit! Provident eum molestias aperiam suscipit distinctio
@@ -266,7 +283,7 @@
                                                     Previous
                                                 </button>
                                                 <button type="submit"
-                                                        class="btn btn-submit mb20 btn-medium btn-primary">Create
+                                                        class="btn btn-submit mb20 btn-medium btn-primary">Update
                                                     Opportunity!
                                                 </button>
                                             </fieldset>

@@ -83,12 +83,12 @@
                                                                         placeholder="What skills do you require?"
                                                                         th:field="*{opportunitySkills}">
                                                                     <option value="">Select a state...</option>
+                                                                    <option th:each="skill : ${skills}"
+                                                                            th:value="${skill.id}"
+                                                                            th:text="${skill.name}">
+                                                                    </option>
                                                                 </select>
-                                                                <!--<script>-->
-                                                                    <!--$('#select-state').selectize({-->
-                                                                        <!--maxItems: 5-->
-                                                                    <!--});-->
-                                                                <!--</script>-->
+
                                                                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing
                                                                     elit.
                                                                     Voluptate quis tenetur velit! Provident eum

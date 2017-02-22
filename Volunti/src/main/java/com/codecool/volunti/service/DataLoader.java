@@ -60,6 +60,7 @@ public class DataLoader {
         opportunity.setCosts("free");
         opportunity.setRequirements("English");
 
+
         Opportunity opportunity1 = new Opportunity();
         opportunity1.setOrganisation(organisation1);
         opportunity1.setTitle("Second opportunity1");

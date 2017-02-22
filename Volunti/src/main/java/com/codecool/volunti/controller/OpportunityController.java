@@ -3,8 +3,10 @@ package com.codecool.volunti.controller;
 
 import com.codecool.volunti.model.Opportunity;
 import com.codecool.volunti.model.Organisation;
+import com.codecool.volunti.model.Skill;
 import com.codecool.volunti.repository.OpportunityRepository;
 import com.codecool.volunti.repository.OrganisationRepository;
+import com.codecool.volunti.repository.SkillRepository;
 import com.codecool.volunti.service.OpportunityService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,9 @@ public class OpportunityController {
     @Autowired
     private OpportunityService opportunityService;
 
+    @Autowired
+    private SkillRepository skillRepository;
+
 
     @GetMapping("/{organisation_id}/opportunity/new")
     public String form(@PathVariable Integer organisation_id, Model model, Opportunity opportunity , final BindingResult bindingResult){
@@ -49,7 +54,11 @@ public class OpportunityController {
         log.info("opportunity = " + opportunity);
         Organisation organisation;
         organisation = organisationRepository.findByOrganisationId(organisation_id);
+
+        List<Skill> skill = (List<Skill>) skillRepository.findAll();
+        System.out.println("skill = " + skill);
         model.addAttribute("organisation", organisation);
+        model.addAttribute("skills", skill);
         if (bindingResult.hasErrors()) {
             return "new-multi-form";
         }
@@ -80,9 +89,12 @@ public class OpportunityController {
     }
 
     @GetMapping("/{organisation_id}/opportunity/edit/{opportunity_id}")
-    public String editOpportunity(@PathVariable Integer organisation_id,@PathVariable Integer opportunity_id, Model model) {
+    public String editOpportunity(@PathVariable Integer organisation_id,@PathVariable Integer opportunity_id, Model model ) {
         Opportunity opportunity = opportunityRepository.findOne(opportunity_id);
         Organisation organisation = organisationRepository.findByOrganisationId(organisation_id);
+        List<Skill> skill = (List<Skill>) skillRepository.findAll();
+        System.out.println("skill = " + skill);
+        model.addAttribute("skills", skill);
         model.addAttribute("opportunity", opportunity);
         model.addAttribute("organisation", organisation);
         log.info("opp: " + opportunity);
