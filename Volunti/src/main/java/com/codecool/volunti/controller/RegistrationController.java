@@ -123,7 +123,7 @@ public class RegistrationController {
         LOGGER.info("Field Validation Started.");
         String entity = payload.get("entityName");
         String fieldName = payload.get("fieldName");
-        String valueToCheck = payload.get("value");
+        String valueToCheck = payload.get("value").trim();
         switch (entity) {
             case "user":
                 switch (fieldName) {
