@@ -43,7 +43,7 @@ public class OpportunityWorkflowTest extends AbstractServiceTest {
                 .andExpect(content().string(not(containsString("TestTitle")))
                 );
 
-        this.mockMvc.perform(post("/organisation/1/opportunity/new")
+        this.mockMvc.perform(post("/organisation/1/opportunity/0")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .content("title=TestTitle&opportunitySkills=&_opportunitySkills" +
                 "=1&numberOfVolunteers=12&accommodationType=sa&foodType=sadasd&hoursExpected=5&minimumStayInDays=5&availabilityFrom=" +
@@ -71,7 +71,7 @@ public class OpportunityWorkflowTest extends AbstractServiceTest {
     @Test
     public void updateItem() throws Exception {
 
-        this.mockMvc.perform(post("/organisation/1/opportunity/edit/1")
+        this.mockMvc.perform(post("/organisation/1/opportunity/1")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .content("title=First+title+edited&opportunitySkills=&_opportunitySkills=1" +
                         "&numberOfVolunteers=10&accommodationType=Tent&foodType=Vega&hoursExpected=" +

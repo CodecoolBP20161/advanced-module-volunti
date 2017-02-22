@@ -92,7 +92,10 @@
                                                                         data-validation-error-msg="Please select a skill"
                                                                         placeholder="What skills do you require?"
                                                                         th:field="*{opportunitySkills}">
-                                                                    <option th:value="${opportunity.opportunitySkills != null} ? ${opportunity.opportunitySkills} : '' "></option>
+                                                                    <span th:if="${opportunity.opportunitySkills} != null"
+                                                                          th:each="skill : *{opportunitySkills}">
+                                                                        <option th:value="${skill.id != null} ? ${skill.name}"></option>
+                                                                    </span>
                                                                     <option th:each="skill : ${skills}"
                                                                     th:value="${skill.id}"
                                                                     th:text="${skill.name}">

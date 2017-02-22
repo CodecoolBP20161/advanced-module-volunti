@@ -146,7 +146,7 @@ public class OpportunityRepositoryTest extends AbstractServiceTest {
 
     @Test(expected = ConstraintViolationException.class)
     public void titleSizeIsShorterThanRequired() {
-        opportunity.setTitle("Fi");
+        opportunity.setTitle("");
         this.opportunityRepository.save(opportunity);
     }
 
