@@ -85,7 +85,7 @@ public class OpportunityController {
 
         model.addAttribute("opportunities", opportunities);
         model.addAttribute("organisation", organisation);
-        return "organisation_opportunities";
+        return "list";
     }
 
     @GetMapping("/{organisation_id}/opportunity/delete/{opportunity_id}")
