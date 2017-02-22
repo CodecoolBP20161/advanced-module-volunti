@@ -13,6 +13,14 @@ jQuery(document).ready(function() {
     /*
         Form
     */
+    $('.opportunity-form').on('keyup keypress', function(e) {
+        var keyCode = e.keyCode || e.which;
+        if (keyCode === 13) {
+            e.preventDefault();
+            return false;
+        }
+    });
+
     $('.opportunity-form fieldset:first-child').fadeIn('slow');
     
     $('.opportunity-form input[type="text"], .opportunity-form input[type="password"], .opportunity-form textarea').on('focus', function() {
