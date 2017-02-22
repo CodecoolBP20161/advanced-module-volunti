@@ -4,7 +4,7 @@ $(document).ready(function() {
     var addValidateEvent = function (inputID, spanID, buttonID, entityName, fieldName) {
         var inputField = $('#' + inputID);
         inputField
-            .keyup(function () {
+            .on("input propertychange", function () {
                 var value = inputField.val();
                 $.ajax({
                     url: "/registration/ValidateFieldIfExists",
