@@ -40,6 +40,10 @@ public class OpportunityController {
     @GetMapping("/{organisation_id}/opportunity/new")
     public String form(@PathVariable Integer organisation_id, Model model, Opportunity opportunity , final BindingResult bindingResult){
         Organisation organisation = organisationRepository.findByOrganisationId(organisation_id);
+        List<Skill> skill = (List<Skill>) skillRepository.findAll();
+        System.out.println("skill = " + skill);
+
+        model.addAttribute("skills", skill);
         String action = "/organisation/" + organisation_id + "/opportunity/new";
         model.addAttribute("action", action);
         model.addAttribute("organisation", organisation);
@@ -58,10 +62,9 @@ public class OpportunityController {
         Organisation organisation;
         organisation = organisationRepository.findByOrganisationId(organisation_id);
 
-        List<Skill> skill = (List<Skill>) skillRepository.findAll();
-        log.info("skill = " + skill);
+
         model.addAttribute("organisation", organisation);
-        model.addAttribute("skills", skill);
+
         if (bindingResult.hasErrors()) {
             return "multi-form";
         }
