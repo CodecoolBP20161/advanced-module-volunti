@@ -42,7 +42,8 @@ public class OpportunityController {
         Organisation organisation = organisationRepository.findByOrganisationId(organisation_id);
         List<Skill> skill = (List<Skill>) skillRepository.findAll();
         System.out.println("skill = " + skill);
-
+        Opportunity opportunityNull = null;
+        model.addAttribute("opportunity", opportunityNull);
         model.addAttribute("skills", skill);
         String action = "/organisation/" + organisation_id + "/opportunity/new";
         model.addAttribute("action", action);
@@ -50,10 +51,10 @@ public class OpportunityController {
         model.addAttribute("opportunity", new Opportunity());
         log.info("Opportunity found: " + opportunity);
         if (bindingResult.hasErrors()) {
-            return "multi-form";
+            return "opportunity/multi-form";
         }
 
-        return "multi-form";
+        return "opportunity/multi-form";
     }
 
     @PostMapping("/{organisation_id}/opportunity/new")
@@ -66,7 +67,7 @@ public class OpportunityController {
         model.addAttribute("organisation", organisation);
 
         if (bindingResult.hasErrors()) {
-            return "multi-form";
+            return "opportunity/multi-form";
         }
         opportunity.setOrganisation(organisation);
         opportunityRepository.save(opportunity);
@@ -85,7 +86,7 @@ public class OpportunityController {
 
         model.addAttribute("opportunities", opportunities);
         model.addAttribute("organisation", organisation);
-        return "list";
+        return "opportunity/list";
     }
 
     @GetMapping("/{organisation_id}/opportunity/delete/{opportunity_id}")
@@ -104,7 +105,7 @@ public class OpportunityController {
         model.addAttribute("opportunity", opportunity);
         model.addAttribute("organisation", organisation);
         log.info("opp: " + opportunity);
-        return "multi-form";
+        return "opportunity/multi-form";
     }
 
     @PostMapping("/{organisation_id}/opportunity/edit/{opportunity_id}")
