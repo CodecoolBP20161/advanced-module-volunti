@@ -30,6 +30,7 @@ public class EmailProperties {
             emailPropertiesContainer.put("subject", prop.getProperty("subject"));
             emailPropertiesContainer.put("text1", prop.getProperty("text1"));
             emailPropertiesContainer.put("text2", prop.getProperty("text2"));
+            emailPropertiesContainer.put("text3", prop.getProperty("text3"));
             emailPropertiesContainer.put("welcome1", prop.getProperty("welcome1"));
             emailPropertiesContainer.put("welcome2", prop.getProperty("welcome2"));
 
