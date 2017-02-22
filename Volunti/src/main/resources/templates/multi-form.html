@@ -56,12 +56,13 @@
                                                 <h4>Opportunity title</h4>
                                                 <div class="row">
                                                     <div class="col-sm-6 ">
-                                                        <input type="text" minlength="1" maxlength="255" name="title"
+                                                        <input type="text"  name="title"
                                                                id="title" autofocus="autofocus"
                                                                required="required"
                                                                placeholder="What are you looking for? "
                                                                class="title form-control"
-                                                               pattern="^[a-zA-Z\s]{3,}$"
+                                                               data-validation="length alphanumeric" data-validation-length="min3"
+                                                               data-validation-error-msg="Please fill the title field! "
                                                                th:value="${opportunity.title != null} ? ${opportunity.title} : '' "
                                                                th:field="*{title}"/>
                                                         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
@@ -84,6 +85,9 @@
                                                                         class="demo-default"
                                                                         required = "required"
                                                                         style="width:50%"
+                                                                        data-validation="required"
+                                                                        data-validation-length="min1"
+                                                                        data-validation-error-msg="Please select a skill"
                                                                         placeholder="What skills do you require?"
                                                                         th:field="*{opportunitySkills}">
                                                                     <option th:value="${opportunity.opportunitySkills != null} ? ${opportunity.opportunitySkills} : '' "></option>
@@ -113,6 +117,8 @@
                                                                required="required"
                                                                placeholder="How many volunteers you need?"
                                                                class="numberOfVolunteers" id="numberOfVolunteers"
+                                                               data-validation="required"
+                                                               data-validation-error-msg="Please fill the form with number"
                                                                th:value="${opportunity.numberOfVolunteers != null} ? ${opportunity.numberOfVolunteers} : '' "
                                                                th:field="*{numberOfVolunteers}"/>
                                                         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
@@ -288,6 +294,21 @@
                                                 </button>
                                             </fieldset>
                                         </form>
+                                        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+                                        <link href="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/theme-default.min.css"
+                                              rel="stylesheet" type="text/css" />
+
+                                        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
+                                        <script>
+                                            $.validate({
+//                                                lang: 'es',
+                                                borderColorOnError : '#F00',
+                                                addValidClassOnAll : true,
+                                                validateOnBlur : true, // disable validation when input looses focus
+                                                errorMessagePosition : 'top', // Instead of 'inline' which is default
+                                                scrollToTopOnError : true, // Set this property to true on longer forms
+                                            });
+                                        </script>
                                     </div>
                                 </div>
                             </div>

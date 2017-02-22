@@ -29,6 +29,7 @@ public class OpportunityService {
         opportunityOld.setNumberOfVolunteers(opportunityNew.getNumberOfVolunteers());
         opportunityOld.setFoodType(opportunityNew.getFoodType());
         opportunityOld.setRequirements(opportunityNew.getRequirements());
+        opportunityOld.setOpportunitySkills(opportunityNew.getOpportunitySkills());
         opportunityRepository.save(opportunityOld);
 
     }
