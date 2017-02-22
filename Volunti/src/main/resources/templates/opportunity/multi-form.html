@@ -61,7 +61,7 @@
                                                                required="required"
                                                                placeholder="What are you looking for? "
                                                                class="title form-control"
-                                                               data-validation="length alphanumeric" data-validation-length="min3"
+                                                               data-validation="required"
                                                                data-validation-error-msg="Please fill the title field! "
                                                                th:value="${opportunity.title != null} ? ${opportunity.title} : '' "
                                                                th:field="*{title}"/>

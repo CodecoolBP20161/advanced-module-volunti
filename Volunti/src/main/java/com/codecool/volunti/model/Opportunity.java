@@ -27,7 +27,7 @@ public class Opportunity{
     private Organisation organisation;
 
     @NotEmpty(message = "Title is empty")
-    @Size(min=5, max=125, message = "Title size is not correct")
+    @Size(min=1, max=125, message = "Title size is not correct")
     private String title;
 
     @NotNull(message = "numberOfVolunteers is null")
