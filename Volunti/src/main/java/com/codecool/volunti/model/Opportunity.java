@@ -7,6 +7,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
@@ -31,12 +33,20 @@ public class Opportunity{
     private String title;
 
     @NotNull(message = "numberOfVolunteers is null")
+    @Min(value = 0, message = "The value must be positive")
+    @Max(value = 100, message = "Value must be less than 100")
     private Integer numberOfVolunteers;
 
     private String accommodationType;
     private String foodType;
+
+    @Min(value = 0, message = "The value must be positive")
+    @Max(value = 100, message = "Value must be less than 100")
     private int hoursExpected;
     private String hoursExpectedType;
+
+    @Min(value = 0, message = "The value must be positive")
+    @Max(value = 100, message = "Value must be less than 100")
     private int minimumStayInDays;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
