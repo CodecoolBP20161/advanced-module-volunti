@@ -31,8 +31,7 @@ public class Organisation {
     @Enumerated(EnumType.STRING)
     private Category category;
 
-    @NotEmpty
-    @Size(min=1, max=255)
+
     @Column(name="country")
     @Enumerated(EnumType.STRING)
     private Country country;
