@@ -129,8 +129,9 @@
                                                                required="required"
                                                                placeholder="How many volunteers you need?"
                                                                class="numberOfVolunteers"
-                                                               data-validation="required"
-                                                               data-validation-error-msg="Please fill the form with number"
+                                                               data-validation-allowing="range[0;100]"
+                                                               data-validation="required, number"
+                                                               data-validation-error-msg="Please fill the form with number 0-100"
                                                                th:value="${opportunity.numberOfVolunteers != null} ? ${opportunity.numberOfVolunteers} : '' "
                                                                th:field="*{numberOfVolunteers}"/>
                                                     </div>
@@ -202,6 +203,10 @@
                                                                autofocus="autofocus"
                                                                placeholder="Volunteer hours expected (per day or week)"
                                                                class="hoursExpected"
+                                                               data-validation-allowing="range[0;100]"
+                                                               data-validation="number"
+                                                               data-validation-error-msg="Please fill the form with number 0-100"
+
                                                                th:value="${opportunity.hoursExpected != null} ? ${opportunity.hoursExpected}"
                                                                th:field="*{hoursExpected}"/>
                                                     </div>
@@ -235,6 +240,9 @@
                                                                name="minimumStay"
                                                                placeholder="Minimum stay expected (number of days)"
                                                                class="minimumStay"
+                                                               data-validation-allowing="range[0;100]"
+                                                               data-validation="number"
+                                                               data-validation-error-msg="Please fill the form with number 0-100"
                                                                th:value="${opportunity.minimumStayInDays != null} ? ${opportunity.minimumStayInDays}"
                                                                th:field="*{minimumStayInDays}"/>
                                                     </div>
