@@ -44,8 +44,8 @@ public class OrganisationRepositoryTest extends AbstractServiceTest {
         spokenLanguages.add(SpokenLanguage.ENGLISH);
         spokenLanguages.add(SpokenLanguage.HUNGARIAN);
 
-        organisation = new Organisation("Test 1", Category.TEACHING, "Country", "zipcode", "City", "Address", spokenLanguages, "Mission minimum 10 character", "Desc 1 min 3 character", "Desc 2 min 3 character");
-        organisation2 = new Organisation("Test 2", Category.TEACHING, "Country", "zipcode", "City", "Address", spokenLanguages, "Mission minimum 10 character", "Desc 1 min 3 character", "Desc 2 min 3 character");
+        organisation = new Organisation("Test 1", Category.TEACHING, Country.Hungary, "zipcode", "City", "Address", spokenLanguages, "Mission minimum 10 character", "Desc 1 min 3 character", "Desc 2 min 3 character");
+        organisation2 = new Organisation("Test 2", Category.TEACHING, Country.Hungary, "zipcode", "City", "Address", spokenLanguages, "Mission minimum 10 character", "Desc 1 min 3 character", "Desc 2 min 3 character");
 
 
     }
@@ -57,7 +57,7 @@ public class OrganisationRepositoryTest extends AbstractServiceTest {
         organisation = this.repository.findByName("Test 1");
         assertThat(organisation.getName()).isEqualTo("Test 1");
         assertThat(organisation.getCategory()).isEqualTo(Category.TEACHING);
-        assertThat(organisation.getCountry()).isEqualTo("Country");
+        assertThat(organisation.getCountry()).isEqualTo(Country.Hungary);
         assertThat(organisation.getZipcode()).isEqualTo("zipcode");
         assertThat(organisation.getCity()).isEqualTo("City");
         assertThat(organisation.getAddress()).isEqualTo("Address");
@@ -71,7 +71,7 @@ public class OrganisationRepositoryTest extends AbstractServiceTest {
     @Test (expected = ConstraintViolationException.class)
     public void FirstFieldMissingTest(){
 
-        organisation = new Organisation("", Category.TEACHING, "Country", "zipcode", "City", "Address", spokenLanguages, "Mission minimum 10 character", "Desc 1 min 3 character", "Desc 2 min 3 character");
+        organisation = new Organisation("", Category.TEACHING, Country.Hungary, "zipcode", "City", "Address", spokenLanguages, "Mission minimum 10 character", "Desc 1 min 3 character", "Desc 2 min 3 character");
         organisation = this.repository.save(organisation);
 
     }
