@@ -126,6 +126,24 @@ public class OpportunityRepositoryTest extends AbstractServiceTest {
         this.skillRepository.save(skill);
     }
 
+    @Test(expected = ConstraintViolationException.class)
+    public void numberOfVolunteersIsNegative() {
+        opportunity.setNumberOfVolunteers(-1);
+        this.opportunityRepository.save(opportunity);
+    }
+
+    @Test(expected = ConstraintViolationException.class)
+    public void hoursExpectedIsNegative() {
+        opportunity.setHoursExpected(-1);
+        this.opportunityRepository.save(opportunity);
+    }
+
+    @Test(expected = ConstraintViolationException.class)
+    public void minimumStayInDaysIsNegative() {
+        opportunity.setMinimumStayInDays(-1);
+        this.opportunityRepository.save(opportunity);
+    }
+
     @Test
     public void addMoreSkill() {
         int countBefore = countRowsInTable("skills");
