@@ -1,6 +1,7 @@
 package com.codecool.volunti.model;
 
 import com.codecool.volunti.model.enums.Category;
+import com.codecool.volunti.model.enums.Country;
 import com.codecool.volunti.model.enums.SpokenLanguage;
 import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -33,7 +34,8 @@ public class Organisation {
     @NotEmpty
     @Size(min=1, max=255)
     @Column(name="country")
-    private String country;
+    @Enumerated(EnumType.STRING)
+    private Country country;
 
     @NotEmpty
     @Size(min=1, max=255)
@@ -73,16 +75,16 @@ public class Organisation {
     public Organisation(){}
 
     public Organisation(String name, Category category, String country, String zipcode, String city, String address, ArrayList<SpokenLanguage> spokenLanguage, String mission, String description1, String description2) {
-        this.name = name;
-        this.category = category;
-        this.country = country;
-        this.zipcode = zipcode;
-        this.city = city;
-        this.address = address;
-        this.spokenLanguage = spokenLanguage;
-        this.mission = mission;
-        this.description1 = description1;
-        this.description2 = description2;
+        this.setName(name);
+        this.setCategory(category);
+        this.setCountry(country);
+        this.setCity(city);
+        this.setAddress(address);
+        this.setSpokenLanguage(spokenLanguage);
+        this.setMission(mission);
+        this.setZipcode(zipcode);
+        this.setDescription1(description1);
+        this.setDescription2(description2);
     }
 
 }
