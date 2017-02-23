@@ -14,7 +14,7 @@ import javax.validation.constraints.Size;
 import java.util.UUID;
 
 @Entity
-@Table(name="\"User\"")
+@Table(name="users")
 @Data
 public class User {
 
@@ -100,13 +100,13 @@ public class User {
 
     public User(String firstName, String lastName, String email, String password, String salt, Organisation organisation, Volunteer volunteer) {
 
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
-        this.salt = salt;
-        this.organisation = organisation;
-        this.volunteer = volunteer;
+        this.setFirstName(firstName);
+        this.setLastName(lastName);
+        this.setEmail(email);
+        this.setPassword(password);
+        this.setSalt(salt);
+        this.setOrganisation(organisation);
+        this.setVolunteer(volunteer);
     }
 
     public String signupSuccess(EmailService emailService, EmailType emailType) {

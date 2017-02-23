@@ -10,7 +10,7 @@ import javax.validation.constraints.Size;
 import java.util.ArrayList;
 
 @Entity
-@Table(name="Organisation")
+@Table(name="organisations")
 @Data
 public class Organisation {
 
