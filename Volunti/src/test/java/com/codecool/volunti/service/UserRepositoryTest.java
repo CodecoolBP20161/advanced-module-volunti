@@ -4,6 +4,7 @@ import com.codecool.volunti.model.Organisation;
 import com.codecool.volunti.model.User;
 import com.codecool.volunti.model.Volunteer;
 import com.codecool.volunti.model.enums.Category;
+import com.codecool.volunti.model.enums.Country;
 import com.codecool.volunti.model.enums.SpokenLanguage;
 import com.codecool.volunti.repository.OrganisationRepository;
 import com.codecool.volunti.repository.UserRepository;
@@ -54,7 +55,7 @@ public class UserRepositoryTest extends AbstractServiceTest {
         spokenLanguages.add(SpokenLanguage.ENGLISH);
         spokenLanguages.add(SpokenLanguage.HUNGARIAN);
 
-        organisation = new Organisation("Test 1", Category.TEACHING, "Country", "zipcode", "City", "Address", spokenLanguages, "Mission minimum 10 character", "Desc 1 min 3 character", "Desc 2 min 3 character");
+        organisation = new Organisation("Test 1", Category.TEACHING, Country.Hungary, "zipcode", "City", "Address", spokenLanguages, "Mission minimum 10 character", "Desc 1 min 3 character", "Desc 2 min 3 character");
         volunteer = new Volunteer();
 
         user1 = new User();
