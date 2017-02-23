@@ -5,6 +5,7 @@ import com.codecool.volunti.model.Organisation;
 import com.codecool.volunti.model.User;
 import com.codecool.volunti.model.Volunteer;
 import com.codecool.volunti.model.enums.Category;
+import com.codecool.volunti.model.enums.Country;
 import com.codecool.volunti.model.enums.SpokenLanguage;
 import com.codecool.volunti.repository.OrganisationRepository;
 import com.codecool.volunti.repository.UserRepository;
@@ -41,7 +42,7 @@ public class DataLoader {
         spokenLanguages.add(SpokenLanguage.HUNGARIAN);
 
         User user1 = new User("Anna", "Kiss", "asd@gmail.com", "asdasd", "asd");
-        Organisation organisation1 = new Organisation("UNICEF", Category.TEACHING, "Hungary", "1065", "Isaszeg", "Kossuth utca", spokenLanguages, "mission mission mission mission mission", "description1", "description2");
+        Organisation organisation1 = new Organisation("UNICEF", Category.TEACHING, Country.Hungary, "1065", "Isaszeg", "Kossuth utca", spokenLanguages, "mission mission mission mission mission", "description1", "description2");
         Volunteer volunteer = new Volunteer();
 
         userRepository.save(user1);
