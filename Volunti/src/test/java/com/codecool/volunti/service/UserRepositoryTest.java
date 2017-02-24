@@ -96,13 +96,13 @@ public class UserRepositoryTest extends AbstractServiceTest {
 
     @Test (expected = ConstraintViolationException.class)
     public void FirstFieldMissingTest(){
-        user1 = new User("", "Test1 last name", "Email1", "Password1", "salt1", organisation, volunteer);
+        user1 = new User("", "Test1 last name", "Email1", "Password1", organisation, volunteer);
         this.userRepository.save(user1);
     }
 
     @Test (expected = ConstraintViolationException.class)
     public void CategoryIsNullTest(){
-        user1 = new User("Test1 first name", null, "Email1", "Password1", "salt1", organisation, volunteer);
+        user1 = new User("Test1 first name", null, "Email1", "Password1", organisation, volunteer);
         this.userRepository.save(user1);
     }
 

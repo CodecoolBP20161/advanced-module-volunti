@@ -48,7 +48,7 @@ public class DataLoader {
 
 
 
-        User user1 = new User("Anna", "Kiss", "asd@gmail.com", "asdasd", "asd", organisation1, volunteer);
+        User user1 = new User("Anna", "Kiss", "asd@gmail.com", "password", organisation1, volunteer);
 
         organisationRepository.save(organisation1);
         volunteerRepository.save(volunteer);

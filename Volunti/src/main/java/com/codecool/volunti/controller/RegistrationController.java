@@ -89,6 +89,10 @@ public class RegistrationController {
     @RequestMapping( value = "/registration/organisation/step2/", method = RequestMethod.POST )
     public String saveStep2(User user, HttpSession session, Organisation organisation) {
         LOGGER.info("saveStep2() method called...");
+        if(session.getAttribute("organisation") == null){
+            LOGGER.info("Step1 is not done, redirecting to step1.");
+            return "redirect:/registration/organisation/step1";
+        }
         LOGGER.info("session: " + session.getAttribute("organisation").toString());
 
         //save the organisation from the session into database
@@ -98,14 +102,16 @@ public class RegistrationController {
 
         //save the user into database
         user.setOrganisation(organisation);
+        user.hashPassword(user.getPassword());
         User savedUser = userService.saveUser(user);
         LOGGER.info("user saved: {}", savedUser);
         //email sending
-        user.signupSuccess(emailService, EMAILTYPE);
+        //user.signupSuccess(emailService, EMAILTYPE);
 
         //clean the session
         session.removeAttribute("organisation");
-        LOGGER.info("session cleaned: " + session.getAttribute("organisation").toString());
+        session.removeAttribute("user");
+        LOGGER.info("Organisation removed from session.");
 
         return "/registration/step3";
     }
