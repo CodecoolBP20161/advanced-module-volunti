@@ -30,10 +30,6 @@ public class OrganisationRepositoryTest extends AbstractServiceTest {
     private JdbcTemplate jdbcTemplate;
 
     @Autowired
-    private OrganisationRepository organisationRepository;
-
-
-    @Autowired
     public void setDataSource(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
@@ -108,8 +104,8 @@ public class OrganisationRepositoryTest extends AbstractServiceTest {
     public void addMoreOrganisation(){
 
         int countBefore = countRowsInTable("organisations");
-        this.organisationRepository.save(organisation);
-        this.organisationRepository.save(organisation2);
+        this.repository.save(organisation);
+        this.repository.save(organisation2);
         assertEquals(countBefore + 2, countRowsInTable("organisations"));
 
     }
