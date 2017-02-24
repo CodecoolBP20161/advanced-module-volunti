@@ -27,6 +27,8 @@ public class DataLoader {
     private OrganisationRepository organisationRepository;
     private UserRepository userRepository;
     private  VolunteerRepository volunteerRepository;
+    private Organisation organisation;
+    private Volunteer volunteer;
 
     @Autowired
     public DataLoader(OrganisationRepository organisationRepository, UserRepository userRepository, VolunteerRepository volunteerRepository) {
@@ -44,12 +46,14 @@ public class DataLoader {
         Organisation organisation1 = new Organisation("UNICEF", Category.TEACHING, Country.Hungary, "1065", "Isaszeg", "Kossuth utca", spokenLanguages, "mission mission mission mission mission", "description1", "description2");
         Volunteer volunteer = new Volunteer();
 
+
+
         User user1 = new User("Anna", "Kiss", "asd@gmail.com", "asdasd", "asd", organisation1, volunteer);
 
-
-        userRepository.save(user1);
         organisationRepository.save(organisation1);
         volunteerRepository.save(volunteer);
+        userRepository.save(user1);
+
         LOGGER.info("loadData method called ...");
     }
 }

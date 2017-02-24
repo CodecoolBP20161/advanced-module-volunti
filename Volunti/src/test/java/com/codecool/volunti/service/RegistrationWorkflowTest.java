@@ -2,6 +2,7 @@ package com.codecool.volunti.service;
 
 import com.codecool.volunti.model.Organisation;
 import com.codecool.volunti.model.User;
+import com.codecool.volunti.model.Volunteer;
 import com.codecool.volunti.model.enums.Category;
 import com.codecool.volunti.model.enums.Country;
 import org.junit.Before;
@@ -23,6 +24,7 @@ public class RegistrationWorkflowTest extends AbstractServiceTest {
 
     @Resource
     private WebApplicationContext webApplicationContext;
+    private Volunteer volunteer;
 
     private MockMvc mockMvc;
     private String validOrganisationFormData = "organisationId=0" +
@@ -46,6 +48,7 @@ public class RegistrationWorkflowTest extends AbstractServiceTest {
 
     @Before
     public void setup() {
+        volunteer = new Volunteer();
         this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
         organisation = new Organisation();
         organisation.setName("TestName");
@@ -58,7 +61,7 @@ public class RegistrationWorkflowTest extends AbstractServiceTest {
         organisation.setDescription1("Desc1");
         organisation.setDescription2("Desc2");
 
-        user = new User("Test", "USer", "test.user@gmail.com", "testPassword", "testSalt");
+        user = new User("Test", "USer", "test.user@gmail.com", "testPassword", "testSalt", organisation, volunteer );
 
 
     }
