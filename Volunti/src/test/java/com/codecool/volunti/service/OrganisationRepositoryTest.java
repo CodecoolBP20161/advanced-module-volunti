@@ -44,10 +44,30 @@ public class OrganisationRepositoryTest extends AbstractServiceTest {
         spokenLanguages.add(SpokenLanguage.ENGLISH);
         spokenLanguages.add(SpokenLanguage.HUNGARIAN);
 
-        organisation = new Organisation("Test 1", Category.TEACHING, "Country", "zipcode", "City", "Address", spokenLanguages, "Mission minimum 10 character", "Desc 1 min 3 character", "Desc 2 min 3 character");
-        organisation2 = new Organisation("Test 2", Category.TEACHING, "Country", "zipcode", "City", "Address", spokenLanguages, "Mission minimum 10 character", "Desc 1 min 3 character", "Desc 2 min 3 character");
+        organisation = new Organisation();
+        organisation.setName("Test 1");
+        organisation.setCategory(Category.TEACHING);
+        organisation.setCountry(Country.Hungary);
+        organisation.setZipcode("zipcode");
+        organisation.setCity("City");
+        organisation.setAddress("Address");
+        organisation.setSpokenLanguage(spokenLanguages);
+        organisation.setMission("Mission minimum 10 character");
+        organisation.setDescription1("Desc 1 min 3 character");
+        organisation.setDescription2("Desc 2 min 3 character");
 
-
+        organisation2 = new Organisation();
+        organisation2.setName("Test 2");
+        organisation2.setCategory(Category.TEACHING);
+        organisation2.setCountry(Country.Hungary);
+        organisation2.setZipcode("zipcode");
+        organisation2.setCity("City");
+        organisation2.setAddress("Address");
+        organisation2.setSpokenLanguage(spokenLanguages);
+        organisation2.setMission("Mission minimum 10 character");
+        organisation2.setDescription1("Desc 1 min 3 character");
+        organisation2.setDescription2("Desc 2 min 3 character");
+        
     }
 
     @Test
@@ -57,7 +77,7 @@ public class OrganisationRepositoryTest extends AbstractServiceTest {
         organisation = this.repository.findByName("Test 1");
         assertThat(organisation.getName()).isEqualTo("Test 1");
         assertThat(organisation.getCategory()).isEqualTo(Category.TEACHING);
-        assertThat(organisation.getCountry()).isEqualTo("Country");
+        assertThat(organisation.getCountry()).isEqualTo(Country.Hungary);
         assertThat(organisation.getZipcode()).isEqualTo("zipcode");
         assertThat(organisation.getCity()).isEqualTo("City");
         assertThat(organisation.getAddress()).isEqualTo("Address");
@@ -71,7 +91,7 @@ public class OrganisationRepositoryTest extends AbstractServiceTest {
     @Test (expected = ConstraintViolationException.class)
     public void FirstFieldMissingTest(){
 
-        organisation = new Organisation("", Category.TEACHING, "Country", "zipcode", "City", "Address", spokenLanguages, "Mission minimum 10 character", "Desc 1 min 3 character", "Desc 2 min 3 character");
+        organisation = new Organisation("", Category.TEACHING, Country.Hungary, "zipcode", "City", "Address", spokenLanguages, "Mission minimum 10 character", "Desc 1 min 3 character", "Desc 2 min 3 character");
         organisation = this.repository.save(organisation);
 
     }
@@ -87,10 +107,10 @@ public class OrganisationRepositoryTest extends AbstractServiceTest {
     @Test
     public void addMoreOrganisation(){
 
-        int countBefore = countRowsInTable("Organisation");
+        int countBefore = countRowsInTable("organisations");
         this.organisationRepository.save(organisation);
         this.organisationRepository.save(organisation2);
-        assertEquals(countBefore + 2, countRowsInTable("Organisation"));
+        assertEquals(countBefore + 2, countRowsInTable("organisations"));
 
     }
 

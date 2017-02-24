@@ -17,10 +17,8 @@ $(document).ready(function() {
                         "value": value
                     }),
                     success: function (exists) {
-                        console.log(exists);
                         var InputSpan = $('#' + spanID);
                         var submitButton = $('#' + buttonID);
-                        console.log(exists);
                         if (exists == "true") {
                             InputSpan.text(inputField.val() + " is already in use.");
                             InputSpan.css("display", "block");

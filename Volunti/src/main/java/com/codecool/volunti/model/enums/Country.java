@@ -1,6 +1,6 @@
 package com.codecool.volunti.model.enums;
 
-public enum Countries {
+public enum Country {
 
     Afghanistan,
     Albania,
