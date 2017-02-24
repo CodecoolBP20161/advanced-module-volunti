@@ -69,34 +69,6 @@ public class User {
         userStatus = UserStatus.INACTIVE;
     }
 
-    public User(String firstName, String lastName, String email, String password, String salt) {
-
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
-        this.salt = salt;
-    }
-
-    public User(String firstName, String lastName, String email, String password, String salt, Organisation organisation) {
-
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
-        this.salt = salt;
-        this.organisation = organisation;
-    }
-
-    public User(String firstName, String lastName, String email, String password, String salt, Volunteer volunteer) {
-
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
-        this.salt = salt;
-        this.volunteer = volunteer;
-    }
 
     public User(String firstName, String lastName, String email, String password, String salt, Organisation organisation, Volunteer volunteer) {
 

@@ -41,9 +41,11 @@ public class DataLoader {
         spokenLanguages.add(SpokenLanguage.ENGLISH);
         spokenLanguages.add(SpokenLanguage.HUNGARIAN);
 
-        User user1 = new User("Anna", "Kiss", "asd@gmail.com", "asdasd", "asd");
         Organisation organisation1 = new Organisation("UNICEF", Category.TEACHING, Country.Hungary, "1065", "Isaszeg", "Kossuth utca", spokenLanguages, "mission mission mission mission mission", "description1", "description2");
         Volunteer volunteer = new Volunteer();
+
+        User user1 = new User("Anna", "Kiss", "asd@gmail.com", "asdasd", "asd", organisation1, volunteer);
+
 
         userRepository.save(user1);
         organisationRepository.save(organisation1);

@@ -1,6 +1,11 @@
 package com.codecool.volunti.service;
 
+import com.codecool.volunti.model.Organisation;
 import com.codecool.volunti.model.User;
+import com.codecool.volunti.model.Volunteer;
+import com.codecool.volunti.model.enums.Category;
+import com.codecool.volunti.model.enums.Country;
+import com.codecool.volunti.model.enums.SpokenLanguage;
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.junit.After;
 import org.junit.Before;
@@ -10,6 +15,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.test.jdbc.JdbcTestUtils;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 import static junit.framework.TestCase.assertEquals;
@@ -21,6 +27,9 @@ public class UserServiceTest extends AbstractServiceTest {
     private UserService userService;
     private User user1;
     private JdbcTemplate jdbcTemplate;
+    private Organisation organisation;
+    private Volunteer volunteer;
+    private ArrayList<SpokenLanguage> spokenLanguages;
 
     @Autowired
     public void setDataSource(DataSource dataSource) {
@@ -29,13 +38,20 @@ public class UserServiceTest extends AbstractServiceTest {
 
     @Before
     public void setUp() {
-        user1 = new User("firstName", "lastName", "email@email.com", "password", "salt");
+
+        ArrayList<SpokenLanguage> spokenLanguages = new ArrayList<>();
+        spokenLanguages.add(SpokenLanguage.ENGLISH);
+        spokenLanguages.add(SpokenLanguage.HUNGARIAN);
+
+        organisation = new Organisation("Test 1", Category.TEACHING, Country.Hungary, "zipcode", "City", "Address", spokenLanguages, "Mission minimum 10 character", "Desc 1 min 3 character", "Desc 2 min 3 character");
+        volunteer = new Volunteer();
+        user1 = new User("firstName", "lastName", "email@email.com", "password", "salt", organisation, volunteer);
         userService.saveUser(user1);
     }
 
     @After
     public void tearDown() {
-        JdbcTestUtils.deleteFromTables(jdbcTemplate, "\"user\"");
+        JdbcTestUtils.deleteFromTables(jdbcTemplate, "users");
     }
 
     @Test
