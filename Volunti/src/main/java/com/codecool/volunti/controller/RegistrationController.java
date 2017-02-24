@@ -106,7 +106,7 @@ public class RegistrationController {
         User savedUser = userService.saveUser(user);
         LOGGER.info("user saved: {}", savedUser);
         //email sending
-        //user.signupSuccess(emailService, EMAILTYPE);
+        user.signupSuccess(emailService, EMAILTYPE);
 
         //clean the session
         session.removeAttribute("organisation");

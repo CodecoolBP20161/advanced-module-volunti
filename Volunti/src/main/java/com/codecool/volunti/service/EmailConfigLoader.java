@@ -16,7 +16,9 @@ public class EmailConfigLoader {
 
     private Logger LOGGER = LoggerFactory.getLogger(EmailConfigLoader.class);
 
-    private static final String HEADERIMAGE = "src=http://www.twitrcovers.com/wp-content/uploads/2014/11/Snail-l.jpg";
+    // TODO: http url override to the final url
+    private static final String HEADERIMAGE = "src=http://localhost:8080/assets/images/volunti_logo.png";
+    private static final String URL = "http://localhost:8080";
 
     EmailProperties emailPropertiesReader = new EmailProperties();
     HashMap emailProperties;
@@ -31,18 +33,24 @@ public class EmailConfigLoader {
         String br = "<br/>";
         String htmlStart = "<html>";
         String htmlEnd = "</html>";
-        String bodyStart = "<body style='text-align: justify; color: red'>";
-        String bodyEnd = "</body>";
-        String img = "<img "  + HEADERIMAGE +  " style='width: 65%'>";
-        String h1Start = "<h1>";
-        String h1End = "</h1>";
-        String url = "<a>localhost:8080/registration/organisation/step3/" + user.getActivationID() + "</a>";
+        String bodyStart = "<body><table style='font-family: arial;'><tr><td align='center'><img " + HEADERIMAGE + "></td></tr>";
+        String body = "<tr><td align='center' >";
+        String url = "<p>"+ URL +"/registration/organisation/step3/" + user.getActivationID() + "</p>";
+        String bodyEnd = "</td></tr><tr><td align='center'></td></tr></table></body>";
+        String pStart = "<p>";
+        String pEnd = "</p>";
 
         String text1 = emailProperties.get("text1").toString();
         String text2 = emailProperties.get("text2").toString();
+        String text3 = emailProperties.get("text3").toString();
         String welcome1 = emailProperties.get("welcome1").toString();
         String welcome2 = emailProperties.get("welcome2").toString();
-        String msg =htmlStart + bodyStart + img + h1Start + text1 + br + text2  + br + url + br + welcome1 + br + welcome2 + h1End + bodyEnd + htmlEnd;
+        String msg =htmlStart +
+                bodyStart + body + pStart + text1 + pEnd +
+                br + pStart + text2 + pEnd +
+                br + pStart + text3 + pEnd +
+                br + url + pStart + welcome1 + pEnd +
+                br + pStart + welcome2 + pEnd + bodyEnd + htmlEnd;
         helper.setText(msg, true);
 
         return helper;
