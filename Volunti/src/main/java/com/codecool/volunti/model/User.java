@@ -87,7 +87,7 @@ public class User {
             // send a notification
             emailService.sendEmail(this, emailType);
         } catch (Exception e) {
-            LOGGER.warn("Email not sent");
+            LOGGER.warn("Email not sent: " + e.getMessage());
         }
         return "Thank you for registering with us.";
     }
