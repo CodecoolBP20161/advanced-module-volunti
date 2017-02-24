@@ -3,7 +3,6 @@ package com.codecool.volunti.controller;
 
 import com.codecool.volunti.model.Opportunity;
 import com.codecool.volunti.model.Organisation;
-import com.codecool.volunti.model.Skill;
 import com.codecool.volunti.repository.OpportunityRepository;
 import com.codecool.volunti.repository.OrganisationRepository;
 import com.codecool.volunti.repository.SkillRepository;
@@ -15,8 +14,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -60,7 +57,7 @@ public class OpportunityController {
     @GetMapping("/{organisation_id}/opportunity/{opportunity_id}")
     public String editOpportunity(@PathVariable Integer organisation_id,@PathVariable Integer opportunity_id, Model model ) {
 
-        String action = null;
+        String action;
         if (opportunity_id != 0) {
             Opportunity opportunity = opportunityRepository.findOne(opportunity_id);
             model.addAttribute("opportunity", opportunity);
@@ -70,12 +67,10 @@ public class OpportunityController {
             model.addAttribute("opportunity", new Opportunity());
             action = "/organisation/" + organisation_id + "/opportunity/0";
         }
-        Organisation organisation = organisationRepository.findByOrganisationId(organisation_id);
-        List<Skill> skill = (List<Skill>) skillRepository.findAll();
 
         model.addAttribute("action", action);
-        model.addAttribute("skills", skill);
-        model.addAttribute("organisation", organisation);
+        model.addAttribute("skills", skillRepository.findAll());
+        model.addAttribute("organisation", organisationRepository.findByOrganisationId(organisation_id));
 
         return "opportunity/multi-form";
     }
@@ -84,24 +79,22 @@ public class OpportunityController {
     @PostMapping("/{organisation_id}/opportunity/{opportunity_id}")
     public String editSaveOpportunity(@PathVariable Integer organisation_id,@PathVariable Integer opportunity_id, Model model, Opportunity opportunity, final BindingResult bindingResult) {
         Organisation organisation = organisationRepository.findByOrganisationId(organisation_id);
-        log.info("opportunity = " + opportunity);
-        if (opportunity_id != 0) {
-        Opportunity opportunityOld = opportunityRepository.findOne(opportunity_id);
-        opportunityService.update(opportunity, opportunityOld);
 
+        if (opportunity_id != 0) {
+        opportunityService.update(opportunity, opportunityRepository.findOne(opportunity_id));
         } else {
             opportunity.setOrganisation(organisation);
             opportunityRepository.save(opportunity);
         }
-//        String action = "/organisation/" + organisation_id + "/opportunity/edit/" + opportunity_id;
-//        model.addAttribute("action", action);
+        log.info("opp: " + opportunity);
+
         model.addAttribute("opportunity", opportunity);
         model.addAttribute("organisation", organisation);
+
         if (bindingResult.hasErrors()) {
             return "opportunity/multi-form";
         }
 
-        log.info("opp: " + opportunity);
         return "redirect:/organisation/{organisation_id}/opportunities";
     }
 
