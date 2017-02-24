@@ -98,6 +98,7 @@ public class RegistrationController {
 
         //save the user into database
         user.setOrganisation(organisation);
+        user.hashPassword(user.getPassword());
         User savedUser = userService.saveUser(user);
         LOGGER.info("user saved: {}", savedUser);
         //email sending
