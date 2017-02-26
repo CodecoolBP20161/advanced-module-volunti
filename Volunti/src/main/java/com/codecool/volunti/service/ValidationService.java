@@ -1,18 +1,22 @@
 package com.codecool.volunti.service;
 
-import com.codecool.volunti.repository.UserRepository;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.HashMap;
 
+@Service
 public class ValidationService {
     private Logger LOGGER = LoggerFactory.getLogger(ValidationService.class);
 
     private UserService userService;
     private OrganisationService organisationService;
 
+    @Autowired
     public ValidationService(OrganisationService organisationService, UserService userService){
         this. organisationService = organisationService;
         this. userService = userService;
