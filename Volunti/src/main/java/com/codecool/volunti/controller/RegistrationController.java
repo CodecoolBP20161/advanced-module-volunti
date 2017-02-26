@@ -4,10 +4,7 @@ package com.codecool.volunti.controller;
 import com.codecool.volunti.model.Organisation;
 import com.codecool.volunti.model.User;
 import com.codecool.volunti.repository.OrganisationRepository;
-import com.codecool.volunti.service.EmailService;
-import com.codecool.volunti.service.EmailType;
-import com.codecool.volunti.service.OrganisationService;
-import com.codecool.volunti.service.UserService;
+import com.codecool.volunti.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +29,7 @@ public class RegistrationController {
     private OrganisationService organisationService;
     private UserService userService;
     private EmailService emailService;
+    private ValidationService validationService = new ValidationService(organisationService, userService);
 
 
     @Autowired
@@ -132,33 +130,7 @@ public class RegistrationController {
     @RequestMapping( value = "/registration/ValidateFieldIfExists", method = RequestMethod.POST)
     @ResponseBody
     public String ValidateFieldIfExists(@RequestBody HashMap<String, String> payload){
-        LOGGER.info("Field Validation Started.");
-        String entity = payload.get("entityName");
-        String fieldName = payload.get("fieldName");
-        String valueToCheck = payload.get("value").trim();
-        switch (entity) {
-            case "user":
-                switch (fieldName) {
-                    case "email":
-                        LOGGER.info("Entity: User");
-                        return String.valueOf(userService.getByEmail(valueToCheck) != null);
-                    default:
-                        LOGGER.error("The given field name in " + entity + " doesnt exists.");
-                        throw new NotImplementedException();
-                }
-            case "organisation":
-                switch (fieldName) {
-                case "name":
-                    LOGGER.info("Entity: Organization");
-                    return String.valueOf(organisationService.getByName(valueToCheck) != null);
-                default:
-                    LOGGER.error("The given field name in " + entity + " doesnt exists.");
-                    throw new NotImplementedException();
-                }
-            default:
-                LOGGER.error("Not implemented validation type or wrong request body.");
-                throw new NotImplementedException();
-        }
+       return String.valueOf(validationService.CheckIfValueExists(payload));
     }
 
 }
