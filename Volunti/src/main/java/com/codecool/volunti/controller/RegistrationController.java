@@ -33,11 +33,16 @@ public class RegistrationController {
 
 
     @Autowired
-    public RegistrationController(OrganisationRepository organisationRepository, OrganisationService organisationService, UserService userService, EmailService emailService) {
+    public RegistrationController(OrganisationRepository organisationRepository,
+                                  OrganisationService organisationService,
+                                  UserService userService,
+                                  EmailService emailService,
+                                  ValidationService validationService) {
         this.organisationRepository = organisationRepository;
         this.organisationService = organisationService;
         this.userService = userService;
         this.emailService = emailService;
+        this.validationService = validationService;
     }
 
 
@@ -130,6 +135,7 @@ public class RegistrationController {
     @RequestMapping( value = "/registration/ValidateFieldIfExists", method = RequestMethod.POST)
     @ResponseBody
     public String ValidateFieldIfExists(@RequestBody HashMap<String, String> payload){
+        LOGGER.info("payload: " + payload.toString());
        return String.valueOf(validationService.CheckIfValueExists(payload));
     }
 
