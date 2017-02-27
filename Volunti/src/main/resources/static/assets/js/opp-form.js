@@ -32,6 +32,27 @@ jQuery(document).ready(function() {
     	var parent_fieldset = $(this).parents('fieldset');
     	var next_step = true;
 
+        if ($('span.form-error').length != 0 ){
+            next_step = false;
+        } else{
+            next_step = true;
+        }
+
+        var multiSelect = [];
+        $('#select-state :selected').each(function(i, selected){
+            multiSelect[i] = $(selected).text();
+        });
+
+        if (multiSelect.length === 0){
+            if ($('.help-block.form-error').length === 0 ) {
+                $('.custom-select-box').append('<span class="help-block form-error">Please choose skill! </span>');
+            }
+                next_step = false;
+        } else{
+            next_step = true;
+        }
+
+
     	if( next_step ) {
     		parent_fieldset.fadeOut(400, function() {
 	    		$(this).next().fadeIn();
