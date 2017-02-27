@@ -1,6 +1,7 @@
 package com.codecool.volunti.service;
 
 import com.codecool.volunti.model.User;
+import com.codecool.volunti.model.enums.UserStatus;
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.junit.After;
 import org.junit.Before;
@@ -64,9 +65,9 @@ public class UserServiceTest extends AbstractServiceTest {
     @Test
     public void getByActivationIDHappyPath() throws Exception {
         UUID testID = user1.getActivationID();
-        LOGGER.debug("testID: {}", testID);
+        LOGGER.info("testID: {}", testID);
         User testUser = userService.getByActivationID(testID.toString());
-        LOGGER.debug("testUser.activationID: {}", testUser.getActivationID());
+        LOGGER.info("testUser.activationID: {}", testUser.getActivationID());
 
         assertEquals(testID, testUser.getActivationID());
     }
@@ -75,4 +76,42 @@ public class UserServiceTest extends AbstractServiceTest {
     public void getByActivationIDNoSuchID() throws Exception {
         userService.getByActivationID("fakeID");
     }
+
+    @Test
+    public void confirmRegistrationHappyPath() throws Exception {
+        String testID = user1.getActivationID().toString();
+        LOGGER.info("testID: {}", testID);
+        userService.ConfirmRegistration(testID);
+        User testUser = userService.getByActivationID(testID);
+        LOGGER.info("testUser.userStatus: {}", testUser.getUserStatus());
+
+        assertEquals(UserStatus.ACTIVE, testUser.getUserStatus());
+    }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void confirmRegistrationNoSuchID() throws Exception {
+        userService.ConfirmRegistration("fakeID");
+    }
+
+    @Test
+    public void confirmRegistrationUserIsAlreadyActive() throws Exception {
+        String testID = user1.getActivationID().toString();
+        userService.ConfirmRegistration(testID);
+        User testUser = userService.getByActivationID(testID);
+        LOGGER.info("enabled user status: {}", testUser.getUserStatus());
+
+        assertEquals(null, userService.ConfirmRegistration(testID));
+    }
+
+    @Test
+    public void confirmRegistrationUserIsDisabled() throws Exception {
+        User user2 = new User("firstName2", "lastName2", "email2@email.com", "password2", null, null);
+        String testID = user2.getActivationID().toString();
+        user2.setUserStatus(UserStatus.DISABLED);
+        LOGGER.info("disabled user status: {}", user2.getUserStatus());
+        userService.saveUser(user2);
+
+        assertEquals(null, userService.ConfirmRegistration(testID));
+    }
+
 }
