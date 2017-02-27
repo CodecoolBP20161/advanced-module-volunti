@@ -86,6 +86,9 @@ public class User {
         if (salt == null){
             setSalt();
         }
+        if (userStatus == null){
+            setUserStatus(UserStatus.INACTIVE);
+        }
     }
 
     private void setSalt(){
