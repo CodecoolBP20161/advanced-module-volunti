@@ -17,6 +17,7 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
+import java.util.UUID;
 
 @Controller
 @SessionAttributes({"organisation", "user"})
@@ -113,6 +114,7 @@ public class RegistrationController {
 
         //clean the session
         session.removeAttribute("organisation");
+        LOGGER.info("UUID: ", savedUser.getActivationID());
         session.removeAttribute("user");
         LOGGER.info("Organisation removed from session.");
 
@@ -123,7 +125,15 @@ public class RegistrationController {
     @RequestMapping( value = "/registration/organisation/step3/{activation_id}", method = RequestMethod.GET )
     public String step3(@PathVariable String activation_id, Model model, HttpSession session) {
         LOGGER.info("step3() method called...");
-        model.addAttribute("confirmation", activation_id);
+        User newUser = userService.ConfirmRegistration(activation_id);
+        if (newUser == null){
+            LOGGER.warn("Activation failed.");
+        } else{
+            LOGGER.info("User profile has been activated.");
+            //TODO: Log in newUser. Note:It can be also null for various reasons(see ConfirmRegistration())
+        }
+
+        model.addAttribute("user", newUser);
         return "registration/step4";
     }
     /* Expected Request body:
