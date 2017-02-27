@@ -89,8 +89,13 @@ public class UserServiceTest extends AbstractServiceTest {
     }
 
     @Test (expected = IllegalArgumentException.class)
-    public void confirmRegistrationNoSuchID() throws Exception {
+    public void confirmRegistrationWrongIdFormat() throws Exception {
         userService.ConfirmRegistration("fakeID");
+    }
+
+    @Test
+    public void confirmRegistrationNoSuchId() throws Exception {
+        assertEquals(null, userService.ConfirmRegistration(UUID.randomUUID().toString()));
     }
 
     @Test

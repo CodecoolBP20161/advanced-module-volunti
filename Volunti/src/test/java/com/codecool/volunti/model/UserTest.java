@@ -28,18 +28,10 @@ public class UserTest {
 
     @Test
     public void hashPassword() throws Exception {
-        String testHash = BCrypt.hashpw("password", testUser.getSalt());
-        LOGGER.info("testHash: {}", testHash);
-
-        String testUserPassword;
-        testUserPassword = testUser.getPassword();
-        LOGGER.info("testUser.password before hashing: {}", testUserPassword);
-
+        LOGGER.info("password before hashing: {}", testUser.getPassword());
         testUser.hashPassword(testUser.getPassword());
-        testUserPassword = testUser.getPassword();
-        LOGGER.info("testUser.password after hashing {}", testUserPassword);
-
-        assertEquals(testHash, testUserPassword);
+        LOGGER.info("password after hashing: {}", testUser.getPassword());
+        assertEquals(true, BCrypt.checkpw("password", testUser.getPassword()));
     }
 
     @Test
