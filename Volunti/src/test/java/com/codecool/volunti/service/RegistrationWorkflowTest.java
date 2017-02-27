@@ -5,21 +5,31 @@ import com.codecool.volunti.model.User;
 import com.codecool.volunti.model.Volunteer;
 import com.codecool.volunti.model.enums.Category;
 import com.codecool.volunti.model.enums.Country;
+import com.codecool.volunti.model.enums.UserStatus;
+import com.codecool.volunti.repository.OrganisationRepository;
+import com.codecool.volunti.repository.UserRepository;
+import org.apache.tomcat.jdbc.pool.DataSource;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import javax.annotation.Resource;
 
+import java.util.UUID;
+
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-public class RegistrationWorkflowTest extends AbstractServiceTest {
+import static org.junit.Assert.assertEquals;
+
+public class  RegistrationWorkflowTest extends AbstractServiceTest {
 
     @Resource
     private WebApplicationContext webApplicationContext;
@@ -44,6 +54,17 @@ public class RegistrationWorkflowTest extends AbstractServiceTest {
             "&password=password";
     private Organisation organisation;
     private User user;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private OrganisationRepository organisationRepository;
+    private UserService userService = new UserService(userRepository);
+    private JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    public void setDataSource(DataSource dataSource) {
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
+    }
 
     @Before
     public void setup() {
@@ -60,7 +81,7 @@ public class RegistrationWorkflowTest extends AbstractServiceTest {
         organisation.setDescription1("Desc1");
         organisation.setDescription2("Desc2");
 
-        user = new User("Test", "USer", "test.user@gmail.com", "testPassword", organisation, volunteer );
+        user = new User("Test", "User", "test.user@gmail.com", "testPassword", organisation, null);
 
 
     }
@@ -125,12 +146,23 @@ public class RegistrationWorkflowTest extends AbstractServiceTest {
 
     @Test
     public void step3_GET_InValidActivationID() throws Exception {
-        //TODO: implement it
+        this.mockMvc.perform(get("/registration/organisation/step3/ThisIsDefinitelyNotAnUUID"))
+                .andExpect(view().name("registration/invalidActivationLink"));
+
+
     }
 
 
     @Test
     public void step3_GET_ValidActivationID() throws Exception {
-        // TODO: implement it
+        UUID userUUID = UUID.randomUUID();
+        user.setActivationID(userUUID);
+        Organisation organisation = organisationRepository.findByName("UNICEF");
+        user.setOrganisation(organisation);
+        userRepository.save(user);
+        this.mockMvc.perform(get("/registration/organisation/step3/" + userUUID))
+                .andExpect(content().string(containsString("Email confirmation done!!!!")));
+        User userAfterRequest = userRepository.findByEmail("test.user@gmail.com");
+        assertEquals(UserStatus.ACTIVE, userAfterRequest.getUserStatus());
     }
 }
