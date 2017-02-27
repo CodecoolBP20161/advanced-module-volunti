@@ -1,6 +1,7 @@
 package com.codecool.volunti.model;
 
 
+import com.codecool.volunti.model.enums.OpportunityHoursExpectedType;
 import lombok.Data;
 import lombok.ToString;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -43,7 +44,7 @@ public class Opportunity{
     @Min(value = 0, message = "The value must be positive")
     @Max(value = 100, message = "Value must be less than 100")
     private int hoursExpected;
-    private String hoursExpectedType;
+    private OpportunityHoursExpectedType hoursExpectedType;
 
     @Min(value = 0, message = "The value must be positive")
     @Max(value = 100, message = "Value must be less than 100")

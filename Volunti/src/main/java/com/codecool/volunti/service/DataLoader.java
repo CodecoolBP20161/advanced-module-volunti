@@ -3,6 +3,7 @@ package com.codecool.volunti.service;
 
 import com.codecool.volunti.model.*;
 import com.codecool.volunti.model.enums.Category;
+import com.codecool.volunti.model.enums.OpportunityHoursExpectedType;
 import com.codecool.volunti.model.enums.SpokenLanguage;
 import com.codecool.volunti.repository.*;
 import org.fluttercode.datafactory.impl.DataFactory;
@@ -60,7 +61,7 @@ public class DataLoader {
         firstOpportunity.setAccommodationType("Tent");
         firstOpportunity.setFoodType("Vega");
         firstOpportunity.setHoursExpected(3);
-        firstOpportunity.setHoursExpectedType("none");
+        firstOpportunity.setHoursExpectedType(null);
         firstOpportunity.setMinimumStayInDays(2);
         firstOpportunity.setAvailabilityFrom(new java.sql.Date(2017 - 02 - 16));
         firstOpportunity.setDateAvailabilityTo(new java.sql.Date(2017 - 02 - 21));
@@ -75,7 +76,7 @@ public class DataLoader {
         opportunity1.setAccommodationType("Tent");
         opportunity1.setFoodType("Vega");
         opportunity1.setHoursExpected(3);
-        opportunity1.setHoursExpectedType("none");
+        opportunity1.setHoursExpectedType(null);
         opportunity1.setMinimumStayInDays(2);
         opportunity1.setAvailabilityFrom(new java.sql.Date(2017 - 02 - 16));
         opportunity1.setDateAvailabilityTo(new java.sql.Date(2017 - 02 - 21));
@@ -124,7 +125,7 @@ public class DataLoader {
         opportunity.setAccommodationType(df.getRandomWord(5));
         opportunity.setFoodType(df.getRandomWord());
         opportunity.setHoursExpected(df.getNumberBetween(3,12));
-        opportunity.setHoursExpectedType("day");
+        opportunity.setHoursExpectedType(OpportunityHoursExpectedType.Day);
         opportunity.setMinimumStayInDays(df.getNumberBetween(1,99));
         opportunity.setAvailabilityFrom(new java.sql.Date(2017 - 02 - 16));
         opportunity.setDateAvailabilityTo(new java.sql.Date(2017 - 02 - 21));
