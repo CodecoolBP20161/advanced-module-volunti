@@ -4,6 +4,7 @@ package com.codecool.volunti.service;
 import com.codecool.volunti.model.User;
 import com.codecool.volunti.model.enums.UserStatus;
 import com.codecool.volunti.repository.UserRepository;
+import com.sun.javaws.exceptions.InvalidArgumentException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +40,14 @@ public class UserService {
 
 
     public User getByActivationID(String activationID) {
-        return userRepository.findByActivationID(UUID.fromString(activationID));
+        try{
+            UUID activationUUID = UUID.fromString(activationID);
+            return userRepository.findByActivationID(activationUUID);
+        } catch (IllegalArgumentException e){
+            LOGGER.error("Failed to convert String to UUID, null is returned.");
+            return null;
+        }
+
     }
 
     public User ConfirmRegistration(String activationID) {
