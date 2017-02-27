@@ -53,7 +53,7 @@ public class DataLoader {
         opportunity.setAccommodationType("Tent");
         opportunity.setFoodType("Vega");
         opportunity.setHoursExpected(3);
-        opportunity.setHoursExpectedType("none");
+        opportunity.setHoursExpectedType(null);
         opportunity.setMinimumStayInDays(2);
         opportunity.setAvailabilityFrom(new java.sql.Date(2017 - 02 - 16));
         opportunity.setDateAvailabilityTo(new java.sql.Date(2017 - 02 - 21));
@@ -68,7 +68,7 @@ public class DataLoader {
         opportunity1.setAccommodationType("Tent");
         opportunity1.setFoodType("Vega");
         opportunity1.setHoursExpected(3);
-        opportunity1.setHoursExpectedType("none");
+        opportunity1.setHoursExpectedType(null);
         opportunity1.setMinimumStayInDays(2);
         opportunity1.setAvailabilityFrom(new java.sql.Date(2017 - 02 - 16));
         opportunity1.setDateAvailabilityTo(new java.sql.Date(2017 - 02 - 21));
