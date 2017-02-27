@@ -72,9 +72,14 @@ public class UserServiceTest extends AbstractServiceTest {
         assertEquals(testID, testUser.getActivationID());
     }
 
-    @Test (expected = IllegalArgumentException.class)
+    @Test
+    public void getByActivationIDWrongIDFormat() throws Exception {
+        assertEquals(null, userService.getByActivationID("fakeID"));
+    }
+
+    @Test
     public void getByActivationIDNoSuchID() throws Exception {
-        userService.getByActivationID("fakeID");
+        assertEquals(null, userService.ConfirmRegistration(UUID.randomUUID().toString()));
     }
 
     @Test
@@ -88,9 +93,9 @@ public class UserServiceTest extends AbstractServiceTest {
         assertEquals(UserStatus.ACTIVE, testUser.getUserStatus());
     }
 
-    @Test (expected = IllegalArgumentException.class)
+    @Test
     public void confirmRegistrationWrongIdFormat() throws Exception {
-        userService.ConfirmRegistration("fakeID");
+        assertEquals(null, userService.ConfirmRegistration("fakeID"));
     }
 
     @Test
