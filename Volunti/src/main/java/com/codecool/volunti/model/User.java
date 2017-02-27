@@ -79,6 +79,13 @@ public class User {
         this.setVolunteer(volunteer);
         setSalt();
         this.setPassword(password);
+
+        if (activationID == null){
+            activationID = UUID.randomUUID();
+        }
+        if (salt == null){
+            setSalt();
+        }
     }
 
     private void setSalt(){
