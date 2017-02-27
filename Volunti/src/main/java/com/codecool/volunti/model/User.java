@@ -8,6 +8,7 @@ import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
@@ -67,18 +68,25 @@ public class User {
     public User() {
         activationID = UUID.randomUUID();
         userStatus = UserStatus.INACTIVE;
+        setSalt();
     }
 
-
-    public User(String firstName, String lastName, String email, String password, String salt, Organisation organisation, Volunteer volunteer) {
-
+    public User(String firstName, String lastName, String email, String password, Organisation organisation, Volunteer volunteer) {
         this.setFirstName(firstName);
         this.setLastName(lastName);
         this.setEmail(email);
-        this.setPassword(password);
-        this.setSalt(salt);
         this.setOrganisation(organisation);
         this.setVolunteer(volunteer);
+        setSalt();
+        this.setPassword(password);
+    }
+
+    private void setSalt(){
+        salt = BCrypt.gensalt();
+    }
+
+    public void hashPassword(String password){
+        this.password = BCrypt.hashpw(password, salt);
     }
 
     public String signupSuccess(EmailService emailService, EmailType emailType) {
@@ -87,7 +95,7 @@ public class User {
             // send a notification
             emailService.sendEmail(this, emailType);
         } catch (Exception e) {
-            LOGGER.warn("Email not sent");
+            LOGGER.warn("Email not sent: " + e.getMessage());
         }
         return "Thank you for registering with us.";
     }
