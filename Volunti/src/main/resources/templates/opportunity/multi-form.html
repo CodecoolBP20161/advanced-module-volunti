@@ -213,15 +213,11 @@
                                                     <div class="col-sm-3">
                                                         <select name="hoursExpectedType"
                                                                 class="hoursExpectedType"
-                                                                placeholder="Day or Week"
                                                                 th:field="*{hoursExpectedType}">
-                                                            <span th:if="${opportunity.hoursExpectedType != null}">
-                                                                <option selected="selected"
-                                                                    th:text="${opportunity.hoursExpectedType}"
-                                                                    th:value="${opportunity.hoursExpectedType}"></option>
-                                                            </span>
-                                                            <option selected="selected" value="Day">Day</option>
-                                                            <option value="Week">Week</option>
+                                                            <option value="" hidden="hidden" selected="selected">Select type</option>
+                                                            <option th:each="type : ${T(com.codecool.volunti.model.enums.OpportunityHoursExpectedType).values()}"
+                                                                    th:value="${type}"
+                                                                    th:text="${type}"></option>
                                                         </select>
                                                     </div>
                                                     <div class="col-sm-8">

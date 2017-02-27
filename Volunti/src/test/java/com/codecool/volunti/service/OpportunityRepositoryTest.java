@@ -64,7 +64,7 @@ public class OpportunityRepositoryTest extends AbstractServiceTest {
         opportunity.setAccommodationType("Tent");
         opportunity.setFoodType("Vega");
         opportunity.setHoursExpected(3);
-        opportunity.setHoursExpectedType("none");
+        opportunity.setHoursExpectedType(null);
         opportunity.setMinimumStayInDays(2);
         opportunity.setAvailabilityFrom(new java.sql.Date(2017 - 02 - 16));
         opportunity.setDateAvailabilityTo(new java.sql.Date(2017 - 02 - 21));
@@ -79,7 +79,7 @@ public class OpportunityRepositoryTest extends AbstractServiceTest {
         opportunity1.setAccommodationType("Tent");
         opportunity1.setFoodType("Vega");
         opportunity1.setHoursExpected(3);
-        opportunity1.setHoursExpectedType("none");
+        opportunity1.setHoursExpectedType(null);
         opportunity1.setMinimumStayInDays(2);
         opportunity1.setAvailabilityFrom(new java.sql.Date(2017 - 02 - 16));
         opportunity1.setDateAvailabilityTo(new java.sql.Date(2017 - 02 - 21));
@@ -95,7 +95,7 @@ public class OpportunityRepositoryTest extends AbstractServiceTest {
         assertThat(opportunity.getTitle()).isEqualTo("First opportunity");
         assertThat(opportunity.getAccommodationType()).isEqualTo("Tent");
         assertThat(opportunity.getFoodType()).isEqualTo("Vega");
-        assertThat(opportunity.getHoursExpectedType()).isEqualTo("none");
+        assertThat(opportunity.getHoursExpectedType()).isEqualTo(null);
         assertThat(opportunity.getCosts()).isEqualTo("free");
         assertThat(opportunity.getRequirements()).isEqualTo("English");
         assertThat(opportunity.getNumberOfVolunteers()).isEqualTo(10);
