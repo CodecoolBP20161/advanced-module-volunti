@@ -40,7 +40,7 @@ public class OpportunityController {
         Organisation organisation = organisationRepository.findOne(organisation_id);
         log.info("Organisation found: " + organisation);
 
-        List<Opportunity> opportunities = opportunityRepository.findByOrganisation(organisation);
+        List<Opportunity> opportunities = opportunityRepository.findByOrganisationOrderByIdAsc(organisation);
         log.info("Opportunities found: " + opportunities);
 
         model.addAttribute("opportunities", opportunities);
