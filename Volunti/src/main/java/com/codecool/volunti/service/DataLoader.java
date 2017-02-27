@@ -5,6 +5,7 @@ import com.codecool.volunti.model.*;
 import com.codecool.volunti.model.enums.Category;
 import com.codecool.volunti.model.enums.SpokenLanguage;
 import com.codecool.volunti.repository.*;
+import org.fluttercode.datafactory.impl.DataFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,28 +39,34 @@ public class DataLoader {
 
     @PostConstruct
     public void loadData() {
+
         ArrayList<SpokenLanguage> spokenLanguages = new ArrayList<>();
         spokenLanguages.add(SpokenLanguage.ENGLISH);
         spokenLanguages.add(SpokenLanguage.HUNGARIAN);
 
         User user1 = new User("Anna", "Kiss", "asd@gmail.com", "asdasd", "asd");
-        Organisation organisation1 = new Organisation("UNICEF", Category.TEACHING, "Hungary", "1065", "Isaszeg", "Kossuth utca", spokenLanguages, "mission mission mission mission mission", "description1", "description2");
         Volunteer volunteer = new Volunteer();
+        volunteerRepository.save(volunteer);
+        userRepository.save(user1);
 
-        Opportunity opportunity = new Opportunity();
-        opportunity.setOrganisation(organisation1);
-        opportunity.setTitle("First opportunity");
-        opportunity.setNumberOfVolunteers(10);
-        opportunity.setAccommodationType("Tent");
-        opportunity.setFoodType("Vega");
-        opportunity.setHoursExpected(3);
-        opportunity.setHoursExpectedType("none");
-        opportunity.setMinimumStayInDays(2);
-        opportunity.setAvailabilityFrom(new java.sql.Date(2017 - 02 - 16));
-        opportunity.setDateAvailabilityTo(new java.sql.Date(2017 - 02 - 21));
-        opportunity.setCosts("free");
-        opportunity.setRequirements("English");
+        Organisation organisation1 = new Organisation("UNICEF", Category.TEACHING, "Hungary", "1065", "Isaszeg", "Kossuth utca", spokenLanguages, "mission mission mission mission mission", "description1", "description2");
+        loadSkills();
+        organisationRepository.save(organisation1);
 
+        Opportunity firstOpportunity = new Opportunity();
+        firstOpportunity.setOrganisation(organisation1);
+        firstOpportunity.setTitle("First opportunity");
+        firstOpportunity.setNumberOfVolunteers(10);
+        firstOpportunity.setAccommodationType("Tent");
+        firstOpportunity.setFoodType("Vega");
+        firstOpportunity.setHoursExpected(3);
+        firstOpportunity.setHoursExpectedType("none");
+        firstOpportunity.setMinimumStayInDays(2);
+        firstOpportunity.setAvailabilityFrom(new java.sql.Date(2017 - 02 - 16));
+        firstOpportunity.setDateAvailabilityTo(new java.sql.Date(2017 - 02 - 21));
+        firstOpportunity.setCosts("free");
+        firstOpportunity.setRequirements("English");
+        opportunityRepository.save(firstOpportunity);
 
         Opportunity opportunity1 = new Opportunity();
         opportunity1.setOrganisation(organisation1);
@@ -74,13 +81,12 @@ public class DataLoader {
         opportunity1.setDateAvailabilityTo(new java.sql.Date(2017 - 02 - 21));
         opportunity1.setCosts("free");
         opportunity1.setRequirements("English");
-
-        userRepository.save(user1);
-        organisationRepository.save(organisation1);
-        volunteerRepository.save(volunteer);
-        opportunityRepository.save(opportunity);
         opportunityRepository.save(opportunity1);
-        loadSkills();
+
+        for (int i = 0; i < 100; i++) {
+            saveTestTask(organisation1);
+        }
+
         LOGGER.info("loadData method called ...");
     }
 
@@ -101,5 +107,33 @@ public class DataLoader {
 
         skillRepository.save(skills);
     }
+
+    public void saveTestTask(Organisation org){
+        DataFactory df = new DataFactory();
+
+        List<Skill> skills = new ArrayList<>();
+        skills.add(new Skill("Programming"));
+        skills.add(new Skill("Cooking"));
+
+        String title = df.getRandomWord() + " " + df.getRandomWord();
+        Opportunity opportunity = new Opportunity();
+
+        opportunity.setOrganisation(org);
+        opportunity.setTitle(title);
+        opportunity.setNumberOfVolunteers(df.getNumberBetween(1,100));
+        opportunity.setAccommodationType(df.getRandomWord(5));
+        opportunity.setFoodType(df.getRandomWord());
+        opportunity.setHoursExpected(df.getNumberBetween(3,12));
+        opportunity.setHoursExpectedType("day");
+        opportunity.setMinimumStayInDays(df.getNumberBetween(1,99));
+        opportunity.setAvailabilityFrom(new java.sql.Date(2017 - 02 - 16));
+        opportunity.setDateAvailabilityTo(new java.sql.Date(2017 - 02 - 21));
+        opportunity.setCosts("free");
+        opportunity.setRequirements(df.getRandomWord());
+        opportunity.setOpportunitySkills(skills);
+
+        opportunityRepository.save(opportunity);
+    }
+
 }
 

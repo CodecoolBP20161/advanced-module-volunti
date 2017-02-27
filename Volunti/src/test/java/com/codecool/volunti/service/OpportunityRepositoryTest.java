@@ -104,8 +104,6 @@ public class OpportunityRepositoryTest extends AbstractServiceTest {
         assertThat(opportunity.getAvailabilityFrom()).isEqualTo(new Timestamp(2017 - 02 - 16));
         assertThat(opportunity.getDateAvailabilityTo()).isEqualTo(new Timestamp(2017 - 02 - 21));
         assertThat(skill.getName()).isEqualTo("new Skill");
-
-        System.out.println(opportunity.getOpportunitySkills());
     }
 
     @Test(expected = ConstraintViolationException.class)
