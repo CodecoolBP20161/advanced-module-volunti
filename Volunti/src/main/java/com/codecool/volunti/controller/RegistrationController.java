@@ -128,6 +128,7 @@ public class RegistrationController {
         User newUser = userService.ConfirmRegistration(activation_id);
         if (newUser == null){
             LOGGER.warn("Activation failed.");
+            return "invalidActivationLink";
         } else{
             LOGGER.info("User profile has been activated.");
             //TODO: Log in newUser. Note:It can be also null for various reasons(see ConfirmRegistration())
