@@ -33,7 +33,7 @@ public class UserServiceTest extends AbstractServiceTest {
      public void tearDown() {
         JdbcTestUtils.deleteFromTables(jdbcTemplate, "users");
     }
-        
+
     @Test
     public void saveUser() throws Exception {
         User user2 = new User("firstName2", "lastName2", "email2@email.com", "password2", null, null);
