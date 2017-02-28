@@ -125,7 +125,7 @@ public class RegistrationController {
     @RequestMapping( value = "/registration/organisation/step3/{activation_id}", method = RequestMethod.GET )
     public String step3(@PathVariable String activation_id, Model model, HttpSession session) {
         LOGGER.info("step3() method called...");
-        User newUser = userService.ConfirmRegistration(activation_id);
+        User newUser = userService.confirmRegistration(activation_id);
         if (newUser == null){
             LOGGER.warn("Activation failed.");
             return "registration/invalidActivationLink";
@@ -148,7 +148,7 @@ public class RegistrationController {
     @ResponseBody
     public String validateFieldIfExists(@RequestBody HashMap<String, String> payload){
         LOGGER.info("payload: " + payload.toString());
-       return String.valueOf(validationService.CheckIfValueExists(payload));
+       return String.valueOf(validationService.checkIfValueExists(payload));
     }
 
 }

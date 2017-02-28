@@ -81,7 +81,7 @@ public class UserServiceTest extends AbstractServiceTest {
     public void confirmRegistrationHappyPath() throws Exception {
         String testID = user1.getActivationID().toString();
         LOGGER.info("testID: {}", testID);
-        userService.ConfirmRegistration(testID);
+        userService.confirmRegistration(testID);
         User testUser = userService.getByActivationID(testID);
         LOGGER.info("testUser.userStatus: {}", testUser.getUserStatus());
 
@@ -90,22 +90,22 @@ public class UserServiceTest extends AbstractServiceTest {
 
     @Test (expected = IllegalArgumentException.class)
     public void confirmRegistrationWrongIdFormat() throws Exception {
-        userService.ConfirmRegistration("fakeID");
+        userService.confirmRegistration("fakeID");
     }
 
     @Test
     public void confirmRegistrationNoSuchId() throws Exception {
-        assertEquals(null, userService.ConfirmRegistration(UUID.randomUUID().toString()));
+        assertEquals(null, userService.confirmRegistration(UUID.randomUUID().toString()));
     }
 
     @Test
     public void confirmRegistrationUserIsAlreadyActive() throws Exception {
         String testID = user1.getActivationID().toString();
-        userService.ConfirmRegistration(testID);
+        userService.confirmRegistration(testID);
         User testUser = userService.getByActivationID(testID);
         LOGGER.info("enabled user status: {}", testUser.getUserStatus());
 
-        assertEquals(null, userService.ConfirmRegistration(testID));
+        assertEquals(null, userService.confirmRegistration(testID));
     }
 
     @Test
@@ -116,7 +116,7 @@ public class UserServiceTest extends AbstractServiceTest {
         LOGGER.info("disabled user status: {}", user2.getUserStatus());
         userService.saveUser(user2);
 
-        assertEquals(null, userService.ConfirmRegistration(testID));
+        assertEquals(null, userService.confirmRegistration(testID));
     }
 
 }

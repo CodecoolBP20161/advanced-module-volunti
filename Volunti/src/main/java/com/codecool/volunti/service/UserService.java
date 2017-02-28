@@ -49,7 +49,7 @@ public class UserService {
 
     }
 
-    public User ConfirmRegistration(String activationID) {
+    public User confirmRegistration(String activationID) {
         LOGGER.info("The confirmation of a registration has been started...");
         User newUser = getByActivationID(activationID);
         if (newUser == null) {

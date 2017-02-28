@@ -22,7 +22,7 @@ public class ValidationService {
         this. userService = userService;
     }
 
-    public boolean CheckIfValueExists(HashMap<String, String> payload){
+    public boolean checkIfValueExists(HashMap<String, String> payload){
         LOGGER.info("Field Validation Started.");
         String entity = payload.get("entityName");
         String fieldName = payload.get("fieldName");
