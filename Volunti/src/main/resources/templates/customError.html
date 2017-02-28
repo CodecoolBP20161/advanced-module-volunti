@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head"></head>
+
+<body>
+
+	<div id="main-wrapper">
+
+		<!-- Navbar -->
+		<div th:replace="fragments/navbar :: navbar"></div>
+
+		<h2>Error Handler</h2>
+		
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<td>Key</td>
+					<td>Value</td> 
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>TimeStamp</td>
+					<td th:text="${timestamp}"></td>
+				</tr>
+				<tr>
+					<td>Status</td>
+					<td th:text="${status}"></td>
+				</tr>
+				<tr>
+					<td>Message</td>
+					<td th:text="${message}"></td>
+				</tr>
+				<tr>
+					<td>Error</td>
+					<td th:text="${error}"></td>
+				</tr>
+				<tr>
+					<td>Path</td>
+					<td th:text="${path}"></td>
+				</tr>																
+			</tbody>
+		</table>
+	
+	</div>
+
+    <!--  Footer -->
+    <div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>
