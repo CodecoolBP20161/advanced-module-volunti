@@ -146,7 +146,7 @@ public class RegistrationController {
     */
     @RequestMapping( value = "/registration/ValidateFieldIfExists", method = RequestMethod.POST)
     @ResponseBody
-    public String ValidateFieldIfExists(@RequestBody HashMap<String, String> payload){
+    public String validateFieldIfExists(@RequestBody HashMap<String, String> payload){
         LOGGER.info("payload: " + payload.toString());
        return String.valueOf(validationService.CheckIfValueExists(payload));
     }
