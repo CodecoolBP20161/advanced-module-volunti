@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface OrganisationRepository extends CrudRepository<Organisation, Integer> {
 
-    Organisation findByName(String name);
+    Organisation findByNameIgnoreCase(String name);
 
 }

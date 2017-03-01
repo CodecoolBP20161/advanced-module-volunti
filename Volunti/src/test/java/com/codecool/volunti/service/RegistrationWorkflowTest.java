@@ -157,7 +157,7 @@ public class  RegistrationWorkflowTest extends AbstractServiceTest {
     public void step3_GET_ValidActivationID() throws Exception {
         UUID userUUID = UUID.randomUUID();
         user.setActivationID(userUUID);
-        Organisation organisation = organisationRepository.findByName("UNICEF");
+        Organisation organisation = organisationRepository.findByNameIgnoreCase("UNICEF");
         user.setOrganisation(organisation);
         userRepository.save(user);
         this.mockMvc.perform(get("/registration/organisation/step3/" + userUUID))

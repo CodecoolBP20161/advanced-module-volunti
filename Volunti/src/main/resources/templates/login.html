@@ -1,0 +1,51 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head"></head>
+
+<body>
+<div id="main-wrapper">
+
+    <!-- Navbar -->
+    <div th:replace="fragments/navbar :: navbar"></div>
+
+    <div class="uou-cta primary">
+
+    </div>
+    <!-- Main content -->
+    <div class="profile-company-content user-profile main-user" data-bg-color="f5f5f5">
+        <div class="container">
+            <div class="row">
+
+                <!--  LOGIN -->
+                <div class="col-md-4 col-md-offset-4 login-form">
+                    <form action="">
+                        <h4>Login</h4>
+                        <input type="email" placeholder="Email Address"/>
+                        <!--<h4>Password</h4>-->
+                        <input type="password" placeholder="Password"/>
+                        <button type="submit" class="btn mb20 col-md-4 pull-left btn-large btn-primary">Login</button>
+                        <div class="login-with col-md-7 pull-right">
+                            <span>Or login with:</span>
+                            <a href="#."><i
+                                    class="fa fa-facebook"></i></a>
+                            <a href="#."><i
+                                    class="fa fa-google"></i></a>
+                            <a href="#."><i
+                                    class="fa fa-linkedin"></i></a>
+                        </div>
+                        <div class="forget col-md-12 mb20 pull-right">
+                            Forgot your password? <a href="#.">Click Here</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- / Main content -->
+</div>
+<!-- / Main wrapper -->
+
+<!--  Footer -->
+<div th:replace="fragments/footer :: footer"></div>
+
+</body>
+</html>

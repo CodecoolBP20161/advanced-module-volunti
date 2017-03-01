@@ -70,7 +70,7 @@ public class OrganisationRepositoryTest extends AbstractServiceTest {
     public void testForTheFields() {
 
         organisation = this.repository.save(organisation);
-        organisation = this.repository.findByName("Test 1");
+        organisation = this.repository.findByNameIgnoreCase("Test 1");
         assertThat(organisation.getName()).isEqualTo("Test 1");
         assertThat(organisation.getCategory()).isEqualTo(Category.TEACHING);
         assertThat(organisation.getCountry()).isEqualTo(Country.Hungary);

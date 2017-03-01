@@ -27,7 +27,7 @@ public class OrganisationService {
     }
 
     public Organisation getByName(String name) {
-        return organisationRepository.findByName(name);
+        return organisationRepository.findByNameIgnoreCase(name);
     }
 
 }
