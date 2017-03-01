@@ -2,6 +2,7 @@ package com.codecool.volunti.model;
 
 
 import com.codecool.volunti.model.enums.OpportunityHoursExpectedType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.ToString;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -18,13 +19,14 @@ import java.util.List;
 @Entity
 @Table(name = "opportunities")
 @Data
-@ToString(exclude = "organisation")
+@ToString(exclude = {"organisation", "opportunitySkills"})
 public class Opportunity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "organisation_id")
     private Organisation organisation;
@@ -59,6 +61,7 @@ public class Opportunity{
     private String costs;
     private String requirements;
 
+    @JsonIgnore
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "opportunities_skills", joinColumns = @JoinColumn(name = "opportunity_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "skill_id", referencedColumnName = "id"))
     private List<Skill> opportunitySkills;
