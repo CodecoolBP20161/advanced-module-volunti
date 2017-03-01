@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -118,7 +119,6 @@ public class DataLoader {
 
         String title = df.getRandomWord() + " " + df.getRandomWord();
         Opportunity opportunity = new Opportunity();
-
         opportunity.setOrganisation(org);
         opportunity.setTitle(title);
         opportunity.setNumberOfVolunteers(df.getNumberBetween(1,100));
@@ -127,8 +127,8 @@ public class DataLoader {
         opportunity.setHoursExpected(df.getNumberBetween(3,12));
         opportunity.setHoursExpectedType(OpportunityHoursExpectedType.Day);
         opportunity.setMinimumStayInDays(df.getNumberBetween(1,99));
-        opportunity.setAvailabilityFrom(new java.sql.Date(2017 - 02 - 16));
-        opportunity.setDateAvailabilityTo(new java.sql.Date(2017 - 02 - 21));
+        opportunity.setAvailabilityFrom(df.getDateBetween(new Date(113,3,2),new Date(118,3,9)));
+        opportunity.setDateAvailabilityTo(df.getDateBetween(new Date(121,3,9),new Date(123,10,4)));
         opportunity.setCosts("free");
         opportunity.setRequirements(df.getRandomWord());
         opportunity.setOpportunitySkills(skills);
@@ -137,4 +137,3 @@ public class DataLoader {
     }
 
 }
-

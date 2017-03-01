@@ -7,25 +7,25 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-//@RequestMapping(value = "/opportunities")
+@RequestMapping(value = "/opportunities")
 public class OrganisationController {
 
     @Autowired
     OpportunityRepository opportunityRepository;
 
-    @GetMapping("/opportunities")
+    @GetMapping()
     public String getAllOpps() {
         return "opportunity/all-opportunities";
     }
 
-    @GetMapping("/opportunities/{oppId}")
+    @GetMapping("/{oppId}")
     public String singleOppView(@PathVariable Integer oppId, Model model) {
+
         Opportunity selectedOpportunity = opportunityRepository.findOne(oppId);
-
         model.addAttribute("foundOppObject",selectedOpportunity);
-
         return "opportunity/single_opportunity_view";
     }
 }
