@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head> <title>csá</title></head>
+<body>
+<div class="tab-content">
+
+    <!-- Connections -->
+    <div id="connec" class="tab-pane fade in active">
+        <div class="net-work-in">
+
+            <!-- Members -->
+            <div class="main-mem">
+
+                <!-- Tittle -->
+                <div class="folow-persons">
+                    <table class="table-hover">
+                        <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Required</th>
+                            <th>Food</th>
+                            <th>num. days</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="op : ${foundOppObject}">
+                            <td>
+                                <h4><b th:text="${op.title}">Job title </b></h4>
+                            </td>
+                            <td th:text="${op.numberOfVolunteers}">
+                            </td>
+                            <td th:text="${{op.foodType}}">
+                                2017-12-01
+                            </td>
+                            <td th:text="${{op.minimumStayInDays}}">
+                                2018-06-23
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+</body>
+</html>
