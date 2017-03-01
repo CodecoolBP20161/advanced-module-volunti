@@ -3236,6 +3236,20 @@ vivid green: #2ad482
 
 */
 
-.home-pro .col-sm-7 .col-md-10 h1, .home-pro .col-sm-7 .col-md-10 h2 {
+.home-pro .col-sm-7 .col-md-10 h1, .home-pro .col-sm-7 .col-md-10 h2, .home-pro .col-sm-7 .col-md-10 h5 {
     color: #FFFFFF;
 }
+
+.login-sec .content form p {
+	color: white;
+}
+
+.profile-company-content.main-user .nav-tabs.not-clickable li a:hover {
+	color: #a2a2a2;
+	background: #eeeeee;
+}
+.profile-company-content.main-user .nav-tabs.not-clickable li.active a:hover {
+	background: #f8f8f8;
+	color: #333333;
+}
+
