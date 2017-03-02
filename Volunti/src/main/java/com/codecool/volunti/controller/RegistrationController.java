@@ -114,7 +114,6 @@ public class RegistrationController {
 
         //clean the session
         session.removeAttribute("organisation");
-        LOGGER.info("UUID: ", savedUser.getActivationID());
         session.removeAttribute("user");
         LOGGER.info("Organisation removed from session.");
 
@@ -150,5 +149,6 @@ public class RegistrationController {
         LOGGER.info("payload: " + payload.toString());
        return String.valueOf(validationService.checkIfValueExists(payload));
     }
+
 
 }
