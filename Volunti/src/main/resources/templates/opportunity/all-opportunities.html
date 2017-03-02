@@ -1,13 +1,83 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8"/>
-    <title>Title</title>
-</head>
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head"></head>
 <body>
-<div align="center">
-<h1>Welcome</h1>
-<h3>The React team will finsh this page soon</h3>
+<div id="main-wrapper">
+    <div th:replace="fragments/navbar :: navbar"></div>
+    <div class="compny-profile">
+
+        <!-- SUB Banner -->
+        <div class="profile-bnr user-profile-bnr">
+            <div class="container">
+                <div class="pull-left">
+                    <h2>
+                    </h2>
+                </div>
+            </div>
+        </div>
+        <div class="compny-profile">
+
+            <!-- Profile Company Content -->
+            <div class="profile-company-content" data-bg-color="fff">
+                <div class="container">
+                    <div class="row">
+
+
+                        <!-- Tab Content -->
+                        <div class="col-md-12">
+                            <div class="network">
+                                <h4>Browse opportunities</h4>
+
+                                <!-- Tab Content -->
+                                <div class="tab-content">
+
+                                    <!-- Connections -->
+                                    <div id="connec" class="tab-pane fade in active">
+                                        <div class="net-work-in">
+
+                                            <!--Filter-->
+                                            <div class="filter-flower">
+                                                <div class="row" id="react-dropdown-filter"></div>
+                                            </div>
+
+                                            <!-- Members -->
+                                            <div class="main-mem">
+
+                                                <!-- Tittle -->
+                                                <div class="folow-persons">
+                                                    <table class="table-hover">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>Title</th>
+                                                            <th>Time frame</th>
+                                                            <th>Location</th>
+                                                            <th>Skills</th>
+                                                            <th>Category</th>
+                                                            <th>View</th>
+                                                        </tr>
+                                                        </thead>
+
+                                                        <tbody id="table-row-fill"></tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+<script src="/assets/js/myReactApp.js"></script>
+
+<div th:replace="fragments/footer :: footer"></div>
+
 </body>
 </html>
