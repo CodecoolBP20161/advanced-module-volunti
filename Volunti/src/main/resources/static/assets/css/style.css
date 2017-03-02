@@ -1303,6 +1303,7 @@ iframe {
 .banr-head input[type="email"], input[type="text"], input[type="password"] {
 	color: #fff;
 }
+
 .home-pro .services ul {
 	margin: 0px;
 	padding: 0px;
@@ -3244,7 +3245,6 @@ vivid green: #2ad482
 	color: white;
 }
 
-/* login page stuff */
 .profile-company-content.main-user .nav-tabs.not-clickable li a:hover {
 	color: #a2a2a2;
 	background: #eeeeee;
@@ -3254,10 +3254,8 @@ vivid green: #2ad482
 	background: #f8f8f8;
 	color: #333333;
 }
-.login-form h4{
-    color: #509171;
-}
 
+/* login page stuff */
 .login-form .login-with, .login-form .forget {
     text-align: center;
 }
