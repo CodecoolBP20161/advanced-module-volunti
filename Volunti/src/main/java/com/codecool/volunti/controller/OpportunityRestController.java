@@ -31,61 +31,41 @@ public class OpportunityRestController {
     @Autowired
     private OrganisationRepository organisationRepository;
 
-    @GetMapping("/categ")
-    public @ResponseBody EnumSet<Category> findCategories() {
-        /**
-         *      This method now returns an enumSet, but if you need a string list just change the return type
-         *      to list, and the value to enumList!
-         */
-        log.info("all categories");
-        EnumSet<Category> enumSet = EnumSet.allOf(Category.class);
-        List<String> enumList = new ArrayList<>();
-        for (Category c: enumSet) {
-            enumList.add(c.toString());
-            System.out.println(c.toString());
-        }
-        System.out.println(enumList.get(2));
-        return enumSet;
-    }
-
-    //ContentNegotiatingViewResolver
-    //ContentNegotiationManager
     @RequestMapping(value="/find",
-                    method= RequestMethod.GET
-                    )
-    public   @ResponseBody List<Opportunity> findOpportunities() {
+                    method= RequestMethod.GET)
+    public   @ResponseBody List<Opportunity> findOpp() {
         log.info("opportunityRepository.findAll()");
         List<Opportunity> allOpportunity = (List<Opportunity>) opportunityRepository.findAll();
         int size = allOpportunity.size();
         return allOpportunity;
     }
 
-    @GetMapping("/skill")
-    public @ResponseBody Map<String, List<String>> findSkills() {
+    @RequestMapping(value="/filters",
+            method= RequestMethod.GET)
+    public @ResponseBody Map<String, Set<String>> filters() {
+        Map<String, Set<String>> filters = new HashMap<>();
+        filters.put("elementsPerPage",new HashSet<String>(Arrays.asList("20")));
+        filters.put("categories", getCategories());
+        filters.put("skills", getSkills());
+        filters.put("locations", getLocations());
+        return filters;
+    }
+
+
+
+    private Set<String> getSkills() {
         List<Skill> skills = (List<Skill>) skillRepository.findAll();
-        Map<String, List<String>> skillNames = new HashMap<>();
-        skillNames.put("skills", skills.stream().map(s -> s.getName()).collect(Collectors.toList()));
-        log.info("SkillNames" + String.valueOf(skillNames));
-        return skillNames;
+        skills.stream().map(Skill::getName).collect(Collectors.toList());
+        return skills.stream().map(Skill::getName).collect(Collectors.toSet());
     }
 
-    @GetMapping("/category")
-    public @ResponseBody Map<String, Set<String>> findCategory() {
-        List<Organisation> skills = (List<Organisation>) organisationRepository.findAll();
-        Map<String, Set<String>> skillNames = new HashMap<>();
-        skillNames.put("categories", skills.stream().map(o -> o.getCategory().name()).collect(Collectors.toSet()));
-        log.info("SkillNames" + String.valueOf(skillNames));
-        return skillNames;
+    private Set<String> getCategories() {
+        List<Organisation> categories = (List<Organisation>) organisationRepository.findAll();
+        return categories.stream().map(o -> o.getCategory().name()).collect(Collectors.toSet());
     }
 
-    @GetMapping("/location")
-    public @ResponseBody Map<String, Set<String>> findLocation() {
-        List<Organisation> skills = (List<Organisation>) organisationRepository.findAll();
-        Map<String, Set<String>> skillNames = new HashMap<>();
-        skillNames.put("categories", skills.stream().map(Organisation::getCountry).collect(Collectors.toSet()));
-        log.info("SkillNames" + String.valueOf(skillNames));
-        return skillNames;
+    private Set<String> getLocations(){
+        List<Organisation> locations = (List<Organisation>) organisationRepository.findAll();
+        return locations.stream().map(Organisation::getCountry).collect(Collectors.toSet());
     }
-
-    //time, location, skill, category
 }
