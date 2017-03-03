@@ -8,16 +8,12 @@ import com.codecool.volunti.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
 
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
-import java.util.UUID;
 
 @Controller
 @SessionAttributes({"organisation", "user"})
@@ -48,7 +44,7 @@ public class RegistrationController {
 
 
     //render organisation registration
-    @RequestMapping( value = "/registration/organisation/step1", method = RequestMethod.GET )
+    @RequestMapping( value = "/registration/organisation/organisation", method = RequestMethod.GET )
     public String step1(Model model, HttpSession session) {
         LOGGER.info("step1() method called ...");
         Organisation organisation = new Organisation();
@@ -56,15 +52,15 @@ public class RegistrationController {
             organisation = (Organisation) session.getAttribute("organisation");
         }
         model.addAttribute("organisation", organisation);
-        return "registration/organisation/step1";
+        return "registration/organisation/organisation";
     }
 
     //save organisation registration
-    @RequestMapping( value = "/registration/organisation/step1", method = RequestMethod.POST )
+    @RequestMapping( value = "/registration/organisation/organisation", method = RequestMethod.POST )
     public String saveStep1(Organisation organisation, HttpSession session) {
         LOGGER.info("saveStep1() method called...");
         if(session.getAttribute("organisation") == null){
-            return "redirect:/registration/organisation/step1";
+            return "redirect:/registration/organisation/organisation";
         }
         LOGGER.info("session in the step1: " + session.getAttribute("organisation").toString());
         return "redirect:/registration/organisation/step2/" + organisation.getOrganisationId();
@@ -76,7 +72,7 @@ public class RegistrationController {
         LOGGER.info("step2() method called...");
         if(session.getAttribute("organisation") == null){
             LOGGER.info("Step1 is not done, redirecting to step1.");
-            return "redirect:/registration/organisation/step1";
+            return "redirect:/registration/organisation/organisation";
         }
 
         LOGGER.info("session in the step2: " + session.getAttribute("organisation").toString());
@@ -95,7 +91,7 @@ public class RegistrationController {
         LOGGER.info("saveStep2() method called...");
         if(session.getAttribute("organisation") == null){
             LOGGER.info("Step1 is not done, redirecting to step1.");
-            return "redirect:/registration/organisation/step1";
+            return "redirect:/registration/organisation/organisation";
         }
         LOGGER.info("session: " + session.getAttribute("organisation").toString());
 
