@@ -63,11 +63,11 @@ public class RegistrationController {
             return "redirect:/registration/organisation/organisation";
         }
         LOGGER.info("session in the step1: " + session.getAttribute("organisation").toString());
-        return "redirect:/registration/organisation/step2/" + organisation.getOrganisationId();
+        return "redirect:/registration/organisation/user/" + organisation.getOrganisationId();
     }
 
     //render user registration
-    @RequestMapping( value = "/registration/organisation/step2/{organisation_id}", method = RequestMethod.GET )
+    @RequestMapping( value = "/registration/organisation/user/{organisation_id}", method = RequestMethod.GET )
     public String step2(@PathVariable Integer organisation_id, Model model, HttpSession session) {
         LOGGER.info("step2() method called...");
         if(session.getAttribute("organisation") == null){
@@ -82,11 +82,11 @@ public class RegistrationController {
         }
         model.addAttribute("user", user);
         model.addAttribute("organisation_id", organisation_id);
-        return "registration/step2";
+        return "registration/user";
     }
 
     //save user registration and send the confirmation email
-    @RequestMapping( value = "/registration/organisation/step2/", method = RequestMethod.POST )
+    @RequestMapping( value = "/registration/organisation/user/", method = RequestMethod.POST )
     public String saveStep2(User user, HttpSession session, Organisation organisation) {
         LOGGER.info("saveStep2() method called...");
         if(session.getAttribute("organisation") == null){

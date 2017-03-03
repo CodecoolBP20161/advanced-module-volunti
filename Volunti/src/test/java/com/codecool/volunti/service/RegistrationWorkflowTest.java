@@ -117,26 +117,26 @@ public class  RegistrationWorkflowTest extends AbstractServiceTest {
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .content(validOrganisationFormData))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/registration/organisation/step2/0"));
+                .andExpect(redirectedUrl("/registration/organisation/user/0"));
     }
 
     @Test
     public void step2_GET_EmptySession() throws Exception {
-        this.mockMvc.perform(get("/registration/organisation/step2/0"))
+        this.mockMvc.perform(get("/registration/organisation/user/0"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/registration/organisation/organisation"));
     }
 
     @Test
     public void step2_GET_OrganisationIsInSession() throws Exception {
-        this.mockMvc.perform(get("/registration/organisation/step2/0").sessionAttr("organisation", organisation))
+        this.mockMvc.perform(get("/registration/organisation/user/0").sessionAttr("organisation", organisation))
                 .andExpect(status().isOk())
-                .andExpect(view().name("registration/step2"));
+                .andExpect(view().name("registration/user"));
     }
 
     @Test
     public void Step2_POST_EmptySession() throws Exception {
-        this.mockMvc.perform(post("/registration/organisation/step2/")
+        this.mockMvc.perform(post("/registration/organisation/user/")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .content(validUserFormData))
                 .andExpect(status().is3xxRedirection())
