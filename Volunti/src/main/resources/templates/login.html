@@ -28,21 +28,21 @@
                                             <input type="email" placeholder="Email Address" minlength="1" required="required"/>
                                             <input type="password" placeholder="Password" minlength="1" required="required"/>
                                             <button id="submitButton" type="submit"
-                                                    class="btn mb20 col-sm-4 mb20 pull-left btn-large btn-primary">Login</button>
+                                                    class="btn mb20 mb20 pull-left btn-large btn-primary">Login</button>
                                         </form>
 
-                                        <div class="login-with well col-sm-7 mb20 pull-right">
+                                        <div class="login-with mb20 pull-right">
                                                 <span>Or login with:</span>
-                                                <a href="#."><i class="fa fa-facebook"></i></a>
-                                                <a href="#."><i class="fa fa-google"></i></a>
-                                                <a href="#."><i class="fa fa-linkedin"></i></a>
+                                                <button href="#."><i class="fa fa-facebook"></i></button>
+                                                <button href="#."><i class="fa fa-google"></i></button>
+                                                <button href="#."><i class="fa fa-linkedin"></i></button>
                                         </div>
                                     </div>
                                     <!-- Necessary to have some space between the buttons and the frame -->
                                     <div class="profile-in"></div>
                                     <div class="profile-in"></div>
                                     <div class="forget col-sm-12 mb20 pull-right">
-                                        <p>Forgot your password? <a href="#.">Click Here</a></p>
+                                        <p>Forgot your password? <a th:href="@{/forgotPassword}">Click Here</a></p>
                                     </div>
                                 </div>
                             </div>
