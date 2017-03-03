@@ -43,8 +43,8 @@ public class RegistrationController {
     }
 
 
-    //render organisation registration
-    @RequestMapping( value = "/registration/organisation/organisation", method = RequestMethod.GET )
+
+    @RequestMapping( value = "/registration/organisation/step1", method = RequestMethod.GET )
     public String renderOrganisationRegistration(Model model, HttpSession session) {
         LOGGER.info("renderOrganisationRegistration() method called ...");
         Organisation organisation = new Organisation();
@@ -55,23 +55,21 @@ public class RegistrationController {
         return "registration/organisation/organisation";
     }
 
-    //save organisation registration
-    @RequestMapping( value = "/registration/organisation/organisation", method = RequestMethod.POST )
+    @RequestMapping( value = "/registration/organisation/step1", method = RequestMethod.POST )
     public String saveOrganisation(Organisation organisation, HttpSession session) {
         LOGGER.info("saveOrganisation() method called...");
         if(session.getAttribute("organisation") == null){
             return "redirect:/registration/organisation/organisation";
         }
-        return "redirect:/registration/organisation/user/" + organisation.getOrganisationId();
+        return "redirect:/registration/organisation/step2/" + organisation.getOrganisationId();
     }
 
-    //render user registration
-    @RequestMapping( value = "/registration/organisation/user/{organisation_id}", method = RequestMethod.GET )
+    @RequestMapping( value = "/registration/organisation/step2/{organisation_id}", method = RequestMethod.GET )
     public String renderUserRegistration(@PathVariable Integer organisation_id, Model model, HttpSession session) {
         LOGGER.info("renderUserRegistration() method called...");
         if(session.getAttribute("organisation") == null){
             LOGGER.info("Step1 is not done, redirecting to renderOrganisationRegistration.");
-            return "redirect:/registration/organisation/organisation";
+            return "redirect:/registration/organisation/step1";
         }
 
         LOGGER.info("session in the renderUserRegistration: " + session.getAttribute("organisation").toString());
@@ -85,12 +83,12 @@ public class RegistrationController {
     }
 
     //save user registration and send the confirmation email
-    @RequestMapping( value = "/registration/organisation/user/", method = RequestMethod.POST )
+    @RequestMapping( value = "/registration/organisation/step2/", method = RequestMethod.POST )
     public String saveUser(User user, HttpSession session, Organisation organisation, Model model) {
         LOGGER.info("saveUser() method called...");
         if(session.getAttribute("organisation") == null){
             LOGGER.info("Step1 is not done, redirecting to renderOrganisationRegistration.");
-            return "redirect:/registration/organisation/organisation";
+            return "redirect:/registration/organisation/step1";
         }
         LOGGER.info("session: " + session.getAttribute("organisation").toString());
 
@@ -113,19 +111,18 @@ public class RegistrationController {
         LOGGER.info("Organisation removed from session.");
         model.addAttribute("theme", "Registration");
         model.addAttribute("message", "Registration successful! We have sent an e-mail to your email address to the given e-mail account."
-                                        + "<br />Please confirm your account using the given link.");
+                                        + "\n Please confirm your account using the given link.");
         return "information";
     }
 
-    //render user registration confirmation
-    @RequestMapping( value = "/registration/organisation/success/{activation_id}", method = RequestMethod.GET )
+    @RequestMapping( value = "/registration/organisation/step3/{activation_id}", method = RequestMethod.GET )
     public String confirmation(@PathVariable String activation_id, Model model, HttpSession session) {
         LOGGER.info("confirmation() method called...");
         User newUser = userService.confirmRegistration(activation_id);
         if (newUser == null){
             LOGGER.warn("Activation failed.");
             model.addAttribute("theme", "Registration");
-            model.addAttribute("message", "Account confirmation is unsuccessful.<br />Please try again or contact us for more help.");
+            model.addAttribute("message", "Account confirmation is unsuccessful.\nPlease try again or contact us for more help.");
             return "information";
         } else{
             LOGGER.info("User profile has been activated.");

@@ -50,7 +50,7 @@ public class ForgotPasswordController {
 
 
     @RequestMapping( value = "/forgotPassword/step1", method = RequestMethod.POST )
-    public String checkNewPasswordEmail(@RequestParam String emailAddress) {
+    public String checkNewPasswordEmail(@RequestParam String emailAddress, Model model) {
         LOGGER.info("checkNewPasswordEmail() method called ...");
 
         User user = userService.getByEmail(emailAddress);
@@ -59,7 +59,9 @@ public class ForgotPasswordController {
             userService.saveUser(user);
             user.signupSuccess(emailService, EmailType.FORGOT_PASSWORD);
         }
-        return "registration/step4";
+        model.addAttribute("theme", "Forgot Password");
+        model.addAttribute("message", "We have sent an e-mail to your email address to the given e-mail account.");
+        return "information";
     }
 
     @RequestMapping( value = "/forgotPassword/step2/{activation_id}", method = RequestMethod.GET )
