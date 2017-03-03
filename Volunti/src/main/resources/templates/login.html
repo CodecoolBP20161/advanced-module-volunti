@@ -25,7 +25,7 @@
                                     <h3>Login</h3>
                                     <div class="profile-in">
                                         <form action="#" th:action="@{/login}">
-                                            <input type="email" placeholder="Email Address" minlength="1" required="required"/>
+                                            <input type="email" placeholder="Email Address" minlength="1" required="required" autofocus="autofocus"/>
                                             <input type="password" placeholder="Password" minlength="1" required="required"/>
                                             <button id="submitButton" type="submit"
                                                     class="btn mb20 mb20 pull-left btn-large btn-primary">Login</button>
@@ -33,9 +33,9 @@
 
                                         <div class="login-with mb20 pull-right">
                                                 <span>Or login with:</span>
-                                                <button href="#."><i class="fa fa-facebook"></i></button>
-                                                <button href="#."><i class="fa fa-google"></i></button>
-                                                <button href="#."><i class="fa fa-linkedin"></i></button>
+                                                <button href="#." class="btn btn-small btn-primary"><i class="fa fa-facebook"></i></button>
+                                                <button href="#." class="btn btn-small btn-primary"><i class="fa fa-google"></i></button>
+                                                <button href="#." class="btn btn-small btn-primary"><i class="fa fa-linkedin"></i></button>
                                         </div>
                                     </div>
                                     <!-- Necessary to have some space between the buttons and the frame -->
