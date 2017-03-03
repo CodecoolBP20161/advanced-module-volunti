@@ -18,7 +18,9 @@ public class EmailConfigLoader {
 
     // TODO: http url override to the final url
     private static final String HEADERIMAGE = "src=http://localhost:8080/assets/images/volunti_logo.png";
-    private static final String URL = "http://localhost:8080";
+    private static final String CONFIRM_URL = "http://localhost:8080/registration/organisation/step3/";
+    private  static  final String FORGOT_URL = "http://localhost:8080/forgotPassword/step2/";
+    String url;
 
     EmailProperties emailPropertiesReader = new EmailProperties();
     HashMap emailProperties;
@@ -35,7 +37,13 @@ public class EmailConfigLoader {
         String htmlEnd = "</html>";
         String bodyStart = "<body><table style='font-family: arial;'><tr><td align='center'><img " + HEADERIMAGE + "></td></tr>";
         String body = "<tr><td align='center' >";
-        String url = "<p>"+ URL +"/registration/organisation/success/" + user.getActivationID() + "</p>";
+
+        if (emailType == EmailType.CONFIRMATION){
+             url = "<p>"+ CONFIRM_URL + user.getActivationID() + "</p>";
+        }else if(emailType == EmailType.FORGOT_PASSWORD){
+             url = "<p>"+ FORGOT_URL + user.getActivationID() + "</p>";
+        }
+
         String bodyEnd = "</td></tr><tr><td align='center'></td></tr></table></body>";
         String pStart = "<p>";
         String pEnd = "</p>";
