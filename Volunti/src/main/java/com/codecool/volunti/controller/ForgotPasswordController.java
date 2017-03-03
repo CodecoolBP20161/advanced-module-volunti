@@ -69,6 +69,10 @@ public class ForgotPasswordController {
         LOGGER.info("renderforgotPassword() method called ...");
 
         LOGGER.info("activation id: " + activation_id);
+
+        if(activation_id.equals("undefined")){
+            return "newPasswordForm";
+        }
         User newUser = userService.handlePasswordActivationID(activation_id);
         LOGGER.info("ourUser " + newUser.toString());
         if (newUser == null){
