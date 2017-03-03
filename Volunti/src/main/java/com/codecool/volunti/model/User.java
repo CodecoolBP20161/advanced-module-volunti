@@ -43,7 +43,7 @@ public class User {
     private String email;
 
     @Column(name="activation_id")
-    private UUID activationID;
+    private String activationID;
 
     @NotEmpty
     @Size(min=1)
@@ -66,7 +66,7 @@ public class User {
     private UserStatus userStatus;
 
     public User() {
-        activationID = UUID.randomUUID();
+        activationID = UUID.randomUUID().toString();
         userStatus = UserStatus.INACTIVE;
         setSalt();
     }
@@ -81,7 +81,7 @@ public class User {
         this.setPassword(password);
 
         if (activationID == null){
-            activationID = UUID.randomUUID();
+            activationID = UUID.randomUUID().toString();
         }
         if (salt == null){
             setSalt();

@@ -155,7 +155,7 @@ public class  RegistrationWorkflowTest extends AbstractServiceTest {
 
     @Test
     public void step3_GET_ValidActivationID() throws Exception {
-        UUID userUUID = UUID.randomUUID();
+        String userUUID = UUID.randomUUID().toString();
         user.setActivationID(userUUID);
         Organisation organisation = organisationRepository.findByNameIgnoreCase("UNICEF");
         user.setOrganisation(organisation);

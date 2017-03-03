@@ -41,8 +41,8 @@ public class UserService {
     public User getByActivationID(String activationID) {
         try{
             LOGGER.info("UUID before convertion: " + activationID);
-            UUID activationUUID = UUID.fromString(activationID);
-            return userRepository.findByActivationID(activationUUID);
+            //UUID activationUUID = UUID.fromString(activationID);
+            return userRepository.findByActivationID(activationID);
         } catch (IllegalArgumentException e){
             LOGGER.error("Failed to convert String to UUID, null is returned.");
             return null;
