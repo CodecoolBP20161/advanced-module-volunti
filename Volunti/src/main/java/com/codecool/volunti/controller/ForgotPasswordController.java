@@ -22,7 +22,6 @@ public class ForgotPasswordController {
     private UserService userService;
     private EmailService emailService;
 
-    //render forgot password
     @RequestMapping( value = "/forgotPassword/step1", method = RequestMethod.GET )
     public String forgotPassword( Model model) {
         LOGGER.info("forgotPassword() method called ...");
@@ -56,7 +55,7 @@ public class ForgotPasswordController {
             LOGGER.info("User profile has been activated.");
         }
         model.addAttribute("user", newUser);
-        return "update password form";  //???
+        return "newPasswordForm";
     }
 
     @RequestMapping( value = "/forgotPassword/step2/", method = RequestMethod.POST )
