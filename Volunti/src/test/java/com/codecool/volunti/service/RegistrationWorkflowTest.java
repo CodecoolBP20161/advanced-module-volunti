@@ -73,7 +73,7 @@ public class  RegistrationWorkflowTest extends AbstractServiceTest {
         organisation = new Organisation();
         organisation.setName("TestName");
         organisation.setCategory(Category.ADVERTISING_AGENCY);
-        organisation.setCountry(Country.Hungary);
+        organisation.setCountry(Country.HUNGARY);
         organisation.setZipcode("ZIPCODE");
         organisation.setCity("TestCity");
         organisation.setAddress("Address");
