@@ -2,16 +2,16 @@ package com.codecool.volunti.controller;
 
 
 import com.codecool.volunti.model.User;
-import com.codecool.volunti.service.EmailService;
-import com.codecool.volunti.service.EmailType;
-import com.codecool.volunti.service.UserService;
+import com.codecool.volunti.repository.OrganisationRepository;
+import com.codecool.volunti.repository.UserRepository;
+import com.codecool.volunti.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
@@ -19,8 +19,26 @@ import java.util.UUID;
 public class ForgotPasswordController {
 
     private Logger LOGGER = LoggerFactory.getLogger(RegistrationController.class);
+
+    private OrganisationRepository organisationRepository;
+    private OrganisationService organisationService;
     private UserService userService;
     private EmailService emailService;
+    private ValidationService validationService = new ValidationService(organisationService, userService);
+
+
+    @Autowired
+    public ForgotPasswordController(OrganisationRepository organisationRepository,
+                                  OrganisationService organisationService,
+                                  UserService userService,
+                                  EmailService emailService,
+                                  ValidationService validationService) {
+        this.organisationRepository = organisationRepository;
+        this.organisationService = organisationService;
+        this.userService = userService;
+        this.emailService = emailService;
+        this.validationService = validationService;
+    }
 
     @RequestMapping( value = "/forgotPassword/step1", method = RequestMethod.GET )
     public String forgotPassword( Model model) {
@@ -32,9 +50,10 @@ public class ForgotPasswordController {
 
 
     @RequestMapping( value = "/forgotPassword/step1", method = RequestMethod.POST )
-    public String checkNewPasswordEmail(User user) {
-        user = userService.getByEmail(user.getEmail());
+    public String checkNewPasswordEmail(@RequestParam String emailAddress) {
         LOGGER.info("checkNewPasswordEmail() method called ...");
+
+        User user = userService.getByEmail(emailAddress);
         if(user != null){
             user.setActivationID(UUID.randomUUID());
             userService.saveUser(user);
@@ -58,7 +77,7 @@ public class ForgotPasswordController {
         return "newPasswordForm";
     }
 
-    @RequestMapping( value = "/forgotPassword/step2", method = RequestMethod.POST )
+    @RequestMapping( value = "/forgotPassword/step2/", method = RequestMethod.POST )
     public String saveNewPassword(User user) {
         LOGGER.info("saveNewPasswor() method called ...");
         user.hashPassword(user.getPassword());
