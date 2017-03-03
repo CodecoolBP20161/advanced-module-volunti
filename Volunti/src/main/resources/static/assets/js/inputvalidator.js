@@ -57,4 +57,5 @@ $(document).ready(function() {
     addValidateEvent("organizationName", "organizationNameSpan", "submitButton", "organisation", "name");
     addValidateEvent("userEmailInput", "userEmailSpan", "submitButton", "user", "email");
     onChangeCheckIfFieldsMatch("passWordInput1", "passWordInput2", "passwordSubmitButton", "passwordMatcherSpan");
+    onChangeCheckIfFieldsMatch("passWordInput1", "passWordInput2", "submitButton", "passwordMatcherSpan");
 });
