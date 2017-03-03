@@ -65,8 +65,10 @@ public class ForgotPasswordController {
     @RequestMapping( value = "/forgotPassword/step2/{activation_id}", method = RequestMethod.GET )
     public String renderforgotPassword(@PathVariable String activation_id, Model model) {
         LOGGER.info("renderforgotPassword() method called ...");
-        User newUser = userService.confirmRegistration(activation_id);
 
+
+        User newUser = userService.confirmRegistration(activation_id);
+        LOGGER.info("ourUser " + newUser.toString());
         if (newUser == null){
             LOGGER.warn("Activation failed.");
             return "registration/invalidActivationLink";

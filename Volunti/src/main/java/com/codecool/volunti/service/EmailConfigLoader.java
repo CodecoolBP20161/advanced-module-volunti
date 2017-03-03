@@ -19,7 +19,7 @@ public class EmailConfigLoader {
     // TODO: http url override to the final url
     private static final String HEADERIMAGE = "src=http://localhost:8080/assets/images/volunti_logo.png";
     private static final String CONFIRM_URL = "http://localhost:8080/registration/organisation/step3/";
-    private  static  final String FORGOT_URL = "http://localhost:8080/forgotPassword/step2";
+    private  static  final String FORGOT_URL = "http://localhost:8080/forgotPassword/step2/";
     String url;
 
     EmailProperties emailPropertiesReader = new EmailProperties();
