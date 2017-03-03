@@ -40,6 +40,7 @@ public class UserService {
 
     public User getByActivationID(String activationID) {
         try{
+            LOGGER.info("UUID before convertion: " + activationID);
             UUID activationUUID = UUID.fromString(activationID);
             return userRepository.findByActivationID(activationUUID);
         } catch (IllegalArgumentException e){
@@ -72,4 +73,23 @@ public class UserService {
 
         }
     }
+    public User handlePasswordActivationID(String activationID) {
+        LOGGER.info("forgetPassword activationID check is started.");
+        User newUser = getByActivationID(activationID);
+        if (newUser == null) {
+            LOGGER.warn("Activation ID cannot be found in the database.");
+            return null;
+        } else {
+            if (newUser.getUserStatus().equals(UserStatus.DISABLED)) {
+                LOGGER.warn("The requested User's status is DISABLED. Null is returned.");
+                return null;
+
+            } else {
+                return newUser;
+            }
+
+        }
+    }
+
+
 }
