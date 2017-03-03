@@ -28,15 +28,15 @@ $(document).ready(function() {
     //Organization input field
     var addValidateEvent = function (inputID, spanID, buttonID, entityName, fieldName) {
         var inputField = $('#' + inputID);
-        //validateWithAJAX(inputField, spanID, buttonID, entityName, fieldName, inputField.val());
-        inputField.on("load input propertychange", function () {
+        validateWithAJAX(inputField, spanID, buttonID, entityName, fieldName, inputField.val());
+        inputField.on("input propertychange", function () {
                 var value = inputField.val();
                 validateWithAJAX(inputField, spanID, buttonID, entityName, fieldName, value);
         });
     };
 
     var onChangeCheckIfFieldsMatch = function (inputID1, inputID2, submitButtonID, informationContainerID) {
-        $('#' + inputID1 + ',#' + inputID2).on("load input propertychange", function(){
+        $('#' + inputID1 + ',#' + inputID2).on("onload input propertychange", function(){
             var input1 = $('#' + inputID1);            
             var input2 = $('#' + inputID2);
             var submitButton = $('#' + submitButtonID);
@@ -56,5 +56,5 @@ $(document).ready(function() {
 
     addValidateEvent("organizationName", "organizationNameSpan", "submitButton", "organisation", "name");
     addValidateEvent("userEmailInput", "userEmailSpan", "submitButton", "user", "email");
-    onChangeCheckIfFieldsMatch("passWordMatcher1", "passWordMatcher2", "passwordSubmitButton", "passwordMatcherSpan");
+    onChangeCheckIfFieldsMatch("passWordInput1", "passWordInput2", "passwordSubmitButton", "passwordMatcherSpan");
 });
