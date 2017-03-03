@@ -55,7 +55,7 @@ public class ForgotPasswordController {
 
         User user = userService.getByEmail(emailAddress);
         if(user != null){
-            user.setActivationID(UUID.randomUUID());
+            user.setActivationID(UUID.randomUUID().toString());
             userService.saveUser(user);
             user.signupSuccess(emailService, EmailType.FORGOT_PASSWORD);
         }
@@ -68,8 +68,12 @@ public class ForgotPasswordController {
     public String renderforgotPassword(@PathVariable String activation_id, Model model) {
         LOGGER.info("renderforgotPassword() method called ...");
 
+        LOGGER.info("activation id: " + activation_id);
 
-        User newUser = userService.confirmRegistration(activation_id);
+        if(activation_id.equals("undefined")){
+            return "newPasswordForm";
+        }
+        User newUser = userService.handlePasswordActivationID(activation_id);
         LOGGER.info("ourUser " + newUser.toString());
         if (newUser == null){
             LOGGER.warn("Activation failed.");

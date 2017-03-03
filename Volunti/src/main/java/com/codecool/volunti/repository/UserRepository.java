@@ -12,6 +12,6 @@ import java.util.UUID;
 @Repository
 public interface UserRepository extends CrudRepository<User, Integer> {
     User findByEmail(String Email);
-    User findByActivationID(UUID activationID);
+    User findByActivationID(String activationID);
 
 }

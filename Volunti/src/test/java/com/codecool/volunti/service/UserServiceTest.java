@@ -64,7 +64,7 @@ public class UserServiceTest extends AbstractServiceTest {
 
     @Test
     public void getByActivationIDHappyPath() throws Exception {
-        UUID testID = user1.getActivationID();
+        String testID = user1.getActivationID();
         LOGGER.info("testID: {}", testID);
         User testUser = userService.getByActivationID(testID.toString());
         LOGGER.info("testUser.activationID: {}", testUser.getActivationID());

@@ -36,7 +36,7 @@ $(document).ready(function() {
     };
 
     var onChangeCheckIfFieldsMatch = function (inputID1, inputID2, submitButtonID, informationContainerID) {
-        $('#' + inputID1 + ',#' + inputID2).on("onload input propertychange", function(){
+        $('#' + inputID1 + ',#' + inputID2).on("input propertychange", function(){
             var input1 = $('#' + inputID1);            
             var input2 = $('#' + inputID2);
             var submitButton = $('#' + submitButtonID);
