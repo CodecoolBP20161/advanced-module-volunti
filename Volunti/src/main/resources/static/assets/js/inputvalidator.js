@@ -25,7 +25,7 @@ $(document).ready(function() {
         }
     });};
 
-    //Organization input field
+
     var addValidateEvent = function (inputID, spanID, buttonID, entityName, fieldName) {
         var inputField = $('#' + inputID);
         validateWithAJAX(inputField, spanID, buttonID, entityName, fieldName, inputField.val());
