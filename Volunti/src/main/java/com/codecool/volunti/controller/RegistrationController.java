@@ -59,7 +59,7 @@ public class RegistrationController {
     public String saveOrganisation(Organisation organisation, HttpSession session) {
         LOGGER.info("saveOrganisation() method called...");
         if(session.getAttribute("organisation") == null){
-            return "redirect:/registration/organisation/organisation";
+            return "redirect:/registration/organisation/step1";
         }
         return "redirect:/registration/organisation/step2/" + organisation.getOrganisationId();
     }
