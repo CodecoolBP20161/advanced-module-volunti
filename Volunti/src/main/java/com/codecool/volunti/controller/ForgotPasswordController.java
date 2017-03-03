@@ -58,7 +58,7 @@ public class ForgotPasswordController {
         return "newPasswordForm";
     }
 
-    @RequestMapping( value = "/forgotPassword/step2/", method = RequestMethod.POST )
+    @RequestMapping( value = "/forgotPassword/step2", method = RequestMethod.POST )
     public String saveNewPassword(User user) {
         LOGGER.info("saveNewPasswor() method called ...");
         user.hashPassword(user.getPassword());
