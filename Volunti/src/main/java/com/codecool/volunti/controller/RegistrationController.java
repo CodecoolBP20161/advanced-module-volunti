@@ -62,7 +62,6 @@ public class RegistrationController {
         if(session.getAttribute("organisation") == null){
             return "redirect:/registration/organisation/organisation";
         }
-        LOGGER.info("session in the renderOrganisationRegistration: " + session.getAttribute("organisation").toString());
         return "redirect:/registration/organisation/user/" + organisation.getOrganisationId();
     }
 
@@ -87,7 +86,7 @@ public class RegistrationController {
 
     //save user registration and send the confirmation email
     @RequestMapping( value = "/registration/organisation/user/", method = RequestMethod.POST )
-    public String saveUser(User user, HttpSession session, Organisation organisation) {
+    public String saveUser(User user, HttpSession session, Organisation organisation, Model model) {
         LOGGER.info("saveUser() method called...");
         if(session.getAttribute("organisation") == null){
             LOGGER.info("Step1 is not done, redirecting to renderOrganisationRegistration.");
@@ -113,8 +112,10 @@ public class RegistrationController {
         LOGGER.info("UUID: ", savedUser.getActivationID());
         session.removeAttribute("user");
         LOGGER.info("Organisation removed from session.");
-
-        return "/registration/success";
+        model.addAttribute("theme", "Registration");
+        model.addAttribute("message", "Registration successful! We have sent an e-mail to your email address to the given e-mail account."
+                                        + "<br />Please confirm your account using the given link.");
+        return "information";
     }
 
     //render user registration confirmation
@@ -124,14 +125,19 @@ public class RegistrationController {
         User newUser = userService.confirmRegistration(activation_id);
         if (newUser == null){
             LOGGER.warn("Activation failed.");
-            return "registration/invalidActivationLink";
+            model.addAttribute("theme", "Registration");
+            model.addAttribute("message", "Account confirmation is unsuccessful.<br />Please try again or contact us for more help.");
+            return "information";
         } else{
             LOGGER.info("User profile has been activated.");
             //TODO: Log in newUser. Note:It can be also null for various reasons(see ConfirmRegistration())
         }
 
         model.addAttribute("user", newUser);
-        return "registration/confirmation";
+        model.addAttribute("theme", "Registration");
+        model.addAttribute("message", "Account Confirmation is done.");
+        return "information";
+
     }
     /* Expected Request body:
     {
