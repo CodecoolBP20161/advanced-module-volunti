@@ -131,7 +131,7 @@ public class RegistrationController {
         }
 
         model.addAttribute("user", newUser);
-        return "registration/step4";
+        return "registration/confirmation";
     }
     /* Expected Request body:
     {

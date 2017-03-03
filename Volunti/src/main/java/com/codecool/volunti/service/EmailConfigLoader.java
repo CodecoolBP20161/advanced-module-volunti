@@ -35,7 +35,7 @@ public class EmailConfigLoader {
         String htmlEnd = "</html>";
         String bodyStart = "<body><table style='font-family: arial;'><tr><td align='center'><img " + HEADERIMAGE + "></td></tr>";
         String body = "<tr><td align='center' >";
-        String url = "<p>"+ URL +"/registration/organisation/step3/" + user.getActivationID() + "</p>";
+        String url = "<p>"+ URL +"/registration/organisation/success/" + user.getActivationID() + "</p>";
         String bodyEnd = "</td></tr><tr><td align='center'></td></tr></table></body>";
         String pStart = "<p>";
         String pEnd = "</p>";
