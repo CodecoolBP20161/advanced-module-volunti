@@ -146,7 +146,7 @@ public class  RegistrationWorkflowTest extends AbstractServiceTest {
 
     @Test
     public void step3_GET_InValidActivationID() throws Exception {
-        this.mockMvc.perform(get("/registration/organisation/step3/ThisIsDefinitelyNotAnUUID"))
+        this.mockMvc.perform(get("/registration/organisation/success/ThisIsDefinitelyNotAnUUID"))
                 .andExpect(view().name("registration/invalidActivationLink"));
 
 
@@ -160,7 +160,7 @@ public class  RegistrationWorkflowTest extends AbstractServiceTest {
         Organisation organisation = organisationRepository.findByNameIgnoreCase("UNICEF");
         user.setOrganisation(organisation);
         userRepository.save(user);
-        this.mockMvc.perform(get("/registration/organisation/step3/" + userUUID))
+        this.mockMvc.perform(get("/registration/organisation/success/" + userUUID))
                 .andExpect(content().string(containsString("Email confirmation done!!!!")));
         User userAfterRequest = userRepository.findByEmail("test.user@gmail.com");
         assertEquals(UserStatus.ACTIVE, userAfterRequest.getUserStatus());

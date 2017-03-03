@@ -114,11 +114,11 @@ public class RegistrationController {
         session.removeAttribute("user");
         LOGGER.info("Organisation removed from session.");
 
-        return "/registration/step3";
+        return "/registration/success";
     }
 
     //render user registration confirmation
-    @RequestMapping( value = "/registration/organisation/step3/{activation_id}", method = RequestMethod.GET )
+    @RequestMapping( value = "/registration/organisation/success/{activation_id}", method = RequestMethod.GET )
     public String step3(@PathVariable String activation_id, Model model, HttpSession session) {
         LOGGER.info("step3() method called...");
         User newUser = userService.confirmRegistration(activation_id);
