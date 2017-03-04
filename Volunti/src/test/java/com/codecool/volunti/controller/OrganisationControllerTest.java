@@ -36,7 +36,12 @@ public class OrganisationControllerTest extends AbstractServiceTest {
     }
 
     @Test
-    public void singleOppView() throws Exception {
+    public void singleOppViewLoads() throws Exception {
+        this.mockMvc.perform(get("/opportunities/1")).andExpect(status().is2xxSuccessful());
+    }
+
+    @Test
+    public void singleOppViewTypeIsHtml() throws Exception {
         this.mockMvc.perform(get("/opportunities/1")).andExpect(content()
                 .contentTypeCompatibleWith(MediaType.TEXT_HTML));
     }
