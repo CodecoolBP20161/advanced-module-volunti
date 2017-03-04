@@ -8,10 +8,13 @@ import com.codecool.volunti.model.enums.Category;
 import com.codecool.volunti.repository.OpportunityRepository;
 import com.codecool.volunti.repository.OrganisationRepository;
 import com.codecool.volunti.repository.SkillRepository;
+import com.codecool.volunti.service.Pageable;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -36,8 +39,16 @@ public class OpportunityRestController {
     public   @ResponseBody List<Opportunity> findOpp() {
         log.info("opportunityRepository.findAll()");
         List<Opportunity> allOpportunity = (List<Opportunity>) opportunityRepository.findAll();
-        int size = allOpportunity.size();
-        return allOpportunity;
+        int opportunityListSize = allOpportunity.size();
+        Calendar calendar = Calendar.getInstance();
+        java.util.Date now = calendar.getTime();
+
+        List<Opportunity> filterOpportunity = opportunityRepository.find("", "Hungary", "", new java.sql.Timestamp(now.getTime()), new java.sql.Timestamp(now.getTime()));
+        Pageable page = new Pageable(filterOpportunity, 1, 5);
+//        page.getListForPage();
+
+        log.info("filterO" + filterOpportunity);
+        return page.getListForPage();
     }
 
     @RequestMapping(value="/filters",
@@ -55,7 +66,6 @@ public class OpportunityRestController {
 
     private Set<String> getSkills() {
         List<Skill> skills = (List<Skill>) skillRepository.findAll();
-        skills.stream().map(Skill::getName).collect(Collectors.toList());
         return skills.stream().map(Skill::getName).collect(Collectors.toSet());
     }
 
