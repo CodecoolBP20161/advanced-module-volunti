@@ -25,15 +25,13 @@ public interface OpportunityRepository extends CrudRepository<Opportunity, Integ
             "ON opp.id = opp_skill.opportunity_id " +
             "INNER JOIN SKILLS skills " +
             "ON opp_skill.skill_id = skills.id " +          //not validate
-            "WHERE opp.title = COALESCE(NULLIF(?1, ''), opp.title) " +
-            "AND org.country = COALESCE(NULLIF(?2, ''), org.country) "+
-            "AND org.category = COALESCE(NULLIF(?3, ''), org.category) " +
-            "AND opp.availability_from <= ?4 "+
-            "AND opp.date_availability_to >= ?5 " +
-            "AND skills.name = COALESCE(NULLIF(?6, ''), skills.name) ",
+            "WHERE org.country = COALESCE(NULLIF(?1, ''), org.country) " +
+            "AND org.category = COALESCE(NULLIF(?2, ''), org.category) " +
+            "AND opp.availability_from <= ?3 "+
+            "AND opp.date_availability_to >= ?4 " +
+            "AND skills.name = COALESCE(NULLIF(?5, ''), skills.name) ",
             nativeQuery = true)
-    List<Opportunity> find(@Param("title") String title,
-                           @Param("country") String country,
+    List<Opportunity> find(@Param("country") String country,
                            @Param("category") String category,
                            @Param("dateFrom")Timestamp dateFrom,
                            @Param("dateTo")Timestamp dateTo,
