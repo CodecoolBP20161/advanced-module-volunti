@@ -2,6 +2,7 @@ package com.codecool.volunti.model;
 
 
 import com.codecool.volunti.model.enums.OpportunityHoursExpectedType;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.ToString;
@@ -53,9 +54,11 @@ public class Opportunity{
     private int minimumStayInDays;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd")
     private Date availabilityFrom;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd")
     private Date dateAvailabilityTo;
 
     private String costs;
