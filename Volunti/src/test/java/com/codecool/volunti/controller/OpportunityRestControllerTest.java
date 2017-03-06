@@ -16,9 +16,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-/**
- * Created by levente on 2017.03.03..
- */
 public class OpportunityRestControllerTest extends AbstractServiceTest{
 
     @Resource
@@ -39,7 +36,7 @@ public class OpportunityRestControllerTest extends AbstractServiceTest{
 
         MvcResult oppResult = null;
         try {
-            oppResult = this.mockMvc.perform(get("/api/opportunities/find")).andExpect(status().isOk()).andReturn();
+            oppResult = this.mockMvc.perform(get("/api/opportunities/find/all/1")).andExpect(status().isOk()).andReturn();
             content = oppResult.getResponse().getContentAsString();
 
             oppResult = this.mockMvc.perform(get("/api/opportunities/filters")).andExpect(status().isOk()).andReturn();
@@ -51,17 +48,17 @@ public class OpportunityRestControllerTest extends AbstractServiceTest{
 
     @Test
     public void findOppReturns200() throws Exception {
-        this.mockMvc.perform(get("/api/opportunities/find")).andExpect(status().isOk());
+        this.mockMvc.perform(get("/api/opportunities/find/all/1")).andExpect(status().isOk());
     }
 
     @Test
     public void findOppReturnValIsJSON() throws Exception {
-        this.mockMvc.perform(get("/api/opportunities/find")).andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+        this.mockMvc.perform(get("/api/opportunities/find/all/1")).andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
     }
 
     @Test
     public void findOppReturnValIsContains() throws Exception {
-        this.mockMvc.perform(get("/api/opportunities/find")).andExpect(content().string(content));
+        this.mockMvc.perform(get("/api/opportunities/find/all/1")).andExpect(content().string(content));
     }
 
     @Test
@@ -70,7 +67,14 @@ public class OpportunityRestControllerTest extends AbstractServiceTest{
     }
 
     @Test
-    public void filtersSkills() throws Exception {
+    public void filterSkills() throws Exception {
         this.mockMvc.perform(get("/api/opportunities/filters")).andExpect(content().json(filters));
+    }
+
+    @Test
+    public void filterCustom() throws Exception {
+        this.mockMvc.perform(get("/api/opportunities/find/1?from=2020-10-10&to=" +
+                "1999-10-10&location=Hungary&skills&category&pageSize=10"))
+                .andExpect(content().contentType("text/html;charset=UTF-8"));
     }
 }

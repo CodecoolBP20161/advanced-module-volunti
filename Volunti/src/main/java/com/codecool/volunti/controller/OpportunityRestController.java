@@ -13,6 +13,7 @@ import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -43,7 +44,8 @@ public class OpportunityRestController {
                                       @RequestParam(value = "skills", required = false) String skill,
                                       @RequestParam(value = "location", required = false) String country,
                                       @RequestParam(value = "category", required = false) String category,
-                                      @RequestParam(value = "pageSize", required = false) Integer pageSize) {
+                                      @RequestParam(value = "pageSize", required = false) Integer pageSize,
+                                      HttpServletResponse response) {
 
         Map<String, List<Object>> result = new HashMap<>();
 
@@ -58,12 +60,13 @@ public class OpportunityRestController {
     @RequestMapping(value = "/find/all/{currentPage}", method = RequestMethod.GET)
     public
     @ResponseBody
-    Map<String, List<Object>> findAll(@PathVariable int currentPage) {
-        Map<String, List<Object>> result = new HashMap<>();
+    Map<String, Object> findAll(@PathVariable int currentPage) {
+
+        Map<String, Object> result = new HashMap<>();
         Pageable page = new Pageable((List) opportunityRepository.findAll(), currentPage, pageSize);
         Integer maxPage = page.getMaxPages();
 
-        result.put("maxpage", Collections.singletonList(maxPage));
+        result.put("maxpage", maxPage);
         result.put("result", page.getListForPage());
         return result;
     }
