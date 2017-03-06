@@ -18,13 +18,13 @@ public interface OpportunityRepository extends CrudRepository<Opportunity, Integ
 
     List<Opportunity> findByOrganisationOrderByIdAsc(Organisation organisation);
 
-    @Query(value = "SELECT opp.* FROM OPPORTUNITIES opp " +
+    @Query(value = "SELECT DISTINCT opp.* FROM OPPORTUNITIES opp " +
             "INNER JOIN ORGANISATION org " +
             "ON opp.organisation_id = org.organisation_id " +
-            "INNER JOIN OPPORTUNITIES_SKILLS opp_skill " +  //not validated
+            "INNER JOIN OPPORTUNITIES_SKILLS opp_skill " +
             "ON opp.id = opp_skill.opportunity_id " +
             "INNER JOIN SKILLS skills " +
-            "ON opp_skill.skill_id = skills.id " +          //not validate
+            "ON opp_skill.skill_id = skills.id " +
             "WHERE org.country = COALESCE(NULLIF(?1, ''), org.country) " +
             "AND org.category = COALESCE(NULLIF(?2, ''), org.category) " +
             "AND opp.availability_from <= ?3 "+
