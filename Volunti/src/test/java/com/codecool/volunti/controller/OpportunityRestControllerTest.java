@@ -1,6 +1,8 @@
 package com.codecool.volunti.controller;
 
 import com.codecool.volunti.service.AbstractServiceTest;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +15,7 @@ import org.springframework.web.context.WebApplicationContext;
 import javax.annotation.Resource;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 public class OpportunityRestControllerTest extends AbstractServiceTest{
 
@@ -24,8 +25,6 @@ public class OpportunityRestControllerTest extends AbstractServiceTest{
     private MockMvc mockMvc;
 
     private String content ="";
-
-    private String filters ="";
 
     @Autowired
     OpportunityRestController opportunityRestController;
@@ -39,8 +38,6 @@ public class OpportunityRestControllerTest extends AbstractServiceTest{
             oppResult = this.mockMvc.perform(get("/api/opportunities/find/all/1")).andExpect(status().isOk()).andReturn();
             content = oppResult.getResponse().getContentAsString();
 
-            oppResult = this.mockMvc.perform(get("/api/opportunities/filters")).andExpect(status().isOk()).andReturn();
-            filters = oppResult.getResponse().getContentAsString();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -61,15 +58,14 @@ public class OpportunityRestControllerTest extends AbstractServiceTest{
         this.mockMvc.perform(get("/api/opportunities/find/all/1")).andExpect(content().string(content));
     }
 
-    @Test
-    public void filters() throws Exception {
-        this.mockMvc.perform(get("/api/opportunities/filters")).andExpect(status().isOk());
-    }
 
     @Test
     public void filterSkills() throws Exception {
-        this.mockMvc.perform(get("/api/opportunities/filters")).andExpect(content().json(filters));
+        this.mockMvc.perform(get("/api/opportunities/filters")).andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(jsonPath("$").exists());
     }
+
 
     @Test
     public void filterCustom() throws Exception {
