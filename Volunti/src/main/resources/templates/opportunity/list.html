@@ -30,13 +30,13 @@
                                 <h4>Opportunities</h4>
 
                                 <!-- Nav Tabs -->
-                                <ul class="nav nav-tabs">
                                 <div class="pull-left">
+                                <ul class="nav nav-tabs">
                                     <!--th:action="@{/organisation/} + ${organisation_id} + {/opp/delete/} + ${opportunity_id}"-->
                                     <li class="active"><a th:href="@{/organisation/} + ${organisation.organisationId}+ @{/opportunity/0}">New
                                         Opportunity</a></li>
-                                </div>
                                 </ul>
+                                </div>
 
                                 <!-- Tab Content -->
                                 <div class="tab-content">
@@ -59,6 +59,7 @@
                                                             <th>To</th>
                                                             <th>Delete</th>
                                                             <th>Edit</th>
+                                                            <th>View</th>
                                                         </tr>
                                                         </thead>
 
@@ -99,6 +100,13 @@
                                                                             <i class="fa fa-fw fa-cog"></i>Edit
                                                                         </button>
                                                                     </form>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div class="btn-group" >
+                                                                    <button class="btn mb20 btn-small btn-transparent-primary" value="right">
+                                                                        <a th:href="@{/opportunities/} + ${op.id}">View</a>
+                                                                    </button>
                                                                 </div>
                                                             </td>
                                                         </tr>
