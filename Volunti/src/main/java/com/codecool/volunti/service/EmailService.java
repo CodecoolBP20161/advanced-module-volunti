@@ -1,6 +1,7 @@
 package com.codecool.volunti.service;
 
 import com.codecool.volunti.model.User;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +14,11 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
+@Slf4j
 @Service
 @Transactional
 public class EmailService {
 
-	private Logger LOGGER = LoggerFactory.getLogger(EmailService.class);
 	private JavaMailSender javaMailSender;
 	private EmailConfigLoader emailConfigLoader = new EmailConfigLoader();
 	
@@ -28,12 +29,12 @@ public class EmailService {
 
 	@Async
 	public void sendEmail(User user, EmailType emailType) throws MessagingException {
-        LOGGER.debug("Sending email...");
+        log.debug("Sending email...");
         MimeMessage message = javaMailSender.createMimeMessage();
         // EmailProperties
         emailConfigLoader.setEmailProperties(user, emailType, message);
         javaMailSender.send(message);
-        LOGGER.debug("Email sent...");
+        log.debug("Email sent...");
 	}
 	
 }

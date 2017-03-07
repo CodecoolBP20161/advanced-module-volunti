@@ -1,6 +1,7 @@
 package com.codecool.volunti.service;
 
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -9,10 +10,10 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Properties;
 
+@Slf4j
 @Data
 public class EmailProperties {
 
-    private Logger LOGGER = LoggerFactory.getLogger(EmailProperties.class);
     private String propertiesFileName;
     private HashMap<String, String> emailPropertiesContainer = new HashMap<>();
     private InputStream inputStream;

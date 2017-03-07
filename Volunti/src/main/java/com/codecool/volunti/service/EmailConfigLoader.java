@@ -3,6 +3,7 @@ package com.codecool.volunti.service;
 
 import com.codecool.volunti.model.User;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -11,10 +12,9 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.util.HashMap;
 
+@Slf4j
 @Data
 public class EmailConfigLoader {
-
-    private Logger LOGGER = LoggerFactory.getLogger(EmailConfigLoader.class);
 
     // TODO: http url override to the final url
     private static final String HEADERIMAGE = "src=http://localhost:8080/assets/images/volunti_logo.png";

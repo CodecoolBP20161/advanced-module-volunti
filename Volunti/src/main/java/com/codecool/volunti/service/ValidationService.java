@@ -1,8 +1,7 @@
 package com.codecool.volunti.service;
 
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,10 +9,10 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.HashMap;
 
+@Slf4j
 @Service
 @Transactional
 public class ValidationService {
-    private Logger LOGGER = LoggerFactory.getLogger(ValidationService.class);
 
     private UserService userService;
     private OrganisationService organisationService;
@@ -25,7 +24,7 @@ public class ValidationService {
     }
 
     public boolean checkIfValueExists(HashMap<String, String> payload){
-        LOGGER.info("Field Validation executed.");
+        log.info("Field Validation executed.");
         String entity = payload.get("entityName");
         String fieldName = payload.get("fieldName");
         String valueToCheck = payload.get("value").trim();
@@ -35,7 +34,7 @@ public class ValidationService {
                     case "email":
                         return userService.getByEmail(valueToCheck) != null;
                     default:
-                        LOGGER.error("The given field name in " + entity + " doesnt exists.");
+                        log.error("The given field name in " + entity + " doesnt exists.");
                         throw new NotImplementedException();
                 }
             case "organisation":
@@ -43,11 +42,11 @@ public class ValidationService {
                     case "name":
                         return organisationService.getByName(valueToCheck) != null;
                     default:
-                        LOGGER.error("The given field name in " + entity + " doesnt exists.");
+                        log.error("The given field name in " + entity + " doesnt exists.");
                         throw new NotImplementedException();
                 }
             default:
-                LOGGER.error("Not implemented validation type or wrong request body.");
+                log.error("Not implemented validation type or wrong request body.");
                 throw new NotImplementedException();
         }
     }

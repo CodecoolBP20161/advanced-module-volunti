@@ -14,6 +14,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -40,11 +41,17 @@ public class  RegistrationWorkflowTest extends AbstractServiceTest {
     @Autowired
     private OrganisationRepository organisationRepository;
 
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Autowired
+    private RoleService roleService;
+
     private Volunteer volunteer;
     private Organisation organisation;
     private User user;
     private MockMvc mockMvc;
-    private UserService userService = new UserService(userRepository);
+    private UserService userService = new UserService(userRepository, roleService, bCryptPasswordEncoder);
     private JdbcTemplate jdbcTemplate;
 
     private String validOrganisationFormData = "organisationId=0" +
