@@ -33,9 +33,20 @@ public class  RegistrationWorkflowTest extends AbstractServiceTest {
 
     @Resource
     private WebApplicationContext webApplicationContext;
-    private Volunteer volunteer;
 
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private OrganisationRepository organisationRepository;
+
+    private Volunteer volunteer;
+    private Organisation organisation;
+    private User user;
     private MockMvc mockMvc;
+    private UserService userService = new UserService(userRepository);
+    private JdbcTemplate jdbcTemplate;
+
     private String validOrganisationFormData = "organisationId=0" +
             "&name=TestName" +
             "&category=TELEVISION" +
@@ -52,14 +63,7 @@ public class  RegistrationWorkflowTest extends AbstractServiceTest {
             "&lastName=lastName" +
             "&email=email%40email.hu" +
             "&password=password";
-    private Organisation organisation;
-    private User user;
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private OrganisationRepository organisationRepository;
-    private UserService userService = new UserService(userRepository);
-    private JdbcTemplate jdbcTemplate;
+
 
     @Autowired
     public void setDataSource(DataSource dataSource) {
@@ -87,14 +91,14 @@ public class  RegistrationWorkflowTest extends AbstractServiceTest {
     }
 
     @Test
-    public void step1_GET_EmptySession() throws Exception {
+    public void test_step1_GET_EmptySession() throws Exception {
         this.mockMvc.perform(get("/registration/organisation/step1"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("registration/organisation/step1"));
     }
 
     @Test
-    public void step1_GET_OrganisationIsInSession() throws Exception {
+    public void test_step1_GET_OrganisationIsInSession() throws Exception {
         this.mockMvc.perform(get("/registration/organisation/step1").sessionAttr("organisation", organisation))
                 .andExpect(status().isOk())
                 .andExpect(view().name("registration/organisation/step1"))
@@ -102,7 +106,7 @@ public class  RegistrationWorkflowTest extends AbstractServiceTest {
     }
 
     @Test
-    public void step1_POST_EmptySession() throws Exception {
+    public void test_step1_POST_EmptySession() throws Exception {
         this.mockMvc.perform(post("/registration/organisation/step1")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .content(validOrganisationFormData))
@@ -111,7 +115,7 @@ public class  RegistrationWorkflowTest extends AbstractServiceTest {
     }
 
     @Test
-    public void step1_POST_OrganisationIsInSession() throws Exception {
+    public void test_step1_POST_OrganisationIsInSession() throws Exception {
         this.mockMvc.perform(get("/registration/organisation/step1"));
         this.mockMvc.perform(post("/registration/organisation/step1").sessionAttr("organisation", organisation)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
@@ -121,21 +125,21 @@ public class  RegistrationWorkflowTest extends AbstractServiceTest {
     }
 
     @Test
-    public void step2_GET_EmptySession() throws Exception {
+    public void test_step2_GET_EmptySession() throws Exception {
         this.mockMvc.perform(get("/registration/organisation/step2/0"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/registration/organisation/step1"));
     }
 
     @Test
-    public void step2_GET_OrganisationIsInSession() throws Exception {
+    public void test_step2_GET_OrganisationIsInSession() throws Exception {
         this.mockMvc.perform(get("/registration/organisation/step2/0").sessionAttr("organisation", organisation))
                 .andExpect(status().isOk())
                 .andExpect(view().name("registration/step2"));
     }
 
     @Test
-    public void Step2_POST_EmptySession() throws Exception {
+    public void test_step2_POST_EmptySession() throws Exception {
         this.mockMvc.perform(post("/registration/organisation/step2/")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .content(validUserFormData))
@@ -145,7 +149,7 @@ public class  RegistrationWorkflowTest extends AbstractServiceTest {
     }
 
     @Test
-    public void step3_GET_InValidActivationID() throws Exception {
+    public void test_step3_GET_InValidActivationID() throws Exception {
         this.mockMvc.perform(get("/registration/organisation/step3/ThisIsDefinitelyNotAnUUID"))
                 .andExpect(view().name("registration/invalidActivationLink"));
 
@@ -154,7 +158,7 @@ public class  RegistrationWorkflowTest extends AbstractServiceTest {
 
 
     @Test
-    public void step3_GET_ValidActivationID() throws Exception {
+    public void test_step3_GET_ValidActivationID() throws Exception {
         UUID userUUID = UUID.randomUUID();
         user.setActivationID(userUUID);
         Organisation organisation = organisationRepository.findByName("UNICEF");
