@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +33,9 @@ public class RegistrationController {
     private EmailService emailService;
     private ValidationService validationService = new ValidationService(organisationService, userService);
 
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
     public RegistrationController(OrganisationRepository organisationRepository,
@@ -106,7 +110,7 @@ public class RegistrationController {
 
         //save the user into database
         user.setOrganisation(organisation);
-        user.hashPassword(user.getPassword());
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         User savedUser = userService.saveUser(user);
         LOGGER.info("user saved: {}", savedUser);
         //email sending
