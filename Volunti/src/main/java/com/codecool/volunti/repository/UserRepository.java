@@ -11,6 +11,6 @@ import java.util.UUID;
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
     User findByEmail(String email);
-    User findByActivationID(UUID activationID);
+    User findByActivationID(String activationID);
 
 }

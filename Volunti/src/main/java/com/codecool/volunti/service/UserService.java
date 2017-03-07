@@ -1,7 +1,6 @@
 package com.codecool.volunti.service;
 
 
-import com.codecool.volunti.model.Role;
 import com.codecool.volunti.model.User;
 import com.codecool.volunti.model.enums.UserStatus;
 import com.codecool.volunti.repository.UserRepository;
@@ -12,17 +11,42 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.UUID;
 
-import static com.codecool.volunti.model.enums.RoleEnum.ROLE_USER;
 
 @Slf4j
 @Service
 @Transactional
 public class UserService {
+
+    private UserRepository userRepository;
+    private RoleService roleService;
+    private BCryptPasswordEncoder passwordEncoder;
+
+
+    @Autowired
+    public UserService(UserRepository userRepository, RoleService roleService, BCryptPasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.roleService = roleService;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    public void save(User user) {
+        userRepository.save(user);
+    }
+
+    public void delete(User user) {
+        userRepository.delete(user);
+    }
+
+    public List<User> findAll() {
+        return userRepository.findAll();
+    }
+
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
 
 
     public User saveUser(User user) {
@@ -37,8 +61,9 @@ public class UserService {
 
     public User getByActivationID(String activationID) {
         try{
-            UUID activationUUID = UUID.fromString(activationID);
-            return userRepository.findByActivationID(activationUUID);
+            log.info("UUID before convertion: " + activationID);
+            //UUID activationUUID = UUID.fromString(activationID);
+            return userRepository.findByActivationID(activationID);
         } catch (IllegalArgumentException e){
             log.error("Failed to convert String to UUID, null is returned.");
             return null;
@@ -57,8 +82,9 @@ public class UserService {
                 log.info("UserStatus changed to ACTIVE.");
                 return this.saveUser(newUser);
             } else if (newUser.getUserStatus().equals(UserStatus.ACTIVE)) {
+
                 log.warn("UserStatus is already ACTIVE.");
-                return null; //TODO: Decide if we should let the user log in(return the user), or not(return null)
+                return newUser; //TODO: Decide if we should let the user log in(return the user), or not(return null)
             } else if (newUser.getUserStatus().equals(UserStatus.DISABLED)) {
                 log.warn("UserStatus is DISABLED.");
                 return null;
@@ -69,44 +95,21 @@ public class UserService {
         }
     }
 
-    @Autowired
-    RoleService roleService;
+    public User handlePasswordActivationID(String activationID) {
+        log.info("forgetPassword activationID check is started.");
+        User newUser = getByActivationID(activationID);
+        if (newUser == null) {
+            log.warn("Activation ID cannot be found in the database.");
+            return null;
+        } else {
+            if (newUser.getUserStatus().equals(UserStatus.DISABLED)) {
+                log.warn("The requested User's status is DISABLED. Null is returned.");
+                return null;
 
-    UserRepository userRepository;
+            } else {
+                return newUser;
+            }
 
-    @Autowired
-    public UserService(UserRepository userRepository) {
-
-        this.userRepository = userRepository;
+        }
     }
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
-
-    public void save(User user) {
-        userRepository.save(user);
-    }
-
-    public void delete(User user) {
-        userRepository.delete(user);
-    }
-
-    public List<User> findAll() {
-        return userRepository.findAll();
-    }
-
-    public User findByEmail(String email) {
-        return userRepository.findByEmail(email);
-    }
-
-    /*
-    @Transactional
-    public User createNewUser(User user) {
-        User newUser = new User(user.getFirstName(), user.getLastName(), user.getEmail(), passwordEncoder.encode(user.getPassword()), );
-        Set<Role> roles = new HashSet<>();
-        roles.add(roleService.findByName(ROLE_USER.getRole()));
-        newUser.setRoles(roles);
-        save(newUser);
-        return newUser;
-    }
-    */
 }

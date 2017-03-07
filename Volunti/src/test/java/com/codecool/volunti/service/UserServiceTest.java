@@ -59,7 +59,7 @@ public class UserServiceTest extends AbstractServiceTest {
 
     @Test
     public void test_getByActivationIDHappyPath_Should_Return_True() throws Exception {
-        UUID testID = user1.getActivationID();
+        String testID = user1.getActivationID();
         User testUser = userService.getByActivationID(testID.toString());
 
         assertEquals(testID, testUser.getActivationID());

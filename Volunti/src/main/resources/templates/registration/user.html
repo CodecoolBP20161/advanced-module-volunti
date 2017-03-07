@@ -67,7 +67,12 @@
             <h4>Password</h4>
             <div class="row">
                 <div class="col-sm-4">
-                    <input type="password" minlength="1" required="required" placeholder="password (min. 1 character)" value="" th:field="*{password}"/>
+                    <div id="passwordMatcherSpan" hidden="hidden"
+                         class="alert alert-error alert-dismissible"
+                         role="alert"></div>
+                    <input id="passWordInput1" type="password" minlength="1" required="required" th:field="*{password}"/>
+                    <input id="passWordInput2" type="password" minlength="1" required="required"/>
+
                 </div>
             </div>
 

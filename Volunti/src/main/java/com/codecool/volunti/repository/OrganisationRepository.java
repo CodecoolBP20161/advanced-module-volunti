@@ -9,6 +9,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface OrganisationRepository extends JpaRepository<Organisation, Integer> {
 
-    Organisation findByName(String name);
+    Organisation findByNameIgnoreCase(String name);
 
 }

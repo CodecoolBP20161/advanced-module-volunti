@@ -25,7 +25,7 @@ public class ValidationService {
     }
 
     public boolean checkIfValueExists(HashMap<String, String> payload){
-        LOGGER.info("Field Validation Started.");
+        LOGGER.info("Field Validation executed.");
         String entity = payload.get("entityName");
         String fieldName = payload.get("fieldName");
         String valueToCheck = payload.get("value").trim();
@@ -33,7 +33,6 @@ public class ValidationService {
             case "user":
                 switch (fieldName) {
                     case "email":
-                        LOGGER.info("Entity: User");
                         return userService.getByEmail(valueToCheck) != null;
                     default:
                         LOGGER.error("The given field name in " + entity + " doesnt exists.");
@@ -42,7 +41,6 @@ public class ValidationService {
             case "organisation":
                 switch (fieldName) {
                     case "name":
-                        LOGGER.info("Entity: Organization");
                         return organisationService.getByName(valueToCheck) != null;
                     default:
                         LOGGER.error("The given field name in " + entity + " doesnt exists.");
