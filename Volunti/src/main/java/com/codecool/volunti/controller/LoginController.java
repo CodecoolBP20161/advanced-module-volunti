@@ -10,6 +10,7 @@ public class LoginController {
 
     @GetMapping("/login")
     public String login() {
-        return "auth/login";
+        log.info("login() method called.");
+        return "login";
     }
 }
