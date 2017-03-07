@@ -26,9 +26,6 @@ public class RegistrationController {
     private UserService userService;
     private EmailService emailService;
     private ValidationService validationService = new ValidationService(organisationService, userService);
-
-
-    @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
@@ -36,17 +33,18 @@ public class RegistrationController {
                                   OrganisationService organisationService,
                                   UserService userService,
                                   EmailService emailService,
-                                  ValidationService validationService) {
+                                  ValidationService validationService, BCryptPasswordEncoder passwordEncoder) {
         this.organisationRepository = organisationRepository;
         this.organisationService = organisationService;
         this.userService = userService;
         this.emailService = emailService;
         this.validationService = validationService;
+        this.passwordEncoder = passwordEncoder;
     }
 
 
 
-    @RequestMapping( value = "/registration/organisation/step1", method = RequestMethod.GET )
+    @GetMapping( value = "/registration/organisation/step1")
     public String renderOrganisationRegistration(Model model, HttpSession session) {
         log.info("renderOrganisationRegistration() method called ...");
         Organisation organisation = new Organisation();
@@ -57,7 +55,7 @@ public class RegistrationController {
         return "registration/organisation/organisation";
     }
 
-    @RequestMapping( value = "/registration/organisation/step1", method = RequestMethod.POST )
+    @PostMapping( value = "/registration/organisation/step1")
     public String saveOrganisation(Organisation organisation, HttpSession session) {
         log.info("saveOrganisation() method called...");
         if(session.getAttribute("organisation") == null){
@@ -66,7 +64,7 @@ public class RegistrationController {
         return "redirect:/registration/organisation/step2/" + organisation.getOrganisationId();
     }
 
-    @RequestMapping( value = "/registration/organisation/step2/{organisation_id}", method = RequestMethod.GET )
+    @GetMapping( value = "/registration/organisation/step2/{organisation_id}")
     public String renderUserRegistration(@PathVariable Integer organisation_id, Model model, HttpSession session) {
         log.info("renderUserRegistration() method called...");
         if(session.getAttribute("organisation") == null){
@@ -85,7 +83,7 @@ public class RegistrationController {
     }
 
     //save user registration and send the confirmation email
-    @RequestMapping( value = "/registration/organisation/step2/", method = RequestMethod.POST )
+    @PostMapping(value = "/registration/organisation/step2/")
     public String saveUser(User user, HttpSession session, Organisation organisation, Model model) {
         log.info("saveUser() method called...");
         if(session.getAttribute("organisation") == null){
@@ -117,7 +115,7 @@ public class RegistrationController {
         return "information";
     }
 
-    @RequestMapping( value = "/registration/organisation/step3/{activation_id}", method = RequestMethod.GET )
+    @GetMapping( value = "/registration/organisation/step3/{activation_id}")
     public String confirmation(@PathVariable String activation_id, Model model, HttpSession session) {
         log.info("confirmation() method called...");
         User newUser = userService.confirmRegistration(activation_id);
@@ -144,7 +142,7 @@ public class RegistrationController {
         value: value
     }
     */
-    @RequestMapping( value = "/registration/ValidateFieldIfExists", method = RequestMethod.POST)
+    @PostMapping( value = "/registration/ValidateFieldIfExists")
     @ResponseBody
     public String validateFieldIfExists(@RequestBody HashMap<String, String> payload){
         log.info("payload: " + payload.toString());
