@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head"></head>
+<body>
+
+
+<div id="main-wrapper">
+
+    <!-- Navbar -->
+    <div th:replace="fragments/navbar :: navbar"></div>
+
+    <!-- Login form -->
+    <form th:action="@{/login}" method="post">
+
+        <input class='validate' type='email' name='username' placeholder="email"/>
+
+        <input class='validate' type='password' name='password' placeholder="password"/>
+
+        <br/>
+
+        <div class='row'>
+            <button type='submit' name='btn_login' id="login_button">
+                Login
+            </button>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>
