@@ -41,7 +41,6 @@ var Filter = React.createClass({
         });
         return(<div className="col-sm-3">
             <div className="field custom-select-box" id={this.props.label}>
-                {/*<h5>Filter by: {this.props.label}</h5>*/}
                 <select title="sort" onChange={this.handleChange}>
                     <option defaultValue={this.props.label}>{this.props.label}(optional)</option>
                     {options}</select>
@@ -52,8 +51,6 @@ var Filter = React.createClass({
     handleChange: function (e) {
 
         var name = e.target.value;
-        //console.log(name);
-        //console.log(e.target.parentNode.id);
 
         var type = e.target.parentNode.id;
         var value = e.target.value;
@@ -79,9 +76,8 @@ var Filter = React.createClass({
                 }
                 break;
             default:
-                //console.log(type);
                 break;
-        };
+        }
 
         updateUrl();
     }
@@ -169,23 +165,27 @@ var Opportunity = React.createClass({
         else return (
             <tr>
                 <td>
-                    <h5><b>{this.props.opportunity.title}</b></h5>
-                </td>
-                <td className="col-xs-3 n-p-r">
-                    <h5><b>{this.props.opportunity.dateAvailabilityTo}</b></h5>
-                    <h5><b>{this.props.opportunity.availabilityFrom}</b></h5>
+                    <h6>{this.props.opportunity.title}</h6>
                 </td>
                 <td>
-                    <h5><b>{this.props.opportunity.foodType}</b></h5>
+                    <h6>{this.props.opportunity.dateAvailabilityTo}</h6>
+                    <h6>{this.props.opportunity.availabilityFrom}</h6>
                 </td>
                 <td>
-                    <h5><b>{this.props.opportunity.skills}</b></h5>
+                    <h6>{this.props.opportunity.foodType}</h6>
                 </td>
                 <td>
-                    <h5><b>{this.props.opportunity.hoursExpected}</b></h5>
+                    <h6>{this.props.opportunity.skills}</h6>
                 </td>
                 <td>
-                    <h5><b>{this.props.opportunity.costs}</b></h5>
+                    <h6>{this.props.opportunity.hoursExpected}</h6>
+                </td>
+                <td>
+                    <div className="btn-group" >
+                        <button className="btn mb20 btn-small btn-transparent-primary" value="left">
+                            <a href={'/opportunities/' + this.props.opportunity.id}>View</a>
+                            </button>
+                    </div>
                 </td>
             </tr>
         );
