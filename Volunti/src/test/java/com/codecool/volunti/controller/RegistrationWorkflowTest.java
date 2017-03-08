@@ -1,4 +1,4 @@
-package com.codecool.volunti.service;
+package com.codecool.volunti.controller;
 
 import com.codecool.volunti.model.Organisation;
 import com.codecool.volunti.model.User;
@@ -8,6 +8,9 @@ import com.codecool.volunti.model.enums.Country;
 import com.codecool.volunti.model.enums.UserStatus;
 import com.codecool.volunti.repository.OrganisationRepository;
 import com.codecool.volunti.repository.UserRepository;
+import com.codecool.volunti.service.AbstractServiceTest;
+import com.codecool.volunti.service.RoleService;
+import com.codecool.volunti.service.UserService;
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.junit.Before;
 import org.junit.Test;
