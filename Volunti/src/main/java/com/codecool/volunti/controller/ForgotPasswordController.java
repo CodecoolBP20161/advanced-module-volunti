@@ -75,9 +75,11 @@ public class ForgotPasswordController {
         }
         User newUser = userService.handlePasswordActivationID(activation_id);
         log.info("ourUser " + newUser.toString());
-        if (newUser == null){
+        if (newUser == null) {
             log.warn("Activation failed.");
-            return "registration/invalidActivationLink";
+            model.addAttribute("theme", "Forgot Password");
+            model.addAttribute("message", "Activation link is invalid. Please contact us for more help.");
+            return "information";
         } else {
             log.info("User profile has been activated.");
         }
