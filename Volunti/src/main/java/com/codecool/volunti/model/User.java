@@ -81,17 +81,12 @@ public class User {
         this.setEmail(email);
         this.setOrganisation(organisation);
         this.setVolunteer(volunteer);
-        //setSalt();
         this.setPassword(password);
 
         if (activationID == null){
             activationID = UUID.randomUUID().toString();
         }
-        /*
-        if (salt == null){
-            setSalt();
-        }
-        */
+
         if (userStatus == null){
             setUserStatus(UserStatus.INACTIVE);
         }

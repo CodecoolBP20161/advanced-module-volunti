@@ -32,10 +32,6 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public void save(User user) {
-        userRepository.save(user);
-    }
-
     public void delete(User user) {
         userRepository.delete(user);
     }
@@ -47,7 +43,6 @@ public class UserService {
     public User findByEmail(String email) {
         return userRepository.findByEmail(email);
     }
-
 
 
     public User saveUser(User user) {
