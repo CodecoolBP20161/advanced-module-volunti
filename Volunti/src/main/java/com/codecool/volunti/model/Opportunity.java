@@ -62,6 +62,7 @@ public class Opportunity{
     private Date dateAvailabilityTo;
 
     private String costs;
+    @Column(columnDefinition="TEXT")
     private String requirements;
 
     @JsonIgnore
