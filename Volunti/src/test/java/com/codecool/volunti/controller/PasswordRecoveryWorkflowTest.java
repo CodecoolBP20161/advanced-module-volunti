@@ -6,19 +6,15 @@ import com.codecool.volunti.model.Volunteer;
 import com.codecool.volunti.model.enums.Category;
 import com.codecool.volunti.model.enums.Country;
 import com.codecool.volunti.model.enums.SpokenLanguage;
-import com.codecool.volunti.model.enums.UserStatus;
 import com.codecool.volunti.repository.OrganisationRepository;
 import com.codecool.volunti.repository.UserRepository;
 import com.codecool.volunti.service.AbstractServiceTest;
-import com.codecool.volunti.service.RoleService;
-import com.codecool.volunti.service.UserService;
-import org.apache.tomcat.jdbc.pool.DataSource;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -28,11 +24,9 @@ import javax.annotation.Resource;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.UUID;
 
 import static org.hamcrest.CoreMatchers.containsString;
-import static org.junit.Assert.assertEquals;
+
 import static org.junit.Assert.assertNotSame;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
