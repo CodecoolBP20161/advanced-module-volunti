@@ -58,7 +58,6 @@ public class UserService {
     public User getByActivationID(String activationID) {
         try{
             log.info("UUID before convertion: " + activationID);
-            //UUID activationUUID = UUID.fromString(activationID);
             return userRepository.findByActivationID(activationID);
         } catch (IllegalArgumentException e){
             log.error("Failed to convert String to UUID, null is returned.");
@@ -78,7 +77,6 @@ public class UserService {
                 log.info("UserStatus changed to ACTIVE.");
                 return this.saveUser(newUser);
             } else if (newUser.getUserStatus().equals(UserStatus.ACTIVE)) {
-
                 log.warn("UserStatus is already ACTIVE.");
                 return newUser; //TODO: Decide if we should let the user log in(return the user), or not(return null)
             } else if (newUser.getUserStatus().equals(UserStatus.DISABLED)) {
@@ -101,11 +99,9 @@ public class UserService {
             if (newUser.getUserStatus().equals(UserStatus.DISABLED)) {
                 log.warn("The requested User's status is DISABLED. Null is returned.");
                 return null;
-
             } else {
                 return newUser;
             }
-
         }
     }
 }
