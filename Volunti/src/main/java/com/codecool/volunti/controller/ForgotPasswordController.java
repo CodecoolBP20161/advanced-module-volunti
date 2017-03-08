@@ -43,8 +43,7 @@ public class ForgotPasswordController {
     @GetMapping(value = "/forgotPassword/step1")
     public String forgotPassword( Model model) {
         log.info("forgotPassword() method called ...");
-        User user = new User();
-        model.addAttribute("user", user);
+
         return "forgotPassword";
     }
 
@@ -60,28 +59,21 @@ public class ForgotPasswordController {
             user.signupSuccess(emailService, EMAILTYPE);
         }
         model.addAttribute("theme", "Forgot Password");
-        model.addAttribute("message", "We have sent an e-mail to your email address to the given e-mail account.");
+        model.addAttribute("message", "If your email address exists in our database,we have sent an e-mail to you with a reset link.");
         return "information";
     }
 
     @GetMapping( value = "/forgotPassword/step2/{activation_id}")
     public String renderforgotPassword(@PathVariable String activation_id, Model model) {
         log.info("renderforgotPassword() method called ...");
-
-        log.info("activation id: " + activation_id);
-
-        if(activation_id.equals("undefined")){
-            return "newPasswordForm";
-        }
         User newUser = userService.handlePasswordActivationID(activation_id);
-        log.info("ourUser " + newUser.toString());
         if (newUser == null) {
-            log.warn("Activation failed.");
+            log.warn("No user found in the database with this email address.");
             model.addAttribute("theme", "Forgot Password");
             model.addAttribute("message", "Activation link is invalid. Please contact us for more help.");
             return "information";
         } else {
-            log.info("User profile has been activated.");
+            log.info("User found in the database.");
         }
         model.addAttribute("user", newUser);
         return "newPasswordForm";
@@ -89,7 +81,7 @@ public class ForgotPasswordController {
 
     @PostMapping( value = "/forgotPassword/step2/")
     public String saveNewPassword(User user) {
-        log.info("saveNewPasswor() method called ...");
+        log.info("saveNewPassword() method called ...");
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userService.saveUser(user);
         return "index";
