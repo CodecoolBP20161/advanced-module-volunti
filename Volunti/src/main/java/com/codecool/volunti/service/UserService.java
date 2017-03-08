@@ -31,10 +31,6 @@ public class UserService {
         this.roleService = roleService;
     }
 
-    public void save(User user) {
-        userRepository.save(user);
-    }
-
     public void delete(User user) {
         userRepository.delete(user);
     }
