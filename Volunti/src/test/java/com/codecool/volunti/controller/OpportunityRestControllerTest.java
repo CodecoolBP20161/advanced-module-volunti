@@ -1,6 +1,8 @@
 package com.codecool.volunti.controller;
 
 import com.codecool.volunti.service.AbstractServiceTest;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,12 +15,8 @@ import org.springframework.web.context.WebApplicationContext;
 import javax.annotation.Resource;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-/**
- * Created by levente on 2017.03.03..
- */
 public class OpportunityRestControllerTest extends AbstractServiceTest{
 
     @Resource
@@ -27,8 +25,6 @@ public class OpportunityRestControllerTest extends AbstractServiceTest{
     private MockMvc mockMvc;
 
     private String content ="";
-
-    private String filters ="";
 
     @Autowired
     OpportunityRestController opportunityRestController;
@@ -39,11 +35,9 @@ public class OpportunityRestControllerTest extends AbstractServiceTest{
 
         MvcResult oppResult = null;
         try {
-            oppResult = this.mockMvc.perform(get("/api/opportunities/find")).andExpect(status().isOk()).andReturn();
+            oppResult = this.mockMvc.perform(get("/api/opportunities/find/all/1")).andExpect(status().isOk()).andReturn();
             content = oppResult.getResponse().getContentAsString();
 
-            oppResult = this.mockMvc.perform(get("/api/opportunities/filters")).andExpect(status().isOk()).andReturn();
-            filters = oppResult.getResponse().getContentAsString();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -51,26 +45,32 @@ public class OpportunityRestControllerTest extends AbstractServiceTest{
 
     @Test
     public void findOppReturns200() throws Exception {
-        this.mockMvc.perform(get("/api/opportunities/find")).andExpect(status().isOk());
+        this.mockMvc.perform(get("/api/opportunities/find/all/1")).andExpect(status().isOk());
     }
 
     @Test
     public void findOppReturnValIsJSON() throws Exception {
-        this.mockMvc.perform(get("/api/opportunities/find")).andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+        this.mockMvc.perform(get("/api/opportunities/find/all/1")).andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
     }
 
     @Test
     public void findOppReturnValIsContains() throws Exception {
-        this.mockMvc.perform(get("/api/opportunities/find")).andExpect(content().string(content));
+        this.mockMvc.perform(get("/api/opportunities/find/all/1")).andExpect(content().string(content));
     }
 
-    @Test
-    public void filters() throws Exception {
-        this.mockMvc.perform(get("/api/opportunities/filters")).andExpect(status().isOk());
-    }
 
     @Test
-    public void filtersSkills() throws Exception {
-        this.mockMvc.perform(get("/api/opportunities/filters")).andExpect(content().json(filters));
+    public void filterSkills() throws Exception {
+        this.mockMvc.perform(get("/api/opportunities/filters")).andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(jsonPath("$").exists());
+    }
+
+
+    @Test
+    public void filterCustom() throws Exception {
+        this.mockMvc.perform(get("/api/opportunities/find/1?from=2020-10-10&to=" +
+                "1999-10-10&location=Hungary&skills&category&pageSize=10"))
+                .andExpect(content().contentType("text/html;charset=UTF-8"));
     }
 }

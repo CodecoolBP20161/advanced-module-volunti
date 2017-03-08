@@ -15,6 +15,7 @@ import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -49,7 +50,8 @@ public class OpportunityRestController {
                                       @RequestParam(value = "skills", required = false) String skill,
                                       @RequestParam(value = "location", required = false) String country,
                                       @RequestParam(value = "category", required = false) String category,
-                                      @RequestParam(value = "pageSize", required = false) Integer pageSize) {
+                                      @RequestParam(value = "pageSize", required = false) Integer pageSize,
+                                      HttpServletResponse response) {
 
         Pageable page;
         Map<String, List<Object>> result = new HashMap<>();
@@ -66,7 +68,6 @@ public class OpportunityRestController {
         result.put("result", page.getListForPage());
         return result;
     }
-
 
     @RequestMapping(value = "/filters", method = RequestMethod.GET)
     public

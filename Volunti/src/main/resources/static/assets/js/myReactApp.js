@@ -49,6 +49,30 @@
 	var React = __webpack_require__(1);
 	var ReactDOM = __webpack_require__(32);
 
+	var url = "http://localhost:8080/api/opportunities/find/1?from=2020-10-10&to=1999-10-10&location&skills&category&pageSize=10";
+	var location = "";
+	var skill = "";
+	var category = "";
+
+	var updateUrl = function updateUrl() {
+	    url = "http://localhost:8080/api/opportunities/find/1?from=2020-10-10&to=1999-10-10&pageSize=10";
+	    if (location != "") {
+	        url += "&location=" + location;
+	    } else {
+	        url += "&location";
+	    }
+	    if (skill != "") {
+	        url += "&skills=" + skill;
+	    } else {
+	        url += "&skills";
+	    }
+	    if (category != "") {
+	        url += "&category=" + category;
+	    } else {
+	        url += "&category";
+	    }
+	};
+
 	var Option = React.createClass({
 	    displayName: 'Option',
 
@@ -74,10 +98,10 @@
 	            { className: 'col-sm-3' },
 	            React.createElement(
 	                'div',
-	                { className: 'field custom-select-box' },
+	                { className: 'field custom-select-box', id: this.props.label },
 	                React.createElement(
 	                    'select',
-	                    { title: 'sort' },
+	                    { title: 'sort', onChange: this.handleChange },
 	                    React.createElement(
 	                        'option',
 	                        { defaultValue: this.props.label },
@@ -88,7 +112,42 @@
 	                )
 	            )
 	        );
+	    },
+
+	    handleChange: function handleChange(e) {
+
+	        var name = e.target.value;
+
+	        var type = e.target.parentNode.id;
+	        var value = e.target.value;
+
+	        switch (type) {
+	            case "Location":
+	                location = value;
+	                if (value.includes("optional")) {
+	                    location = "";
+	                }
+	                break;
+	            case "Skill":
+	                skill = value;
+	                if (value.includes("optional")) {
+	                    skill = "";
+	                }
+	                break;
+
+	            case "Category":
+	                category = value;
+	                if (value.includes("optional")) {
+	                    category = "";
+	                }
+	                break;
+	            default:
+	                break;
+	        }
+
+	        updateUrl();
 	    }
+
 	});
 
 	var Filters = React.createClass({
@@ -134,10 +193,18 @@
 	    loadOpportunityFromServer: function loadOpportunityFromServer() {
 	        var self = this;
 	        $.ajax({
-	            url: "http://localhost:8080/api/opportunities/find/all/1"
+	            url: url
 	        }).then(function (data) {
 	            self.setState({ opportunities: data.result });
 	        });
+	    },
+
+	    updateIfNeeded: function updateIfNeeded() {
+	        var isNeeded = this.state.url != url;
+	        this.state.url = url;
+	        if (isNeeded) {
+	            this.loadOpportunityFromServer();
+	        }
 	    },
 
 	    getInitialState: function getInitialState() {
@@ -145,7 +212,9 @@
 	    },
 
 	    componentDidMount: function componentDidMount() {
+	        this.state.url = url;
 	        this.loadOpportunityFromServer();
+	        setInterval(this.updateIfNeeded, 1000);
 	    },
 
 	    render: function render() {
@@ -168,94 +237,66 @@
 	                'td',
 	                null,
 	                React.createElement(
-	                    'h4',
+	                    'h6',
 	                    null,
-	                    React.createElement(
-	                        'b',
-	                        null,
-	                        this.props.opportunity.title
-	                    )
+	                    this.props.opportunity.title
 	                )
 	            ),
 	            React.createElement(
 	                'td',
-	                { className: 'col-xs-3 n-p-r' },
+	                null,
 	                React.createElement(
-	                    'span',
+	                    'h6',
 	                    null,
-	                    React.createElement(
-	                        'h4',
-	                        null,
-	                        React.createElement(
-	                            'b',
-	                            null,
-	                            this.props.opportunity.dateAvailabilityTo
-	                        )
-	                    )
+	                    this.props.opportunity.dateAvailabilityTo
 	                ),
 	                React.createElement(
-	                    'span',
+	                    'h6',
 	                    null,
+	                    this.props.opportunity.availabilityFrom
+	                )
+	            ),
+	            React.createElement(
+	                'td',
+	                null,
+	                React.createElement(
+	                    'h6',
+	                    null,
+	                    this.props.opportunity.foodType
+	                )
+	            ),
+	            React.createElement(
+	                'td',
+	                null,
+	                React.createElement(
+	                    'h6',
+	                    null,
+	                    this.props.opportunity.skills
+	                )
+	            ),
+	            React.createElement(
+	                'td',
+	                null,
+	                React.createElement(
+	                    'h6',
+	                    null,
+	                    this.props.opportunity.hoursExpected
+	                )
+	            ),
+	            React.createElement(
+	                'td',
+	                null,
+	                React.createElement(
+	                    'div',
+	                    { className: 'btn-group' },
 	                    React.createElement(
-	                        'h4',
-	                        null,
+	                        'button',
+	                        { className: 'btn mb20 btn-small btn-transparent-primary', value: 'left' },
 	                        React.createElement(
-	                            'b',
-	                            null,
-	                            this.props.opportunity.availabilityFrom
+	                            'a',
+	                            { href: '/opportunities/' + this.props.opportunity.id },
+	                            'View'
 	                        )
-	                    )
-	                )
-	            ),
-	            React.createElement(
-	                'td',
-	                null,
-	                React.createElement(
-	                    'h4',
-	                    null,
-	                    React.createElement(
-	                        'b',
-	                        null,
-	                        this.props.opportunity.foodType
-	                    )
-	                )
-	            ),
-	            React.createElement(
-	                'td',
-	                null,
-	                React.createElement(
-	                    'h4',
-	                    null,
-	                    React.createElement(
-	                        'b',
-	                        null,
-	                        this.props.opportunity.skills
-	                    )
-	                )
-	            ),
-	            React.createElement(
-	                'td',
-	                null,
-	                React.createElement(
-	                    'h4',
-	                    null,
-	                    React.createElement(
-	                        'b',
-	                        null,
-	                        this.props.opportunity.hoursExpected
-	                    )
-	                )
-	            ),
-	            React.createElement(
-	                'td',
-	                null,
-	                React.createElement(
-	                    'h4',
-	                    null,
-	                    React.createElement(
-	                        'b',
-	                        null,
-	                        this.props.opportunity.costs
 	                    )
 	                )
 	            )
@@ -272,50 +313,64 @@
 	            rows.push(React.createElement(Opportunity, { opportunity: opportunity, key: i }));
 	        });
 	        return React.createElement(
-	            'table',
-	            { className: 'table-hover' },
+	            'div',
+	            null,
 	            React.createElement(
-	                'thead',
-	                null,
+	                'table',
+	                { className: 'table-hover' },
 	                React.createElement(
-	                    'tr',
+	                    'thead',
 	                    null,
 	                    React.createElement(
-	                        'th',
+	                        'tr',
 	                        null,
-	                        'Title'
-	                    ),
-	                    React.createElement(
-	                        'th',
-	                        null,
-	                        'Time frame'
-	                    ),
-	                    React.createElement(
-	                        'th',
-	                        null,
-	                        'Location'
-	                    ),
-	                    React.createElement(
-	                        'th',
-	                        null,
-	                        'Skills'
-	                    ),
-	                    React.createElement(
-	                        'th',
-	                        null,
-	                        'Category'
-	                    ),
-	                    React.createElement(
-	                        'th',
-	                        null,
-	                        'View'
+	                        React.createElement(
+	                            'th',
+	                            null,
+	                            'Title'
+	                        ),
+	                        React.createElement(
+	                            'th',
+	                            null,
+	                            'Time frame'
+	                        ),
+	                        React.createElement(
+	                            'th',
+	                            null,
+	                            'Location'
+	                        ),
+	                        React.createElement(
+	                            'th',
+	                            null,
+	                            'Skills'
+	                        ),
+	                        React.createElement(
+	                            'th',
+	                            null,
+	                            'Category'
+	                        ),
+	                        React.createElement(
+	                            'th',
+	                            null,
+	                            'View'
+	                        )
 	                    )
+	                ),
+	                React.createElement(
+	                    'tbody',
+	                    null,
+	                    rows
 	                )
 	            ),
 	            React.createElement(
-	                'tbody',
+	                'div',
 	                null,
-	                rows
+	                console.log(rows),
+	                rows.length == 0 ? React.createElement(
+	                    'div',
+	                    null,
+	                    'Empty'
+	                ) : null
 	            )
 	        );
 	    }
