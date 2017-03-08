@@ -60,9 +60,9 @@
                                     </div>
                                     <!--  LOGIN -->
                                     <div id="log-in">
-                                        <form action="">
-                                            <input type="email" placeholder="Email Address"/>
-                                            <input type="password" placeholder="Password"/>
+                                        <form th:action="@{/login}" method="post">
+                                            <input name="username" type="email" placeholder="Email Address"/>
+                                            <input name="password" type="password" placeholder="Password"/>
                                             <button type="submit">Login</button>
                                             <div class="login-with">
                                                 <span>Or login with:</span>
