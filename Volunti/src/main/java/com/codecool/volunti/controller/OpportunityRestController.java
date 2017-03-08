@@ -1,8 +1,10 @@
 package com.codecool.volunti.controller;
 
 
+import com.codecool.volunti.model.Filter2Opportunity;
 import com.codecool.volunti.model.Organisation;
 import com.codecool.volunti.model.Skill;
+import com.codecool.volunti.repository.Filter2OpportunityRepository;
 import com.codecool.volunti.repository.OpportunityRepository;
 import com.codecool.volunti.repository.OrganisationRepository;
 import com.codecool.volunti.repository.SkillRepository;
@@ -24,15 +26,19 @@ import java.util.stream.Collectors;
 public class OpportunityRestController {
 
     private static Integer pageSize = 20;
-
-    @Autowired
     private OpportunityRepository opportunityRepository;
-
-    @Autowired
     private SkillRepository skillRepository;
+    private OrganisationRepository organisationRepository;
+    private Filter2OpportunityRepository filter2OpportunityRepository;
 
     @Autowired
-    private OrganisationRepository organisationRepository;
+    public OpportunityRestController(OpportunityRepository opportunityRepository, SkillRepository skillRepository, OrganisationRepository organisationRepository, Filter2OpportunityRepository filter2OpportunityRepository) {
+        this.opportunityRepository = opportunityRepository;
+        this.skillRepository = skillRepository;
+        this.organisationRepository = organisationRepository;
+        this.filter2OpportunityRepository = filter2OpportunityRepository;
+    }
+
 
     @RequestMapping(value = "/find/{currentPage}", method = RequestMethod.GET)
     public
@@ -45,9 +51,15 @@ public class OpportunityRestController {
                                       @RequestParam(value = "category", required = false) String category,
                                       @RequestParam(value = "pageSize", required = false) Integer pageSize) {
 
+        Pageable page;
         Map<String, List<Object>> result = new HashMap<>();
-
-        Pageable page = new Pageable(opportunityRepository.find(country, category, new java.sql.Timestamp(from.getTime()), new java.sql.Timestamp(to.getTime()), skill), currentPage, pageSize);
+        List<Filter2Opportunity> filter2Opportunities =  filter2OpportunityRepository.findAll();
+        log.info("SIZE: " +filter2Opportunities.size());
+        if (Objects.equals(skill, "") && Objects.equals(country, "") && Objects.equals(category, "")){
+            page = new Pageable((List) filter2OpportunityRepository.findAll(), currentPage, pageSize);
+        } else {
+            page = new Pageable(filter2OpportunityRepository.find(country, category, new java.sql.Timestamp(from.getTime()), new java.sql.Timestamp(to.getTime()), skill), currentPage, pageSize);
+        }
         Integer maxPage = page.getMaxPages();
 
         result.put("maxpage", Collections.singletonList(maxPage));
@@ -55,18 +67,6 @@ public class OpportunityRestController {
         return result;
     }
 
-    @RequestMapping(value = "/find/all/{currentPage}", method = RequestMethod.GET)
-    public
-    @ResponseBody
-    Map<String, List<Object>> findAll(@PathVariable int currentPage) {
-        Map<String, List<Object>> result = new HashMap<>();
-        Pageable page = new Pageable((List) opportunityRepository.findAll(), currentPage, pageSize);
-        Integer maxPage = page.getMaxPages();
-
-        result.put("maxpage", Collections.singletonList(maxPage));
-        result.put("result", page.getListForPage());
-        return result;
-    }
 
     @RequestMapping(value = "/filters", method = RequestMethod.GET)
     public
