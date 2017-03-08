@@ -5,6 +5,8 @@ import com.codecool.volunti.model.enums.UserStatus;
 import com.codecool.volunti.service.EmailService;
 import com.codecool.volunti.service.EmailType;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -16,6 +18,8 @@ import java.util.UUID;
 @Entity
 @Table(name="users")
 @Data
+@ToString(of = "email")
+@EqualsAndHashCode(of = "email")
 @Slf4j
 public class User {
 

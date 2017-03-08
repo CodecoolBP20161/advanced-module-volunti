@@ -1,5 +1,7 @@
 <!doctype html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
 <body>
 
     <!--Navbar-->
@@ -64,6 +66,9 @@
                             </li>
                             <li>
                                 <a href="gui-kit.html">GUI KIT</a>
+                            </li>
+                            <li sec:authorize="isAuthenticated()">
+                                <a th:href="@{/logout}">Logout</a>
                             </li>
                         </ul>
                     </nav>

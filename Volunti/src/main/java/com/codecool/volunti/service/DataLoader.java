@@ -12,8 +12,6 @@ import com.codecool.volunti.repository.OrganisationRepository;
 import com.codecool.volunti.repository.UserRepository;
 import com.codecool.volunti.repository.VolunteerRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -69,7 +67,7 @@ public class DataLoader {
             Role roleAdmin = new Role(ROLE_USER.getRole());
             roleService.save(roleAdmin);
 
-            User user1 = new User("Anna", "Kiss", "asd@gmail.com", passwordEncoder.encode("codecool"), organisation1, volunteer);
+            User user1 = new User("Anna", "Kiss", "em@i.l", passwordEncoder.encode("password"), organisation1, volunteer);
 
             Set<Role> roleSet = new HashSet<>();
             roleSet.add(roleAdmin);
