@@ -2,7 +2,6 @@ package com.codecool.volunti.controller;
 
 
 import com.codecool.volunti.model.User;
-import com.codecool.volunti.repository.OrganisationRepository;
 import com.codecool.volunti.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,31 +18,22 @@ public class ForgotPasswordController {
 
     private static EmailType EMAILTYPE = EmailType.FORGOT_PASSWORD;
 
-    private OrganisationRepository organisationRepository;
-    private OrganisationService organisationService;
+
     private UserService userService;
     private EmailService emailService;
-    private ValidationService validationService = new ValidationService(organisationService, userService);
+
     private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public ForgotPasswordController(OrganisationRepository organisationRepository,
-                                  OrganisationService organisationService,
-                                  UserService userService,
-                                  EmailService emailService,
-                                  ValidationService validationService, BCryptPasswordEncoder passwordEncoder) {
-        this.organisationRepository = organisationRepository;
-        this.organisationService = organisationService;
+    public ForgotPasswordController(UserService userService, EmailService emailService, BCryptPasswordEncoder passwordEncoder) {
         this.userService = userService;
         this.emailService = emailService;
-        this.validationService = validationService;
         this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping(value = "/forgotPassword/step1")
-    public String forgotPassword( Model model) {
+    public String forgotPassword() {
         log.info("forgotPassword() method called ...");
-
         return "forgotPassword";
     }
 
