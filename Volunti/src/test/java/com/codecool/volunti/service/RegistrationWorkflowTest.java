@@ -51,7 +51,7 @@ public class  RegistrationWorkflowTest extends AbstractServiceTest {
     private Organisation organisation;
     private User user;
     private MockMvc mockMvc;
-    private UserService userService = new UserService(userRepository, roleService, bCryptPasswordEncoder);
+    private UserService userService = new UserService(userRepository, roleService);
     private JdbcTemplate jdbcTemplate;
 
     private String validOrganisationFormData = "organisationId=0" +
