@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 @RequestMapping(value = "/api/opportunities")
 public class OpportunityRestController {
 
-    private static Integer pageSize = 20;
+    private static final int pageSize = 20;
     private OpportunityRepository opportunityRepository;
     private SkillRepository skillRepository;
     private OrganisationRepository organisationRepository;
@@ -40,31 +40,27 @@ public class OpportunityRestController {
         this.filter2OpportunityRepository = filter2OpportunityRepository;
     }
 
-
     @RequestMapping(value = "/find/{currentPage}", method = RequestMethod.GET)
     public
     @ResponseBody
-    Map<String, List<Object>> findOpp(@PathVariable int currentPage,
-                                      @RequestParam(value = "from", required = false) Date from,
-                                      @RequestParam(value = "to", required = false) Date to,
-                                      @RequestParam(value = "skills", required = false) String skill,
-                                      @RequestParam(value = "location", required = false) String country,
-                                      @RequestParam(value = "category", required = false) String category,
-                                      @RequestParam(value = "pageSize", required = false) Integer pageSize,
-                                      HttpServletResponse response) {
+    Map<String, Object> findOpp(@PathVariable int currentPage,
+                                  @RequestParam(value = "from", required = false) Date from,
+                                  @RequestParam(value = "to", required = false) Date to,
+                                  @RequestParam(value = "skills", required = false) String skill,
+                                  @RequestParam(value = "location", required = false) String country,
+                                  @RequestParam(value = "category", required = false) String category,
+                                  @RequestParam(value = "pageSize", required = false) Integer pageSize) {
 
         Pageable page;
-        Map<String, List<Object>> result = new HashMap<>();
-        List<Filter2Opportunity> filter2Opportunities =  filter2OpportunityRepository.findAll();
-        log.info("SIZE: " +filter2Opportunities.size());
+        Map<String, Object> result = new HashMap<>();
+
         if (Objects.equals(skill, "") && Objects.equals(country, "") && Objects.equals(category, "")){
             page = new Pageable((List) filter2OpportunityRepository.findAll(), currentPage, pageSize);
         } else {
             page = new Pageable(filter2OpportunityRepository.find(country, category, new java.sql.Timestamp(from.getTime()), new java.sql.Timestamp(to.getTime()), skill), currentPage, pageSize);
         }
-        Integer maxPage = page.getMaxPages();
 
-        result.put("maxpage", Collections.singletonList(maxPage));
+        result.put("maxpage", page.getMaxPages());
         result.put("result", page.getListForPage());
         return result;
     }
@@ -72,9 +68,9 @@ public class OpportunityRestController {
     @RequestMapping(value = "/filters", method = RequestMethod.GET)
     public
     @ResponseBody
-    Map<String, Set<String>> filters() {
-        Map<String, Set<String>> filters = new HashMap<>();
-        filters.put("pageSize", new HashSet<>(Arrays.asList(pageSize.toString())));
+    Map<String, Object> filters() {
+        Map<String, Object> filters = new HashMap<>();
+        filters.put("pageSize", pageSize);
         filters.put("categories", getCategories());
         filters.put("skills", getSkills());
         filters.put("locations", getLocations());

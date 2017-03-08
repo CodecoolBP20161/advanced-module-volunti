@@ -9,5 +9,6 @@ public interface OrganisationRepository extends CrudRepository<Organisation, Int
 
     Organisation findByName(String name);
     Organisation findByOrganisationId(int organisationId);
+    long count();
 
 }

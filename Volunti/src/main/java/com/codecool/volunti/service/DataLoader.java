@@ -46,48 +46,28 @@ public class DataLoader {
         spokenLanguages.add(SpokenLanguage.ENGLISH);
         spokenLanguages.add(SpokenLanguage.HUNGARIAN);
 
-        User user1 = new User("Anna", "Kiss", "asd@gmail.com", "asdasd", "asd");
-        Volunteer volunteer = new Volunteer();
-        volunteerRepository.save(volunteer);
-        userRepository.save(user1);
-
-        Organisation organisation1 = new Organisation("UNICEF", Category.TEACHING, "Hungary", "1065", "Isaszeg", "Kossuth utca", spokenLanguages, "mission mission mission mission mission", "description1", "description2");
-        loadSkills();
-        organisationRepository.save(organisation1);
-
-        Opportunity firstOpportunity = new Opportunity();
-        firstOpportunity.setOrganisation(organisation1);
-        firstOpportunity.setTitle("First opportunity");
-        firstOpportunity.setNumberOfVolunteers(10);
-        firstOpportunity.setAccommodationType("Tent");
-        firstOpportunity.setFoodType("Vega");
-        firstOpportunity.setHoursExpected(3);
-        firstOpportunity.setHoursExpectedType(null);
-        firstOpportunity.setMinimumStayInDays(2);
-        firstOpportunity.setAvailabilityFrom(new java.sql.Date(2017 - 02 - 16));
-        firstOpportunity.setDateAvailabilityTo(new java.sql.Date(2017 - 02 - 21));
-        firstOpportunity.setCosts("free");
-        firstOpportunity.setRequirements("English");
-        opportunityRepository.save(firstOpportunity);
-
-        Opportunity opportunity1 = new Opportunity();
-        opportunity1.setOrganisation(organisation1);
-        opportunity1.setTitle("Second opportunity1");
-        opportunity1.setNumberOfVolunteers(10);
-        opportunity1.setAccommodationType("Tent");
-        opportunity1.setFoodType("Vega");
-        opportunity1.setHoursExpected(3);
-        opportunity1.setHoursExpectedType(null);
-        opportunity1.setMinimumStayInDays(2);
-        opportunity1.setAvailabilityFrom(new java.sql.Date(2017 - 02 - 16));
-        opportunity1.setDateAvailabilityTo(new java.sql.Date(2017 - 02 - 21));
-        opportunity1.setCosts("free");
-        opportunity1.setRequirements("English");
-        opportunityRepository.save(opportunity1);
-
-        for (int i = 0; i < 100; i++) {
-            saveTestTask(organisation1);
+        if (userRepository.count() == 0) {
+            User user1 = new User("Anna", "Kiss", "asd@gmail.com", "asdasd", "asd");
+            userRepository.save(user1);
         }
+        if (volunteerRepository.count() == 0) {
+            Volunteer volunteer = new Volunteer();
+            volunteerRepository.save(volunteer);
+        }
+
+        if (organisationRepository.count() == 0) {
+            Organisation organisation1 = new Organisation("UNICEF", Category.TEACHING, "Hungary", "1065", "Isaszeg", "Kossuth utca", spokenLanguages, "mission mission mission mission mission", "description1", "description2");
+
+            if (skillRepository.count() == 0) {
+                loadSkills();
+            }
+            organisationRepository.save(organisation1);
+
+            for (int i = 0; i < 100; i++) {
+                saveTestTask(organisation1);
+            }
+        }
+
 
         LOGGER.info("loadData method called ...");
     }
@@ -134,6 +114,7 @@ public class DataLoader {
         opportunity.setOpportunitySkills(skills);
 
         opportunityRepository.save(opportunity);
+
     }
 
 }
