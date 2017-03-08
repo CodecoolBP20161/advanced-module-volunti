@@ -44,15 +44,10 @@ public class  RegistrationWorkflowTest extends AbstractServiceTest {
     @Autowired
     private OrganisationRepository organisationRepository;
 
-    @Autowired
-    private RoleService roleService;
-
-    private Volunteer volunteer;
     private Organisation organisation;
     private User user;
     private MockMvc mockMvc;
-    private UserService userService = new UserService(userRepository, roleService);
-    private JdbcTemplate jdbcTemplate;
+
 
     private String validOrganisationFormData = "organisationId=0" +
             "&name=TestName" +
@@ -71,15 +66,8 @@ public class  RegistrationWorkflowTest extends AbstractServiceTest {
             "&email=email%40email.hu" +
             "&password=password";
 
-
-    @Autowired
-    public void setDataSource(DataSource dataSource) {
-        this.jdbcTemplate = new JdbcTemplate(dataSource);
-    }
-
     @Before
     public void setup() {
-        volunteer = new Volunteer();
         this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
         organisation = new Organisation();
         organisation.setName("TestName");
@@ -93,8 +81,6 @@ public class  RegistrationWorkflowTest extends AbstractServiceTest {
         organisation.setDescription2("Desc2");
 
         user = new User("Test", "User", "test.user@gmail.com", "testPassword", organisation, null);
-
-
     }
 
     @Test
@@ -163,7 +149,6 @@ public class  RegistrationWorkflowTest extends AbstractServiceTest {
 
 
     }
-
 
     @Test
     public void test_step3_GET_ValidActivationID() throws Exception {
