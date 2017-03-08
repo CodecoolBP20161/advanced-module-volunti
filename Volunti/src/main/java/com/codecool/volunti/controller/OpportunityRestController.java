@@ -1,7 +1,6 @@
 package com.codecool.volunti.controller;
 
 
-import com.codecool.volunti.model.Filter2Opportunity;
 import com.codecool.volunti.model.Organisation;
 import com.codecool.volunti.model.Skill;
 import com.codecool.volunti.repository.Filter2OpportunityRepository;
@@ -15,7 +14,6 @@ import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -27,14 +25,12 @@ import java.util.stream.Collectors;
 public class OpportunityRestController {
 
     private static final int pageSize = 20;
-    private OpportunityRepository opportunityRepository;
     private SkillRepository skillRepository;
     private OrganisationRepository organisationRepository;
     private Filter2OpportunityRepository filter2OpportunityRepository;
 
     @Autowired
-    public OpportunityRestController(OpportunityRepository opportunityRepository, SkillRepository skillRepository, OrganisationRepository organisationRepository, Filter2OpportunityRepository filter2OpportunityRepository) {
-        this.opportunityRepository = opportunityRepository;
+    public OpportunityRestController(SkillRepository skillRepository, OrganisationRepository organisationRepository, Filter2OpportunityRepository filter2OpportunityRepository) {
         this.skillRepository = skillRepository;
         this.organisationRepository = organisationRepository;
         this.filter2OpportunityRepository = filter2OpportunityRepository;
