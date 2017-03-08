@@ -48,7 +48,6 @@ public class  RegistrationWorkflowTest extends AbstractServiceTest {
     private User user;
     private MockMvc mockMvc;
 
-
     private String validOrganisationFormData = "organisationId=0" +
             "&name=TestName" +
             "&category=TELEVISION" +

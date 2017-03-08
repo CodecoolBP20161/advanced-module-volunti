@@ -29,26 +29,19 @@ import static com.codecool.volunti.model.enums.RoleEnum.ROLE_USER;
 @Transactional
 public class DataLoader {
 
-    private OrganisationRepository organisationRepository;
-    private UserRepository userRepository;
-    private  VolunteerRepository volunteerRepository;
-    private Organisation organisation;
-    private Volunteer volunteer;
-
-    @Autowired
-    RoleService roleService;
-
-    @Autowired
+    private OrganisationService organisationService;
+    private UserService userService;
+    private VolunteerService volunteerService;
+    private RoleService roleService;
     private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    UserService userService;
-
-    @Autowired
-    public DataLoader(OrganisationRepository organisationRepository, UserRepository userRepository, VolunteerRepository volunteerRepository) {
-        this.organisationRepository = organisationRepository;
-        this.userRepository = userRepository;
-        this.volunteerRepository = volunteerRepository;
+    public DataLoader(OrganisationService organisationService, UserService userService, VolunteerService volunteerService, RoleService roleService, BCryptPasswordEncoder passwordEncoder) {
+        this.organisationService = organisationService;
+        this.userService = userService;
+        this.volunteerService = volunteerService;
+        this.roleService = roleService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @PostConstruct
@@ -62,8 +55,8 @@ public class DataLoader {
 
 
         if (roleService.findByName(ROLE_USER.getRole()) == null) {
-            organisationRepository.save(organisation1);
-            volunteerRepository.save(volunteer);
+            organisationService.save(organisation1);
+            volunteerService.save(volunteer);
             Role roleAdmin = new Role(ROLE_USER.getRole());
             roleService.save(roleAdmin);
 
@@ -74,8 +67,6 @@ public class DataLoader {
             user1.setRoles(roleSet);
             userService.saveUser(user1);
         }
-
-
 
         log.info("loadData method called ...");
     }
