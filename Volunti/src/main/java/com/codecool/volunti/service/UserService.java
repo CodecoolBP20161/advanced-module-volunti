@@ -26,10 +26,9 @@ public class UserService {
 
 
     @Autowired
-    public UserService(UserRepository userRepository, RoleService roleService, BCryptPasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, RoleService roleService) {
         this.userRepository = userRepository;
         this.roleService = roleService;
-        this.passwordEncoder = passwordEncoder;
     }
 
     public void save(User user) {
