@@ -74,7 +74,7 @@ public class DataLoader {
             Set<Role> roleSet = new HashSet<>();
             roleSet.add(roleAdmin);
             user1.setRoles(roleSet);
-            userService.save(user1);
+            userService.saveUser(user1);
         }
 
 
