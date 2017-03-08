@@ -45,9 +45,6 @@ public class  RegistrationWorkflowTest extends AbstractServiceTest {
     private OrganisationRepository organisationRepository;
 
     @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
-
-    @Autowired
     private RoleService roleService;
 
     private Volunteer volunteer;
