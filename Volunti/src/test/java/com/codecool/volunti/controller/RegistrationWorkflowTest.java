@@ -1,20 +1,18 @@
-package com.codecool.volunti.service;
+package com.codecool.volunti.controller;
 
 import com.codecool.volunti.model.Organisation;
 import com.codecool.volunti.model.User;
-import com.codecool.volunti.model.Volunteer;
 import com.codecool.volunti.model.enums.Category;
 import com.codecool.volunti.model.enums.Country;
 import com.codecool.volunti.model.enums.UserStatus;
 import com.codecool.volunti.repository.OrganisationRepository;
 import com.codecool.volunti.repository.UserRepository;
-import org.apache.tomcat.jdbc.pool.DataSource;
+import com.codecool.volunti.service.AbstractServiceTest;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -41,18 +39,9 @@ public class  RegistrationWorkflowTest extends AbstractServiceTest {
     @Autowired
     private OrganisationRepository organisationRepository;
 
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
-
-    @Autowired
-    private RoleService roleService;
-
-    private Volunteer volunteer;
     private Organisation organisation;
     private User user;
     private MockMvc mockMvc;
-    private UserService userService = new UserService(userRepository, roleService, bCryptPasswordEncoder);
-    private JdbcTemplate jdbcTemplate;
 
     private String validOrganisationFormData = "organisationId=0" +
             "&name=TestName" +
@@ -71,15 +60,8 @@ public class  RegistrationWorkflowTest extends AbstractServiceTest {
             "&email=email%40email.hu" +
             "&password=password";
 
-
-    @Autowired
-    public void setDataSource(DataSource dataSource) {
-        this.jdbcTemplate = new JdbcTemplate(dataSource);
-    }
-
     @Before
     public void setup() {
-        volunteer = new Volunteer();
         this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
         organisation = new Organisation();
         organisation.setName("TestName");
@@ -93,8 +75,6 @@ public class  RegistrationWorkflowTest extends AbstractServiceTest {
         organisation.setDescription2("Desc2");
 
         user = new User("Test", "User", "test.user@gmail.com", "testPassword", organisation, null);
-
-
     }
 
     @Test
@@ -163,7 +143,6 @@ public class  RegistrationWorkflowTest extends AbstractServiceTest {
 
 
     }
-
 
     @Test
     public void test_step3_GET_ValidActivationID() throws Exception {

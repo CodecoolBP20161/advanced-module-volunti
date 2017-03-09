@@ -2,6 +2,7 @@ package com.codecool.volunti.service;
 
 
 import com.codecool.volunti.model.Organisation;
+import com.codecool.volunti.model.User;
 import com.codecool.volunti.repository.OrganisationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,12 +17,14 @@ public class OrganisationService {
 
     @Autowired
     public OrganisationService(OrganisationRepository organisationRepository){
-
         this.organisationRepository = organisationRepository;
     }
 
     public Organisation saveOrganisation(Organisation organisation){
         return organisationRepository.save(organisation);
+    }
+    public void save(Organisation organisation) {
+        organisationRepository.save(organisation);
     }
 
     public Organisation get(Integer id) {
