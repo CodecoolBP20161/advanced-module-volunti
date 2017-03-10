@@ -66,8 +66,9 @@ public class OrganisationProfileController {
     public String  saveImage(@RequestParam("file") MultipartFile file, Organisation organisation){
         log.info("saveImage() method called...");
 
-        String hashedOrganisation = BCrypt.hashpw(organisation.getName(), ((Integer) organisation.getOrganisationId()).toString());
-        organisation.setProfilePicture(hashedOrganisation);
+        //String hashedOrganisation = BCrypt.hashpw(organisation.getName(), ((Integer) organisation.getOrganisationId()).toString());
+        //String hashedOrganisation = BCrypt.hashpw("asd", "asdasd");
+        //organisation.setProfilePicture("asd");
         storageService.store(file);
 
 
