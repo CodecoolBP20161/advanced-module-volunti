@@ -1,6 +1,9 @@
 package com.codecool.volunti.controller;
 
 import com.codecool.volunti.model.Organisation;
+import com.codecool.volunti.model.enums.Category;
+import com.codecool.volunti.model.enums.Country;
+import com.codecool.volunti.model.enums.SpokenLanguage;
 import com.codecool.volunti.repository.OrganisationRepository;
 import com.codecool.volunti.service.*;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +19,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.ArrayList;
 
 @Slf4j
 @Controller
@@ -66,12 +71,23 @@ public class OrganisationProfileController {
     public String  saveImage(@RequestParam("file") MultipartFile file, Organisation organisation){
         log.info("saveImage() method called...");
 
-        //String hashedOrganisation = BCrypt.hashpw(organisation.getName(), ((Integer) organisation.getOrganisationId()).toString());
-        //String hashedOrganisation = BCrypt.hashpw("asd", "asdasd");
-        //organisation.setProfilePicture("asd");
-        storageService.store(file);
+        //I left these commented part here for testing reason:
+
+        /*ArrayList<SpokenLanguage> spokenLanguages = new ArrayList<>();
+        spokenLanguages.add(SpokenLanguage.ENGLISH);
+        spokenLanguages.add(SpokenLanguage.HUNGARIAN);
+
+        Organisation organisation1 = new Organisation("Test 1", Category.TEACHING, Country.Hungary, "zipcode", "City", "Address", spokenLanguages, "Mission minimum 10 character", "Desc 1 min 3 character", "Desc 2 min 3 character", "profilePicture", "backgroundPicture");
+        String hashedOrganisation = ((Integer) organisation1.getOrganisationId()).toString();
+        organisation1.setProfilePicture(hashedOrganisation);*/
+
+        String hashedOrganisation = ((Integer) organisation.getOrganisationId()).toString();
+        organisation.setProfilePicture(hashedOrganisation);
+
+        LOGGER.info("our organisation: " + organisation.toString());
+        storageService.store(file, organisation);
 
 
-        return "profiles/organisation";  //TODO: What do we want to return here?!
+        return "profiles/organisation";
     }
 }

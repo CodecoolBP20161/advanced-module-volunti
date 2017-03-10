@@ -3,6 +3,7 @@ package com.codecool.volunti.service;
 
 import com.codecool.volunti.controller.exception_controller.StorageException;
 import com.codecool.volunti.controller.exception_controller.StorageFileNotFoundException;
+import com.codecool.volunti.model.Organisation;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,11 +27,17 @@ import java.util.stream.Stream;
 public class FileSystemStorageService implements StorageService{
 
     private Logger LOGGER = LoggerFactory.getLogger(FileSystemStorageService.class);
+    private Path rootLocation = Paths.get("resources/static/images/profile_image/");
 
-    private final Path rootLocation = Paths.get("resources/static/images/profile_image");
+
+
+
 
     @Override
-    public void store(MultipartFile file) {
+    public void store(MultipartFile file, Organisation organisation) {
+
+        rootLocation = Paths.get("resources/static/images/profile_image/" + ((Integer) organisation.getOrganisationId()).toString() );
+
         LOGGER.info("store() method called...");
         LOGGER.info("route path" + rootLocation.toAbsolutePath());
         try {
