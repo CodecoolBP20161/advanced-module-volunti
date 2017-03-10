@@ -87,7 +87,7 @@ public class OrganisationRepositoryTest extends AbstractServiceTest {
     @Test (expected = ConstraintViolationException.class)
     public void FirstFieldMissingTest(){
 
-        organisation = new Organisation("", Category.TEACHING, Country.Hungary, "zipcode", "City", "Address", spokenLanguages, "Mission minimum 10 character", "Desc 1 min 3 character", "Desc 2 min 3 character");
+        organisation = new Organisation("", Category.TEACHING, Country.Hungary, "zipcode", "City", "Address", spokenLanguages, "Mission minimum 10 character", "Desc 1 min 3 character", "Desc 2 min 3 character", "profilePicture", "backgroundPicture");
         organisation = this.repository.save(organisation);
 
     }
@@ -95,7 +95,7 @@ public class OrganisationRepositoryTest extends AbstractServiceTest {
     @Test (expected = ConstraintViolationException.class)
     public void CategoryIsNullTest(){
 
-        organisation = new Organisation("Test 2", Category.TEACHING, null, "zipcode", "City", "Address", spokenLanguages, "Mission minimum 10 character", "Desc 1 min 3 character", "Desc 2 min 3 character");
+        organisation = new Organisation("Test 2", Category.TEACHING, null, "zipcode", "City", "Address", spokenLanguages, "Mission minimum 10 character", "Desc 1 min 3 character", "Desc 2 min 3 character", "profilePicture", "backgroundPicture");
         organisation = this.repository.save(organisation);
 
     }

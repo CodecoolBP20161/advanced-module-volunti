@@ -7,11 +7,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @Controller
@@ -27,15 +31,18 @@ public class OrganisationProfileController {
     private EmailService emailService;
     private BCryptPasswordEncoder passwordEncoder;
 
+    private final StorageService storageService;
+
     @Autowired
     public OrganisationProfileController(OrganisationRepository organisationRepository,
                                   OrganisationService organisationService,
                                   UserService userService,
-                                  EmailService emailService) {
+                                  EmailService emailService, StorageService storageService) {
         this.organisationRepository = organisationRepository;
         this.organisationService = organisationService;
         this.userService = userService;
         this.emailService = emailService;
+        this.storageService = storageService;
     }
 
     @GetMapping(value = "/profile/organisation")
@@ -56,10 +63,13 @@ public class OrganisationProfileController {
     }
 
     @PostMapping( value = "/profile/organisation/saveImage")
-    public String saveImage(Organisation organisation){
+    public String  saveImage(@RequestParam("file") MultipartFile file, Organisation organisation){
         log.info("saveImage() method called...");
 
-        //TODO: some magic image saving process
+        String hashedOrganisation = BCrypt.hashpw(organisation.getName(), ((Integer) organisation.getOrganisationId()).toString());
+        organisation.setProfilePicture(hashedOrganisation);
+        storageService.store(file);
+
 
         return "profiles/organisation";  //TODO: What do we want to return here?!
     }

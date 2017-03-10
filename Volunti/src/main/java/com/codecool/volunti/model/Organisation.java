@@ -71,9 +71,15 @@ public class Organisation {
     @Column(name="description_2")
     private String description2;
 
+    @Column(name="profile_picture")
+    private String profilePicture;
+
+    @Column(name="background_picture")
+    private String backgroundPicture;
+
     public Organisation(){}
 
-    public Organisation(String name, Category category, Country country, String zipcode, String city, String address, ArrayList<SpokenLanguage> spokenLanguage, String mission, String description1, String description2) {
+    public Organisation(String name, Category category, Country country, String zipcode, String city, String address, ArrayList<SpokenLanguage> spokenLanguage, String mission, String description1, String description2, String profilePicture, String backgroundPicture) {
         this.setName(name);
         this.setCategory(category);
         this.setCountry(country);
@@ -84,6 +90,8 @@ public class Organisation {
         this.setZipcode(zipcode);
         this.setDescription1(description1);
         this.setDescription2(description2);
+        this.setProfilePicture(profilePicture);
+        this.setBackgroundPicture(backgroundPicture);
     }
 
 }

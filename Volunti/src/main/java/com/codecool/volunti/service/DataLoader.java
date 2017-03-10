@@ -43,7 +43,7 @@ public class DataLoader {
         spokenLanguages.add(SpokenLanguage.ENGLISH);
         spokenLanguages.add(SpokenLanguage.HUNGARIAN);
 
-        Organisation organisation1 = new Organisation("UNICEF", Category.TEACHING, Country.Hungary, "1065", "Isaszeg", "Kossuth utca", spokenLanguages, "mission mission mission mission mission", "description1", "description2");
+        Organisation organisation1 = new Organisation("UNICEF", Category.TEACHING, Country.Hungary, "1065", "Isaszeg", "Kossuth utca", spokenLanguages, "mission mission mission mission mission", "description1", "description2","profileHash", "backgroundhash");
         Volunteer volunteer = new Volunteer();
 
 
