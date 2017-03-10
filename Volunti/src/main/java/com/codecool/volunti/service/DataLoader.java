@@ -64,7 +64,7 @@ public class DataLoader {
             organisationRepository.save(organisation1);
 
             for (int i = 0; i < 100; i++) {
-                saveTestTask(organisation1);
+                testOpportunityGenerator(organisation1);
             }
         }
 
@@ -90,7 +90,7 @@ public class DataLoader {
         skillRepository.save(skills);
     }
 
-    public void saveTestTask(Organisation org){
+    public void testOpportunityGenerator(Organisation org){
         DataFactory df = new DataFactory();
 
         List<Skill> skills = new ArrayList<>();
