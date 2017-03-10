@@ -73,6 +73,16 @@
 
                 <!-- Top Right Button -->
                 <div class="right-top-bnr">
+
+                    <div class="">
+                        <form method="POST" enctype="multipart/form-data" th:action="@{/profile/organisation/saveImage}" th:object="${organisation}">
+                            <table>
+                                <tr><td>Upload picture:</td><td><input type="file" name="file" /></td></tr>
+                                <tr><td></td><td><input type="submit" value="Upload" /></td></tr>
+                            </table>
+                        </form>
+                    </div>
+
                     <div class="connect">
                         <a href="#." data-toggle="modal" data-target="#myModal"><i class="fa fa-user-plus"></i>Connect</a>
                         <a href="#."><i class="fa fa-share-alt"></i> Share</a>
