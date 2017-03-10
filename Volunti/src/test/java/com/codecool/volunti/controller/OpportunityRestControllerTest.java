@@ -1,8 +1,6 @@
 package com.codecool.volunti.controller;
 
 import com.codecool.volunti.service.AbstractServiceTest;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +35,6 @@ public class OpportunityRestControllerTest extends AbstractServiceTest{
         try {
             oppResult = this.mockMvc.perform(get("/api/opportunities/find/all/1")).andExpect(status().isOk()).andReturn();
             content = oppResult.getResponse().getContentAsString();
-
         } catch (Exception e) {
             e.printStackTrace();
         }
