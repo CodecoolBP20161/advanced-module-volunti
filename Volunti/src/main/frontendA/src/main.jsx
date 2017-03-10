@@ -172,13 +172,13 @@ var Opportunity = React.createClass({
                     <h6>{this.props.opportunity.availabilityFrom}</h6>
                 </td>
                 <td>
-                    <h6>{this.props.opportunity.foodType}</h6>
+                    <h6>{this.props.opportunity.name}</h6>
                 </td>
                 <td>
-                    <h6>{this.props.opportunity.skills}</h6>
+                    <h6>{this.props.opportunity.category}</h6>
                 </td>
                 <td>
-                    <h6>{this.props.opportunity.hoursExpected}</h6>
+                    <h6>{this.props.opportunity.country}</h6>
                 </td>
                 <td>
                     <div className="btn-group" >

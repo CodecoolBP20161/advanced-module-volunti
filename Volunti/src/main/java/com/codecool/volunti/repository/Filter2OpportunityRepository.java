@@ -23,4 +23,9 @@ public interface Filter2OpportunityRepository extends ReadOnlyRepository<Filter2
                            @Param("dateFrom")Timestamp dateFrom,
                            @Param("dateTo")Timestamp dateTo,
                            @Param("skill")String skill);
+
+    @Query(value = "SELECT fo.name FROM filter_to_opportunity fo WHERE fo.id = ?1",
+            nativeQuery = true)
+    List<String> findName (@Param("id") int id);
+
 }

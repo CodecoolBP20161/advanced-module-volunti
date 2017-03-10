@@ -1,6 +1,8 @@
 package com.codecool.volunti.controller;
 
 
+import com.codecool.volunti.DTO.Filter2OpportunityDTO;
+import com.codecool.volunti.model.Filter2Opportunity;
 import com.codecool.volunti.model.Organisation;
 import com.codecool.volunti.model.Skill;
 import com.codecool.volunti.repository.Filter2OpportunityRepository;
@@ -9,6 +11,7 @@ import com.codecool.volunti.repository.OrganisationRepository;
 import com.codecool.volunti.repository.SkillRepository;
 import com.codecool.volunti.service.Pageable;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.web.bind.WebDataBinder;
@@ -51,9 +54,9 @@ public class OpportunityRestController {
         Map<String, Object> result = new HashMap<>();
 
         if (Objects.equals(skill, "") && Objects.equals(country, "") && Objects.equals(category, "")){
-            page = new Pageable((List) filter2OpportunityRepository.findAll(), currentPage, pageSize);
+            page = new Pageable((List) convertToDto(filter2OpportunityRepository.findAll()), currentPage, pageSize);
         } else {
-            page = new Pageable(filter2OpportunityRepository.find(country, category, new java.sql.Timestamp(from.getTime()), new java.sql.Timestamp(to.getTime()), skill), currentPage, pageSize);
+            page = new Pageable(convertToDto(filter2OpportunityRepository.find(country, category, new java.sql.Timestamp(from.getTime()), new java.sql.Timestamp(to.getTime()), skill)), currentPage, pageSize);
         }
 
         result.put("maxpage", page.getMaxPages());
@@ -94,5 +97,19 @@ public class OpportunityRestController {
     private Set<String> getLocations() {
         List<Organisation> locations = (List<Organisation>) organisationRepository.findAll();
         return locations.stream().map(Organisation::getCountry).collect(Collectors.toSet());
+    }
+
+    private List<Filter2OpportunityDTO> convertToDto(List<Filter2Opportunity> filter2Opportunities) {
+        ModelMapper modelMapper = new ModelMapper();
+        List<Filter2OpportunityDTO> result = new ArrayList<>();
+        for (int i = 0; i < filter2Opportunities.size(); i++) {
+            Filter2Opportunity filter2Opportunity =  filter2Opportunities.get(i);
+            Filter2OpportunityDTO filterDto = modelMapper.map(filter2Opportunity, Filter2OpportunityDTO.class);
+
+            List<String> skillNames = filter2OpportunityRepository.findName(filter2Opportunity.getId());
+            filterDto.setName(skillNames);
+            result.add(filterDto);
+        }
+        return result;
     }
 }
