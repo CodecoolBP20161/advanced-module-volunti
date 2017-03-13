@@ -55,7 +55,8 @@ public class UserRepositoryTest extends AbstractServiceTest {
         spokenLanguages.add(SpokenLanguage.ENGLISH);
         spokenLanguages.add(SpokenLanguage.HUNGARIAN);
 
-        organisation = new Organisation("Test 1", Category.TEACHING, Country.Hungary, "zipcode", "City", "Address", spokenLanguages, "Mission minimum 10 character", "Desc 1 min 3 character", "Desc 2 min 3 character", "profilePicture", "backgroundPicture");
+        organisation = new Organisation("Test 1", Category.TEACHING, Country.HUNGARY, "zipcode", "City", "Address", spokenLanguages, "Mission minimum 10 character", "Desc 1 min 3 character", "Desc 2 min 3 character", "profilePicture", "backgroundPicture");
+
         volunteer = new Volunteer();
 
         user1 = new User();
@@ -63,7 +64,7 @@ public class UserRepositoryTest extends AbstractServiceTest {
         user1.setLastName("Test1 last name");
         user1.setEmail("Email1");
         user1.setPassword("Password1");
-        user1.setSalt("salt1");
+        //user1.setSalt("salt1");
         user1.setOrganisation(organisation);
         user1.setVolunteer(volunteer);
 
@@ -72,14 +73,13 @@ public class UserRepositoryTest extends AbstractServiceTest {
         user2.setLastName("Test2 last name");
         user2.setEmail("Email2");
         user2.setPassword("Password2");
-        user2.setSalt("salt2");
         user2.setOrganisation(organisation);
         user2.setVolunteer(volunteer);
 
     }
 
     @Test
-    public void testForGetters(){
+    public void test_UserFields_Should_Return_True(){
 
         organisation = this.organisationRepository.save(organisation);
         volunteer = this.volunteerRepository.save(volunteer);
@@ -89,25 +89,25 @@ public class UserRepositoryTest extends AbstractServiceTest {
         assertEquals("Test1 last name", user1.getLastName());
         assertEquals("Email1", user1.getEmail());
         assertEquals("Password1", user1.getPassword());
-        assertEquals("salt1", user1.getSalt());
+        //assertEquals("salt1", user1.getSalt());
         assertEquals(organisation, user1.getOrganisation());
         assertEquals(volunteer, user1.getVolunteer());
     }
 
     @Test (expected = ConstraintViolationException.class)
-    public void FirstFieldMissingTest(){
+    public void test_UserFirstFieldMissing_Should_Return_Exception(){
         user1 = new User("", "Test1 last name", "Email1", "Password1", organisation, volunteer);
         this.userRepository.save(user1);
     }
 
     @Test (expected = ConstraintViolationException.class)
-    public void CategoryIsNullTest(){
+    public void test_UserCategoryIsNull_Should_Return_Exception(){
         user1 = new User("Test1 first name", null, "Email1", "Password1", organisation, volunteer);
         this.userRepository.save(user1);
     }
 
     @Test
-    public void addMoreOrganisation(){
+    public void test_addMoreOrganisation_Should_Return_True(){
 
         int countBefore = countRowsInTable("users");
 
