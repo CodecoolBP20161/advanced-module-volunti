@@ -52,10 +52,6 @@ public class User {
     @Column(name="password")
     private String password;
 
-    /*
-    @Column(name="salt")
-    private String salt;
-*/
     @OneToOne
     @JoinColumn(name="organisation_id")
     private Organisation organisation;
@@ -95,17 +91,6 @@ public class User {
             setUserStatus(UserStatus.INACTIVE);
         }
     }
-
-    /*
-    private void setSalt(){
-        salt = BCrypt.gensalt();
-    }
-*/
-    /*
-    public void hashPassword(String password){
-        this.password = BCrypt.hashpw(password, salt);
-    }
-    */
 
     public String signupSuccess(EmailService emailService, EmailType emailType) {
         log.info("signupSuccess() method called...");
