@@ -1,6 +1,8 @@
 package com.codecool.volunti.service.model;
 
 import com.codecool.volunti.model.User;
+import com.codecool.volunti.model.enums.UserStatus;
+import com.codecool.volunti.service.email.EmailType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -22,7 +24,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
     @Override
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userService.findByEmail(email);
+        User user = userService.findByEmailAndUserStatusActive(email, UserStatus.ACTIVE);
         user.getRoles().forEach(System.out::println);
         Set<GrantedAuthority> grantedAuthorities = user.getRoles().stream()
                 .map(role -> new SimpleGrantedAuthority(role.getName()))
