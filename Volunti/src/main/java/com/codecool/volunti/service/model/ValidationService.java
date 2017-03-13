@@ -1,4 +1,4 @@
-package com.codecool.volunti.service;
+package com.codecool.volunti.service.model;
 
 
 import lombok.extern.slf4j.Slf4j;

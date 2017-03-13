@@ -1,11 +1,9 @@
-package com.codecool.volunti.service;
+package com.codecool.volunti.service.email;
 
 
 import com.codecool.volunti.model.User;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
 import javax.mail.MessagingException;

@@ -1,4 +1,4 @@
-package com.codecool.volunti.service;
+package com.codecool.volunti.service.model;
 
 import com.codecool.volunti.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
