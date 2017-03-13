@@ -1,5 +1,6 @@
 <!doctype html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
 <head th:replace="fragments/head :: head"></head>
 <body>
 <div id="main-wrapper">
@@ -28,11 +29,11 @@
                         </div>
                     </div>
                     <!--  FORM SECTION -->
-                    <div class="col-sm-5">
+                    <div class="col-sm-5" sec:authorize="!isAuthenticated()">
                         <div class="login-sec">
                             <!--  TABS -->
                             <!-- TABS -->
-                            <div class="uou-tabs">
+                            <div class="uou-tabs" >
                                 <ul class="tabs">
                                     <li class="active"><a href="#register">Register Now</a></li>
                                     <li ><a href="#log-in">Member Login</a></li>
