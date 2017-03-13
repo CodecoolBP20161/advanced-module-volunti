@@ -10,6 +10,8 @@ import java.util.stream.Stream;
 
 public interface StorageService {
 
+    void deleteAll();
+
     void init();
 
     void store(MultipartFile file, Organisation organisation);

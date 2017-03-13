@@ -26,23 +26,24 @@ import java.util.stream.Stream;
 @Service
 public class FileSystemStorageService implements StorageService{
 
-    private Path rootLocation = Paths.get("resources/static/images/profile_image/");
+    private Path rootLocation = Paths.get("filestorage/profile_image/");
 
 
     @Override
     public void store(MultipartFile file, Organisation organisation) {
 
-        rootLocation = Paths.get("resources/static/images/profile_image/" + ((Integer) organisation.getOrganisationId()).toString() );
+        Path fileLocation = Paths.get( rootLocation.toString(), ((Integer) organisation.getOrganisationId()).toString() );
 
         log.info("store() method called...");
-        log.info("route path" + rootLocation.toAbsolutePath());
+        log.info("route path" + fileLocation.toAbsolutePath());
         try {
             if (file.isEmpty()) {
                 throw new StorageException("Failed to store empty file " + file.getOriginalFilename());
             }
-            Files.copy(file.getInputStream(), this.rootLocation.toAbsolutePath());
+            Files.copy(file.getInputStream(), fileLocation.toAbsolutePath());
 
         } catch (IOException e) {
+            e.printStackTrace();
             throw new StorageException("Failed to store file " + file.getOriginalFilename(), e);
         }
     }
@@ -50,15 +51,20 @@ public class FileSystemStorageService implements StorageService{
 
     @Override
     public Path load(String filename) {
+
         return rootLocation.resolve(filename);
     }
 
-
+    @Override
+    public void deleteAll() {
+        FileSystemUtils.deleteRecursively(rootLocation.toFile());
+    }
 
     @Override
     public void init() {
         try {
-            Files.createDirectory(rootLocation);
+            log.info("it is in the init method");
+            Files.createDirectories(rootLocation);
         } catch (IOException e) {
             throw new StorageException("Could not initialize storage", e);
         }
