@@ -1,26 +1,22 @@
 package com.codecool.volunti.controller;
 
 import com.codecool.volunti.model.Organisation;
-import com.codecool.volunti.model.enums.Category;
-import com.codecool.volunti.model.enums.Country;
-import com.codecool.volunti.model.enums.SpokenLanguage;
 import com.codecool.volunti.repository.OrganisationRepository;
 import com.codecool.volunti.service.*;
+import com.codecool.volunti.service.email.EmailService;
+import com.codecool.volunti.service.email.EmailType;
+import com.codecool.volunti.service.model.OrganisationService;
+import com.codecool.volunti.service.model.UserService;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
 
 @Slf4j
 @Controller
