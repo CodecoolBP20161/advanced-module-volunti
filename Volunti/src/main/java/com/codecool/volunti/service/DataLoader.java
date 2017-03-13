@@ -14,11 +14,17 @@ import com.codecool.volunti.service.model.UserService;
 import com.codecool.volunti.service.model.VolunteerService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.InputStreamSource;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -53,9 +59,16 @@ public class DataLoader {
 
 
         Organisation organisation1 = new Organisation("UNICEF", Category.TEACHING, Country.HUNGARY, "1065", "Isaszeg", "Kossuth utca", spokenLanguages, "mission mission mission mission mission", "description1", "description2","profileHash", "backgroundhash");
+        try {
+            File testImageFile = new File( "Volunti/src/main/resources/static/images/profile_image/test_profile_image.png" );
+            System.out.println(testImageFile.getAbsolutePath());
+            InputStreamSource testImage = new InputStreamResource( new FileInputStream( testImageFile ) );
+            organisation1.setProfilePictureFileForSave(testImage);
+        } catch (FileNotFoundException e) {
+            log.error("Cannot save test image: ", e);
+        }
 
         Volunteer volunteer = new Volunteer();
-
 
         if (roleService.findByName(ROLE_USER.getRole()) == null) {
             organisationService.save(organisation1);

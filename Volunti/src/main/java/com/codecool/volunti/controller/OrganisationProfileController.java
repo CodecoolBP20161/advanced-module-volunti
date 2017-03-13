@@ -1,9 +1,6 @@
 package com.codecool.volunti.controller;
 
 import com.codecool.volunti.model.Organisation;
-import com.codecool.volunti.model.enums.Category;
-import com.codecool.volunti.model.enums.Country;
-import com.codecool.volunti.model.enums.SpokenLanguage;
 import com.codecool.volunti.repository.OrganisationRepository;
 import com.codecool.volunti.service.*;
 import com.codecool.volunti.service.email.EmailService;
@@ -12,12 +9,13 @@ import com.codecool.volunti.service.model.OrganisationService;
 import com.codecool.volunti.service.model.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.nio.file.Path;
@@ -35,20 +33,15 @@ public class OrganisationProfileController {
     private EmailService emailService;
     private BCryptPasswordEncoder passwordEncoder;
 
-    private final StorageService storageService;
-
     @Autowired
     public OrganisationProfileController(OrganisationRepository organisationRepository,
                                   OrganisationService organisationService,
                                   UserService userService,
-                                  EmailService emailService, StorageService storageService) {
+                                  EmailService emailService) {
         this.organisationRepository = organisationRepository;
         this.organisationService = organisationService;
         this.userService = userService;
         this.emailService = emailService;
-        this.storageService = storageService;
-        this.storageService.deleteAll();
-        this.storageService.init();
     }
 
     @GetMapping(value = "/profile/organisation")
@@ -57,14 +50,22 @@ public class OrganisationProfileController {
 
         Organisation organisation = organisationRepository.findOne(1);
         log.info("organisation id: " + organisation.getOrganisationId());
-        Path imagePath = storageService.load(((Integer) organisation.getOrganisationId()).toString());
-        log.info("imagePath: " + imagePath);
-
         model.addAttribute("organisation", organisation);
         return "profiles/organisation";
     }
 
-    
+
+    @GetMapping("/profile/organisation/image")
+    @ResponseBody
+    public ResponseEntity<Resource> serveFile(Model model) {
+
+        Organisation organisation = organisationRepository.findOne(1);
+        Resource file = organisationService.loadProfilePicture(organisation);
+        return ResponseEntity
+                .ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\""+file.getFilename()+"\"")
+                .body(file);
+    }
 
 
     @PostMapping( value = "/profile/organisation/saveText")
@@ -72,21 +73,18 @@ public class OrganisationProfileController {
         log.info("saveText() method called ...");
 
         //TODO: Save the text...
-        organisationService.saveOrganisation(organisation);
+        organisationService.save(organisation);
         return "profiles/organisation";  //TODO: What do we want to return here?!
     }
 
     @PostMapping( value = "/profile/organisation/saveImage")
-    public String  saveImage(@RequestParam("file") MultipartFile file){
+    public String saveImage(@RequestParam("file") MultipartFile file){
         log.info("saveImage() method called...");
 
         Organisation organisation = organisationRepository.findOne(1);
         log.info("our organisation: " + organisation.toString());
-        storageService.store(file, organisation);
-
-        String hashedOrganisation = ((Integer) organisation.getOrganisationId()).toString();
-        organisation.setProfilePicture(hashedOrganisation);
-        organisationService.saveOrganisation(organisation);
+        organisation.setProfilePictureFileForSave(file);
+        organisationService.save(organisation);
 
         return "profiles/organisation";
     }

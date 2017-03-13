@@ -5,6 +5,8 @@ import com.codecool.volunti.model.enums.Country;
 import com.codecool.volunti.model.enums.SpokenLanguage;
 import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.core.io.InputStreamSource;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
@@ -74,6 +76,9 @@ public class Organisation {
     @Column(name="profile_picture")
     private String profilePicture;
 
+    @Transient
+    private InputStreamSource profilePictureFileForSave;
+
     @Column(name="background_picture")
     private String backgroundPicture;
 
@@ -92,6 +97,10 @@ public class Organisation {
         this.setDescription2(description2);
         this.setProfilePicture(profilePicture);
         this.setBackgroundPicture(backgroundPicture);
+    }
+
+    public void setProfilePictureFromFile(InputStreamSource file) {
+        this.profilePictureFileForSave = file;
     }
 
 }

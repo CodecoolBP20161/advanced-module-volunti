@@ -98,7 +98,7 @@ public class RegistrationController {
 
         //save the organisation from the session into database
         organisation = (Organisation) session.getAttribute("organisation");
-        Organisation savedOrganisation = organisationService.saveOrganisation(organisation);
+        Organisation savedOrganisation = organisationService.save(organisation);
         log.info("organisation saved: {}", savedOrganisation);
 
         //save the user into database

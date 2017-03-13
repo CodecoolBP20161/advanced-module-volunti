@@ -7,6 +7,7 @@ import com.codecool.volunti.repository.OrganisationRepository;
 import com.codecool.volunti.repository.UserRepository;
 import com.codecool.volunti.repository.VolunteerRepository;
 import com.codecool.volunti.service.DataLoader;
+import com.codecool.volunti.service.StorageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -27,6 +28,9 @@ public class VoluntiApplication {
     DataLoader dataLoader;
 
     @Autowired
+    StorageService storageService;
+
+    @Autowired
     OrganisationRepository organisationRepository;
 
     @Autowired
@@ -34,6 +38,9 @@ public class VoluntiApplication {
 
     @Autowired
     VolunteerRepository volunteerRepository;
+
+
+
 
     @Bean
     public EmbeddedServletContainerCustomizer containerCustomizer() {
@@ -48,19 +55,10 @@ public class VoluntiApplication {
     }
 
     @PostConstruct
-    void seeData() {
-        log.info("seeData method called...");
-        for (Organisation organisation : organisationRepository.findAll()) {
-            log.info(organisation.toString());
-        }
-
-        for (User user : userRepository.findAll()) {
-            log.info(user.toString());
-        }
-
-        for (Volunteer volunteer : volunteerRepository.findAll()) {
-            log.info(volunteer.toString());
-        }
+    void afterInit() {
+        log.info("afterInit method called...");
+        this.storageService.deleteAll();
+        this.storageService.init();
     }
 
 }
