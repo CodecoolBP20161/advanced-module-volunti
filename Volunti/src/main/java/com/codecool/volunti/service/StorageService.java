@@ -14,11 +14,6 @@ public interface StorageService {
 
     void store(MultipartFile file, Organisation organisation);
 
-    Stream<Path> loadAll();
-
     Path load(String filename);
 
-    Resource loadAsResource(String filename);
-
-    void deleteAll();
 }

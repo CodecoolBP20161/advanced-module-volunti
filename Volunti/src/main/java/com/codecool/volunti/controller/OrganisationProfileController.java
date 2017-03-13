@@ -57,6 +57,7 @@ public class OrganisationProfileController {
         return "profiles/organisation";
     }
 
+
     @PostMapping( value = "/profile/organisation/saveText")
     public String saveText(Organisation organisation){
         log.info("saveText() method called ...");

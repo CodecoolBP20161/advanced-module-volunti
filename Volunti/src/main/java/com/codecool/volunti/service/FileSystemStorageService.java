@@ -26,11 +26,7 @@ import java.util.stream.Stream;
 @Service
 public class FileSystemStorageService implements StorageService{
 
-    private Logger LOGGER = LoggerFactory.getLogger(FileSystemStorageService.class);
     private Path rootLocation = Paths.get("resources/static/images/profile_image/");
-
-
-
 
 
     @Override
@@ -38,8 +34,8 @@ public class FileSystemStorageService implements StorageService{
 
         rootLocation = Paths.get("resources/static/images/profile_image/" + ((Integer) organisation.getOrganisationId()).toString() );
 
-        LOGGER.info("store() method called...");
-        LOGGER.info("route path" + rootLocation.toAbsolutePath());
+        log.info("store() method called...");
+        log.info("route path" + rootLocation.toAbsolutePath());
         try {
             if (file.isEmpty()) {
                 throw new StorageException("Failed to store empty file " + file.getOriginalFilename());
@@ -51,44 +47,13 @@ public class FileSystemStorageService implements StorageService{
         }
     }
 
-    @Override
-    public Stream<Path> loadAll() {
-        try {
-            return Files.walk(this.rootLocation, 1)
-                    .filter(path -> !path.equals(this.rootLocation))
-                    .map(path -> this.rootLocation.relativize(path));
-        } catch (IOException e) {
-            throw new StorageException("Failed to read stored files", e);
-        }
-
-    }
 
     @Override
     public Path load(String filename) {
         return rootLocation.resolve(filename);
     }
 
-    @Override
-    public Resource loadAsResource(String filename) {
-        try {
-            Path file = load(filename);
-            Resource resource = new UrlResource(file.toUri());
-            if(resource.exists() || resource.isReadable()) {
-                return resource;
-            }
-            else {
-                throw new StorageFileNotFoundException("Could not read file: " + filename);
 
-            }
-        } catch (MalformedURLException e) {
-            throw new StorageFileNotFoundException("Could not read file: " + filename, e);
-        }
-    }
-
-    @Override
-    public void deleteAll() {
-        FileSystemUtils.deleteRecursively(rootLocation.toFile());
-    }
 
     @Override
     public void init() {
