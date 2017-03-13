@@ -2513,7 +2513,7 @@ iframe {
 .profile-company-content .tab-content #contact form input, .profile-company-content .tab-content #contact form textarea {
 	padding: 8px 20px;
 	height: 50px;
-	text-transform: uppercase;
+	/*text-transform: uppercase;*/
 	font-size: 13px;
 	font-weight: 600;
 	color: #333;
@@ -3237,7 +3237,7 @@ vivid green: #2ad482
 
 */
 
-.home-pro .col-sm-7 .col-md-10 h1, .home-pro .col-sm-7 .col-md-10 h2, .home-pro .col-sm-7 .col-md-10 h5 {
+.home-pro  .col-md-10 h1, .home-pro  .col-md-10 h2, .home-pro  .col-md-10 h5 {
     color: #FFFFFF;
 }
 
