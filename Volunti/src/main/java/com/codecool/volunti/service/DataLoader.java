@@ -58,13 +58,13 @@ public class DataLoader {
         if (roleService.findByName(ROLE_USER.getRole()) == null) {
             organisationService.save(organisation1);
             volunteerService.save(volunteer);
-            Role roleAdmin = new Role(ROLE_USER.getRole());
-            roleService.save(roleAdmin);
+            Role roleUser = new Role(ROLE_USER.getRole());
+            roleService.save(roleUser);
 
             User user1 = new User("Anna", "Kiss", "em@i.l", passwordEncoder.encode("password"), organisation1, volunteer);
 
             Set<Role> roleSet = new HashSet<>();
-            roleSet.add(roleAdmin);
+            roleSet.add(roleUser);
             user1.setRoles(roleSet);
             userService.saveUser(user1);
         }
