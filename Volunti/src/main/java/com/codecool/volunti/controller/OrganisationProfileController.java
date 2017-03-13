@@ -26,8 +26,6 @@ import java.util.ArrayList;
 @Controller
 public class OrganisationProfileController {
 
-    private Logger LOGGER = LoggerFactory.getLogger(OrganisationProfileController.class);
-
     private static EmailType EMAILTYPE = EmailType.CONFIRMATION;
 
     private OrganisationRepository organisationRepository;
@@ -84,7 +82,7 @@ public class OrganisationProfileController {
         String hashedOrganisation = ((Integer) organisation.getOrganisationId()).toString();
         organisation.setProfilePicture(hashedOrganisation);
 
-        LOGGER.info("our organisation: " + organisation.toString());
+        log.info("our organisation: " + organisation.toString());
         storageService.store(file, organisation);
 
 
