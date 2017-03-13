@@ -72,7 +72,6 @@ public class User {
     public User() {
         activationID = UUID.randomUUID().toString();
         userStatus = UserStatus.INACTIVE;
-        //setSalt();
     }
 
     public User(String firstName, String lastName, String email, String password, Organisation organisation, Volunteer volunteer) {
