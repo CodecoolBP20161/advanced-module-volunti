@@ -24,6 +24,9 @@
                                 <div class="profile-main">
                                     <h3>Login</h3>
                                     <div class="profile-in">
+                                        <div th:if="${param.error}"
+                                             class="alert alert-error alert-dismissible"
+                                             role="alert">Invalid credentials</div>
 
                                         <form th:action="@{/login}" method="post">
                                             <input name="username" type="email" placeholder="Email Address" minlength="1" required="required" autofocus="autofocus"/>
