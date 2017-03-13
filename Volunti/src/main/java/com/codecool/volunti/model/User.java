@@ -2,8 +2,8 @@ package com.codecool.volunti.model;
 
 
 import com.codecool.volunti.model.enums.UserStatus;
-import com.codecool.volunti.service.EmailService;
-import com.codecool.volunti.service.EmailType;
+import com.codecool.volunti.service.email.EmailService;
+import com.codecool.volunti.service.email.EmailType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -52,10 +52,6 @@ public class User {
     @Column(name="password")
     private String password;
 
-    /*
-    @Column(name="salt")
-    private String salt;
-*/
     @OneToOne
     @JoinColumn(name="organisation_id")
     private Organisation organisation;
@@ -76,7 +72,6 @@ public class User {
     public User() {
         activationID = UUID.randomUUID().toString();
         userStatus = UserStatus.INACTIVE;
-        //setSalt();
     }
 
     public User(String firstName, String lastName, String email, String password, Organisation organisation, Volunteer volunteer) {
@@ -95,17 +90,6 @@ public class User {
             setUserStatus(UserStatus.INACTIVE);
         }
     }
-
-    /*
-    private void setSalt(){
-        salt = BCrypt.gensalt();
-    }
-*/
-    /*
-    public void hashPassword(String password){
-        this.password = BCrypt.hashpw(password, salt);
-    }
-    */
 
     public String signupSuccess(EmailService emailService, EmailType emailType) {
         log.info("signupSuccess() method called...");
