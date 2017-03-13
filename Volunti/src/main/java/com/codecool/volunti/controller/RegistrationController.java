@@ -19,10 +19,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
-
-import static com.codecool.volunti.model.enums.RoleEnum.ROLE_USER;
 
 @Slf4j
 @Controller
