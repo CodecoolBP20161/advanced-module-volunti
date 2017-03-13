@@ -15,7 +15,7 @@
             <div class="container">
                 <div class="row">
                     <!--  CONTENT -->
-                    <div class="col-sm-7">
+                    <div th:class="${#authentication.getPrincipal() eq 'anonymousUser'}? 'col-sm-7' : 'col-sm-12'">
                         <div class="text-area">
                             <div class="position-center-center col-md-10">
                                 <h1>
@@ -24,7 +24,7 @@
                                 <h1>
                                     to go far go together!
                                 </h1>
-                                <h5>Volunti helps to connect Organisations with Volunteers</h5>
+                                <h5> Volunti helps to connect Organisations with Volunteers</h5>
                             </div>
                         </div>
                     </div>
