@@ -4,16 +4,21 @@ package com.codecool.volunti.model;
 import com.codecool.volunti.model.enums.UserStatus;
 import com.codecool.volunti.service.email.EmailService;
 import com.codecool.volunti.service.email.EmailType;
+import com.codecool.volunti.service.model.RoleService;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
+
+import static com.codecool.volunti.model.enums.RoleEnum.ROLE_USER;
 
 @Entity
 @Table(name="users")
@@ -102,3 +107,4 @@ public class User {
         return "Thank you for registering with us.";
     }
 }
+

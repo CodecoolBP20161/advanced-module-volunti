@@ -2,11 +2,13 @@ package com.codecool.volunti.controller;
 
 
 import com.codecool.volunti.model.Organisation;
+import com.codecool.volunti.model.Role;
 import com.codecool.volunti.model.User;
 import com.codecool.volunti.repository.OrganisationRepository;
 import com.codecool.volunti.service.email.EmailService;
 import com.codecool.volunti.service.email.EmailType;
 import com.codecool.volunti.service.model.OrganisationService;
+import com.codecool.volunti.service.model.RoleService;
 import com.codecool.volunti.service.model.UserService;
 import com.codecool.volunti.service.model.ValidationService;
 import lombok.extern.slf4j.Slf4j;
@@ -31,19 +33,21 @@ public class RegistrationController {
     private EmailService emailService;
     private ValidationService validationService = new ValidationService(organisationService, userService);
     private BCryptPasswordEncoder passwordEncoder;
+    private RoleService roleService;
 
     @Autowired
     public RegistrationController(OrganisationRepository organisationRepository,
                                   OrganisationService organisationService,
                                   UserService userService,
                                   EmailService emailService,
-                                  ValidationService validationService, BCryptPasswordEncoder passwordEncoder) {
+                                  ValidationService validationService, BCryptPasswordEncoder passwordEncoder, RoleService roleService) {
         this.organisationRepository = organisationRepository;
         this.organisationService = organisationService;
         this.userService = userService;
         this.emailService = emailService;
         this.validationService = validationService;
         this.passwordEncoder = passwordEncoder;
+        this.roleService = roleService;
     }
 
 
@@ -137,7 +141,6 @@ public class RegistrationController {
         model.addAttribute("theme", "Registration");
         model.addAttribute("message", "Account Confirmation is done.");
         return "information";
-
     }
     /* Expected Request body:
     {
@@ -152,6 +155,4 @@ public class RegistrationController {
         log.info("payload: " + payload.toString());
        return String.valueOf(validationService.checkIfValueExists(payload));
     }
-
-
 }

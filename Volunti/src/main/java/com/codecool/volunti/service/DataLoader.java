@@ -8,6 +8,7 @@ import com.codecool.volunti.model.Volunteer;
 import com.codecool.volunti.model.enums.Category;
 import com.codecool.volunti.model.enums.Country;
 import com.codecool.volunti.model.enums.SpokenLanguage;
+import com.codecool.volunti.model.enums.UserStatus;
 import com.codecool.volunti.service.model.OrganisationService;
 import com.codecool.volunti.service.model.RoleService;
 import com.codecool.volunti.service.model.UserService;
@@ -73,15 +74,19 @@ public class DataLoader {
         if (roleService.findByName(ROLE_USER.getRole()) == null) {
             organisationService.save(organisation1);
             volunteerService.save(volunteer);
-            Role roleAdmin = new Role(ROLE_USER.getRole());
-            roleService.save(roleAdmin);
+            Role roleUser = new Role(ROLE_USER.getRole());
+            roleService.save(roleUser);
 
             User user1 = new User("Anna", "Kiss", "em@i.l", passwordEncoder.encode("password"), organisation1, volunteer);
+            User user2 = new User("Volunti", "Volunti", "volunti.trial@gmail.com", passwordEncoder.encode("password"), organisation1, volunteer);
+            user2.setUserStatus(UserStatus.ACTIVE);
 
             Set<Role> roleSet = new HashSet<>();
-            roleSet.add(roleAdmin);
+            roleSet.add(roleUser);
             user1.setRoles(roleSet);
+            user2.setRoles(roleSet);
             userService.saveUser(user1);
+            userService.saveUser(user2);
         }
 
         log.info("loadData method called ...");

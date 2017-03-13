@@ -1,6 +1,5 @@
 package com.codecool.volunti.configuration;
 
-import com.codecool.volunti.controller.LoginRedirectController;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -35,8 +34,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .anyRequest().authenticated()
                 .and()
                     .formLogin()
-                    .successHandler(new LoginRedirectController())
-                    .loginPage("/login")
+                .loginPage("/login")
                     .permitAll()
                 .and()
                     .logout()
@@ -51,3 +49,5 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
     }
 }
+
+
