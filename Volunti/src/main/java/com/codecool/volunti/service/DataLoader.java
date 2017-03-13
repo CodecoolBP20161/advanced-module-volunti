@@ -62,7 +62,7 @@ public class DataLoader {
         Organisation organisation1 = new Organisation("UNICEF", Category.TEACHING, Country.HUNGARY, "1065", "Isaszeg", "Kossuth utca", spokenLanguages, "mission mission mission mission mission", "description1", "description2","profileHash", "backgroundhash");
         try {
             File testImageFile = new File( "Volunti/src/main/resources/static/images/profile_image/test_profile_image.png" );
-            System.out.println(testImageFile.getAbsolutePath());
+            log.info(testImageFile.getAbsolutePath());
             InputStreamSource testImage = new InputStreamResource( new FileInputStream( testImageFile ) );
             organisation1.setProfilePictureFileForSave(testImage);
         } catch (FileNotFoundException e) {
