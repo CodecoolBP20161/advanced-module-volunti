@@ -2,6 +2,7 @@ package com.codecool.volunti.service;
 
 import com.codecool.volunti.model.User;
 import com.codecool.volunti.model.enums.UserStatus;
+import com.codecool.volunti.service.model.UserService;
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.junit.After;
 import org.junit.Before;

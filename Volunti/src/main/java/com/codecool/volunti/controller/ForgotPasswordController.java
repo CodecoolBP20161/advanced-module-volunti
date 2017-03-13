@@ -2,7 +2,9 @@ package com.codecool.volunti.controller;
 
 
 import com.codecool.volunti.model.User;
-import com.codecool.volunti.service.*;
+import com.codecool.volunti.service.email.EmailService;
+import com.codecool.volunti.service.email.EmailType;
+import com.codecool.volunti.service.model.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

@@ -2,8 +2,8 @@ package com.codecool.volunti.model;
 
 
 import com.codecool.volunti.model.enums.UserStatus;
-import com.codecool.volunti.service.EmailService;
-import com.codecool.volunti.service.EmailType;
+import com.codecool.volunti.service.email.EmailService;
+import com.codecool.volunti.service.email.EmailType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
