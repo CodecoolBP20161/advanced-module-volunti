@@ -1,12 +1,14 @@
 package com.codecool.volunti.controller;
 
 
-import com.codecool.volunti.DTO.Filter2OpportunityDTO;
+import com.codecool.volunti.dto.Filter2OpportunityDTO;
+import com.codecool.volunti.exception.ErrorException;
+import com.codecool.volunti.exception.OpportunityNotFoundException;
 import com.codecool.volunti.model.Filter2Opportunity;
+import com.codecool.volunti.model.Opportunity;
 import com.codecool.volunti.model.Organisation;
 import com.codecool.volunti.model.Skill;
 import com.codecool.volunti.repository.Filter2OpportunityRepository;
-import com.codecool.volunti.repository.OpportunityRepository;
 import com.codecool.volunti.repository.OrganisationRepository;
 import com.codecool.volunti.repository.SkillRepository;
 import com.codecool.volunti.service.Pageable;
@@ -14,6 +16,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,18 +35,19 @@ public class OpportunityRestController {
     private SkillRepository skillRepository;
     private OrganisationRepository organisationRepository;
     private Filter2OpportunityRepository filter2OpportunityRepository;
+    private ModelMapper modelMapper;
 
     @Autowired
-    public OpportunityRestController(SkillRepository skillRepository, OrganisationRepository organisationRepository, Filter2OpportunityRepository filter2OpportunityRepository) {
+    public OpportunityRestController(SkillRepository skillRepository, OrganisationRepository organisationRepository, Filter2OpportunityRepository filter2OpportunityRepository, ModelMapper modelMapper) {
         this.skillRepository = skillRepository;
         this.organisationRepository = organisationRepository;
         this.filter2OpportunityRepository = filter2OpportunityRepository;
+        this.modelMapper = modelMapper;
     }
 
-    @RequestMapping(value = "/find/{currentPage}", method = RequestMethod.GET)
+    @RequestMapping(value = "/find/{currentPage}", method = RequestMethod.GET, produces="application/json")
     public
-    @ResponseBody
-    Map<String, Object> findOpp(@PathVariable int currentPage,
+    ResponseEntity<Object>  findOpp(@PathVariable int currentPage,
                                   @RequestParam(value = "from", required = false) Date from,
                                   @RequestParam(value = "to", required = false) Date to,
                                   @RequestParam(value = "skills", required = false) String skill,
@@ -59,14 +64,20 @@ public class OpportunityRestController {
             page = new Pageable(convertToDto(filter2OpportunityRepository.find(country, category, new java.sql.Timestamp(from.getTime()), new java.sql.Timestamp(to.getTime()), skill)), currentPage, pageSize);
         }
 
-        result.put("maxpage", page.getMaxPages());
-        result.put("result", page.getListForPage());
-        return result;
+        if (page.getList().size() == 0){
+            throw new OpportunityNotFoundException();
+        } else {
+            result.put("result", page.getListForPage());
+            result.put("maxpage", page.getMaxPages());
+        }
+
+        return new ResponseEntity<Object>(result, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/filters", method = RequestMethod.GET)
+
+    @RequestMapping(value = "/filters", method = RequestMethod.GET, produces="application/json")
     public
-    @ResponseBody
+
     Map<String, Object> filters() {
         Map<String, Object> filters = new HashMap<>();
         filters.put("pageSize", pageSize);
@@ -84,6 +95,13 @@ public class OpportunityRestController {
         binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, false));
     }
 
+    @ExceptionHandler(OpportunityNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorException opportunityNotFound() {
+        return new ErrorException(4, "Spittle Opportunity not found");
+    }
+
+
     private Set<String> getSkills() {
         List<Skill> skills = (List<Skill>) skillRepository.findAll();
         return skills.stream().map(Skill::getName).collect(Collectors.toSet());
@@ -100,14 +118,10 @@ public class OpportunityRestController {
     }
 
     private List<Filter2OpportunityDTO> convertToDto(List<Filter2Opportunity> filter2Opportunities) {
-        ModelMapper modelMapper = new ModelMapper();
         List<Filter2OpportunityDTO> result = new ArrayList<>();
-        for (int i = 0; i < filter2Opportunities.size(); i++) {
-            Filter2Opportunity filter2Opportunity =  filter2Opportunities.get(i);
-            Filter2OpportunityDTO filterDto = modelMapper.map(filter2Opportunity, Filter2OpportunityDTO.class);
-
-            List<String> skillNames = filter2OpportunityRepository.findName(filter2Opportunity.getId());
-            filterDto.setName(skillNames);
+        for (Filter2Opportunity filterOpp : filter2Opportunities) {
+            Filter2OpportunityDTO filterDto = modelMapper.map(filterOpp, Filter2OpportunityDTO.class);
+            filterDto.setName(filter2OpportunityRepository.findName(filterOpp.getId()));
             result.add(filterDto);
         }
         return result;

@@ -1,4 +1,4 @@
-package com.codecool.volunti.DTO;
+package com.codecool.volunti.dto;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
