@@ -5,7 +5,6 @@ import com.codecool.volunti.dto.Filter2OpportunityDTO;
 import com.codecool.volunti.exception.ErrorException;
 import com.codecool.volunti.exception.OpportunityNotFoundException;
 import com.codecool.volunti.model.Filter2Opportunity;
-import com.codecool.volunti.model.Opportunity;
 import com.codecool.volunti.model.Organisation;
 import com.codecool.volunti.model.Skill;
 import com.codecool.volunti.repository.Filter2OpportunityRepository;
@@ -45,40 +44,37 @@ public class OpportunityRestController {
         this.modelMapper = modelMapper;
     }
 
-    @RequestMapping(value = "/find/{currentPage}", method = RequestMethod.GET, produces="application/json")
-    public
-    ResponseEntity<Object>  findOpp(@PathVariable int currentPage,
-                                  @RequestParam(value = "from", required = false) Date from,
-                                  @RequestParam(value = "to", required = false) Date to,
-                                  @RequestParam(value = "skills", required = false) String skill,
-                                  @RequestParam(value = "location", required = false) String country,
-                                  @RequestParam(value = "category", required = false) String category,
-                                  @RequestParam(value = "pageSize", required = false) Integer pageSize) {
+    @RequestMapping(value = "/find/{currentPage}", method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity<Object> findOpp(@PathVariable int currentPage,
+                                          @RequestParam(value = "from", required = false) Date from,
+                                          @RequestParam(value = "to", required = false) Date to,
+                                          @RequestParam(value = "skills", required = false) String skill,
+                                          @RequestParam(value = "location", required = false) String country,
+                                          @RequestParam(value = "category", required = false) String category,
+                                          @RequestParam(value = "pageSize", required = false) Integer pageSize) {
 
         Pageable page;
         Map<String, Object> result = new HashMap<>();
 
-        if (Objects.equals(skill, "") && Objects.equals(country, "") && Objects.equals(category, "")){
+        if (Objects.equals(skill, "") && Objects.equals(country, "") && Objects.equals(category, "")) {
             page = new Pageable((List) convertToDto(filter2OpportunityRepository.findAll()), currentPage, pageSize);
         } else {
             page = new Pageable(convertToDto(filter2OpportunityRepository.find(country, category, new java.sql.Timestamp(from.getTime()), new java.sql.Timestamp(to.getTime()), skill)), currentPage, pageSize);
         }
 
-        if (page.getList().size() == 0){
+        if (page.getList().size() == 0) {
             throw new OpportunityNotFoundException();
-        } else {
-            result.put("result", page.getListForPage());
-            result.put("maxpage", page.getMaxPages());
         }
+
+        result.put("result", page.getListForPage());
+        result.put("maxpage", page.getMaxPages());
 
         return new ResponseEntity<Object>(result, HttpStatus.OK);
     }
 
 
-    @RequestMapping(value = "/filters", method = RequestMethod.GET, produces="application/json")
-    public
-
-    Map<String, Object> filters() {
+    @RequestMapping(value = "/filters", method = RequestMethod.GET, produces = "application/json")
+    public Map<String, Object> filters() {
         Map<String, Object> filters = new HashMap<>();
         filters.put("pageSize", pageSize);
         filters.put("categories", getCategories());
@@ -95,6 +91,7 @@ public class OpportunityRestController {
         binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, false));
     }
 
+    //throwable exception from rest controller
     @ExceptionHandler(OpportunityNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorException opportunityNotFound() {
