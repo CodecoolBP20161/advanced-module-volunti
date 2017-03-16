@@ -67,8 +67,9 @@
                             <li>
                                 <a href="gui-kit.html">GUI KIT</a>
                             </li>
-                            <li sec:authorize="isAuthenticated()">
-                                <a th:href="@{/logout}">Logout</a>
+                            <li >
+                                <a sec:authorize="!isAuthenticated()" th:href="@{/login}">LogIn</a>
+                                <a sec:authorize="isAuthenticated()" th:href="@{/logout}">Logout</a>
                             </li>
                         </ul>
                     </nav>
