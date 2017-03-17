@@ -7,9 +7,11 @@ import com.codecool.volunti.exception.OpportunityNotFoundException;
 import com.codecool.volunti.model.Filter2Opportunity;
 import com.codecool.volunti.model.Organisation;
 import com.codecool.volunti.model.Skill;
+import com.codecool.volunti.model.Volunteer;
 import com.codecool.volunti.repository.Filter2OpportunityRepository;
 import com.codecool.volunti.repository.OrganisationRepository;
 import com.codecool.volunti.repository.SkillRepository;
+import com.codecool.volunti.repository.VolunteerRepository;
 import com.codecool.volunti.service.Pageable;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -35,6 +37,8 @@ public class OpportunityRestController {
     private OrganisationRepository organisationRepository;
     private Filter2OpportunityRepository filter2OpportunityRepository;
     private ModelMapper modelMapper;
+    @Autowired
+    VolunteerRepository volunteerRepository;
 
     @Autowired
     public OpportunityRestController(SkillRepository skillRepository, OrganisationRepository organisationRepository, Filter2OpportunityRepository filter2OpportunityRepository, ModelMapper modelMapper) {
@@ -74,13 +78,26 @@ public class OpportunityRestController {
 
 
     @RequestMapping(value = "/filters", method = RequestMethod.GET, produces = "application/json")
-    public Map<String, Object> filters() {
+    public Map<String, Object> filters(@RequestParam(value = "volunteer", required = false) String isLoggedIn) {
         Map<String, Object> filters = new HashMap<>();
-        filters.put("pageSize", pageSize);
-        filters.put("categories", getCategories());
-        filters.put("skills", getSkills());
-        filters.put("locations", getLocations());
-        return filters;
+
+        // If we'll have login and session we can replace this line e.g. get user info from session, but for now
+        // it will be okay I guess!
+        Volunteer user = volunteerRepository.findOne(1);
+
+        if (isLoggedIn == null){
+            filters.put("pageSize", pageSize);
+            filters.put("categories", getCategories());
+            filters.put("skills", getSkills());
+            filters.put("locations", getLocations());
+            return filters;
+        }else {
+            filters.put("pageSize", pageSize);
+            filters.put("categories", getCategories());
+            filters.put("skills", getUserSkills(user.getId()));
+            filters.put("locations", getLocations());
+            return filters;
+        }
     }
 
     //Convert String to Date from RequestParam
@@ -98,6 +115,11 @@ public class OpportunityRestController {
         return new ErrorException(4, "Spittle Opportunity not found");
     }
 
+    // Finds the user's skills
+    private Set<String> getUserSkills(int id) {
+        List<Skill> skills = volunteerRepository.findOne(id).getVolunteerSkills();
+        return skills.stream().map(Skill::getName).collect(Collectors.toSet());
+    }
 
     private Set<String> getSkills() {
         List<Skill> skills = (List<Skill>) skillRepository.findAll();
