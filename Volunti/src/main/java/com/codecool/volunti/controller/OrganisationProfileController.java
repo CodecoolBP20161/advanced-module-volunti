@@ -48,7 +48,7 @@ public class OrganisationProfileController {
     public String renderOrganisationProfile(Model model) {
         log.info("renderOrganisationRProfile() method called ...");
 
-        Organisation organisation = organisationRepository.findOne(1);
+        Organisation organisation = organisationService.get(1);
         log.info("organisation id: " + organisation.getOrganisationId());
         model.addAttribute("organisation", organisation);
         return "profiles/organisation";
@@ -59,7 +59,7 @@ public class OrganisationProfileController {
     @ResponseBody
     public ResponseEntity<Resource> serveFile(Model model) {
 
-        Organisation organisation = organisationRepository.findOne(1);
+        Organisation organisation = organisationService.get(1);
         Resource file = organisationService.loadProfilePicture(organisation);
         return ResponseEntity
                 .ok()
@@ -81,7 +81,7 @@ public class OrganisationProfileController {
     public String saveImage(@RequestParam("file") MultipartFile file){
         log.info("saveImage() method called...");
 
-        Organisation organisation = organisationRepository.findOne(1);
+        Organisation organisation = organisationService.get(1);
         log.info("our organisation: " + organisation.toString());
         organisation.setProfilePictureFileForSave(file);
         organisationService.save(organisation);
