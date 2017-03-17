@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @Service
 @Transactional
@@ -15,6 +17,7 @@ public class OrganisationService {
 
     private OrganisationRepository organisationRepository;
     private StorageService storageService;
+    private Path rootLocationProfileImage = Paths.get("filestorage/profile_image/");
 
     @Autowired
     public OrganisationService(OrganisationRepository organisationRepository, StorageService storageService) {
@@ -25,7 +28,7 @@ public class OrganisationService {
     public Organisation save(Organisation organisation) {
         if (organisation.getProfilePictureFileForSave() != null ) {
             String oldProfilePicture = organisation.getProfilePicture();
-            String newFileName = storageService.store(organisation.getProfilePictureFileForSave(), oldProfilePicture);
+            String newFileName = storageService.store(organisation.getProfilePictureFileForSave(), oldProfilePicture, rootLocationProfileImage);
             organisation.setProfilePicture(newFileName);
 
         }
@@ -41,6 +44,6 @@ public class OrganisationService {
     }
 
     public Resource loadProfilePicture(Organisation organisation) {
-        return storageService.loadAsResource(organisation.getProfilePicture());
+        return storageService.loadAsResource(organisation.getProfilePicture(), rootLocationProfileImage);
     }
 }

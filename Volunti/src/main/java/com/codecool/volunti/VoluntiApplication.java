@@ -17,6 +17,9 @@ import org.springframework.boot.web.servlet.ErrorPage;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.EnableAsync;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 
 import javax.annotation.PostConstruct;
 
@@ -26,6 +29,7 @@ import javax.annotation.PostConstruct;
 public class VoluntiApplication {
 
     DataLoader dataLoader;
+    private Path rootLocation = Paths.get("filestorage/profile_image/");
 
     @Autowired
     StorageService storageService;
@@ -57,8 +61,8 @@ public class VoluntiApplication {
     @PostConstruct
     void afterInit() {
         log.info("afterInit method called...");
-        this.storageService.deleteAll();
-        this.storageService.init();
+        this.storageService.deleteAll(rootLocation);
+        this.storageService.init(rootLocation);
     }
 
 }

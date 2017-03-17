@@ -1,26 +1,23 @@
 package com.codecool.volunti.service;
 
 
-import com.codecool.volunti.model.Organisation;
 import org.springframework.core.io.InputStreamSource;
 import org.springframework.core.io.Resource;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.nio.file.Path;
-import java.util.stream.Stream;
 
 public interface StorageService {
 
-    void deleteAll();
+    void deleteAll(Path rootLocation);
 
-    void init();
+    void init(Path rootLocation);
 
-    String store(InputStreamSource file, String fileName);
+    String store(InputStreamSource file, String fileName, Path rootLocation);
 
-    Path load(String filename);
+    Path load(String filename, Path rootLocation);
 
-    Resource loadAsResource(String filename);
+    Resource loadAsResource(String filename, Path rootLocation);
 
-    void deleteOne(String filename);
+    void deleteOne(String filename, Path rootLocation);
 
 }
