@@ -2,7 +2,6 @@ package com.codecool.volunti.service.model;
 
 
 import com.codecool.volunti.model.Organisation;
-import com.codecool.volunti.model.User;
 import com.codecool.volunti.repository.OrganisationRepository;
 import com.codecool.volunti.service.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +24,10 @@ public class OrganisationService {
 
     public Organisation save(Organisation organisation) {
         if (organisation.getProfilePictureFileForSave() != null ) {
-            String newFileName = storageService.store(organisation.getProfilePictureFileForSave());
+            String oldProfilePicture = organisation.getProfilePicture();
+            String newFileName = storageService.store(organisation.getProfilePictureFileForSave(), oldProfilePicture);
             organisation.setProfilePicture(newFileName);
+
         }
         return organisationRepository.save(organisation);
     }

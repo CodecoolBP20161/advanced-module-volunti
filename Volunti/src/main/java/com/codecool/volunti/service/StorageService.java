@@ -15,10 +15,12 @@ public interface StorageService {
 
     void init();
 
-    String store(InputStreamSource file);
+    String store(InputStreamSource file, String fileName);
 
     Path load(String filename);
 
     Resource loadAsResource(String filename);
+
+    void deleteOne(String filename);
 
 }

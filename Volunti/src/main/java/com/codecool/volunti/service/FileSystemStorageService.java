@@ -24,24 +24,26 @@ public class FileSystemStorageService implements StorageService{
     private Path rootLocation = Paths.get("filestorage/profile_image/");
 
     @Override
-    public String store(InputStreamSource file) {
-        String newFileName = UUID.randomUUID().toString();
-        Path fileLocation = Paths.get( rootLocation.toString(), newFileName );
+    public String store(InputStreamSource file, String fileName) {
 
+        deleteOne(fileName);
+        String newFileName = UUID.randomUUID().toString();
+        Path fileLocation = Paths.get( rootLocation.toString(), newFileName);
         log.info("store() method called...");
         log.info("route path" + fileLocation.toAbsolutePath());
         try {
             // TODO: fix, because it exists only for mulitpart files
-            /*if (file.isEmpty()) {
-                throw new StorageException("Failed to store empty file " + file.getOriginalFilename());
-            }
-            */
+            /*if (file == empty) {
+                throw new StorageException("Failed to store empty file " + file.toString());
+            }*/
             Files.copy(file.getInputStream(), fileLocation.toAbsolutePath());
+
 
         } catch (IOException e) {
             // e.printStackTrace();
             throw new StorageException("Failed to store file!", e);
         }
+
         return newFileName;
     }
 
@@ -55,6 +57,19 @@ public class FileSystemStorageService implements StorageService{
     @Override
     public void deleteAll() {
         FileSystemUtils.deleteRecursively(rootLocation.toFile());
+    }
+
+    @Override
+    public void deleteOne(String fileName){
+        log.info("deleteOne() menthod called ");
+        Path fileLocation = Paths.get( rootLocation.toString(), fileName);
+        try {
+            Files.delete(fileLocation);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     @Override
