@@ -78,7 +78,7 @@ public class UserService {
                 return this.saveUser(newUser);
             } else if (newUser.getUserStatus().equals(UserStatus.ACTIVE)) {
                 log.warn("UserStatus is already ACTIVE.");
-                return newUser; //TODO: Decide if we should let the user log in(return the user), or not(return null)
+                return null;
             } else if (newUser.getUserStatus().equals(UserStatus.DISABLED)) {
                 log.warn("UserStatus is DISABLED.");
                 return null;
