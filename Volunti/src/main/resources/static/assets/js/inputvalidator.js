@@ -1,9 +1,15 @@
 $(document).ready(function() {
 
     var validateWithAJAX = function (inputField, spanID, buttonID, entityName, fieldName, value) {
+        var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+        var csrfToken = $("meta[name='_csrf']").attr("content");
+        var headers = {};
+
+        headers[csrfHeader] = csrfToken;
         $.ajax({
             url: "/registration/ValidateFieldIfExists",
             type: 'POST',
+            headers: headers,
             async: true,
             contentType: "application/json",
             data: JSON.stringify({
