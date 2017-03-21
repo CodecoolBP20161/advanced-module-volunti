@@ -85,19 +85,19 @@ public class OpportunityRestController {
         // it will be okay I guess!
         Volunteer user = volunteerRepository.findOne(1);
 
+        filters.put("pageSize", pageSize);
+        filters.put("categories", getCategories());
+        filters.put("skills", getSkills());
+        filters.put("locations", getLocations());
+
         if (isLoggedIn == null){
-            filters.put("pageSize", pageSize);
-            filters.put("categories", getCategories());
-            filters.put("skills", getSkills());
-            filters.put("locations", getLocations());
-            return filters;
+            filters.put("userSkills", "");
+            filters.put("userLocation", "");
         }else {
-            filters.put("pageSize", pageSize);
-            filters.put("categories", getCategories());
-            filters.put("skills", getUserSkills(user.getId()));
-            filters.put("locations", getLocations());
-            return filters;
+            filters.put("userSkills", getUserSkills(user.getId()));
+            filters.put("userLocation", "Method needs to get users location");
         }
+        return filters;
     }
 
     //Convert String to Date from RequestParam
