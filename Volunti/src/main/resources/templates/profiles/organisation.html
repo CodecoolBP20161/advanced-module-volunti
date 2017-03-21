@@ -84,15 +84,6 @@
                     </div>
                 </div>
 
-                <!-- cover image uploader -->
-                <!-- todo: make buttons less fugly -->
-                <div class="btn-group btn-group-justified pull-right col-xs-6">
-                    <form method="POST" enctype="multipart/form-data" th:action="@{/profile/organisation/saveImage}" th:object="${organisation}">
-                        <input class="btn btn-default btn-sm col-xs-6" type="file" name="file" />
-                        <input class="btn btn-default btn-sm col-xs-6" type="submit" value="change cover" />
-                    </form>
-                </div>
-
             </div>
 
             <!-- Modal POPUP -->
@@ -147,6 +138,16 @@
                         <!-- Company Information -->
                         <div class="sidebar">
                             <h5 class="main-title">Organisation Information</h5>
+
+                            <!-- profile image uploader -->
+                            <!-- todo: make buttons less fugly -->
+                            <div class="btn-group btn-group-justified pull-right col-xs-12">
+                                <form method="POST" enctype="multipart/form-data" th:action="@{/profile/organisation/saveImage}" th:object="${organisation}">
+                                    <input class="btn btn-default btn-sm col-xs-6" type="file" name="file" />
+                                    <input class="btn btn-default btn-sm col-xs-6" type="submit" value="upload" />
+                                </form>
+                            </div>
+
                             <div class="sidebar-thumbnail"> <img th:src="@{/profile/organisation/image}" alt="Profile picture"/> </div>
                             <div class="sidebar-information">
                                 <ul class="single-category">
