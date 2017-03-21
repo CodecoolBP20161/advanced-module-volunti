@@ -48,337 +48,46 @@
 
 	var React = __webpack_require__(1);
 	var ReactDOM = __webpack_require__(32);
+	var Filters = __webpack_require__(178);
+	var Table = __webpack_require__(179);
 
-	var url = "http://localhost:8080/api/opportunities/find/1?from=2020-10-10&to=1999-10-10&location&skills&category&pageSize=10";
-	var location = "";
-	var skill = "";
-	var category = "";
+	var Main = React.createClass({
+	    displayName: 'Main',
 
-	var updateUrl = function updateUrl() {
-	    url = "http://localhost:8080/api/opportunities/find/1?from=2020-10-10&to=1999-10-10&pageSize=10";
-	    if (location != "") {
-	        url += "&location=" + location;
-	    } else {
-	        url += "&location";
-	    }
-	    if (skill != "") {
-	        url += "&skills=" + skill;
-	    } else {
-	        url += "&skills";
-	    }
-	    if (category != "") {
-	        url += "&category=" + category;
-	    } else {
-	        url += "&category";
-	    }
-	};
 
-	var Option = React.createClass({
-	    displayName: 'Option',
-
-	    render: function render() {
-	        return React.createElement(
-	            'option',
-	            null,
-	            this.props.option
-	        );
-	    }
-	});
-
-	var Filter = React.createClass({
-	    displayName: 'Filter',
-
-	    render: function render() {
-	        var options = [];
-	        this.props.filters.forEach(function (option, i) {
-	            options.push(React.createElement(Option, { option: option, key: i }));
-	        });
-	        return React.createElement(
-	            'div',
-	            { className: 'col-sm-3' },
-	            React.createElement(
-	                'div',
-	                { className: 'field custom-select-box', id: this.props.label },
-	                React.createElement(
-	                    'select',
-	                    { title: 'sort', onChange: this.handleChange },
-	                    React.createElement(
-	                        'option',
-	                        { defaultValue: this.props.label },
-	                        this.props.label,
-	                        '(optional)'
-	                    ),
-	                    options
-	                )
-	            )
-	        );
+	    getInitialState: function getInitialState() {
+	        return {
+	            skills: []
+	        };
 	    },
-
-	    handleChange: function handleChange(e) {
-
-	        var name = e.target.value;
-
-	        var type = e.target.parentNode.id;
-	        var value = e.target.value;
-
-	        switch (type) {
-	            case "Location":
-	                location = value;
-	                if (value.includes("optional")) {
-	                    location = "";
-	                }
-	                break;
-	            case "Skill":
-	                skill = value;
-	                if (value.includes("optional")) {
-	                    skill = "";
-	                }
-	                break;
-
-	            case "Category":
-	                category = value;
-	                if (value.includes("optional")) {
-	                    category = "";
-	                }
-	                break;
-	            default:
-	                break;
-	        }
-
-	        updateUrl();
-	    }
-
-	});
-
-	var Filters = React.createClass({
-	    displayName: 'Filters',
-
 
 	    loadDataFromServer: function loadDataFromServer() {
-	        var self = this;
+	        var that = this;
+
 	        $.ajax({
-	            url: "http://localhost:8080/api/opportunities/filters"
-	        }).then(function (data) {
-	            self.setState({ skills: data.skills, locations: data.locations, categories: data.categories });
+	            url: '/api/opportunities/filters',
+
+	            success: function success(response) {
+	                console.log(response);
+	                that.setState({
+	                    skills: response.skills
+	                });
+	            }
+
 	        });
-	    },
-
-	    getInitialState: function getInitialState() {
-	        return { skills: [], locations: [], categories: [] };
-	    },
-
-	    componentDidMount: function componentDidMount() {
-	        this.loadDataFromServer();
 	    },
 
 	    render: function render() {
-	        var filters = [this.state.skills, this.state.locations, this.state.categories];
-	        var labels = ["Skill", "Location", "Category"];
-	        var filterList = filters.map(function (filter, i) {
-	            return React.createElement(Filter, { filters: filter, label: labels[i], key: i });
-	        });
-
 	        return React.createElement(
 	            'div',
 	            null,
-	            filterList
+	            React.createElement(Filters, null),
+	            React.createElement(Table, { data: this.loadDataFromServer })
 	        );
 	    }
 	});
 
-	var Table = React.createClass({
-	    displayName: 'Table',
-
-
-	    loadOpportunityFromServer: function loadOpportunityFromServer() {
-	        var self = this;
-	        $.ajax({
-	            url: url
-	        }).then(function (data) {
-	            self.setState({ opportunities: data.result });
-	        });
-	    },
-
-	    updateIfNeeded: function updateIfNeeded() {
-	        var isNeeded = this.state.url != url;
-	        this.state.url = url;
-	        if (isNeeded) {
-	            this.loadOpportunityFromServer();
-	        }
-	    },
-
-	    getInitialState: function getInitialState() {
-	        return { opportunities: [] };
-	    },
-
-	    componentDidMount: function componentDidMount() {
-	        this.state.url = url;
-	        this.loadOpportunityFromServer();
-	        setInterval(this.updateIfNeeded, 1000);
-	    },
-
-	    render: function render() {
-	        return React.createElement(OpportunityTable, { opportunities: this.state.opportunities });
-	    }
-	});
-
-	var Opportunity = React.createClass({
-	    displayName: 'Opportunity',
-
-	    getInitialState: function getInitialState() {
-	        return { display: true };
-	    },
-
-	    render: function render() {
-	        if (this.state.display == false) return null;else return React.createElement(
-	            'tr',
-	            null,
-	            React.createElement(
-	                'td',
-	                null,
-	                React.createElement(
-	                    'h6',
-	                    null,
-	                    this.props.opportunity.title
-	                )
-	            ),
-	            React.createElement(
-	                'td',
-	                null,
-	                React.createElement(
-	                    'h6',
-	                    null,
-	                    this.props.opportunity.dateAvailabilityTo
-	                ),
-	                React.createElement(
-	                    'h6',
-	                    null,
-	                    this.props.opportunity.availabilityFrom
-	                )
-	            ),
-	            React.createElement(
-	                'td',
-	                null,
-	                React.createElement(
-	                    'h6',
-	                    null,
-	                    this.props.opportunity.foodType
-	                )
-	            ),
-	            React.createElement(
-	                'td',
-	                null,
-	                React.createElement(
-	                    'h6',
-	                    null,
-	                    this.props.opportunity.skills
-	                )
-	            ),
-	            React.createElement(
-	                'td',
-	                null,
-	                React.createElement(
-	                    'h6',
-	                    null,
-	                    this.props.opportunity.hoursExpected
-	                )
-	            ),
-	            React.createElement(
-	                'td',
-	                null,
-	                React.createElement(
-	                    'div',
-	                    { className: 'btn-group' },
-	                    React.createElement(
-	                        'button',
-	                        { className: 'btn mb20 btn-small btn-transparent-primary', value: 'left' },
-	                        React.createElement(
-	                            'a',
-	                            { href: '/opportunities/' + this.props.opportunity.id },
-	                            'View'
-	                        )
-	                    )
-	                )
-	            )
-	        );
-	    }
-	});
-
-	var OpportunityTable = React.createClass({
-	    displayName: 'OpportunityTable',
-
-	    render: function render() {
-	        var rows = [];
-	        this.props.opportunities.forEach(function (opportunity, i) {
-	            rows.push(React.createElement(Opportunity, { opportunity: opportunity, key: i }));
-	        });
-	        return React.createElement(
-	            'div',
-	            null,
-	            React.createElement(
-	                'table',
-	                { className: 'table-hover' },
-	                React.createElement(
-	                    'thead',
-	                    null,
-	                    React.createElement(
-	                        'tr',
-	                        null,
-	                        React.createElement(
-	                            'th',
-	                            null,
-	                            'Title'
-	                        ),
-	                        React.createElement(
-	                            'th',
-	                            null,
-	                            'Time frame'
-	                        ),
-	                        React.createElement(
-	                            'th',
-	                            null,
-	                            'Location'
-	                        ),
-	                        React.createElement(
-	                            'th',
-	                            null,
-	                            'Skills'
-	                        ),
-	                        React.createElement(
-	                            'th',
-	                            null,
-	                            'Category'
-	                        ),
-	                        React.createElement(
-	                            'th',
-	                            null,
-	                            'View'
-	                        )
-	                    )
-	                ),
-	                React.createElement(
-	                    'tbody',
-	                    null,
-	                    rows
-	                )
-	            ),
-	            React.createElement(
-	                'div',
-	                null,
-	                console.log(rows),
-	                rows.length == 0 ? React.createElement(
-	                    'div',
-	                    null,
-	                    'Empty'
-	                ) : null
-	            )
-	        );
-	    }
-	});
-
-	ReactDOM.render(React.createElement(Table, null), document.getElementById('react-table'));
-
-	ReactDOM.render(React.createElement(Filters, null), document.getElementById('react-dropdown-filter'));
+	ReactDOM.render(React.createElement(Main, null), document.getElementById("react-dropdown-filter"));
 
 /***/ },
 /* 1 */
@@ -21813,6 +21522,141 @@
 
 	module.exports = ReactDOMInvalidARIAHook;
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
+
+/***/ },
+/* 178 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	var React = __webpack_require__(1);
+	var Main = __webpack_require__(180);
+
+	var Filters = React.createClass({
+	    displayName: 'Filters',
+
+	    getInitialState: function getInitialState() {
+	        return {
+	            skills: '',
+	            fromDate: '',
+	            toDate: ''
+	        };
+	    },
+
+	    componentWillUpdate: function componentWillUpdate(nextProps, nextState) {
+	        console.log('will update');
+	        console.log(nextState);
+
+	        Main.loadDataFromServer();
+	    },
+
+	    handleChange: function handleChange() {
+	        console.log('before ');
+	        console.log(this.state);
+
+	        this.setState({
+	            skills: this.refs.skills.value,
+	            fromDate: this.refs.fromDate.value,
+	            toDate: this.refs.toDate.value
+	        });
+	        console.log('after ');
+	        console.log(this.state);
+	    },
+
+	    render: function render() {
+	        console.log('render');
+	        console.log(this.state);
+	        return React.createElement(
+	            'div',
+	            null,
+	            React.createElement('input', { type: 'date', ref: 'fromDate', onChange: this.handleChange, onBlur: this.handleChange }),
+	            React.createElement('input', { type: 'date', ref: 'toDate', onChange: this.handleChange, onBlur: this.handleChange }),
+	            React.createElement(
+	                'select',
+	                { ref: 'skills', onChange: this.handleChange, onBlur: this.handleChange },
+	                React.createElement('option', null),
+	                React.createElement(
+	                    'option',
+	                    null,
+	                    'First'
+	                )
+	            )
+	        );
+	    }
+	});
+
+	module.exports = Filters;
+
+/***/ },
+/* 179 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	var React = __webpack_require__(1);
+
+	var Table = React.createClass({
+	    displayName: "Table",
+
+	    render: function render() {
+	        return React.createElement(
+	            "div",
+	            null,
+	            "this.props.data"
+	        );
+	    }
+	});
+
+	module.exports = Table;
+
+/***/ },
+/* 180 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	var React = __webpack_require__(1);
+	var ReactDOM = __webpack_require__(32);
+	var Filters = __webpack_require__(178);
+	var Table = __webpack_require__(179);
+
+	var Main = React.createClass({
+	    displayName: 'Main',
+
+
+	    getInitialState: function getInitialState() {
+	        return {
+	            skills: []
+	        };
+	    },
+
+	    loadDataFromServer: function loadDataFromServer() {
+	        var that = this;
+
+	        $.ajax({
+	            url: '/api/opportunities/filters',
+
+	            success: function success(response) {
+	                console.log(response);
+	                that.setState({
+	                    skills: response.skills
+	                });
+	            }
+
+	        });
+	    },
+
+	    render: function render() {
+	        return React.createElement(
+	            'div',
+	            null,
+	            React.createElement(Filters, null),
+	            React.createElement(Table, { data: this.loadDataFromServer })
+	        );
+	    }
+	});
+
+	ReactDOM.render(React.createElement(Main, null), document.getElementById("react-dropdown-filter"));
 
 /***/ }
 /******/ ]);
