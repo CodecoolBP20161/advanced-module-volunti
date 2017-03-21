@@ -63,7 +63,6 @@ $(document).ready(function() {
     };
 
     if(document.getElementById("organizationName")) {
-        console.log($("#organizationName"));
         addValidateEvent("organizationName", "organizationNameSpan", "submitButton", "organisation", "name");
     }
     if(document.getElementById("userEmailInput")) {
