@@ -48,3 +48,13 @@ psql -U postgres -c "grant all privileges on database volunti_test to volunti_de
 3. Check the attribute 'compiler.automake.allow.when.app.running'
 4. File->Settings->Build,Execution,Deployment->Compiler: check 'Make project automatically'
 5. Restart IntelliJ
+
+## React configuration
+
+Go to Volunti/src/main/frontendA folder then run the following command in the terminal: 
+```
+  npm install  
+  ./node_modules/.bin/webpack --config webpack.config.js --watch
+```
+The last command produces a js file: Volunti/src/main/resources/static/assets/js/myReactApp.js
+Don't add the nodemodule folder to git
