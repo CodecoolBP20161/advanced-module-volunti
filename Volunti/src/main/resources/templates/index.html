@@ -1,5 +1,6 @@
 <!doctype html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
 <head th:replace="fragments/head :: head"></head>
 <body>
 <div id="main-wrapper">
@@ -14,7 +15,7 @@
             <div class="container">
                 <div class="row">
                     <!--  CONTENT -->
-                    <div class="col-sm-7">
+                    <div th:class="${#authentication.getPrincipal() eq 'anonymousUser'}? 'col-sm-7' : 'col-sm-12'">
                         <div class="text-area">
                             <div class="position-center-center col-md-10">
                                 <h1>
@@ -23,16 +24,16 @@
                                 <h1>
                                     to go far go together!
                                 </h1>
-                                <h5>Volunti helps to connect Organisations with Volunteers</h5>
+                                <h5> Volunti helps to connect Organisations with Volunteers</h5>
                             </div>
                         </div>
                     </div>
                     <!--  FORM SECTION -->
-                    <div class="col-sm-5">
+                    <div class="col-sm-5" sec:authorize="!isAuthenticated()">
                         <div class="login-sec">
                             <!--  TABS -->
                             <!-- TABS -->
-                            <div class="uou-tabs">
+                            <div class="uou-tabs" >
                                 <ul class="tabs">
                                     <li class="active"><a href="#register">Register Now</a></li>
                                     <li ><a href="#log-in">Member Login</a></li>
@@ -60,30 +61,24 @@
                                     </div>
                                     <!--  LOGIN -->
                                     <div id="log-in">
-                                        <form action="">
-                                            <input type="email" placeholder="Email Address"/>
-                                            <input type="password" placeholder="Password"/>
+                                        <form th:action="@{/login}" method="post">
+                                            <input name="username" type="email" placeholder="Email Address" minlength="1" required="required"/>
+                                            <input name="password" type="password" placeholder="Password" minlength="1" required="required"/>
+
                                             <button type="submit">Login</button>
-                                            <div class="login-with">
-                                                <span>Or login with:</span>
-                                                <a href="#."><i
-                                                        class="fa fa-facebook"></i></a>
-                                                <a href="#."><i
-                                                        class="fa fa-google"></i></a>
-                                                <a href="#."><i
-                                                        class="fa fa-linkedin"></i></a>
-                                            </div>
+                                            <!-- social login -->
+                                            <!--<div class="login-with">-->
+                                                <!--<span>Or login with:</span>-->
+                                                <!--<a href="#."><i-->
+                                                        <!--class="fa fa-facebook"></i></a>-->
+                                                <!--<a href="#."><i-->
+                                                        <!--class="fa fa-google"></i></a>-->
+                                                <!--<a href="#."><i-->
+                                                        <!--class="fa fa-linkedin"></i></a>-->
+                                            <!--</div>-->
                                             <div class="forget">
-                                                Forgot your password? <a href="#.">Click Here</a>
+                                                Forgot your password? <a th:href="@{/forgotPassword/step1}">Click Here</a>
                                             </div>
-                                        </form>
-                                    </div>
-                                    <div id="forget">
-                                        <form action="">
-                                            <input/>
-                                            <button
-                                                    type="submit">Login
-                                            </button>
                                         </form>
                                     </div>
                                 </div>

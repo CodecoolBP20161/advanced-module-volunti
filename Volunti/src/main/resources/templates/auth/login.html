@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head"></head>
+
+<body>
+<div id="main-wrapper">
+
+    <!-- Navbar -->
+    <div th:replace="fragments/navbar :: navbar"></div>
+
+    <!-- Main content -->
+    <div class="compny-profile">
+        <!-- Profile User Content -->
+        <div class="profile-company-content user-profile main-user" data-bg-color="f5f5f5">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-3"></div>
+                    <!-- Tab Content -->
+                    <div class="col-md-6">
+                        <div class="tab-content">
+
+                            <!--  LOGIN -->
+                            <div class="tab-pane fade in active col-sm-6 login-form">
+                                <div class="profile-main">
+                                    <h3>Login</h3>
+                                    <div class="profile-in">
+                                        <div th:if="${param.error}"
+                                             class="alert alert-error alert-dismissible"
+                                             role="alert">Invalid credentials</div>
+
+                                        <form th:action="@{/login}" method="post">
+                                            <input name="username" type="email" placeholder="Email Address" minlength="1" required="required" autofocus="autofocus"/>
+                                            <input name="password" type="password" placeholder="Password" minlength="1" required="required"/>
+                                            <button id="submitButton" type="submit"
+                                                    class="btn mb20 mb20 pull-left btn-large btn-primary">Login</button>
+                                        </form>
+
+                                        <!-- social login -->
+                                        <!--<div class="login-with mb20 pull-right">
+                                                <span>Or login with:</span>
+                                                <button href="#." class="btn btn-small btn-primary"><i class="fa fa-facebook"></i></button>
+                                                <button href="#." class="btn btn-small btn-primary"><i class="fa fa-google"></i></button>
+                                                <button href="#." class="btn btn-small btn-primary"><i class="fa fa-linkedin"></i></button>
+                                        </div>-->
+                                    </div>
+                                    <!-- Necessary to have some space between the buttons and the frame -->
+                                    <div class="profile-in"></div>
+                                    <div class="profile-in"></div>
+                                    <div class="forget col-sm-12 mb20 pull-right">
+                                        <p>Forgot your password? <a th:href="@{/forgotPassword/step1}">Click Here</a></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- / LOGIN -->
+                        </div>
+                    </div>
+                    <!-- / Tab content -->
+                    <div class="col-sm-3"></div>
+                </div>
+            </div>
+        </div>
+        <!-- / Profile user content-->
+    </div>
+    <!-- / Main content -->
+
+</div>
+<!-- / Main wrapper -->
+
+<!--  Footer -->
+<div th:replace="fragments/footer :: footer"></div>
+
+</body>
+</html>

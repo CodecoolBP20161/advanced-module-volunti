@@ -43,7 +43,7 @@ public class OrganisationRepositoryTest extends AbstractServiceTest {
         organisation = new Organisation();
         organisation.setName("Test 1");
         organisation.setCategory(Category.TEACHING);
-        organisation.setCountry(Country.Hungary);
+        organisation.setCountry(Country.HUNGARY);
         organisation.setZipcode("zipcode");
         organisation.setCity("City");
         organisation.setAddress("Address");
@@ -55,7 +55,7 @@ public class OrganisationRepositoryTest extends AbstractServiceTest {
         organisation2 = new Organisation();
         organisation2.setName("Test 2");
         organisation2.setCategory(Category.TEACHING);
-        organisation2.setCountry(Country.Hungary);
+        organisation2.setCountry(Country.HUNGARY);
         organisation2.setZipcode("zipcode");
         organisation2.setCity("City");
         organisation2.setAddress("Address");
@@ -67,13 +67,13 @@ public class OrganisationRepositoryTest extends AbstractServiceTest {
     }
 
     @Test
-    public void testForTheFields() {
+    public void test_OrganisationFields_Should_Return_True() {
 
         organisation = this.repository.save(organisation);
-        organisation = this.repository.findByName("Test 1");
+        organisation = this.repository.findByNameIgnoreCase("Test 1");
         assertThat(organisation.getName()).isEqualTo("Test 1");
         assertThat(organisation.getCategory()).isEqualTo(Category.TEACHING);
-        assertThat(organisation.getCountry()).isEqualTo(Country.Hungary);
+        assertThat(organisation.getCountry()).isEqualTo(Country.HUNGARY);
         assertThat(organisation.getZipcode()).isEqualTo("zipcode");
         assertThat(organisation.getCity()).isEqualTo("City");
         assertThat(organisation.getAddress()).isEqualTo("Address");
@@ -85,15 +85,15 @@ public class OrganisationRepositoryTest extends AbstractServiceTest {
     }
 
     @Test (expected = ConstraintViolationException.class)
-    public void FirstFieldMissingTest(){
+    public void test_OrganisationFirstFieldMissing_Should_Return_Exception(){
 
-        organisation = new Organisation("", Category.TEACHING, Country.Hungary, "zipcode", "City", "Address", spokenLanguages, "Mission minimum 10 character", "Desc 1 min 3 character", "Desc 2 min 3 character");
+        organisation = new Organisation("", Category.TEACHING, Country.HUNGARY, "zipcode", "City", "Address", spokenLanguages, "Mission minimum 10 character", "Desc 1 min 3 character", "Desc 2 min 3 character");
         organisation = this.repository.save(organisation);
 
     }
 
     @Test (expected = ConstraintViolationException.class)
-    public void CategoryIsNullTest(){
+    public void test_OrganisationCategoryIsNull_Should_Return_Exception(){
 
         organisation = new Organisation("Test 2", Category.TEACHING, null, "zipcode", "City", "Address", spokenLanguages, "Mission minimum 10 character", "Desc 1 min 3 character", "Desc 2 min 3 character");
         organisation = this.repository.save(organisation);
@@ -101,7 +101,7 @@ public class OrganisationRepositoryTest extends AbstractServiceTest {
     }
 
     @Test
-    public void addMoreOrganisation(){
+    public void test_addMoreOrganisation_Should_Return_True(){
 
         int countBefore = countRowsInTable("organisations");
         this.repository.save(organisation);
