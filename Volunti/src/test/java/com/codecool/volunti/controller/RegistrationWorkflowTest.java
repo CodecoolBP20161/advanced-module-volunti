@@ -11,8 +11,11 @@ import com.codecool.volunti.service.AbstractServiceTest;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -28,6 +31,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import static org.junit.Assert.assertEquals;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.*;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@WebAppConfiguration
 public class  RegistrationWorkflowTest extends AbstractServiceTest {
 
     @Resource
@@ -62,7 +70,10 @@ public class  RegistrationWorkflowTest extends AbstractServiceTest {
 
     @Before
     public void setup() {
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
+                .apply(springSecurity())
+                .build();
+
         organisation = new Organisation();
         organisation.setName("TestName");
         organisation.setCategory(Category.ADVERTISING_AGENCY);
@@ -79,14 +90,16 @@ public class  RegistrationWorkflowTest extends AbstractServiceTest {
 
     @Test
     public void test_step1_GET_EmptySession() throws Exception {
-        this.mockMvc.perform(get("/registration/organisation/step1"))
+        this.mockMvc.perform(get("/registration/organisation/step1")
+                .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(view().name("registration/organisation/organisation"));
     }
 
     @Test
     public void test_step1_GET_OrganisationIsInSession() throws Exception {
-        this.mockMvc.perform(get("/registration/organisation/step1").sessionAttr("organisation", organisation))
+        this.mockMvc.perform(get("/registration/organisation/step1").sessionAttr("organisation", organisation)
+                .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(view().name("registration/organisation/organisation"))
                 .andExpect(content().string(containsString("TestCity")));
@@ -95,6 +108,7 @@ public class  RegistrationWorkflowTest extends AbstractServiceTest {
     @Test
     public void test_step1_POST_EmptySession() throws Exception {
         this.mockMvc.perform(post("/registration/organisation/step1")
+                .with(csrf())
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .content(validOrganisationFormData))
                 .andExpect(status().is3xxRedirection())
@@ -103,8 +117,9 @@ public class  RegistrationWorkflowTest extends AbstractServiceTest {
 
     @Test
     public void test_step1_POST_OrganisationIsInSession() throws Exception {
-        this.mockMvc.perform(get("/registration/organisation/step1"));
+        this.mockMvc.perform(get("/registration/organisation/step1").with(csrf()));
         this.mockMvc.perform(post("/registration/organisation/step1").sessionAttr("organisation", organisation)
+                .with(csrf())
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .content(validOrganisationFormData))
                 .andExpect(status().is3xxRedirection())
@@ -114,14 +129,16 @@ public class  RegistrationWorkflowTest extends AbstractServiceTest {
 
     @Test
     public void test_step2_GET_EmptySession() throws Exception {
-        this.mockMvc.perform(get("/registration/organisation/step2/0"))
+        this.mockMvc.perform(get("/registration/organisation/step2/0")
+                .with(csrf()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/registration/organisation/step1"));
     }
 
     @Test
     public void test_step2_GET_OrganisationIsInSession() throws Exception {
-        this.mockMvc.perform(get("/registration/organisation/step2/0").sessionAttr("organisation", organisation))
+        this.mockMvc.perform(get("/registration/organisation/step2/0").sessionAttr("organisation", organisation)
+                .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(view().name("registration/user"));
     }
@@ -129,6 +146,7 @@ public class  RegistrationWorkflowTest extends AbstractServiceTest {
     @Test
     public void test_step2_POST_EmptySession() throws Exception {
         this.mockMvc.perform(post("/registration/organisation/step2/")
+                .with(csrf())
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .content(validUserFormData))
                 .andExpect(status().is3xxRedirection())
@@ -138,7 +156,8 @@ public class  RegistrationWorkflowTest extends AbstractServiceTest {
 
     @Test
     public void test_step3_GET_InValidActivationID() throws Exception {
-        this.mockMvc.perform(get("/registration/organisation/step3/ThisIsDefinitelyNotAnUUID"))
+        this.mockMvc.perform(get("/registration/organisation/step3/ThisIsDefinitelyNotAnUUID")
+                .with(csrf()))
                 .andExpect(view().name("information"));
 
 
@@ -151,7 +170,8 @@ public class  RegistrationWorkflowTest extends AbstractServiceTest {
         Organisation organisation = organisationRepository.findByNameIgnoreCase("UNICEF");
         user.setOrganisation(organisation);
         userRepository.save(user);
-        this.mockMvc.perform(get("/registration/organisation/step3/" + userUUID))
+        this.mockMvc.perform(get("/registration/organisation/step3/" + userUUID)
+                .with(csrf()))
                 .andExpect(content().string(containsString("Account Confirmation is done.")));
         User userAfterRequest = userRepository.findByEmail("test.user@gmail.com");
         assertEquals(UserStatus.ACTIVE, userAfterRequest.getUserStatus());
