@@ -15,22 +15,34 @@ const Main = React.createClass ({
     },
 
     loadDataFromServer: function(e) {
-
-        this.setState({filters: e.target.value});
-        // rest
-
-        this.setState({opportunities: ['1', '2', '3']});
-        //console.log(this.state.filters);
+        const self = this;
+        self.setState({filters: e.target.value});
+        $.ajax({
+            url: "http://localhost:8080/api/opportunities/find/1",
+            data: {
+                "from": '1999-10-10',
+                "to": '2022-10-10',
+                "location": null,
+                "skills": this.state.filters,
+                "category": null,
+                "pageSize": 10
+            },
+            type: "GET",
+            success: function (response) {
+                console.log(response.result);
+                self.setState({opportunities: response.result});
+            }
+        });
     },
 
     render: function () {
-       return(
-           <div>
-               <button value="hah" onClick={this.loadDataFromServer}>Fuck</button>
-               <Filters filters={this.state.filters} onFilterChange={this.loadDataFromServer} />
-               <Table opportunities={this.state.opportunities}/>
-           </div>
-       )
+        return(
+            <div>
+                <button value="hah" onClick={this.loadDataFromServer}>Fuck</button>
+                <Filters filters={this.state.filters} onFilterChange={this.loadDataFromServer} />
+                <Table opportunities={this.state.opportunities}/>
+            </div>
+        )
     }
 });
 
