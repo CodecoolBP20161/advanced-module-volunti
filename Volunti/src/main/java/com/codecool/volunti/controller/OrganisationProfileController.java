@@ -6,7 +6,6 @@ import com.codecool.volunti.service.email.EmailService;
 import com.codecool.volunti.service.email.EmailType;
 import com.codecool.volunti.service.model.OrganisationService;
 import com.codecool.volunti.service.model.UserService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -15,10 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import springfox.documentation.spring.web.json.Json;
 
@@ -69,11 +65,10 @@ public class OrganisationProfileController {
                 .body(file);
     }
 
-    @GetMapping("/profile/organisation/text")
+    @GetMapping("/profile/organisation/text/{name}")
     @ResponseBody
-    public Json serveText(Model model) {
-        ObjectMapper mapper = new ObjectMapper();
-        Organisation organisation = organisationService.get(1);
+    public Json serveText(@PathVariable("name") String name) {
+        Organisation organisation = organisationService.getByName(name);
         Json json = new Json(organisation.toString());
 
         log.info("organisation converted to JSON: {}", json.value());
