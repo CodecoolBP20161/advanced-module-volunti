@@ -1,14 +1,14 @@
 "use strict";
 const React = require('react');
 
-var Table = React.createClass({
+const Table = React.createClass({
     render: function () {
         return(
             <div>
-                this.props.data
+                Table: {this.props.opportunities}
             </div>
         )
     }
-})
+});
 
-module.exports = Table;
+export default Table;

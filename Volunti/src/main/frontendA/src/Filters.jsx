@@ -1,40 +1,20 @@
 "use strict";
 const React = require('react');
-const Main = require('./Main');
 
-var Filters = React.createClass({
-    getInitialState: function() {
-        return {
-            skills: '',
-            fromDate: '',
-            toDate: ''
-        };
-    },
-
+const Filters = React.createClass({
     componentWillUpdate: function (nextProps, nextState) {
         console.log('will update');
         console.log(nextState);
-
-        Main.loadDataFromServer();
     },
 
 
-    handleChange: function () {
-        console.log('before ');
-        console.log(this.state)
-
-        this.setState({
-        skills: this.refs.skills.value,
-          fromDate: this.refs.fromDate.value,
-          toDate: this.refs.toDate.value
-      });
-        console.log('after ');
-        console.log(this.state)
+    handleChange: function (e) {
+        this.props.onFilterChange(e);
     },
 
     render: function() {
         console.log('render');
-        console.log(this.state)
+        console.log(this.state);
         return(
             <div>
                 <input type="date" ref="fromDate" onChange={this.handleChange} onBlur={this.handleChange}/>
@@ -42,11 +22,11 @@ var Filters = React.createClass({
                 <select ref="skills" onChange={this.handleChange} onBlur={this.handleChange}>
                     <option></option>
                     <option>First</option>
-
                 </select>
+                <div>Filter:{this.props.filters}</div>
             </div>
         )
     }
 });
 
-module.exports = Filters;
+export default Filters;

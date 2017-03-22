@@ -1,39 +1,34 @@
 "use strict";
 const React = require('react');
 const ReactDOM = require('react-dom');
-const Filters = require('./Filters');
-const Table = require('./Table');
+import Filters from './Filters';
+import Table from './Table';
 
 
-var Main = React.createClass({
+const Main = React.createClass ({
 
     getInitialState: function () {
         return {
-            skills: []
+            opportunities: [],
+            filters: ''
         }
     },
 
-    loadDataFromServer: function() {
-        var that = this;
+    loadDataFromServer: function(e) {
 
-        $.ajax({
-            url: '/api/opportunities/filters',
+        this.setState({filters: e.target.value});
+        // rest
 
-            success: function (response) {
-                console.log(response);
-                that.setState({
-                    skills: response.skills
-                });
-            }
-
-        })
+        this.setState({opportunities: ['1', '2', '3']});
+        //console.log(this.state.filters);
     },
 
     render: function () {
        return(
            <div>
-               <Filters />
-               <Table data={this.loadDataFromServer}/>
+               <button value="hah" onClick={this.loadDataFromServer}>Fuck</button>
+               <Filters filters={this.state.filters} onFilterChange={this.loadDataFromServer} />
+               <Table opportunities={this.state.opportunities}/>
            </div>
        )
     }
