@@ -69,6 +69,14 @@ public class OrganisationProfileController {
     @ResponseBody
     public Json serveText(@PathVariable("name") String name) {
         Organisation organisation = organisationService.getByName(name);
+        log.info("organisation to be converted into JSON: {}", organisation);
+
+        // TODO: 2017.03.22. maybe there is a better way to handle queries with invalid names
+        if (organisation == null){
+            log.warn("No organisation found in the database with this name.");
+            return new Json("invalid query");
+        }
+
         Json json = new Json(organisation.toString());
 
         log.info("organisation converted to JSON: {}", json.value());

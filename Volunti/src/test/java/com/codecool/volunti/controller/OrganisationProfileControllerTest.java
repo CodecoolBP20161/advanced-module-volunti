@@ -80,6 +80,9 @@ public class OrganisationProfileControllerTest extends AbstractServiceTest {
 
     @Test
     public void serveText_invalidName() throws Exception {
+        Json invalidName = organisationProfileController.serveText("fakeName");
+        Json expected = new Json("invalid query");
+        assertEquals(expected.value(), invalidName.value());
 
     }
 
