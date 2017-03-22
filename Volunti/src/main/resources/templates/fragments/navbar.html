@@ -19,56 +19,57 @@
                                 <a th:href="@{/}"><i class="fa fa-home"></i></a>
                             </li>
                             <li>
-                                <a href="listing-filter.html">Professionals</a>
+                                <a th:href="@{/}">Professionals</a>
                             </li>
                             <li>
                                 <a th:href="@{/}">Pages</a>
                                 <ul>
                                     <li>
-                                        <a href="profile_company.html">Profile
+                                        <a th:href="@{/}">Profile
                                             Company</a>
                                     </li>
                                     <li>
-                                        <a href="profile_company-no-tabs.html">Profile
+                                        <a th:href="@{/}">Profile
                                             Company No Tabs</a>
                                     </li>
                                     <li>
                                         <a
-                                                href="user-dashboard(connections)(hotkeys-disabled).html">User
+                                                th:href="@{/}">User
                                             Dashboard 1</a>
                                     </li>
                                     <li>
                                         <a
-                                                href="user-dashboard(connections)(hotkeys-enabled).html">User
+                                                th:href="@{/}">User
                                             Dashboard 2</a>
                                     </li>
                                     <li>
                                         <a
-                                                href="user-dashboard(followers).html">User
+                                                th:href="@{/}">User
                                             Dashboard 3</a>
                                     </li>
                                     <li>
                                         <a
-                                                href="user-dashboard(following).html">User
+                                                th:href="@{/}">User
                                             Dashboard 4</a>
                                     </li>
                                     <li>
-                                        <a href="blog-post.html">Blog Post</a>
+                                        <a th:href="@{/}">Blog Post</a>
                                     </li>
                                 </ul>
                             </li>
                             <li>
-                                <a href="user-profile(layout-1).html">User
+                                <a th:href="@{/}">User
                                     Profile</a>
                             </li>
                             <li>
-                                <a href="blog.html">Blog</a>
+                                <a th:href="@{/}">Blog</a>
                             </li>
                             <li>
-                                <a href="gui-kit.html">GUI KIT</a>
+                                <a th:href="@{/}">GUI KIT</a>
                             </li>
-                            <li sec:authorize="isAuthenticated()">
-                                <a th:href="@{/logout}">Logout</a>
+                            <li >
+                                <a sec:authorize="!isAuthenticated()" th:href="@{/login}">LogIn</a>
+                                <a sec:authorize="isAuthenticated()" th:href="@{/logout}">Logout</a>
                             </li>
                         </ul>
                     </nav>
