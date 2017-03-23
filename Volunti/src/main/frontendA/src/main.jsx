@@ -10,7 +10,7 @@ const Main = React.createClass ({
     getInitialState: function () {
         return {
             opportunities: [],
-            filters: {from: '1999-10-10', to: '2022-10-10', skills: ''},
+            filters: {currentPage: 1, from: '1999-10-10', to: '2022-10-10', skills: '', location:'', category:'', pageSize:10},
         }
     },
 
@@ -26,14 +26,15 @@ const Main = React.createClass ({
         self.setState({opportunities: [], filters: newState});
 
         $.ajax({
-            url: "http://localhost:8080/api/opportunities/find/1",
+            url: "/api/opportunities/find/",
             data: {
+                "currentPage": this.state.currentPage,
                 "from": this.state.filters.from,
                 "to": this.state.filters.to,
-                "location": null,
+                "location": this.state.filters.location,
                 "skills": this.state.filters.skills,
-                "category": null,
-                "pageSize": 10
+                "category": this.state.filters.category,
+                "pageSize": this.state.filters.pageSize
             },
             type: "GET",
             success: function (response) {

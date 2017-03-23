@@ -71,7 +71,7 @@
 	    getInitialState: function getInitialState() {
 	        return {
 	            opportunities: [],
-	            filters: { from: '1999-10-10', to: '2022-10-10', skills: '' }
+	            filters: { currentPage: 1, from: '1999-10-10', to: '2022-10-10', skills: '', location: '', category: '', pageSize: 10 }
 	        };
 	    },
 
@@ -87,14 +87,15 @@
 	        self.setState({ opportunities: [], filters: newState });
 
 	        $.ajax({
-	            url: "http://localhost:8080/api/opportunities/find/1",
+	            url: "/api/opportunities/find/",
 	            data: {
+	                "currentPage": this.state.currentPage,
 	                "from": this.state.filters.from,
 	                "to": this.state.filters.to,
-	                "location": null,
+	                "location": this.state.filters.location,
 	                "skills": this.state.filters.skills,
-	                "category": null,
-	                "pageSize": 10
+	                "category": this.state.filters.category,
+	                "pageSize": this.state.filters.pageSize
 	            },
 	            type: "GET",
 	            success: function success(response) {
@@ -149,11 +150,11 @@
 	        return React.createElement(
 	            "div",
 	            null,
-	            React.createElement("input", { type: "date", ref: "from", id: "from", onChange: this.handleChange, onBlur: this.handleChange }),
-	            React.createElement("input", { type: "date", ref: "to", id: "to", onChange: this.handleChange, onBlur: this.handleChange }),
+	            React.createElement("input", { type: "date", ref: "from", id: "from", onChange: this.handleChange }),
+	            React.createElement("input", { type: "date", ref: "to", id: "to", onChange: this.handleChange }),
 	            React.createElement(
 	                "select",
-	                { ref: "skills", id: "skills", onChange: this.handleChange, onBlur: this.handleChange },
+	                { ref: "skills", id: "skills", onChange: this.handleChange },
 	                React.createElement("option", null),
 	                React.createElement(
 	                    "option",
@@ -164,6 +165,55 @@
 	                    "option",
 	                    null,
 	                    "Cooking"
+	                )
+	            ),
+	            React.createElement(
+	                "select",
+	                { ref: "category", id: "category", onChange: this.handleChange },
+	                React.createElement("option", null),
+	                React.createElement(
+	                    "option",
+	                    null,
+	                    "TEACHING"
+	                ),
+	                React.createElement(
+	                    "option",
+	                    null,
+	                    "valami"
+	                )
+	            ),
+	            React.createElement(
+	                "select",
+	                { ref: "location", id: "location", onChange: this.handleChange },
+	                React.createElement("option", null),
+	                React.createElement(
+	                    "option",
+	                    null,
+	                    "Hungary"
+	                ),
+	                React.createElement(
+	                    "option",
+	                    null,
+	                    "Ibrany"
+	                )
+	            ),
+	            React.createElement(
+	                "select",
+	                { ref: "pageSize", id: "pageSize", onChange: this.handleChange },
+	                React.createElement(
+	                    "option",
+	                    null,
+	                    "10"
+	                ),
+	                React.createElement(
+	                    "option",
+	                    null,
+	                    "20"
+	                ),
+	                React.createElement(
+	                    "option",
+	                    null,
+	                    "30"
 	                )
 	            ),
 	            React.createElement(
@@ -18664,10 +18714,10 @@
 	 */
 
 	function getUnboundedScrollPosition(scrollable) {
-	  if (scrollable.Window && scrollable instanceof scrollable.Window) {
+	  if (scrollable === window) {
 	    return {
-	      x: scrollable.pageXOffset || scrollable.document.documentElement.scrollLeft,
-	      y: scrollable.pageYOffset || scrollable.document.documentElement.scrollTop
+	      x: window.pageXOffset || document.documentElement.scrollLeft,
+	      y: window.pageYOffset || document.documentElement.scrollTop
 	    };
 	  }
 	  return {
@@ -19416,9 +19466,7 @@
 	 * @return {boolean} Whether or not the object is a DOM node.
 	 */
 	function isNode(object) {
-	  var doc = object ? object.ownerDocument || object : document;
-	  var defaultView = doc.defaultView || window;
-	  return !!(object && (typeof defaultView.Node === 'function' ? object instanceof defaultView.Node : typeof object === 'object' && typeof object.nodeType === 'number' && typeof object.nodeName === 'string'));
+	  return !!(object && (typeof Node === 'function' ? object instanceof Node : typeof object === 'object' && typeof object.nodeType === 'number' && typeof object.nodeName === 'string'));
 	}
 
 	module.exports = isNode;
@@ -19427,7 +19475,7 @@
 /* 156 */
 /***/ function(module, exports) {
 
-	/* WEBPACK VAR INJECTION */(function(global) {'use strict';
+	'use strict';
 
 	/**
 	 * Copyright (c) 2013-present, Facebook, Inc.
@@ -19448,24 +19496,19 @@
 	 *
 	 * The activeElement will be null only if the document or document body is not
 	 * yet defined.
-	 *
-	 * @param {?DOMDocument} doc Defaults to current document.
-	 * @return {?DOMElement}
 	 */
-	function getActiveElement(doc) /*?DOMElement*/{
-	  doc = doc || global.document;
-	  if (typeof doc === 'undefined') {
+	function getActiveElement() /*?DOMElement*/{
+	  if (typeof document === 'undefined') {
 	    return null;
 	  }
 	  try {
-	    return doc.activeElement || doc.body;
+	    return document.activeElement || document.body;
 	  } catch (e) {
-	    return doc.body;
+	    return document.body;
 	  }
 	}
 
 	module.exports = getActiveElement;
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
 /* 157 */
