@@ -26,9 +26,8 @@ const Main = React.createClass ({
         self.setState({opportunities: [], filters: newState});
 
         $.ajax({
-            url: "/api/opportunities/find/",
+            url: "/api/opportunities/find/" + this.state.filters.currentPage,
             data: {
-                "currentPage": this.state.currentPage,
                 "from": this.state.filters.from,
                 "to": this.state.filters.to,
                 "location": this.state.filters.location,
