@@ -76,16 +76,19 @@
 	    },
 
 	    loadDataFromServer: function loadDataFromServer(e) {
-	        var self = this;
-
 	        var newObj = {};
 	        newObj[e.target.id] = e.target.value;
 
 	        var newState = (0, _reactAddonsUpdate2.default)(this.state.filters, {
 	            $merge: newObj
 	        });
-	        self.setState({ opportunities: [], filters: newState });
 
+	        this.setState({ opportunities: [], filters: newState }, function () {
+	            this.sendRequest();
+	        });
+	    },
+
+	    sendRequest: function sendRequest() {
 	        $.ajax({
 	            url: "/api/opportunities/find/" + this.state.filters.currentPage,
 	            data: {
@@ -96,28 +99,29 @@
 	                "category": this.state.filters.category,
 	                "pageSize": this.state.filters.pageSize
 	            },
+	            cache: false,
 	            type: "GET",
-	            success: function success(response) {
-	                console.log(response.result);
-	                self.setState({ opportunities: response.result });
-	            },
+	            success: function (response) {
+	                this.setState({ opportunities: response.result });
+	            }.bind(this),
 	            error: function error(msg) {
 	                console.log(msg);
 	            }
 	        });
 	    },
 
+	    componentDidUpdate: function componentDidUpdate(prevProps, prevState) {},
+
+
+	    componentDidMount: function componentDidMount() {
+	        this.sendRequest();
+	    },
+
 	    render: function render() {
 	        return React.createElement(
 	            'div',
 	            null,
-	            React.createElement(
-	                'button',
-	                { value: 'hah', onClick: this.loadDataFromServer },
-	                'Fuck'
-	            ),
-	            React.createElement(_Filters2.default, { filters: this.state.filters, onFilterChange: this.loadDataFromServer
-	            }),
+	            React.createElement(_Filters2.default, { filters: this.state.filters, onFilterChange: this.loadDataFromServer }),
 	            React.createElement(_Table2.default, { opportunities: this.state.opportunities })
 	        );
 	    }
