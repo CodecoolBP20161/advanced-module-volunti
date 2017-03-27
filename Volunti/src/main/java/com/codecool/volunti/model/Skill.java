@@ -1,5 +1,6 @@
 package com.codecool.volunti.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.ToString;
 
@@ -20,9 +21,11 @@ public class Skill {
     @NotNull
     private String name;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "opportunitySkills")
     private List<Opportunity> opportunities;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "volunteerSkills")
     private List<Volunteer> volunteers;
 

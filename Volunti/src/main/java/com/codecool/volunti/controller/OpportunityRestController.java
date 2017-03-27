@@ -4,14 +4,8 @@ package com.codecool.volunti.controller;
 import com.codecool.volunti.dto.Filter2OpportunityDTO;
 import com.codecool.volunti.exception.ErrorException;
 import com.codecool.volunti.exception.OpportunityNotFoundException;
-import com.codecool.volunti.model.Filter2Opportunity;
-import com.codecool.volunti.model.Organisation;
-import com.codecool.volunti.model.Skill;
-import com.codecool.volunti.model.Volunteer;
-import com.codecool.volunti.repository.Filter2OpportunityRepository;
-import com.codecool.volunti.repository.OrganisationRepository;
-import com.codecool.volunti.repository.SkillRepository;
-import com.codecool.volunti.repository.VolunteerRepository;
+import com.codecool.volunti.model.*;
+import com.codecool.volunti.repository.*;
 import com.codecool.volunti.service.Pageable;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -22,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -34,6 +29,7 @@ public class OpportunityRestController {
 
     private static final int pageSize = 20;
     private SkillRepository skillRepository;
+    private OpportunityRepository opportunityRepository;
     private OrganisationRepository organisationRepository;
     private Filter2OpportunityRepository filter2OpportunityRepository;
     private ModelMapper modelMapper;
@@ -41,17 +37,18 @@ public class OpportunityRestController {
     VolunteerRepository volunteerRepository;
 
     @Autowired
-    public OpportunityRestController(SkillRepository skillRepository, OrganisationRepository organisationRepository, Filter2OpportunityRepository filter2OpportunityRepository, ModelMapper modelMapper) {
+    public OpportunityRestController(SkillRepository skillRepository, OrganisationRepository organisationRepository, Filter2OpportunityRepository filter2OpportunityRepository, ModelMapper modelMapper, OpportunityRepository opportunityRepository) {
         this.skillRepository = skillRepository;
         this.organisationRepository = organisationRepository;
         this.filter2OpportunityRepository = filter2OpportunityRepository;
         this.modelMapper = modelMapper;
+        this.opportunityRepository = opportunityRepository;
     }
 
     @RequestMapping(value = "/find/{currentPage}", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity<Object> findOpp(@PathVariable int currentPage,
-                                          @RequestParam(value = "from", required = false) Date from,
-                                          @RequestParam(value = "to", required = false) Date to,
+                                          @RequestParam(value = "from", required = false) String from,
+                                          @RequestParam(value = "to", required = false) String to,
                                           @RequestParam(value = "skills", required = false) String skill,
                                           @RequestParam(value = "location", required = false) String country,
                                           @RequestParam(value = "category", required = false) String category,
@@ -60,11 +57,19 @@ public class OpportunityRestController {
         Pageable page;
         Map<String, Object> result = new HashMap<>();
 
+        if (from == "") from = "1999-10-10";
+        if (to == "") to = "2030-10-10";
+        Date fromDate = stringToDate(from);
+        Date toDate = stringToDate(to);
+
+
         if (Objects.equals(skill, "") && Objects.equals(country, "") && Objects.equals(category, "")) {
             page = new Pageable((List) convertToDto(filter2OpportunityRepository.findAll()), currentPage, pageSize);
         } else {
-            page = new Pageable(convertToDto(filter2OpportunityRepository.find(country, category, new java.sql.Timestamp(from.getTime()), new java.sql.Timestamp(to.getTime()), skill)), currentPage, pageSize);
+            page = new Pageable(convertToDto(filter2OpportunityRepository.find(country, category, new java.sql.Timestamp(fromDate.getTime()), new java.sql.Timestamp(toDate.getTime()), skill)), currentPage, pageSize);
         }
+
+//        System.out.println("opportunity!!!" + opportunityRepository.find(country, category, new java.sql.Timestamp(fromDate.getTime()), new java.sql.Timestamp(toDate.getTime()), skill));
 
         if (page.getList().size() == 0) {
             throw new OpportunityNotFoundException();
@@ -100,13 +105,6 @@ public class OpportunityRestController {
         return filters;
     }
 
-    //Convert String to Date from RequestParam
-    @InitBinder
-    public void initBinder(WebDataBinder binder) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        dateFormat.setLenient(false);
-        binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, false));
-    }
 
     //throwable exception from rest controller
     @ExceptionHandler(OpportunityNotFoundException.class)
@@ -144,5 +142,20 @@ public class OpportunityRestController {
             result.add(filterDto);
         }
         return result;
+    }
+
+
+    private Date stringToDate (String s) {
+
+        Date date = null;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            try {
+                date = simpleDateFormat.parse(s);
+                System.out.println("date : "+simpleDateFormat.format(date));
+        }
+            catch (ParseException ex) {
+                System.out.println("Exception "+ex);
+        }
+        return date;
     }
 }

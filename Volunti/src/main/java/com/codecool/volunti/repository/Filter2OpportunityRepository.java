@@ -13,8 +13,8 @@ public interface Filter2OpportunityRepository extends ReadOnlyRepository<Filter2
     @Query(value = "SELECT DISTINCT fo.* FROM filter_to_opportunity fo " +
             "WHERE fo.country = COALESCE(NULLIF(?1, ''), fo.country) " +
             "AND fo.category = COALESCE(NULLIF(?2, ''), fo.category) " +
-            "AND fo.availability_from >= ?3 "+
-            "AND fo.date_availability_to <= ?4 " +
+            "AND fo.availability_from <= ?4 "+
+            "AND fo.date_availability_to >= ?3 " +
             "AND fo.name = COALESCE(NULLIF(?5, ''), fo.name) ",
             nativeQuery = true)
     List<Filter2Opportunity> find(@Param("country") String country,

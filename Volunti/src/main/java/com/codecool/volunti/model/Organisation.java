@@ -2,6 +2,7 @@ package com.codecool.volunti.model;
 
 import com.codecool.volunti.model.enums.Category;
 import com.codecool.volunti.model.enums.SpokenLanguage;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.ToString;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -22,6 +23,7 @@ public class Organisation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int organisationId;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "organisation", cascade = CascadeType.REMOVE)
     private List<Opportunity> opportunities;
 
