@@ -146,12 +146,39 @@
 	    displayName: "Filters",
 
 
+	    loadDataFromServer: function loadDataFromServer() {
+	        $.ajax({
+	            url: "/api/opportunities/filters",
+	            cache: false,
+	            type: "GET",
+	            success: function (response) {
+	                this.setState({
+	                    skills: response.skills,
+	                    locations: response.locations,
+	                    categories: response.categories
+	                });
+	            }.bind(this),
+	            error: function error(msg) {
+	                console.log(msg);
+	            }
+	        });
+	    },
+
+	    getInitialState: function getInitialState() {
+	        return { skills: [], locations: [], categories: [] };
+	    },
+
+	    componentDidMount: function componentDidMount() {
+	        this.loadDataFromServer();
+	    },
+
 	    handleChange: function handleChange(e) {
 	        this.props.onFilterChange(e);
 	    },
 
 	    render: function render() {
 	        var filtersToDisplay = this.props.filters;
+
 	        return React.createElement(
 	            "div",
 	            null,
@@ -160,47 +187,50 @@
 	            React.createElement(
 	                "select",
 	                { ref: "skills", id: "skills", onChange: this.handleChange },
-	                React.createElement("option", null),
 	                React.createElement(
 	                    "option",
-	                    null,
-	                    "Programming"
+	                    { value: "" },
+	                    "Skill"
 	                ),
-	                React.createElement(
-	                    "option",
-	                    null,
-	                    "Cooking"
-	                )
+	                this.state.skills.map(function (skill, index) {
+	                    return React.createElement(
+	                        "option",
+	                        { key: index },
+	                        skill
+	                    );
+	                })
 	            ),
 	            React.createElement(
 	                "select",
 	                { ref: "category", id: "category", onChange: this.handleChange },
-	                React.createElement("option", null),
 	                React.createElement(
 	                    "option",
-	                    null,
-	                    "TEACHING"
+	                    { value: "" },
+	                    "Category"
 	                ),
-	                React.createElement(
-	                    "option",
-	                    null,
-	                    "valami"
-	                )
+	                this.state.categories.map(function (category, index) {
+	                    return React.createElement(
+	                        "option",
+	                        { key: index },
+	                        category
+	                    );
+	                })
 	            ),
 	            React.createElement(
 	                "select",
 	                { ref: "location", id: "location", onChange: this.handleChange },
-	                React.createElement("option", null),
 	                React.createElement(
 	                    "option",
-	                    null,
-	                    "Hungary"
+	                    { value: "" },
+	                    "Location"
 	                ),
-	                React.createElement(
-	                    "option",
-	                    null,
-	                    "Ibrany"
-	                )
+	                this.state.locations.map(function (location, index) {
+	                    return React.createElement(
+	                        "option",
+	                        { key: index },
+	                        location
+	                    );
+	                })
 	            ),
 	            React.createElement(
 	                "select",
@@ -220,6 +250,14 @@
 	                    null,
 	                    "30"
 	                )
+	            ),
+	            React.createElement(
+	                "div",
+	                null,
+	                "Filter: ",
+	                Object.keys(filtersToDisplay).map(function (filter, i) {
+	                    console.log(filter + ": " + filtersToDisplay[filter]);
+	                })
 	            )
 	        );
 	    }
@@ -18722,10 +18760,10 @@
 	 */
 
 	function getUnboundedScrollPosition(scrollable) {
-	  if (scrollable.Window && scrollable instanceof scrollable.Window) {
+	  if (scrollable === window) {
 	    return {
-	      x: scrollable.pageXOffset || scrollable.document.documentElement.scrollLeft,
-	      y: scrollable.pageYOffset || scrollable.document.documentElement.scrollTop
+	      x: window.pageXOffset || document.documentElement.scrollLeft,
+	      y: window.pageYOffset || document.documentElement.scrollTop
 	    };
 	  }
 	  return {
@@ -19474,9 +19512,7 @@
 	 * @return {boolean} Whether or not the object is a DOM node.
 	 */
 	function isNode(object) {
-	  var doc = object ? object.ownerDocument || object : document;
-	  var defaultView = doc.defaultView || window;
-	  return !!(object && (typeof defaultView.Node === 'function' ? object instanceof defaultView.Node : typeof object === 'object' && typeof object.nodeType === 'number' && typeof object.nodeName === 'string'));
+	  return !!(object && (typeof Node === 'function' ? object instanceof Node : typeof object === 'object' && typeof object.nodeType === 'number' && typeof object.nodeName === 'string'));
 	}
 
 	module.exports = isNode;
@@ -19485,7 +19521,7 @@
 /* 156 */
 /***/ function(module, exports) {
 
-	/* WEBPACK VAR INJECTION */(function(global) {'use strict';
+	'use strict';
 
 	/**
 	 * Copyright (c) 2013-present, Facebook, Inc.
@@ -19506,24 +19542,19 @@
 	 *
 	 * The activeElement will be null only if the document or document body is not
 	 * yet defined.
-	 *
-	 * @param {?DOMDocument} doc Defaults to current document.
-	 * @return {?DOMElement}
 	 */
-	function getActiveElement(doc) /*?DOMElement*/{
-	  doc = doc || global.document;
-	  if (typeof doc === 'undefined') {
+	function getActiveElement() /*?DOMElement*/{
+	  if (typeof document === 'undefined') {
 	    return null;
 	  }
 	  try {
-	    return doc.activeElement || doc.body;
+	    return document.activeElement || document.body;
 	  } catch (e) {
-	    return doc.body;
+	    return document.body;
 	  }
 	}
 
 	module.exports = getActiveElement;
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
 /* 157 */
