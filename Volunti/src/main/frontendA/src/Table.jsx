@@ -3,20 +3,27 @@ const React = require('react');
 
 const Table = React.createClass({
     render: function () {
+
         let rows = [];
         this.props.opportunities.map(function(opportunity, i) {
+
+            let skills = [];
+            opportunity.name.map(function(skill, j) {
+                skills.push(<h6 key={j}>{skill}</h6>)
+            });
+
             rows.push(<tr key={i}>
                         <td>
                             <h6>{opportunity.title}</h6>
                         </td>
                         <td>
-                            <h6>{opportunity.dateAvailabilityTo}</h6>
                             <h6>{opportunity.availabilityFrom}</h6>
+                            <h6>{opportunity.dateAvailabilityTo}</h6>
                         </td>
                         <td>
                             <h6>{opportunity.country}</h6>
                         </td>
-                            <h6>{opportunity.name}</h6>
+                        <td>{skills}</td>
                         <td>
                             <h6>{opportunity.category}</h6>
                         </td>

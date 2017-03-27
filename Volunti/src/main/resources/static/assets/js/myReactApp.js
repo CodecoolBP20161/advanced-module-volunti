@@ -4296,8 +4296,19 @@
 	    displayName: "Table",
 
 	    render: function render() {
+
 	        var rows = [];
 	        this.props.opportunities.map(function (opportunity, i) {
+
+	            var skills = [];
+	            opportunity.name.map(function (skill, j) {
+	                skills.push(React.createElement(
+	                    "h6",
+	                    { key: j },
+	                    skill
+	                ));
+	            });
+
 	            rows.push(React.createElement(
 	                "tr",
 	                { key: i },
@@ -4316,12 +4327,12 @@
 	                    React.createElement(
 	                        "h6",
 	                        null,
-	                        opportunity.dateAvailabilityTo
+	                        opportunity.availabilityFrom
 	                    ),
 	                    React.createElement(
 	                        "h6",
 	                        null,
-	                        opportunity.availabilityFrom
+	                        opportunity.dateAvailabilityTo
 	                    )
 	                ),
 	                React.createElement(
@@ -4334,9 +4345,9 @@
 	                    )
 	                ),
 	                React.createElement(
-	                    "h6",
+	                    "td",
 	                    null,
-	                    opportunity.name
+	                    skills
 	                ),
 	                React.createElement(
 	                    "td",
