@@ -83,9 +83,7 @@
 	            $merge: newObj
 	        });
 
-	        this.setState({ opportunities: [], filters: newState }, function () {
-	            this.sendRequest();
-	        });
+	        this.setState({ opportunities: [], filters: newState });
 	    },
 
 	    sendRequest: function sendRequest() {
@@ -110,7 +108,11 @@
 	        });
 	    },
 
-	    componentDidUpdate: function componentDidUpdate(prevProps, prevState) {},
+	    componentDidUpdate: function componentDidUpdate(prevProps, prevState) {
+	        if (this.state.filters != prevState.filters) {
+	            this.sendRequest();
+	        }
+	    },
 
 
 	    componentDidMount: function componentDidMount() {
@@ -218,14 +220,6 @@
 	                    null,
 	                    "30"
 	                )
-	            ),
-	            React.createElement(
-	                "div",
-	                null,
-	                "Filter: ",
-	                Object.keys(filtersToDisplay).map(function (filter, i) {
-	                    console.log(filter + ": " + filtersToDisplay[filter]);
-	                })
 	            )
 	        );
 	    }

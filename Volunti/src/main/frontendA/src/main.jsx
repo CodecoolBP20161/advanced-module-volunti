@@ -22,9 +22,7 @@ const Main = React.createClass ({
             $merge: newObj
         });
 
-        this.setState({opportunities: [], filters: newState}, function () {
-            this.sendRequest();
-        });
+        this.setState({opportunities: [], filters: newState});
     },
 
     sendRequest: function() {
@@ -50,7 +48,9 @@ const Main = React.createClass ({
     },
 
     componentDidUpdate(prevProps, prevState) {
-
+        if(this.state.filters != prevState.filters) {
+            this.sendRequest();
+        }
     },
 
     componentDidMount: function () {
