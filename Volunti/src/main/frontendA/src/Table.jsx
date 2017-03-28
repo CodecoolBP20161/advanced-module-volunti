@@ -52,14 +52,23 @@ const Table = React.createClass({
                 </thead>
                 <tbody>{rows}</tbody>
             </table>
-            <ul className="pagination">
-                <button className="mb20 btn-small btn-transparent-primary">
-                    <li id="currentPage" value={this.props.currentPage - 1}
-                            onClick={this.handleClick}>Previous</li></button>
-                <button className="mb20 btn-small btn-transparent-primary">
-                    <li id="currentPage" value={this.props.currentPage + 1}
-                            onClick={this.handleClick}>Next</li></button>
-            </ul>
+
+            <div>
+                {rows.length == 0 ? <div>Did not found any match</div> :
+                    <ul className="pagination">
+                        <button className="mb20 btn-small btn-transparent-primary">
+                            <li id="currentPage" value={this.props.currentPage - 1}
+                                onClick={this.handleClick}>Previous
+                            </li>
+                        </button>
+                        <button className="mb20 btn-small btn-transparent-primary">
+                            <li id="currentPage" value={this.props.currentPage + 1}
+                                onClick={this.handleClick}>Next
+                            </li>
+                        </button>
+                    </ul>
+                }
+            </div>
         </div>
         )
     },
