@@ -2,6 +2,11 @@
 const React = require('react');
 
 const Table = React.createClass({
+
+    handleClick: function (e) {
+        this.props.onChange(e);
+    },
+
     render: function () {
 
         let rows = [];
@@ -27,7 +32,8 @@ const Table = React.createClass({
                         <td>
                             <h6>{opportunity.category}</h6>
                         </td>
-                        {/*<td>{opportunity.id}</td>*/}
+                        {/*<td><button className="btn mb20 btn-small btn-transparent-primary">
+                        <a href={'/opportunities/' + opportunity.id}>View</a></td>*/}
                     </tr>);
         });
 
@@ -46,6 +52,14 @@ const Table = React.createClass({
                 </thead>
                 <tbody>{rows}</tbody>
             </table>
+            <ul className="pagination">
+                <button className="mb20 btn-small btn-transparent-primary">
+                    <li id="currentPage" value={this.props.currentPage - 1}
+                            onClick={this.handleClick}>Previous</li></button>
+                <button className="mb20 btn-small btn-transparent-primary">
+                    <li id="currentPage" value={this.props.currentPage + 1}
+                            onClick={this.handleClick}>Next</li></button>
+            </ul>
         </div>
         )
     },

@@ -71,13 +71,16 @@
 	    getInitialState: function getInitialState() {
 	        return {
 	            opportunities: [],
-	            filters: { currentPage: 1, from: '1999-10-10', to: '2022-10-10', skills: '', location: '', category: '', pageSize: 10 }
+	            filters: { currentPage: 1, from: '1999-10-10', to: '2022-10-10', skills: '', location: '', category: '', pageSize: 10 },
+	            maxPage: 0
 	        };
 	    },
 
 	    loadDataFromServer: function loadDataFromServer(e) {
 	        var newObj = {};
 	        newObj[e.target.id] = e.target.value;
+	        console.log(e.target.id);
+	        console.log(e.target.value);
 
 	        var newState = (0, _reactAddonsUpdate2.default)(this.state.filters, {
 	            $merge: newObj
@@ -100,7 +103,7 @@
 	            cache: false,
 	            type: "GET",
 	            success: function (response) {
-	                this.setState({ opportunities: response.result });
+	                this.setState({ opportunities: response.result, maxPage: response.maxpage });
 	            }.bind(this),
 	            error: function error(msg) {
 	                console.log(msg);
@@ -110,10 +113,15 @@
 
 	    componentDidUpdate: function componentDidUpdate(prevProps, prevState) {
 	        if (this.state.filters != prevState.filters) {
-	            this.sendRequest();
+	            if (!(this.state.filters.currentPage < 1 || this.state.filters.currentPage > this.state.maxPage)) {
+	                this.sendRequest();
+	            } else {
+	                this.setState({ currentPage: prevState.filters.currentPage });
+	                console.log(this.state.filters.currentPage);
+	                console.log(prevState.filters.currentPage);
+	            }
 	        }
 	    },
-
 
 	    componentDidMount: function componentDidMount() {
 	        this.sendRequest();
@@ -124,12 +132,14 @@
 	            'div',
 	            null,
 	            React.createElement(_Filters2.default, { filters: this.state.filters, onFilterChange: this.loadDataFromServer }),
-	            React.createElement(_Table2.default, { opportunities: this.state.opportunities })
+	            React.createElement(_Table2.default, { opportunities: this.state.opportunities,
+	                currentPage: this.state.filters.currentPage,
+	                onChange: this.loadDataFromServer })
 	        );
 	    }
 	});
 
-	ReactDOM.render(React.createElement(Main, null), document.getElementById("react-dropdown-filter"));
+	ReactDOM.render(React.createElement(Main, null), document.getElementById("react"));
 
 /***/ },
 /* 1 */
@@ -4295,6 +4305,11 @@
 	var Table = React.createClass({
 	    displayName: "Table",
 
+
+	    handleClick: function handleClick(e) {
+	        this.props.onChange(e);
+	    },
+
 	    render: function render() {
 
 	        var rows = [];
@@ -4409,6 +4424,30 @@
 	                    "tbody",
 	                    null,
 	                    rows
+	                )
+	            ),
+	            React.createElement(
+	                "ul",
+	                { className: "pagination" },
+	                React.createElement(
+	                    "button",
+	                    { className: "mb20 btn-small btn-transparent-primary" },
+	                    React.createElement(
+	                        "li",
+	                        { id: "currentPage", value: this.props.currentPage - 1,
+	                            onClick: this.handleClick },
+	                        "Previous"
+	                    )
+	                ),
+	                React.createElement(
+	                    "button",
+	                    { className: "mb20 btn-small btn-transparent-primary" },
+	                    React.createElement(
+	                        "li",
+	                        { id: "currentPage", value: this.props.currentPage + 1,
+	                            onClick: this.handleClick },
+	                        "Next"
+	                    )
 	                )
 	            )
 	        );

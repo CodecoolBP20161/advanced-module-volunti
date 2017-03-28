@@ -33,10 +33,10 @@ const Filters = React.createClass({
                     <option>20</option>
                     <option>30</option>
                 </select>
-                <div>Filter: {Object.keys(filtersToDisplay).map(function (filter, i) {
-                                console.log(filter + ": " + filtersToDisplay[filter]);
-                                })
-                }</div>
+                {/*<div>Filter: {Object.keys(filtersToDisplay).map(function (filter, i) {*/}
+                                {/*console.log(filter + ": " + filtersToDisplay[filter]);*/}
+                                {/*})*/}
+                {/*}</div>*/}
             </div>
         )
     }

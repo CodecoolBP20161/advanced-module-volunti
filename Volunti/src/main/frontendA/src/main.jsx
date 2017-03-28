@@ -11,12 +11,15 @@ const Main = React.createClass ({
         return {
             opportunities: [],
             filters: {currentPage: 1, from: '1999-10-10', to: '2022-10-10', skills: '', location:'', category:'', pageSize:10},
+            maxPage: 0
         }
     },
 
     loadDataFromServer: function(e) {
         let newObj = {};
         newObj[e.target.id] = e.target.value;
+        console.log(e.target.id);
+        console.log(e.target.value);
 
         let newState = update(this.state.filters, {
             $merge: newObj
@@ -39,7 +42,7 @@ const Main = React.createClass ({
             cache: false,
             type: "GET",
             success: function (response) {
-                this.setState({opportunities: response.result});
+                this.setState({opportunities: response.result, maxPage: response.maxpage});
             }.bind(this),
             error: function (msg) {
                 console.log(msg);
@@ -47,9 +50,15 @@ const Main = React.createClass ({
         })
     },
 
-    componentDidUpdate(prevProps, prevState) {
+    componentDidUpdate: function(prevProps, prevState) {
         if(this.state.filters != prevState.filters) {
-            this.sendRequest();
+            if(!(this.state.filters.currentPage < 1 || this.state.filters.currentPage > this.state.maxPage)){
+                this.sendRequest();
+            } else {
+                this.setState({currentPage: prevState.filters.currentPage});
+                console.log(this.state.filters.currentPage);
+                console.log(prevState.filters.currentPage);
+            }
         }
     },
 
@@ -61,10 +70,12 @@ const Main = React.createClass ({
         return(
             <div>
                 <Filters filters={this.state.filters} onFilterChange={this.loadDataFromServer}/>
-                <Table opportunities={this.state.opportunities}/>
+                <Table opportunities={this.state.opportunities}
+                       currentPage={this.state.filters.currentPage}
+                       onChange={this.loadDataFromServer}/>
             </div>
         )
     }
 });
 
-ReactDOM.render(<Main/>, document.getElementById("react-dropdown-filter"));
+ReactDOM.render(<Main/>, document.getElementById("react"));
