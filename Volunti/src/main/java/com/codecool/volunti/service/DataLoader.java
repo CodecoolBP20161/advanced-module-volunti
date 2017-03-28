@@ -70,10 +70,11 @@ public class DataLoader {
         }
 
         Volunteer volunteer = new Volunteer();
+        organisationService.save(organisation1);
+        volunteerService.save(volunteer);
 
         if (roleService.findByName(ROLE_USER.getRole()) == null) {
-            organisationService.save(organisation1);
-            volunteerService.save(volunteer);
+
             Role roleUser = new Role(ROLE_USER.getRole());
             roleService.save(roleUser);
 
