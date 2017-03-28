@@ -52,19 +52,32 @@ public class DataLoader {
         }
         if (volunteerRepository.count() == 0) {
             Volunteer volunteer = new Volunteer();
+            volunteer.setCountry("Hungary");
             volunteerRepository.save(volunteer);
         }
 
         if (organisationRepository.count() == 0) {
             Organisation organisation1 = new Organisation("UNICEF", Category.TEACHING, "Hungary", "1065", "Isaszeg", "Kossuth utca", spokenLanguages, "mission mission mission mission mission", "description1", "description2");
 
+            Organisation organisation2 = new Organisation("WHATEVER", Category.AGRICULTURE, "Iceland", "1065", "Reykjavik", "Whale str", spokenLanguages, "mission mission mission mission mission", "description1", "description2");
+
+            Organisation organisation3 = new Organisation("Doctors Without Borders", Category.MANAGEMENT, "Kenya", "1065", "Random city in kenya", "whatever str", spokenLanguages, "mission mission mission mission mission", "description1", "description2");
+
+            Organisation organisation4 = new Organisation("Feeding America", Category.OTHER, "USA", "1065", "New York", "Amsterdam Av. 106", spokenLanguages, "mission mission mission mission mission", "description1", "description2");
+
             if (skillRepository.count() == 0) {
                 loadSkills();
             }
             organisationRepository.save(organisation1);
+            organisationRepository.save(organisation2);
+            organisationRepository.save(organisation3);
+            organisationRepository.save(organisation4);
 
-            for (int i = 0; i < 100; i++) {
+            for (int i = 0; i < 50; i++) {
                 testOpportunityGenerator(organisation1);
+                testOpportunityGenerator(organisation2);
+                testOpportunityGenerator(organisation3);
+                testOpportunityGenerator(organisation4);
             }
         }
 
@@ -94,8 +107,15 @@ public class DataLoader {
         DataFactory df = new DataFactory();
 
         List<Skill> skills = new ArrayList<>();
-        skills.add(new Skill("Programming"));
-        skills.add(new Skill("Cooking"));
+
+        List<Skill> possibleSkills = (List) skillRepository.findAll();
+        for (int i=0; i < 2; i++) {
+            int randomSkill = (int) (Math.random() * possibleSkills.size());
+            skills.add(possibleSkills.get(randomSkill));
+        }
+        if (skills.get(0) == skills.get(1)){
+            skills.remove(1);
+        }
 
         String title = df.getRandomWord() + " " + df.getRandomWord();
         Opportunity opportunity = new Opportunity();
