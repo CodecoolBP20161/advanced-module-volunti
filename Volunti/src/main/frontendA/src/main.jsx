@@ -4,6 +4,8 @@ const ReactDOM = require('react-dom');
 import Filters from './Filters';
 import Table from './Table';
 import update from 'react-addons-update';
+import Pagination from 'react-js-pagination';
+
 
 const Main = React.createClass ({
 
@@ -12,7 +14,8 @@ const Main = React.createClass ({
             opportunities: [],
             currentPage: 1,
             filters: {from: '1999-10-10', to: '2022-10-10', skills: '', location:'', category:'', pageSize:10},
-            maxPage: 0
+            maxPage: 0,
+
         }
     },
 
@@ -26,13 +29,7 @@ const Main = React.createClass ({
 
         this.setState({opportunities: [], currentPage: 1, filters: newState});
     },
-    
-    setCurrentPage: function (e) {
-        let newPage = e.target.value;
-        if(!(newPage < 1 || newPage> this.state.maxPage)) {
-            this.setState({currentPage: newPage});
-        }
-    },
+
 
     sendRequest: function() {
         $.ajax({
@@ -66,16 +63,31 @@ const Main = React.createClass ({
         this.sendRequest();
     },
 
+    handlePageChange(pageNumber) {
+        console.log(`active page is ${pageNumber}`);
+        this.setState({currentPage: pageNumber});
+    },
+
     render: function () {
         return(
             <div>
                 <Filters filters={this.state.filters} onFilterChange={this.setFilter}/>
                 <Table opportunities={this.state.opportunities}
-                       currentPage={this.state.currentPage}
-                       onChange={this.setCurrentPage}/>
+                       currentPage={this.state.currentPage}/>
+
+                {this.state.opportunities.length == 0 ? <div>Did not found any match</div> :
+                <Pagination className="pagination"
+                    activePage={this.state.currentPage}
+                    itemsCountPerPage={this.state.filters.pageSize}
+                    totalItemsCount={300}
+                    pageRangeDisplayed={3}
+                    onChange={this.handlePageChange}
+                />}
             </div>
         )
     }
 });
 
 ReactDOM.render(<Main/>, document.getElementById("react"));
+
+
