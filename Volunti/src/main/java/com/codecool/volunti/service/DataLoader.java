@@ -52,6 +52,7 @@ public class DataLoader {
         }
         if (volunteerRepository.count() == 0) {
             Volunteer volunteer = new Volunteer();
+            volunteer.setCountry("Hungary");
             volunteerRepository.save(volunteer);
         }
 
@@ -94,8 +95,15 @@ public class DataLoader {
         DataFactory df = new DataFactory();
 
         List<Skill> skills = new ArrayList<>();
-        skills.add(new Skill("Programming"));
-        skills.add(new Skill("Cooking"));
+
+        List<Skill> possibleSkills = (List) skillRepository.findAll();
+        for (int i=0; i < 2; i++) {
+            int randomSkill = (int) (Math.random() * possibleSkills.size());
+            skills.add(possibleSkills.get(randomSkill));
+        }
+        if (skills.get(0) == skills.get(1)){
+            skills.remove(1);
+        }
 
         String title = df.getRandomWord() + " " + df.getRandomWord();
         Opportunity opportunity = new Opportunity();

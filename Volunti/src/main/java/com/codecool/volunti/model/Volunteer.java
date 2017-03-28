@@ -16,6 +16,9 @@ public class Volunteer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @Column(name = "volunteer_country")
+    private String country;
+
     public Volunteer() {
     }
     @JsonIgnore

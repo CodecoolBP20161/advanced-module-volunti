@@ -67,7 +67,7 @@ public class Opportunity{
     private String requirements;
 
     @JsonIgnore
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(name = "opportunities_skills", joinColumns = @JoinColumn(name = "opportunity_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "skill_id", referencedColumnName = "id"))
     private List<Skill> opportunitySkills;
 }

@@ -1,6 +1,6 @@
 package com.codecool.volunti.repository;
 
-import com.codecool.volunti.dto.FilterOpportunity;
+import com.codecool.volunti.dto.Filter2OpportunityDTO;
 import com.codecool.volunti.model.Opportunity;
 import com.codecool.volunti.model.Organisation;
 import org.springframework.data.jpa.repository.JpaRepository;
