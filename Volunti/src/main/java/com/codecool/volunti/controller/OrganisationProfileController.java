@@ -23,23 +23,11 @@ import springfox.documentation.spring.web.json.Json;
 @Controller
 public class OrganisationProfileController {
 
-    private static EmailType EMAILTYPE = EmailType.CONFIRMATION;
-
-    private OrganisationRepository organisationRepository;
     private OrganisationService organisationService;
-    private UserService userService;
-    private EmailService emailService;
-    private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public OrganisationProfileController(OrganisationRepository organisationRepository,
-                                  OrganisationService organisationService,
-                                  UserService userService,
-                                  EmailService emailService) {
-        this.organisationRepository = organisationRepository;
+    public OrganisationProfileController(OrganisationService organisationService) {
         this.organisationService = organisationService;
-        this.userService = userService;
-        this.emailService = emailService;
     }
 
     @GetMapping(value = "/profile/organisation")
