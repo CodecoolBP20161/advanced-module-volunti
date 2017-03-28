@@ -1,227 +1,93 @@
 "use strict";
 const React = require('react');
 const ReactDOM = require('react-dom');
-
-var url = "http://localhost:8080/api/opportunities/find/1?from=2020-10-10&to=1999-10-10&location&skills&category&pageSize=10";
-var location = "";
-var skill = "";
-var category = "";
-
-var updateUrl= function () {
-    url = "http://localhost:8080/api/opportunities/find/1?from=2020-10-10&to=1999-10-10&pageSize=10";
-    if (location != ""){
-        url += "&location=" + location;
-    } else {
-        url += "&location";
-    }
-    if (skill != ""){
-        url += "&skills=" + skill;
-    } else {
-        url += "&skills";
-    }
-    if (category != ""){
-        url += "&category=" + category;
-    } else {
-        url += "&category";
-    }
-}
-
-var Option = React.createClass({
-    render: function () {
-        return (<option>{this.props.option}</option>)
-    }
-});
+import Filters from './Filters';
+import Table from './Table';
+import update from 'react-addons-update';
+import Pagination from 'react-js-pagination';
 
 
-var Filter = React.createClass({
-    render: function () {
-        var options = [];
-        this.props.filters.forEach(function(option, i){
-            options.push(<Option option={option} key={i}/>)
-        });
-        return(<div className="col-sm-3">
-            <div className="field custom-select-box" id={this.props.label}>
-                <select title="sort" onChange={this.handleChange}>
-                    <option defaultValue={this.props.label}>{this.props.label}(optional)</option>
-                    {options}</select>
-            </div>
-        </div>)
-    },
+const Main = React.createClass ({
 
-    handleChange: function (e) {
-
-        var name = e.target.value;
-
-        var type = e.target.parentNode.id;
-        var value = e.target.value;
-
-        switch(type) {
-            case "Location":
-                location = value;
-                if(value.includes("optional")){
-                    location = "";
-                }
-                break;
-            case "Skill":
-                skill = value;
-                if(value.includes("optional")) {
-                    skill = "";
-                }
-                break;
-
-            case "Category":
-                category = value;
-                if(value.includes("optional")) {
-                    category = "";
-                }
-                break;
-            default:
-                break;
-        }
-
-        updateUrl();
-    }
-
-
-});
-
-
-var Filters = React.createClass({
-
-    loadDataFromServer: function () {
-        var self = this;
-        $.ajax({
-            url: "http://localhost:8080/api/opportunities/filters"
-        }).then(function (data) {
-            self.setState({skills: data.skills, locations: data.locations, categories: data.categories});
-        });
-    },
-
-    getInitialState: function () {
-        return {skills: [], locations: [], categories: []};
-    },
-
-    componentDidMount: function () {
-        this.loadDataFromServer();
-    },
-
-    render: function() {
-        const filters = [this.state.skills, this.state.locations, this.state.categories];
-        const labels = ["Skill", "Location", "Category"];
-        const filterList = filters.map((filter, i) =>
-            <Filter filters={filter} label={labels[i]} key={i} />
-        );
-
-        return ( <div>{filterList}</div> );
-    }
-});
-
-
-
-var Table = React.createClass({
-
-    loadOpportunityFromServer: function () {
-        var self = this;
-        $.ajax({
-            url: url
-        }).then(function (data) {
-            self.setState({opportunities: data.result});
-        });
-    },
-
-    updateIfNeeded: function () {
-        var isNeeded = this.state.url != url;
-        this.state.url = url;
-        if (isNeeded) {
-            this.loadOpportunityFromServer();
-        }
-    },
-
-    getInitialState: function () {
-        return {opportunities: []};
-    },
-
-    componentDidMount: function () {
-        this.state.url = url;
-        this.loadOpportunityFromServer();
-        setInterval(this.updateIfNeeded, 1000);
-    },
-
-    render() {
-        return ( <OpportunityTable opportunities={this.state.opportunities}/> );
-    }
-});
-
-
-
-
-var Opportunity = React.createClass({
     getInitialState: function() {
-        return {display: true };
+        return {
+            opportunities: [],
+            currentPage: 1,
+            filters: {from: '1999-10-10', to: '2022-10-10', skills: '', location:'', category:'', pageSize:10},
+            maxPage: 0,
+
+        }
     },
 
-    render: function() {
-        if (this.state.display==false) return null;
-        else return (
-            <tr>
-                <td>
-                    <h6>{this.props.opportunity.title}</h6>
-                </td>
-                <td>
-                    <h6>{this.props.opportunity.dateAvailabilityTo}</h6>
-                    <h6>{this.props.opportunity.availabilityFrom}</h6>
-                </td>
-                <td>
-                    <h6>{this.props.opportunity.name}</h6>
-                </td>
-                <td>
-                    <h6>{this.props.opportunity.category}</h6>
-                </td>
-                <td>
-                    <h6>{this.props.opportunity.country}</h6>
-                </td>
-                <td>
-                    <div className="btn-group" >
-                        <button className="btn mb20 btn-small btn-transparent-primary" value="left">
-                            <a href={'/opportunities/' + this.props.opportunity.id}>View</a>
-                            </button>
-                    </div>
-                </td>
-            </tr>
-        );
-    }
-});
+    setFilter: function(e) {
+        let newObj = {};
+        newObj[e.target.id] = e.target.value;
 
-var OpportunityTable = React.createClass({
-    render: function() {
-        var rows = [];
-        this.props.opportunities.forEach(function(opportunity, i) {
-            rows.push(<Opportunity opportunity={opportunity} key={i} />);
+        let newState = update(this.state.filters, {
+            $merge: newObj
         });
-        return (
+
+        this.setState({opportunities: [], currentPage: 1, filters: newState});
+    },
+
+
+    sendRequest: function() {
+        $.ajax({
+            url: "/api/opportunities/find/" + this.state.currentPage,
+            data: {
+                "from": this.state.filters.from,
+                "to": this.state.filters.to,
+                "location": this.state.filters.location,
+                "skills": this.state.filters.skills,
+                "category": this.state.filters.category,
+                "pageSize": this.state.filters.pageSize
+            },
+            cache: false,
+            type: "GET",
+            success: function (response) {
+                this.setState({opportunities: response.result, maxPage: response.maxpage});
+            }.bind(this),
+            error: function (msg) {
+                console.log(msg);
+            }
+        })
+    },
+
+    componentDidUpdate: function(prevProps, prevState) {
+        if(this.state.filters != prevState.filters || this.state.currentPage != prevState.currentPage) {
+            this.sendRequest();
+        }
+    },
+
+    componentDidMount: function () {
+        this.sendRequest();
+    },
+
+    handlePageChange(pageNumber) {
+        console.log(`active page is ${pageNumber}`);
+        this.setState({currentPage: pageNumber});
+    },
+
+    render: function () {
+        return(
             <div>
-                <table className="table-hover" >
-                    <thead>
-                    <tr>
-                        <th>Title</th>
-                        <th>Time frame</th>
-                        <th>Location</th>
-                        <th>Skills</th>
-                        <th>Category</th>
-                        <th>View</th>
-                    </tr>
-                    </thead>
-                    <tbody>{rows}</tbody>
-                </table>
-                <div>
-                    {console.log(rows)}
-                    {rows.length == 0 ? <div>Empty</div> : null}
-                </div>
+                <Filters filters={this.state.filters} onFilterChange={this.setFilter}/>
+                <Table opportunities={this.state.opportunities}
+                       currentPage={this.state.currentPage}/>
+
+                {this.state.opportunities.length == 0 ? <div>Did not found any match</div> :
+                <Pagination className="pagination"
+                    activePage={this.state.currentPage}
+                    itemsCountPerPage={this.state.filters.pageSize}
+                    totalItemsCount={300}
+                    pageRangeDisplayed={3}
+                    onChange={this.handlePageChange}
+                />}
             </div>
-        );
+        )
     }
 });
 
-ReactDOM.render(<Table />, document.getElementById('react-table'));
+ReactDOM.render(<Main/>, document.getElementById("react"));
 
-ReactDOM.render(<Filters />, document.getElementById('react-dropdown-filter'));
+
