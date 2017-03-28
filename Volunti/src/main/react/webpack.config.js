@@ -3,7 +3,8 @@ var webpack = require('webpack');
 
 module.exports={
     entry:{
-        organisationprofile: "./editableorgprofile/component/main.jsx"
+        organisationprofile: "./editableorgprofile/component/main.jsx",
+        browseOpportunities: "./browseOpportunities/component/main.jsx"
     },
 
     output: {
