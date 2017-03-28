@@ -34,7 +34,6 @@ const Filters = React.createClass({
     },
 
     render: function() {
-        const filtersToDisplay = this.props.filters;
         return(
             <div>
                 <input type="date" ref="from" id="from" onChange={this.handleChange}/>
@@ -67,11 +66,6 @@ const Filters = React.createClass({
                     <option>20</option>
                     <option>30</option>
                 </select>
-
-                <div>Filter: {Object.keys(filtersToDisplay).map(function (filter, i) {
-                    console.log(filter + ": " + filtersToDisplay[filter]);
-                })
-                }</div>
             </div>
         )
     }

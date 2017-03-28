@@ -7,30 +7,36 @@ import update from 'react-addons-update';
 
 const Main = React.createClass ({
 
-    getInitialState: function () {
+    getInitialState: function() {
         return {
             opportunities: [],
-            filters: {currentPage: 1, from: '1999-10-10', to: '2022-10-10', skills: '', location:'', category:'', pageSize:10},
+            currentPage: 1,
+            filters: {from: '1999-10-10', to: '2022-10-10', skills: '', location:'', category:'', pageSize:10},
             maxPage: 0
         }
     },
 
-    loadDataFromServer: function(e) {
+    setFilter: function(e) {
         let newObj = {};
         newObj[e.target.id] = e.target.value;
-        console.log(e.target.id);
-        console.log(e.target.value);
 
         let newState = update(this.state.filters, {
             $merge: newObj
         });
 
-        this.setState({opportunities: [], filters: newState});
+        this.setState({opportunities: [], currentPage: 1, filters: newState});
+    },
+    
+    setCurrentPage: function (e) {
+        let newPage = e.target.value;
+        if(!(newPage < 1 || newPage> this.state.maxPage)) {
+            this.setState({currentPage: newPage});
+        }
     },
 
     sendRequest: function() {
         $.ajax({
-            url: "/api/opportunities/find/" + this.state.filters.currentPage,
+            url: "/api/opportunities/find/" + this.state.currentPage,
             data: {
                 "from": this.state.filters.from,
                 "to": this.state.filters.to,
@@ -51,14 +57,8 @@ const Main = React.createClass ({
     },
 
     componentDidUpdate: function(prevProps, prevState) {
-        if(this.state.filters != prevState.filters) {
-            if(!(this.state.filters.currentPage < 1 || this.state.filters.currentPage > this.state.maxPage)){
-                this.sendRequest();
-            } else {
-                this.setState({currentPage: prevState.filters.currentPage});
-                console.log(this.state.filters.currentPage);
-                console.log(prevState.filters.currentPage);
-            }
+        if(this.state.filters != prevState.filters || this.state.currentPage != prevState.currentPage) {
+            this.sendRequest();
         }
     },
 
@@ -69,10 +69,10 @@ const Main = React.createClass ({
     render: function () {
         return(
             <div>
-                <Filters filters={this.state.filters} onFilterChange={this.loadDataFromServer}/>
+                <Filters filters={this.state.filters} onFilterChange={this.setFilter}/>
                 <Table opportunities={this.state.opportunities}
-                       currentPage={this.state.filters.currentPage}
-                       onChange={this.loadDataFromServer}/>
+                       currentPage={this.state.currentPage}
+                       onChange={this.setCurrentPage}/>
             </div>
         )
     }

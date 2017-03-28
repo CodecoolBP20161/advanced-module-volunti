@@ -71,27 +71,33 @@
 	    getInitialState: function getInitialState() {
 	        return {
 	            opportunities: [],
-	            filters: { currentPage: 1, from: '1999-10-10', to: '2022-10-10', skills: '', location: '', category: '', pageSize: 10 },
+	            currentPage: 1,
+	            filters: { from: '1999-10-10', to: '2022-10-10', skills: '', location: '', category: '', pageSize: 10 },
 	            maxPage: 0
 	        };
 	    },
 
-	    loadDataFromServer: function loadDataFromServer(e) {
+	    setFilter: function setFilter(e) {
 	        var newObj = {};
 	        newObj[e.target.id] = e.target.value;
-	        console.log(e.target.id);
-	        console.log(e.target.value);
 
 	        var newState = (0, _reactAddonsUpdate2.default)(this.state.filters, {
 	            $merge: newObj
 	        });
 
-	        this.setState({ opportunities: [], filters: newState });
+	        this.setState({ opportunities: [], currentPage: 1, filters: newState });
+	    },
+
+	    setCurrentPage: function setCurrentPage(e) {
+	        var newPage = e.target.value;
+	        if (!(newPage < 1 || newPage > this.state.maxPage)) {
+	            this.setState({ currentPage: newPage });
+	        }
 	    },
 
 	    sendRequest: function sendRequest() {
 	        $.ajax({
-	            url: "/api/opportunities/find/" + this.state.filters.currentPage,
+	            url: "/api/opportunities/find/" + this.state.currentPage,
 	            data: {
 	                "from": this.state.filters.from,
 	                "to": this.state.filters.to,
@@ -112,14 +118,8 @@
 	    },
 
 	    componentDidUpdate: function componentDidUpdate(prevProps, prevState) {
-	        if (this.state.filters != prevState.filters) {
-	            if (!(this.state.filters.currentPage < 1 || this.state.filters.currentPage > this.state.maxPage)) {
-	                this.sendRequest();
-	            } else {
-	                this.setState({ currentPage: prevState.filters.currentPage });
-	                console.log(this.state.filters.currentPage);
-	                console.log(prevState.filters.currentPage);
-	            }
+	        if (this.state.filters != prevState.filters || this.state.currentPage != prevState.currentPage) {
+	            this.sendRequest();
 	        }
 	    },
 
@@ -131,10 +131,10 @@
 	        return React.createElement(
 	            'div',
 	            null,
-	            React.createElement(_Filters2.default, { filters: this.state.filters, onFilterChange: this.loadDataFromServer }),
+	            React.createElement(_Filters2.default, { filters: this.state.filters, onFilterChange: this.setFilter }),
 	            React.createElement(_Table2.default, { opportunities: this.state.opportunities,
-	                currentPage: this.state.filters.currentPage,
-	                onChange: this.loadDataFromServer })
+	                currentPage: this.state.currentPage,
+	                onChange: this.setCurrentPage })
 	        );
 	    }
 	});
@@ -187,8 +187,6 @@
 	    },
 
 	    render: function render() {
-	        var filtersToDisplay = this.props.filters;
-
 	        return React.createElement(
 	            "div",
 	            null,
@@ -260,14 +258,6 @@
 	                    null,
 	                    "30"
 	                )
-	            ),
-	            React.createElement(
-	                "div",
-	                null,
-	                "Filter: ",
-	                Object.keys(filtersToDisplay).map(function (filter, i) {
-	                    console.log(filter + ": " + filtersToDisplay[filter]);
-	                })
 	            )
 	        );
 	    }
@@ -18799,10 +18789,10 @@
 	 */
 
 	function getUnboundedScrollPosition(scrollable) {
-	  if (scrollable === window) {
+	  if (scrollable.Window && scrollable instanceof scrollable.Window) {
 	    return {
-	      x: window.pageXOffset || document.documentElement.scrollLeft,
-	      y: window.pageYOffset || document.documentElement.scrollTop
+	      x: scrollable.pageXOffset || scrollable.document.documentElement.scrollLeft,
+	      y: scrollable.pageYOffset || scrollable.document.documentElement.scrollTop
 	    };
 	  }
 	  return {
@@ -19551,7 +19541,9 @@
 	 * @return {boolean} Whether or not the object is a DOM node.
 	 */
 	function isNode(object) {
-	  return !!(object && (typeof Node === 'function' ? object instanceof Node : typeof object === 'object' && typeof object.nodeType === 'number' && typeof object.nodeName === 'string'));
+	  var doc = object ? object.ownerDocument || object : document;
+	  var defaultView = doc.defaultView || window;
+	  return !!(object && (typeof defaultView.Node === 'function' ? object instanceof defaultView.Node : typeof object === 'object' && typeof object.nodeType === 'number' && typeof object.nodeName === 'string'));
 	}
 
 	module.exports = isNode;
@@ -19560,7 +19552,7 @@
 /* 156 */
 /***/ function(module, exports) {
 
-	'use strict';
+	/* WEBPACK VAR INJECTION */(function(global) {'use strict';
 
 	/**
 	 * Copyright (c) 2013-present, Facebook, Inc.
@@ -19581,19 +19573,24 @@
 	 *
 	 * The activeElement will be null only if the document or document body is not
 	 * yet defined.
+	 *
+	 * @param {?DOMDocument} doc Defaults to current document.
+	 * @return {?DOMElement}
 	 */
-	function getActiveElement() /*?DOMElement*/{
-	  if (typeof document === 'undefined') {
+	function getActiveElement(doc) /*?DOMElement*/{
+	  doc = doc || global.document;
+	  if (typeof doc === 'undefined') {
 	    return null;
 	  }
 	  try {
-	    return document.activeElement || document.body;
+	    return doc.activeElement || doc.body;
 	  } catch (e) {
-	    return document.body;
+	    return doc.body;
 	  }
 	}
 
 	module.exports = getActiveElement;
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
 /* 157 */
