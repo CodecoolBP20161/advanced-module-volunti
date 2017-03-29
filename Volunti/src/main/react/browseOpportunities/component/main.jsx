@@ -15,6 +15,7 @@ const Main = React.createClass ({
             currentPage: 1,
             filters: {from: '1999-10-10', to: '2022-10-10', skills: '', location:'', category:'', pageSize:10},
             maxPage: 0,
+            totalItems: 0
 
         }
     },
@@ -40,12 +41,16 @@ const Main = React.createClass ({
                 "location": this.state.filters.location,
                 "skills": this.state.filters.skills,
                 "category": this.state.filters.category,
-                "pageSize": this.state.filters.pageSize
+                "pageSize": parseInt(this.state.filters.pageSize)
             },
             cache: false,
             type: "GET",
             success: function (response) {
-                this.setState({opportunities: response.result, maxPage: response.maxpage});
+                this.setState({
+                    opportunities: response.result,
+                    maxPage: parseInt(response.maxpage),
+                    totalItems: parseInt(response.totalItems)
+                });
             }.bind(this),
             error: function (msg) {
                 console.log(msg);
@@ -64,7 +69,6 @@ const Main = React.createClass ({
     },
 
     handlePageChange(pageNumber) {
-        console.log(`active page is ${pageNumber}`);
         this.setState({currentPage: pageNumber});
     },
 
@@ -78,8 +82,8 @@ const Main = React.createClass ({
                 {this.state.opportunities.length == 0 ? <div>Did not found any match</div> :
                 <Pagination className="pagination"
                     activePage={this.state.currentPage}
-                    itemsCountPerPage={this.state.filters.pageSize}
-                    totalItemsCount={300}
+                    itemsCountPerPage={parseInt(this.state.filters.pageSize)}
+                    totalItemsCount={this.state.totalItems}
                     pageRangeDisplayed={3}
                     onChange={this.handlePageChange}
                 />}
