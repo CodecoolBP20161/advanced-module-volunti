@@ -18,6 +18,7 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
@@ -37,11 +38,27 @@ public class OrganisationProfileEditingWorkflowTest extends AbstractServiceTest 
     }
 
     @Test
-    public void test_renderOrganisationProfile_GET_Should_Render_Page() throws Exception {
+    @WithMockUser
+    public void test_renderOrganisationProfile_GET_Should_Render_Page_AsLoggedInUser() throws Exception {
         this.mockMvc.perform(get("/profile/organisation")
-                .with(user("test@gmail.com").password("password").roles("USER"))
                 .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(view().name("profiles/organisation"));
+    }
+
+    @Test
+    public void test_renderOrganisationProfile_GET_Should_Result_302() throws Exception {
+        this.mockMvc.perform(get("/profile/organisation")
+                .with(csrf()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(status().isFound());
+    }
+
+    @Test
+    public void test_renderOrganisationProfile_GET_Should_Redirect_ToLogin() throws Exception {
+        this.mockMvc.perform(get("/profile/organisation")
+                .with(csrf()))
+                .andExpect((redirectedUrl("http://localhost/login")))
+                .andExpect(status().isFound());
     }
 }
