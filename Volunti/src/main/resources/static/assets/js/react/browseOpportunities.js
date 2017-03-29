@@ -9648,6 +9648,19 @@ var Table = React.createClass({
                         null,
                         opportunity.category
                     )
+                ),
+                React.createElement(
+                    "td",
+                    null,
+                    React.createElement(
+                        "button",
+                        { className: "btn mb20 btn-small btn-transparent-primary" },
+                        React.createElement(
+                            "a",
+                            { href: '/opportunities/' + opportunity.id },
+                            "View"
+                        )
+                    )
                 )
             ));
         });

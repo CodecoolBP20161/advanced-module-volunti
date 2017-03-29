@@ -9,6 +9,8 @@ import java.util.List;
 public class Filter2OpportunityDTO {
 
 
+    private int id;
+
     private String title;
 
     @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd")
@@ -22,6 +24,14 @@ public class Filter2OpportunityDTO {
     private String category;
 
     private String country;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getTitle() {
         return title;
