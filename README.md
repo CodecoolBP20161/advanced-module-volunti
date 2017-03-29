@@ -62,6 +62,6 @@ Then run webpack:
 ./node_modules/.bin/webpack --config webpack.config.js --watch
 ```
 An entry point has to be specified in the webpack and the output will be:
-src/main/resources/static/assets/js/react/<filename>.js
+src/main/resources/static/assets/js/react/ `<filename>` .js
 
 Don't add the node_modules folder to git.
