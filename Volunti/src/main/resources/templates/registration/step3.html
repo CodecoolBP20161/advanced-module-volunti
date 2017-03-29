@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head"></head>
+
+<body>
+<div id="main-wrapper">
+
+    <!-- Navbar -->
+    <div th:replace="fragments/navbar :: navbar"></div>
+
+    <!-- Main content -->
+    <div class="compny-profile">
+
+        <!-- SUB Banner -->
+        <div class="profile-bnr user-profile-bnr">
+            <div class="container">
+                <div class="pull-left">
+                    <h2>Registration</h2>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Company Content -->
+        <div class="profile-company-content user-profile main-user" data-bg-color="f5f5f5">
+            <div class="container">
+                <div class="row">
+
+                    <!-- Nav Tabs -->
+                    <div class="col-md-12">
+                        <ul class="nav nav-tabs not-clickable">
+                            <li><a>Step 1</a></li>
+                            <li><a>Step 2</a></li>
+                            <li class="active"><a>Step 3</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Tab Content -->
+                    <div class="col-md-12">
+                        <div class="tab-content">
+
+                            <!-- Registration form -->
+                            <div id="contact" class="tab-pane fade in active">
+                                <div class="profile-main">
+                                    <h3>Confirmation</h3>
+                                    <div class="profile-in">
+                                        <h6>Registration successful! We have sent an e-mail to your email address to the given
+                                            e-mail account.<br />Please confirm your account using the given link. </h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- / Registration form -->
+
+                        </div>
+                    </div>
+                    <!-- / Tab Content -->
+                </div>
+            </div>
+        </div>
+        <!-- / Profile Company Content -->
+    </div>
+    <!-- / Main content -->
+</div>
+<!-- / Main wrapper -->
+
+<!--  Footer -->
+<div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>

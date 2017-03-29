@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="fragments/head :: head"></head>
+<body>
+<div id="main-wrapper">
+    <div th:replace="fragments/navbar :: navbar"></div>
+
+    <div class="compny-profile">
+
+        <!-- SUB Banner -->
+        <div class="profile-bnr user-profile-bnr">
+            <div class="container">
+                <div class="pull-left">
+                    <h2>
+                    </h2>
+                </div>
+            </div>
+        </div>
+        <div class="compny-profile">
+
+            <!-- Profile Company Content -->
+            <div class="profile-company-content" data-bg-color="fff">
+                <div class="container">
+                    <div class="row">
+
+
+                        <!-- Tab Content -->
+                        <div class="col-md-12">
+                            <div class="network">
+                                <h4>Opportunities</h4>
+
+                                <!-- Nav Tabs -->
+                                <ul class="nav nav-tabs">
+                                <div class="pull-left">
+                                    <!--th:action="@{/organisation/} + ${organisation_id} + {/opp/delete/} + ${opportunity_id}"-->
+                                    <li class="active"><a th:href="@{/organisation/} + ${organisation.organisationId}+ @{/opportunity/0}">New
+                                        Opportunity</a></li>
+                                </div>
+                                </ul>
+
+                                <!-- Tab Content -->
+                                <div class="tab-content">
+
+                                    <!-- Connections -->
+                                    <div id="connec" class="tab-pane fade in active">
+                                        <div class="net-work-in">
+
+                                            <!-- Members -->
+                                            <div class="main-mem">
+
+                                                <!-- Tittle -->
+                                                <div class="folow-persons">
+                                                    <table class="table-hover">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>Title</th>
+                                                            <th>Required member</th>
+                                                            <th>From</th>
+                                                            <th>To</th>
+                                                            <th>Delete</th>
+                                                            <th>Edit</th>
+                                                        </tr>
+                                                        </thead>
+
+
+                                                        <tbody>
+                                                        <tr th:each="op : ${opportunities}">
+                                                            <td>
+                                                                <h4><b th:text="${op.title}">Job title</b></h4>
+                                                            </td>
+                                                            <td>
+                                                                <h4>
+                                                                    <b th:text="${op.numberOfVolunteers}">5</b>
+                                                                </h4>
+                                                            </td>
+                                                            <td th:text="${{op.availabilityFrom}}">
+                                                                2017-12-01
+                                                            </td>
+                                                            <td th:text="${{op.dateAvailabilityTo}}">
+                                                                2018-06-23
+                                                            </td>
+                                                            <td>
+                                                                <div class="btn-group">
+                                                                    <form method="get"
+                                                                          th:action="@{/organisation/} + ${organisation.organisationId} + @{/opportunity/delete/} + ${op.id}">
+                                                                        <button class="btn mb20 btn-small btn-transparent-primary" value="left"
+                                                                                type="submit">
+                                                                            <i class="fa fa-fw s fa-remove"></i>Delete
+                                                                        </button>
+                                                                    </form>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div class="btn-group">
+                                                                    <form method="get"
+                                                                          th:action="@{/organisation/} + ${organisation.organisationId} + @{/opportunity/} + ${op.id}">
+                                                                        <button class="btn mb20 btn-small btn-transparent-primary" value="right"
+                                                                                type="submit">
+                                                                            <i class="fa fa-fw fa-cog"></i>Edit
+                                                                        </button>
+                                                                    </form>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>
