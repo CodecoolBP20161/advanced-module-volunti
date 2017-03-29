@@ -2,53 +2,60 @@ package com.codecool.volunti.model;
 
 
 import com.codecool.volunti.model.enums.UserStatus;
-import com.codecool.volunti.service.EmailService;
-import com.codecool.volunti.service.EmailType;
+import com.codecool.volunti.service.email.EmailService;
+import com.codecool.volunti.service.email.EmailType;
+import com.codecool.volunti.service.model.RoleService;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.validator.constraints.NotEmpty;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
+import static com.codecool.volunti.model.enums.RoleEnum.ROLE_USER;
+
 @Entity
-@Table(name="\"User\"")
+@Table(name="users")
 @Data
+@ToString(of = "email")
+@EqualsAndHashCode(of = "email")
+@Slf4j
 public class User {
 
-    @Transient
-    private Logger LOGGER = LoggerFactory.getLogger(User.class);
 
     @Id
     @Column(name="user_id", unique=true)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Size(min=2, max=100)
+    @NotEmpty
+    @Size(min=1, max=255)
     @Column(name="first_name")
     private String firstName;
 
-    @Size(min=2, max=100)
+    @NotEmpty
+    @Size(min=1, max=255)
     @Column(name="last_name")
     private String lastName;
 
     @NotEmpty
-    @Size(min=2, max=50)
+    @Size(min=1)
     @Column(name="email")
     private String email;
 
     @Column(name="activation_id")
-    private UUID activationID;
+    private String activationID;
 
     @NotEmpty
-    @Size(min=3)
+    @Size(min=1)
     @Column(name="password")
     private String password;
-
-    @Column(name="salt")
-    private String salt;
 
     @OneToOne
     @JoinColumn(name="organisation_id")
@@ -62,59 +69,42 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserStatus userStatus;
 
+    @ManyToMany
+    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles;
+
+
     public User() {
-        activationID = UUID.randomUUID();
+        activationID = UUID.randomUUID().toString();
         userStatus = UserStatus.INACTIVE;
     }
 
-    public User(String firstName, String lastName, String email, String password, String salt) {
+    public User(String firstName, String lastName, String email, String password, Organisation organisation, Volunteer volunteer) {
+        this.setFirstName(firstName);
+        this.setLastName(lastName);
+        this.setEmail(email);
+        this.setOrganisation(organisation);
+        this.setVolunteer(volunteer);
+        this.setPassword(password);
 
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
-        this.salt = salt;
-    }
+        if (activationID == null){
+            activationID = UUID.randomUUID().toString();
+        }
 
-    public User(String firstName, String lastName, String email, String password, String salt, Organisation organisation) {
-
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
-        this.salt = salt;
-        this.organisation = organisation;
-    }
-
-    public User(String firstName, String lastName, String email, String password, String salt, Volunteer volunteer) {
-
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
-        this.salt = salt;
-        this.volunteer = volunteer;
-    }
-
-    public User(String firstName, String lastName, String email, String password, String salt, Organisation organisation, Volunteer volunteer) {
-
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
-        this.salt = salt;
-        this.organisation = organisation;
-        this.volunteer = volunteer;
+        if (userStatus == null){
+            setUserStatus(UserStatus.INACTIVE);
+        }
     }
 
     public String signupSuccess(EmailService emailService, EmailType emailType) {
-        LOGGER.info("signupSuccess() method called...");
+        log.info("signupSuccess() method called...");
         try {
             // send a notification
             emailService.sendEmail(this, emailType);
         } catch (Exception e) {
-            LOGGER.warn("Email not sent");
+            log.warn("Email not sent: " + e.getMessage());
         }
         return "Thank you for registering with us.";
     }
 }
+

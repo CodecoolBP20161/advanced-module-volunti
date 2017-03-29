@@ -49,28 +49,34 @@
             <h4>Name</h4>
             <div class="row">
                 <div class="col-sm-4">
-                    <input type="text" minlength="1" maxlength="255" required="required" placeholder="first name" value="" th:field="*{firstName}"/>
+                    <input type="text" minlength="1" maxlength="255" required="required" autofocus="autofocus" placeholder="first name (1-255 characters)" value="" th:field="*{firstName}"/>
                 </div>
                 <div class="col-sm-4">
-                    <input type="text" minlength="1" maxlength="255" required="required" placeholder="last name" value="" th:field="*{lastName}"/>
+                    <input type="text" minlength="1" maxlength="255" required="required" placeholder="last name (1-255 characters)" value="" th:field="*{lastName}"/>
                 </div>
             </div>
 
             <h4>Email</h4>
             <div class="row">
                 <div class="col-sm-4">
-                    <input type="email" minlength="1" required="required" placeholder="email" value="" th:field="*{email}"/>
+                    <div id="userEmailSpan" hidden="hidden" class="alert alert-error alert-dismissible" role="alert"></div>
+                    <input id="userEmailInput" type="email" minlength="1" required="required" placeholder="email (min. 1 character)" value="" th:field="*{email}"/>
                 </div>
             </div>
 
             <h4>Password</h4>
             <div class="row">
                 <div class="col-sm-4">
-                    <input type="password" minlength="1" required="required" placeholder="password" value="" th:field="*{password}"/>
+                    <div id="passwordMatcherSpan" hidden="hidden"
+                         class="alert alert-error alert-dismissible"
+                         role="alert"></div>
+                    <input id="passWordInput1" type="password" minlength="1" required="required" th:field="*{password}"/>
+                    <input id="passWordInput2" type="password" minlength="1" required="required"/>
+
                 </div>
             </div>
 
-            <button type="submit" class="btn mb20 btn-large btn-primary">submit</button>
+            <button id="submitButton" type="submit" class="btn mb20 btn-large btn-primary">submit</button>
         </form>
 
 

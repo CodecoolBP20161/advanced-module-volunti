@@ -15,7 +15,7 @@
         <div class="profile-bnr user-profile-bnr">
             <div class="container">
                 <div class="pull-left">
-                    <h2>Registration</h2>
+                    <h2 th:text="${theme}"></h2>
                 </div>
             </div>
         </div>
@@ -25,15 +25,6 @@
             <div class="container">
                 <div class="row">
 
-                    <!-- Nav Tabs -->
-                    <div class="col-md-12">
-                        <ul class="nav nav-tabs not-clickable">
-                            <li><a>Step 1</a></li>
-                            <li><a>Step 2</a></li>
-                            <li class="active"><a>Step 3</a></li>
-                        </ul>
-                    </div>
-
                     <!-- Tab Content -->
                     <div class="col-md-12">
                         <div class="tab-content">
@@ -41,10 +32,9 @@
                             <!-- Registration form -->
                             <div id="contact" class="tab-pane fade in active">
                                 <div class="profile-main">
-                                    <h3>Confirmation</h3>
+                                    <h3 th:text="${theme}"></h3>
                                     <div class="profile-in">
-                                        <h6>Registration successful! We have sent an e-mail to your email address to the given
-                                            e-mail account.<br />Please confirm your account using the given link. </h6>
+                                        <h6 th:text="${message}"></h6>
                                     </div>
                                 </div>
                             </div>

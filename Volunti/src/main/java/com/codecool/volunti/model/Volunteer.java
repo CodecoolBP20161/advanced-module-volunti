@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name="Volunteer")
+@Table(name="volunteers")
 @Data
 public class Volunteer {
 

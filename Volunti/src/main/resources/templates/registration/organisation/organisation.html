@@ -71,6 +71,17 @@
                                                         </option>
                                                     </select>
                                                 </div>
+                <h4>Address</h4>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <select th:field="*{country}" required="required">
+                            <option value="" hidden="hidden" selected="selected">country</option>
+                            <option th:each="country : ${T(com.codecool.volunti.model.enums.Country).values()}"
+                                    th:value="${country}"
+                                    th:text="${country}">
+                            </option>
+                        </select>
+                    </div>
 
                                                 <div class="col-sm-4">
                                                     <input type="text" minlength="1" maxlength="255" required="required" value="" placeholder="ZIP (1-255 characters)" />
@@ -80,6 +91,14 @@
                                                 </div>
                                             </div>
                                             <input type="text" minlength="1" maxlength="255" required="required" value="" placeholder="address (1-255 characters)" th:field="*{address}"/>
+                    <div class="col-sm-4">
+                        <input type="text" minlength="1" maxlength="255" required="required" value="" placeholder="ZIP (1-255 characters)" th:field="*{zipcode}"/>
+                    </div>
+                    <div class="col-sm-4">
+                        <input type="text" minlength="1" maxlength="255" required="required" value="" placeholder="city (1-255 characters)" th:field="*{city}"/>
+                    </div>
+                </div>
+                <input type="text" minlength="1" maxlength="255" required="required" value="" placeholder="address (1-255 characters)" th:field="*{address}"/>
 
                                             spoken languages at your organisation (press and hold ctrl to select multiple)
                                             <select multiple="multiple" th:field="*{spokenLanguage}" required="required">

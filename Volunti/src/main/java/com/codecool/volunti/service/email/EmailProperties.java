@@ -1,18 +1,17 @@
-package com.codecool.volunti.service;
+package com.codecool.volunti.service.email;
 
 import lombok.Data;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Properties;
 
+@Slf4j
 @Data
 public class EmailProperties {
 
-    private Logger LOGGER = LoggerFactory.getLogger(EmailProperties.class);
     private String propertiesFileName;
     private HashMap<String, String> emailPropertiesContainer = new HashMap<>();
     private InputStream inputStream;
@@ -30,6 +29,7 @@ public class EmailProperties {
             emailPropertiesContainer.put("subject", prop.getProperty("subject"));
             emailPropertiesContainer.put("text1", prop.getProperty("text1"));
             emailPropertiesContainer.put("text2", prop.getProperty("text2"));
+            emailPropertiesContainer.put("text3", prop.getProperty("text3"));
             emailPropertiesContainer.put("welcome1", prop.getProperty("welcome1"));
             emailPropertiesContainer.put("welcome2", prop.getProperty("welcome2"));
 
