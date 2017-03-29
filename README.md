@@ -51,10 +51,17 @@ psql -U postgres -c "grant all privileges on database volunti_test to volunti_de
 
 ## React configuration
 
-Go to Volunti/src/main/frontendA folder then run the following command in the terminal: 
+Install node modules: in src/main/react folder run the following: 
+
 ```
-  npm install  
-  ./node_modules/.bin/webpack --config webpack.config.js --watch
+npm install  
 ```
-The last command produces a js file: Volunti/src/main/resources/static/assets/js/myReactApp.js
-Don't add the nodemodule folder to git
+
+Then run webpack:
+```
+./node_modules/.bin/webpack --config webpack.config.js --watch
+```
+An entry point has to be specified in the webpack and the output will be:
+src/main/resources/static/assets/js/react/<filename>.js
+
+Don't add the node_modules folder to git.
