@@ -58,13 +58,19 @@ public class OrganisationProfileController {
     @ResponseBody
     public Json serveText(Principal principal) {
         User user = userService.getByEmail(principal.getName());
-        Organisation organisation = user.getOrganisation();
-        if (organisation == null){
-            log.warn("No organisation found in the database with this name.");
-            return new Json("this organisation has not been registered yet");
+
+        if (user == null) {
+            log.warn("No user found in the database with this email address.");
+            return new Json("there is no user in the database with this email address");
+        } else {
+            Organisation organisation = user.getOrganisation();
+            if (organisation == null) {
+                log.warn("No organisation found in the database with this user ID.");
+                return new Json("you haven't registered an organisation yet");
+            }
+            Json json = new Json(organisation.toString());
+            return json;
         }
-        Json json = new Json(organisation.toString());
-        return json;
     }
 
     @PostMapping( value = "/profile/organisation/saveText")
