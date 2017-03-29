@@ -125,13 +125,11 @@ public class OpportunityRestController {
     }
 
     private Set<String> getCategories() {
-        List<Organisation> categories = (List<Organisation>) organisationRepository.findAll();
-        return categories.stream().map(o -> o.getCategory().name()).collect(Collectors.toSet());
+        return organisationRepository.findAll().stream().map(o -> o.getCategory().name()).collect(Collectors.toSet());
     }
 
     private Set<String> getLocations() {
-        List<Organisation> locations = (List<Organisation>) organisationRepository.findAll();
-        return locations.stream().map(Organisation::getCountry).collect(Collectors.toSet());
+        return organisationRepository.findAll().stream().map(Organisation::getCountry).collect(Collectors.toSet());
     }
 
     private List<Filter2OpportunityDTO> convertToDto(List<Filter2Opportunity> filter2Opportunities) {

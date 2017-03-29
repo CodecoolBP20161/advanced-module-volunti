@@ -67,7 +67,7 @@ public class  PasswordRecoveryWorkflowTest extends AbstractServiceTest {
         organisation = new Organisation();
         organisation.setName("TestName");
         organisation.setCategory(Category.ADVERTISING_AGENCY);
-        organisation.setCountry(Country.HUNGARY);
+        organisation.setCountry("HUNGARY");
         organisation.setZipcode("ZIPCODE");
         organisation.setCity("TestCity");
         organisation.setAddress("Address");

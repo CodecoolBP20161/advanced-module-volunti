@@ -74,15 +74,6 @@ public class DataLoader {
         spokenLanguages.add(SpokenLanguage.ENGLISH);
         spokenLanguages.add(SpokenLanguage.HUNGARIAN);
 
-        if (userRepository.count() == 0) {
-            User user1 = new User("Anna", "Kiss", "asd@gmail.com", "asdasd", "asd");
-            userRepository.save(user1);
-        }
-        if (volunteerRepository.count() == 0) {
-            Volunteer volunteer = new Volunteer();
-            volunteer.setCountry("Hungary");
-            volunteerRepository.save(volunteer);
-        }
 
         if (organisationRepository.count() == 0) {
             Organisation organisation1 = new Organisation("UNICEF", Category.TEACHING, "Hungary", "1065", "Isaszeg", "Kossuth utca", spokenLanguages, "mission mission mission mission mission", "description1", "description2");
@@ -93,6 +84,10 @@ public class DataLoader {
 
             Organisation organisation4 = new Organisation("Feeding America", Category.OTHER, "USA", "1065", "New York", "Amsterdam Av. 106", spokenLanguages, "mission mission mission mission mission", "description1", "description2");
 
+            Volunteer volunteer = new Volunteer();
+            volunteer.setCountry("Hungary");
+            volunteerRepository.save(volunteer);
+
             if (skillRepository.count() == 0) {
                 loadSkills();
             }
@@ -100,6 +95,8 @@ public class DataLoader {
             organisationRepository.save(organisation2);
             organisationRepository.save(organisation3);
             organisationRepository.save(organisation4);
+            User user1 = new User("Lajos", "Lakatos", "b@g.com", "1234", organisation1, volunteer);
+            userRepository.save(user1);
 
             for (int i = 0; i < 50; i++) {
                 testOpportunityGenerator(organisation1);
@@ -111,7 +108,7 @@ public class DataLoader {
 
 
         LOGGER.info("loadData method called ...");
-        Organisation organisation1 = new Organisation("UNICEF", Category.TEACHING, Country.HUNGARY, "1065", "Isaszeg", "Kossuth utca", spokenLanguages, "mission mission mission mission mission", "description1", "description2");
+        Organisation organisation1 = new Organisation("UNICEF", Category.TEACHING, "HUNGARY", "1065", "Isaszeg", "Kossuth utca", spokenLanguages, "mission mission mission mission mission", "description1", "description2");
         Volunteer volunteer = new Volunteer();
 
 

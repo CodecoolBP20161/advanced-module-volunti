@@ -10,6 +10,7 @@ public interface OrganisationRepository extends JpaRepository<Organisation, Inte
 
     Organisation findByName(String name);
     Organisation findByOrganisationId(int organisationId);
+    Organisation findByNameIgnoreCase(String name);
     long count();
 
 }

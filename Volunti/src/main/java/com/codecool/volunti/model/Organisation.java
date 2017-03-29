@@ -30,7 +30,6 @@ public class Organisation {
 
     @Size(min=2, max=100)
     @NotEmpty
-    @Size(min=1, max=255)
     @Column(name="name")
     private String name;
 
@@ -42,8 +41,7 @@ public class Organisation {
 
 
     @Column(name="country")
-    @Enumerated(EnumType.STRING)
-    private Country country;
+    private String country;
 
     @NotEmpty
     @Size(min=1, max=255)
@@ -82,7 +80,7 @@ public class Organisation {
 
     public Organisation(){}
 
-    public Organisation(String name, Category category, Country country, String zipcode, String city, String address, ArrayList<SpokenLanguage> spokenLanguage, String mission, String description1, String description2) {
+    public Organisation(String name, Category category, String country, String zipcode, String city, String address, ArrayList<SpokenLanguage> spokenLanguage, String mission, String description1, String description2) {
         this.setName(name);
         this.setCategory(category);
         this.setCountry(country);

@@ -55,7 +55,7 @@ public class UserRepositoryTest extends AbstractServiceTest {
         spokenLanguages.add(SpokenLanguage.ENGLISH);
         spokenLanguages.add(SpokenLanguage.HUNGARIAN);
 
-        organisation = new Organisation("Test 1", Category.TEACHING, Country.HUNGARY, "zipcode", "City", "Address", spokenLanguages, "Mission minimum 10 character", "Desc 1 min 3 character", "Desc 2 min 3 character");
+        organisation = new Organisation("Test 1", Category.TEACHING, "HUNGARY", "zipcode", "City", "Address", spokenLanguages, "Mission minimum 10 character", "Desc 1 min 3 character", "Desc 2 min 3 character");
         volunteer = new Volunteer();
 
         user1 = new User();
