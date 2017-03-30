@@ -4,7 +4,6 @@ import com.codecool.volunti.model.Organisation;
 import com.codecool.volunti.model.User;
 import com.codecool.volunti.service.model.OrganisationService;
 import com.codecool.volunti.service.model.UserService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
-import java.util.HashMap;
 
 
 @Slf4j
@@ -76,18 +74,9 @@ public class OrganisationProfileController {
 
     @GetMapping("/profile/organisation/text")
     @ResponseBody
-    public HashMap serveText(Principal principal) throws JsonProcessingException {
+    public Organisation serveText(Principal principal) {
         User user = userService.getByEmail(principal.getName());
-        Organisation organisation = user.getOrganisation();
-        HashMap hashMap = new HashMap<>();
-
-        if (organisation == null) {
-            log.warn("No organisation found in the database with this user ID.");
-            hashMap.put("error", "You haven't registered an organisation yet.");
-        } else {
-            hashMap = objectMapper.convertValue(organisation, HashMap.class);
-        }
-        return hashMap;
+        return user.getOrganisation();
     }
 
     @PostMapping( value = "/profile/organisation/saveText")
@@ -101,7 +90,4 @@ public class OrganisationProfileController {
     public String renderReactTemplate(){
         return "profiles/organisationReact";
     }
-
-
-
 }
