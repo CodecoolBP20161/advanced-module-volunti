@@ -15,7 +15,12 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import springfox.documentation.spring.web.json.Json;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.Principal;
+import java.util.UUID;
 
 
 @Slf4j
@@ -85,13 +90,16 @@ public class OrganisationProfileController {
     }
 
     @PostMapping( value = "/profile/organisation/saveImage")
-    public String saveImage(@RequestParam("file") MultipartFile file){
+    public String saveImage(@RequestParam("file") MultipartFile file) throws IOException {
         log.info("saveImage() method called...");
 
         Organisation organisation = organisationService.get(1);
         log.info("our organisation: " + organisation.toString());
-        organisation.setProfilePictureFileForSave(file);
+
+        //organisation.setProfilePictureFileForSave(convFile);
+
         organisationService.save(organisation);
+
 
         return "profiles/organisation";
     }

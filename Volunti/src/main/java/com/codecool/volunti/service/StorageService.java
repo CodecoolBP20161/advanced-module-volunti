@@ -3,7 +3,9 @@ package com.codecool.volunti.service;
 
 import org.springframework.core.io.InputStreamSource;
 import org.springframework.core.io.Resource;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.nio.file.Path;
 
 public interface StorageService {
@@ -12,7 +14,9 @@ public interface StorageService {
 
     void init(Path rootLocation);
 
-    String store(InputStreamSource file, String fileName, Path rootLocation);
+    String store(File file, String fileName, Path rootLocation);
+
+    String store(MultipartFile file, String fileName, Path rootLocation);
 
     Path load(String filename, Path rootLocation);
 
