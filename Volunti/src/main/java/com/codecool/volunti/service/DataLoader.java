@@ -61,7 +61,7 @@ public class DataLoader {
 
         Organisation organisation1 = new Organisation("UNICEF", Category.TEACHING, Country.HUNGARY, "1065", "Isaszeg", "Kossuth utca", spokenLanguages, "mission mission mission mission mission", "description1", "description2","profileHash", "backgroundhash");
         try {
-            File testImageFile = new File( "Volunti/src/main/resources/static/images/profile_image/test_profile_image.png" );
+            File testImageFile = new File( "/home/bt/codecool2/advanced-module-volunti/Volunti/src/main/resources/static/images/profile_image/test_profile_image.png" );
             log.info(testImageFile.getAbsolutePath());
             organisation1.setProfilePictureFileForSave(testImageFile);
         } catch (Exception e) {
