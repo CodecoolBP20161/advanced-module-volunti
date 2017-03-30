@@ -76,6 +76,7 @@ public class OpportunityRestController {
 
         result.put("result", page.getListForPage());
         result.put("maxpage", page.getMaxPages());
+        result.put("totalItems", page.getList().size());
 
         return new ResponseEntity<Object>(result, HttpStatus.OK);
     }

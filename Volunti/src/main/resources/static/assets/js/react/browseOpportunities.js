@@ -9648,6 +9648,19 @@ var Table = React.createClass({
                         null,
                         opportunity.category
                     )
+                ),
+                React.createElement(
+                    "td",
+                    null,
+                    React.createElement(
+                        "button",
+                        { className: "btn mb20 btn-small btn-transparent-primary" },
+                        React.createElement(
+                            "a",
+                            { href: '/opportunities/' + opportunity.id },
+                            "View"
+                        )
+                    )
                 )
             ));
         });
@@ -9927,7 +9940,8 @@ var Main = React.createClass({
             opportunities: [],
             currentPage: 1,
             filters: { from: '1999-10-10', to: '2022-10-10', skills: '', location: '', category: '', pageSize: 10 },
-            maxPage: 0
+            maxPage: 0,
+            totalItems: 0
 
         };
     },
@@ -9952,12 +9966,16 @@ var Main = React.createClass({
                 "location": this.state.filters.location,
                 "skills": this.state.filters.skills,
                 "category": this.state.filters.category,
-                "pageSize": this.state.filters.pageSize
+                "pageSize": parseInt(this.state.filters.pageSize)
             },
             cache: false,
             type: "GET",
             success: function (response) {
-                this.setState({ opportunities: response.result, maxPage: response.maxpage });
+                this.setState({
+                    opportunities: response.result,
+                    maxPage: parseInt(response.maxpage),
+                    totalItems: parseInt(response.totalItems)
+                });
             }.bind(this),
             error: function error(msg) {
                 console.log(msg);
@@ -9976,7 +9994,6 @@ var Main = React.createClass({
     },
 
     handlePageChange: function handlePageChange(pageNumber) {
-        console.log('active page is ' + pageNumber);
         this.setState({ currentPage: pageNumber });
     },
 
@@ -9994,8 +10011,8 @@ var Main = React.createClass({
                 'Did not found any match'
             ) : React.createElement(_reactJsPagination2.default, { className: 'pagination',
                 activePage: this.state.currentPage,
-                itemsCountPerPage: this.state.filters.pageSize,
-                totalItemsCount: 300,
+                itemsCountPerPage: parseInt(this.state.filters.pageSize),
+                totalItemsCount: this.state.totalItems,
                 pageRangeDisplayed: 3,
                 onChange: this.handlePageChange
             })

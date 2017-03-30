@@ -32,8 +32,12 @@ const Table = React.createClass({
                         <td>
                             <h6>{opportunity.category}</h6>
                         </td>
-                        {/*<td><button className="btn mb20 btn-small btn-transparent-primary">
-                        <a href={'/opportunities/' + opportunity.id}>View</a></td>*/}
+                        <td>
+                            <button className="btn mb20 btn-small btn-transparent-primary">
+                                <a href={'/opportunities/' + opportunity.id}>View</a>
+                            </button>
+                        </td>
+
                     </tr>);
         });
 
