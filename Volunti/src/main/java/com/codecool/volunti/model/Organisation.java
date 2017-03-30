@@ -6,12 +6,10 @@ import com.codecool.volunti.model.enums.SpokenLanguage;
 import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.core.io.InputStreamSource;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name="organisations")
@@ -83,8 +81,8 @@ public class Organisation {
     @Column(name="background_picture")
     private String backgroundPicture;
 
-    @OneToMany(mappedBy="organisationId")
-    private List<OrganisationSocialLink> social_link;
+//    @OneToMany(mappedBy="organisationId")
+//    private List<OrganisationSocialLink> social_link;
 
     public Organisation(){}
 
