@@ -1,9 +1,7 @@
 package com.codecool.volunti.controller;
 
 import com.codecool.volunti.model.Organisation;
-import com.codecool.volunti.repository.OrganisationRepository;
-import com.codecool.volunti.service.email.EmailService;
-import com.codecool.volunti.service.email.EmailType;
+import com.codecool.volunti.model.User;
 import com.codecool.volunti.service.model.OrganisationService;
 import com.codecool.volunti.service.model.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -11,12 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import springfox.documentation.spring.web.json.Json;
+
+import java.security.Principal;
 
 
 @Slf4j
@@ -24,10 +23,12 @@ import springfox.documentation.spring.web.json.Json;
 public class OrganisationProfileController {
 
     private OrganisationService organisationService;
+    private UserService userService;
 
     @Autowired
-    public OrganisationProfileController(OrganisationService organisationService) {
+    public OrganisationProfileController(OrganisationService organisationService, UserService userService) {
         this.organisationService = organisationService;
+        this.userService = userService;
     }
 
     @GetMapping(value = "/profile/organisation")
@@ -53,22 +54,24 @@ public class OrganisationProfileController {
                 .body(file);
     }
 
-    @GetMapping("/profile/organisation/text/{name}")
+    @GetMapping("/profile/organisation/text")
     @ResponseBody
-    public Json serveText(@PathVariable("name") String name) {
-        Organisation organisation = organisationService.getByName(name);
-        log.info("organisation to be converted into JSON: {}", organisation);
-        if (organisation == null){
-            log.warn("No organisation found in the database with this name.");
-            return new Json("this organisation has not been registered yet");
+    public Json serveText(Principal principal) {
+        User user = userService.getByEmail(principal.getName());
+
+        if (user == null) {
+            log.warn("No user found in the database with this email address.");
+            return new Json("there is no user in the database with this email address");
+        } else {
+            Organisation organisation = user.getOrganisation();
+            if (organisation == null) {
+                log.warn("No organisation found in the database with this user ID.");
+                return new Json("you haven't registered an organisation yet");
+            }
+            Json json = new Json(organisation.toString());
+            return json;
         }
-
-        Json json = new Json(organisation.toString());
-
-        log.info("organisation converted to JSON: {}", json.value());
-        return json;
     }
-
 
     @PostMapping( value = "/profile/organisation/saveText")
     public String saveText(Organisation organisation){
@@ -89,5 +92,10 @@ public class OrganisationProfileController {
         organisationService.save(organisation);
 
         return "profiles/organisation";
+    }
+
+    @GetMapping( value = "/profile/react")
+    public String renderReactTemplate(){
+        return "profiles/organisationReact";
     }
 }
