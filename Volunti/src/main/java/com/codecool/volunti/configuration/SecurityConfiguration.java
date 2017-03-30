@@ -29,7 +29,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.
                 authorizeRequests()
-                    .antMatchers("/", "/assets/**", "/facicon.ico", "/registration/**", "/forgotPassword/**", "/swagger-ui.html", "/v2/api-docs", "/configuration/ui", "/swagger-resources", "/organisation/social-links").permitAll()
+                    .antMatchers("/", "/assets/**", "/facicon.ico", "/registration/**", "/forgotPassword/**", "/swagger-ui.html", "/v2/api-docs", "/configuration/ui", "/swagger-resources","/profile/react", "/organisation/social-links").permitAll()
                     .antMatchers("/admin/**").hasRole("ADMIN")
                     .anyRequest().authenticated()
                 .and()
