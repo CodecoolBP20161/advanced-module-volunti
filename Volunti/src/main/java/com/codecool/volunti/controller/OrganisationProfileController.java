@@ -47,18 +47,11 @@ public class OrganisationProfileController {
         return "profiles/organisation";
     }
 
-
     @GetMapping("/profile/organisation/image")
     @ResponseBody
     public ResponseEntity<Resource> serveFile(Principal principal) {
         User user = userService.getByEmail(principal.getName());
-        Organisation organisation = new Organisation();
-
-        if (user == null) {
-            log.warn("No user found in the database with this email address.");
-        } else {
-            organisation = user.getOrganisation();
-        }
+        Organisation organisation = user.getOrganisation();
 
         Resource file = organisationService.loadProfilePicture(organisation);
         return ResponseEntity
@@ -67,24 +60,32 @@ public class OrganisationProfileController {
                 .body(file);
     }
 
+    @PostMapping( value = "/profile/organisation/saveImage")
+    public String saveImage(@RequestParam("file") MultipartFile file, Principal principal){
+        log.info("saveImage() method called...");
+
+        User user = userService.getByEmail(principal.getName());
+        Organisation organisation = user.getOrganisation();
+
+        log.info("our organisation: " + organisation.toString());
+        organisation.setProfilePictureFileForSave(file);
+        organisationService.save(organisation);
+
+        return "profiles/organisation";
+    }
+
     @GetMapping("/profile/organisation/text")
     @ResponseBody
     public Json serveText(Principal principal) throws JsonProcessingException {
         Json json;
         User user = userService.getByEmail(principal.getName());
+        Organisation organisation = user.getOrganisation();
 
-        if (user == null) {
-            log.warn("No user found in the database with this email address.");
-            json = new Json("\"error\": \"Something happened: we couldn't find this user.\"");
-
+        if (organisation == null) {
+            log.warn("No organisation found in the database with this user ID.");
+            json = new Json("{\"error\": \"You haven't registered an organisation yet.\"");
         } else {
-            Organisation organisation = user.getOrganisation();
-            if (organisation == null) {
-                log.warn("No organisation found in the database with this user ID.");
-                json = new Json("{\"error\": \"You haven't registered an organisation yet.\"");
-            } else {
-                json = new Json(objectMapper.writeValueAsString(organisation));
-            }
+            json = new Json(objectMapper.writeValueAsString(organisation));
         }
         return json;
     }
@@ -96,26 +97,6 @@ public class OrganisationProfileController {
         //TODO: Save the text...
         organisationService.save(organisation);
         return "profiles/organisation";  //TODO: What do we want to return here?!
-    }
-
-    @PostMapping( value = "/profile/organisation/saveImage")
-    public String saveImage(@RequestParam("file") MultipartFile file, Principal principal){
-        log.info("saveImage() method called...");
-
-        User user = userService.getByEmail(principal.getName());
-        Organisation organisation = new Organisation();
-
-        if (user == null) {
-            log.warn("No user found in the database with this email address.");
-        } else {
-            organisation = user.getOrganisation();
-        }
-
-        log.info("our organisation: " + organisation.toString());
-        organisation.setProfilePictureFileForSave(file);
-        organisationService.save(organisation);
-
-        return "profiles/organisation";
     }
 
     @GetMapping( value = "/profile/react")
