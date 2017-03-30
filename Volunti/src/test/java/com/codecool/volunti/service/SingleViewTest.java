@@ -14,13 +14,13 @@ import org.springframework.web.context.WebApplicationContext;
 import javax.annotation.Resource;
 
 import static org.hamcrest.CoreMatchers.containsString;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-/**
- * Created by levente on 2017.03.10..
- */
+
 public class SingleViewTest extends AbstractServiceTest {
 
     @Autowired
@@ -36,12 +36,12 @@ public class SingleViewTest extends AbstractServiceTest {
 
     @Before
     public void setup() {
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).apply(springSecurity()).build();
     }
 
     @Test
     public void getSingleWPageExpect200() throws Exception {
-        this.mockMvc.perform(get("/opportunities/1")).andExpect(status().isOk());
+        this.mockMvc.perform(get("/opportunities/1").with(csrf())).andExpect(status().isOk());
     }
 
 
@@ -52,7 +52,7 @@ public class SingleViewTest extends AbstractServiceTest {
         String numVolunteers = String.valueOf(idOne.getNumberOfVolunteers());
         String accomodation = idOne.getAccommodationType();
 
-        this.mockMvc.perform(get("/opportunities/1")).andExpect(content().string(containsString(title)))
+        this.mockMvc.perform(get("/opportunities/1").with(csrf())).andExpect(content().string(containsString(title)))
                 .andExpect(content().string(containsString(numVolunteers)))
                 .andExpect(content().string(containsString(accomodation)))
                 .andExpect(status().is2xxSuccessful());
@@ -63,7 +63,7 @@ public class SingleViewTest extends AbstractServiceTest {
         Organisation idOne = this.organisationRepository.findOne(1);
         String address = idOne.getAddress();
 
-        this.mockMvc.perform(get("/opportunities/1")).andExpect(content().string(containsString(address)))
+        this.mockMvc.perform(get("/opportunities/1").with(csrf())).andExpect(content().string(containsString(address)))
                 .andExpect(status().is2xxSuccessful());
     }
 }
