@@ -4,6 +4,8 @@ import com.codecool.volunti.model.Organisation;
 import com.codecool.volunti.model.User;
 import com.codecool.volunti.service.model.OrganisationService;
 import com.codecool.volunti.service.model.UserService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -11,7 +13,10 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import springfox.documentation.spring.web.json.Json;
 
@@ -24,6 +29,7 @@ public class OrganisationProfileController {
 
     private OrganisationService organisationService;
     private UserService userService;
+    private ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
     public OrganisationProfileController(OrganisationService organisationService, UserService userService) {
@@ -41,12 +47,12 @@ public class OrganisationProfileController {
         return "profiles/organisation";
     }
 
-
     @GetMapping("/profile/organisation/image")
     @ResponseBody
-    public ResponseEntity<Resource> serveFile(Model model) {
+    public ResponseEntity<Resource> serveFile(Principal principal) {
+        User user = userService.getByEmail(principal.getName());
+        Organisation organisation = user.getOrganisation();
 
-        Organisation organisation = organisationService.get(1);
         Resource file = organisationService.loadProfilePicture(organisation);
         return ResponseEntity
                 .ok()
@@ -54,23 +60,34 @@ public class OrganisationProfileController {
                 .body(file);
     }
 
+    @PostMapping( value = "/profile/organisation/saveImage")
+    public String saveImage(@RequestParam("file") MultipartFile file, Principal principal){
+        log.info("saveImage() method called...");
+
+        User user = userService.getByEmail(principal.getName());
+        Organisation organisation = user.getOrganisation();
+
+        log.info("our organisation: " + organisation.toString());
+        organisation.setProfilePictureFileForSave(file);
+        organisationService.save(organisation);
+
+        return "profiles/organisation";
+    }
+
     @GetMapping("/profile/organisation/text")
     @ResponseBody
-    public Json serveText(Principal principal) {
+    public Json serveText(Principal principal) throws JsonProcessingException {
+        Json json;
         User user = userService.getByEmail(principal.getName());
+        Organisation organisation = user.getOrganisation();
 
-        if (user == null) {
-            log.warn("No user found in the database with this email address.");
-            return new Json("there is no user in the database with this email address");
+        if (organisation == null) {
+            log.warn("No organisation found in the database with this user ID.");
+            json = new Json("{\"error\": \"You haven't registered an organisation yet.\"");
         } else {
-            Organisation organisation = user.getOrganisation();
-            if (organisation == null) {
-                log.warn("No organisation found in the database with this user ID.");
-                return new Json("you haven't registered an organisation yet");
-            }
-            Json json = new Json(organisation.toString());
-            return json;
+            json = new Json(objectMapper.writeValueAsString(organisation));
         }
+        return json;
     }
 
     @PostMapping( value = "/profile/organisation/saveText")
@@ -80,18 +97,6 @@ public class OrganisationProfileController {
         //TODO: Save the text...
         organisationService.save(organisation);
         return "profiles/organisation";  //TODO: What do we want to return here?!
-    }
-
-    @PostMapping( value = "/profile/organisation/saveImage")
-    public String saveImage(@RequestParam("file") MultipartFile file){
-        log.info("saveImage() method called...");
-
-        Organisation organisation = organisationService.get(1);
-        log.info("our organisation: " + organisation.toString());
-        organisation.setProfilePictureFileForSave(file);
-        organisationService.save(organisation);
-
-        return "profiles/organisation";
     }
 
     @GetMapping( value = "/profile/react")
