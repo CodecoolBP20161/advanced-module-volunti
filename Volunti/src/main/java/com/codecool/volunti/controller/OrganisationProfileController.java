@@ -4,7 +4,9 @@ import com.codecool.volunti.model.Organisation;
 import com.codecool.volunti.model.User;
 import com.codecool.volunti.service.model.OrganisationService;
 import com.codecool.volunti.service.model.UserService;
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import springfox.documentation.spring.web.json.Json;
 
+import java.io.DataInput;
+import java.io.IOException;
 import java.security.Principal;
 
 
@@ -91,12 +95,19 @@ public class OrganisationProfileController {
     }
 
     @PostMapping( value = "/profile/organisation/saveText")
-    public String saveText(Organisation organisation){
+    public String saveText(Json json){
         log.info("saveText() method called ...");
-
-        //TODO: Save the text...
-        organisationService.save(organisation);
-        return "profiles/organisation";  //TODO: What do we want to return here?!
+        try {
+            Organisation editedOrganisation = objectMapper.readValue((DataInput) json, Organisation.class);
+            organisationService.save(editedOrganisation);
+        } catch (JsonGenerationException e) {
+            e.printStackTrace();
+        } catch (JsonMappingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "profiles/organisation";
     }
 
     @GetMapping( value = "/profile/react")
