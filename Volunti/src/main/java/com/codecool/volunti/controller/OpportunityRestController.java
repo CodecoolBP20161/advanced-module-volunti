@@ -5,15 +5,19 @@ import com.codecool.volunti.dto.Filter2OpportunityDTO;
 import com.codecool.volunti.exception.ErrorException;
 import com.codecool.volunti.exception.OpportunityNotFoundException;
 import com.codecool.volunti.model.*;
-import com.codecool.volunti.repository.*;
+import com.codecool.volunti.repository.OpportunityRepository;
+import com.codecool.volunti.repository.OrganisationRepository;
+import com.codecool.volunti.repository.SkillRepository;
+import com.codecool.volunti.repository.VolunteerRepository;
 import com.codecool.volunti.service.Pageable;
+import com.codecool.volunti.service.model.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.WebDataBinder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
@@ -35,7 +39,8 @@ public class OpportunityRestController {
     @Autowired
     VolunteerRepository volunteerRepository;
 
-
+    @Autowired
+    private UserService userService;
 
     @Autowired
     public OpportunityRestController(SkillRepository skillRepository, OrganisationRepository organisationRepository, ModelMapper modelMapper, OpportunityRepository opportunityRepository) {
@@ -83,22 +88,24 @@ public class OpportunityRestController {
 
 
     @RequestMapping(value = "/filters", method = RequestMethod.GET, produces = "application/json")
-    public Map<String, Object> filters(@RequestParam(value = "volunteer", required = false) String isLoggedIn) {
+    public Map<String, Object> filters() {
         Map<String, Object> filters = new HashMap<>();
 
-
-        Volunteer user = volunteerRepository.findOne(1);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         filters.put("pageSize", pageSize);
         filters.put("categories", getCategories());
         filters.put("skills", getSkills());
         filters.put("locations", getLocations());
 
-        if (isLoggedIn == null){
+        if (auth.getName().equals("anonymousUser")){
             filters.put("userSkills", "");
             filters.put("userLocation", "");
         }else {
-            filters.put("userSkills", getUserSkills(user.getId()));
+            User user1 = userService.getByEmail(auth.getName());
+            Volunteer volunteer = volunteerRepository.findOne(user1.getVolunteer().getId());
+
+            filters.put("userSkills", getUserSkills(volunteer.getId()));
             filters.put("userLocation", "Method needs to get users location");
         }
         return filters;

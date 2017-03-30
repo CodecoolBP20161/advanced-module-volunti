@@ -1,22 +1,17 @@
 package com.codecool.volunti.service;
 
 
-import com.codecool.volunti.model.Organisation;
-import com.codecool.volunti.model.Role;
-import com.codecool.volunti.model.User;
-import com.codecool.volunti.model.Volunteer;
 import com.codecool.volunti.model.*;
 import com.codecool.volunti.model.enums.Category;
-import com.codecool.volunti.model.enums.Country;
 import com.codecool.volunti.model.enums.OpportunityHoursExpectedType;
 import com.codecool.volunti.model.enums.SpokenLanguage;
 import com.codecool.volunti.model.enums.UserStatus;
+import com.codecool.volunti.repository.*;
 import com.codecool.volunti.service.model.OrganisationService;
 import com.codecool.volunti.service.model.RoleService;
 import com.codecool.volunti.service.model.UserService;
 import com.codecool.volunti.service.model.VolunteerService;
 import lombok.extern.slf4j.Slf4j;
-import com.codecool.volunti.repository.*;
 import org.fluttercode.datafactory.impl.DataFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,11 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static com.codecool.volunti.model.enums.RoleEnum.ROLE_USER;
 
@@ -110,6 +101,10 @@ public class DataLoader {
         LOGGER.info("loadData method called ...");
         Organisation organisation1 = new Organisation("UNICEF", Category.TEACHING, "HUNGARY", "1065", "Isaszeg", "Kossuth utca", spokenLanguages, "mission mission mission mission mission", "description1", "description2");
         Volunteer volunteer = new Volunteer();
+
+        List<Skill> volunteerSkills = new ArrayList<>();
+        volunteerSkills.add(skillRepository.findOne(3));
+        volunteer.setVolunteerSkills(volunteerSkills);
 
 
         if (roleService.findByName(ROLE_USER.getRole()) == null) {

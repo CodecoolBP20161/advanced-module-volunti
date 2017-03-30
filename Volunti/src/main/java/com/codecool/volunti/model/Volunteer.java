@@ -22,8 +22,9 @@ public class Volunteer {
     public Volunteer() {
     }
     @JsonIgnore
-    @ManyToMany(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
-    @JoinTable(name = "volunteers_skills", joinColumns = @JoinColumn(name = "volunteer_id", referencedColumnName = "volunteer_id"), inverseJoinColumns = @JoinColumn(name = "skill_id", referencedColumnName = "id"))
+    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @JoinTable(name = "volunteers_skills", joinColumns = @JoinColumn(name = "volunteer_id"),
+            inverseJoinColumns = @JoinColumn(name = "skill_id"))
     private List<Skill> volunteerSkills;
 }
 
