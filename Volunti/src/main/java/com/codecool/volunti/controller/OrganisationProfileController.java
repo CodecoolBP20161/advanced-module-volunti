@@ -4,9 +4,7 @@ import com.codecool.volunti.model.Organisation;
 import com.codecool.volunti.model.User;
 import com.codecool.volunti.service.model.OrganisationService;
 import com.codecool.volunti.service.model.UserService;
-import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +18,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import springfox.documentation.spring.web.json.Json;
 
-import java.io.DataInput;
-import java.io.IOException;
 import java.security.Principal;
+import java.util.HashMap;
 
 
 @Slf4j
@@ -80,33 +76,24 @@ public class OrganisationProfileController {
 
     @GetMapping("/profile/organisation/text")
     @ResponseBody
-    public Json serveText(Principal principal) throws JsonProcessingException {
-        Json json;
+    public HashMap serveText(Principal principal) throws JsonProcessingException {
         User user = userService.getByEmail(principal.getName());
         Organisation organisation = user.getOrganisation();
+        HashMap hashMap = new HashMap<>();
 
         if (organisation == null) {
             log.warn("No organisation found in the database with this user ID.");
-            json = new Json("{\"error\": \"You haven't registered an organisation yet.\"");
+            hashMap.put("error", "You haven't registered an organisation yet.");
         } else {
-            json = new Json(objectMapper.writeValueAsString(organisation));
+            hashMap = objectMapper.convertValue(organisation, HashMap.class);
         }
-        return json;
+        return hashMap;
     }
 
     @PostMapping( value = "/profile/organisation/saveText")
-    public String saveText(Json json){
+    public String saveText(Organisation organisation){
         log.info("saveText() method called ...");
-        try {
-            Organisation editedOrganisation = objectMapper.readValue((DataInput) json, Organisation.class);
-            organisationService.save(editedOrganisation);
-        } catch (JsonGenerationException e) {
-            e.printStackTrace();
-        } catch (JsonMappingException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        organisationService.save(organisation);
         return "profiles/organisation";
     }
 
