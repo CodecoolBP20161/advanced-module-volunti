@@ -9,6 +9,8 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileSystemUtils;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
@@ -31,8 +33,10 @@ public class FileSystemStorageService implements StorageService{
         log.info("store() method called...");
         log.info("route path" + fileLocation.toAbsolutePath());
         try {
+
             // TODO: fix, because it exists only for mulitpart files
-            /*if (file == empty) {
+            //MultipartFile fileIsMultiPartNow = (MultipartFile) file.getInputStream(); //will return ClassCastException!
+            /*if (file == null) {
                 throw new StorageException("Failed to store empty file " + file.toString());
             }*/
             Files.copy(file.getInputStream(), fileLocation.toAbsolutePath());
@@ -45,7 +49,6 @@ public class FileSystemStorageService implements StorageService{
 
         return newFileName;
     }
-
 
     @Override
     public Path load(String filename, Path rootLocation) {

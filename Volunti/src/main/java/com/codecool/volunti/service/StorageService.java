@@ -3,6 +3,7 @@ package com.codecool.volunti.service;
 
 import org.springframework.core.io.InputStreamSource;
 import org.springframework.core.io.Resource;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.nio.file.Path;
 

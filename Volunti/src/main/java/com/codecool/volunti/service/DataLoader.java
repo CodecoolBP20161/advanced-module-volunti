@@ -20,6 +20,7 @@ import org.springframework.core.io.InputStreamSource;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.PostConstruct;
 import java.io.File;
@@ -66,6 +67,7 @@ public class DataLoader {
             InputStreamSource testImage = new InputStreamResource( new FileInputStream( testImageFile ) );
             organisation1.setProfilePictureFileForSave(testImage);
         } catch (FileNotFoundException e) {
+            log.info(String.valueOf(organisation1.getProfilePictureFileForSave()));
             log.error("Cannot save test image: ", e);
         }
 
