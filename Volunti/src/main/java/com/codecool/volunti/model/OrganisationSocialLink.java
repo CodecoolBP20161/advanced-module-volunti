@@ -20,13 +20,13 @@ public class OrganisationSocialLink {
 
     @Column(name="social_link_type")
     @Enumerated(EnumType.STRING)
-    private SocialLink socialLink;
+    private SocialLink socialLinkType;
 
     @Column(name="social_link_url")
     private String socialLinkUrl;
 
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="organisation_id")
-    private Organisation organisation_social_link;
+    private Organisation organisationId;
 
 }

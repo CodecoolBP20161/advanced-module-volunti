@@ -83,7 +83,7 @@ public class Organisation {
     @Column(name="background_picture")
     private String backgroundPicture;
 
-    @OneToMany(mappedBy="organisation_social_link")
+    @OneToMany(mappedBy="organisationId")
     private List<OrganisationSocialLink> social_link;
 
     public Organisation(){}
