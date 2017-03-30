@@ -96,18 +96,20 @@ public class OrganisationProfileController {
         Organisation organisation = organisationService.get(1);
         log.info("our organisation: " + organisation.toString());
 
-        organisationService.save(organisation);
-
         Path rootLocation = Paths.get("/home/bt/codecool2/advanced-module-volunti/Volunti/filestorage/profile_image/");
 
         String newFileName = UUID.randomUUID().toString();
         Path fileLocation = Paths.get( rootLocation.toString(), newFileName);
 
 
-        File convFile = new File("/home/bt/codecool2/advanced-module-volunti/Volunti/filestorage/profile_image/" + newFileName);
+        File convFile = new File(fileLocation.toString());
         file.transferTo(convFile);
 
         organisation.setProfilePictureFileForSave(convFile);
+
+        organisationService.save(organisation);
+
+
 
 
         return "profiles/organisation";
