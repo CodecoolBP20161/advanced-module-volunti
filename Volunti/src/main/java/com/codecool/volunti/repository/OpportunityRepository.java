@@ -23,8 +23,8 @@ public interface OpportunityRepository extends JpaRepository<Opportunity, Intege
     //opp.id, opp.title, opp.availability_from, opp.date_availability_to, skills.name, org.category, org.country
 
 
-    @Query(value = "SELECT  opp.id, opp.title FROM OPPORTUNITIES opp " +
-            "INNER JOIN ORGANISATION org " +
+    @Query(value = "SELECT  opp.* FROM OPPORTUNITIES opp " +
+            "INNER JOIN ORGANISATIONS org " +
             "ON opp.organisation_id = org.organisation_id " +
             "INNER JOIN OPPORTUNITIES_SKILLS opp_skill " +  //not validated
             "ON opp.id = opp_skill.opportunity_id " +
@@ -36,7 +36,7 @@ public interface OpportunityRepository extends JpaRepository<Opportunity, Intege
             "AND opp.date_availability_to >= ?3 " +
             "AND skills.name = COALESCE(NULLIF(?5, ''), skills.name) ",
             nativeQuery = true)
-    List<String> find(@Param("country") String country,
+    List<Opportunity> find(@Param("country") String country,
                                  @Param("category") String category,
                                  @Param("dateFrom")Timestamp dateFrom,
                                  @Param("dateTo")Timestamp dateTo,

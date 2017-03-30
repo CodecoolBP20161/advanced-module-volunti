@@ -31,16 +31,16 @@ public class OpportunityRestController {
     private SkillRepository skillRepository;
     private OpportunityRepository opportunityRepository;
     private OrganisationRepository organisationRepository;
-    private Filter2OpportunityRepository filter2OpportunityRepository;
     private ModelMapper modelMapper;
     @Autowired
     VolunteerRepository volunteerRepository;
 
+
+
     @Autowired
-    public OpportunityRestController(SkillRepository skillRepository, OrganisationRepository organisationRepository, Filter2OpportunityRepository filter2OpportunityRepository, ModelMapper modelMapper, OpportunityRepository opportunityRepository) {
+    public OpportunityRestController(SkillRepository skillRepository, OrganisationRepository organisationRepository, ModelMapper modelMapper, OpportunityRepository opportunityRepository) {
         this.skillRepository = skillRepository;
         this.organisationRepository = organisationRepository;
-        this.filter2OpportunityRepository = filter2OpportunityRepository;
         this.modelMapper = modelMapper;
         this.opportunityRepository = opportunityRepository;
     }
@@ -64,12 +64,11 @@ public class OpportunityRestController {
 
 
         if (Objects.equals(skill, "") && Objects.equals(country, "") && Objects.equals(category, "")) {
-            page = new Pageable((List) convertToDto(filter2OpportunityRepository.findAll()), currentPage, pageSize);
+            page = new Pageable((List) convertToDto(opportunityRepository.findAll()), currentPage, pageSize);
         } else {
-            page = new Pageable(convertToDto(filter2OpportunityRepository.find(country, category, new java.sql.Timestamp(fromDate.getTime()), new java.sql.Timestamp(toDate.getTime()), skill)), currentPage, pageSize);
+            page = new Pageable(convertToDto(opportunityRepository.find(country, category, new java.sql.Timestamp(fromDate.getTime()), new java.sql.Timestamp(toDate.getTime()), skill)), currentPage, pageSize);
         }
 
-//        System.out.println("opportunity!!!" + opportunityRepository.find(country, category, new java.sql.Timestamp(fromDate.getTime()), new java.sql.Timestamp(toDate.getTime()), skill));
 
         if (page.getList().size() == 0) {
             throw new OpportunityNotFoundException();
@@ -86,8 +85,7 @@ public class OpportunityRestController {
     public Map<String, Object> filters(@RequestParam(value = "volunteer", required = false) String isLoggedIn) {
         Map<String, Object> filters = new HashMap<>();
 
-        // If we'll have login and session we can replace this line e.g. get user info from session, but for now
-        // it will be okay I guess!
+
         Volunteer user = volunteerRepository.findOne(1);
 
         filters.put("pageSize", pageSize);
@@ -132,11 +130,14 @@ public class OpportunityRestController {
         return organisationRepository.findAll().stream().map(Organisation::getCountry).collect(Collectors.toSet());
     }
 
-    private List<Filter2OpportunityDTO> convertToDto(List<Filter2Opportunity> filter2Opportunities) {
+
+    private List<Filter2OpportunityDTO> convertToDto(List<Opportunity> opportunities) {
         List<Filter2OpportunityDTO> result = new ArrayList<>();
-        for (Filter2Opportunity filterOpp : filter2Opportunities) {
-            Filter2OpportunityDTO filterDto = modelMapper.map(filterOpp, Filter2OpportunityDTO.class);
-            filterDto.setName(filter2OpportunityRepository.findName(filterOpp.getId()));
+        for (Opportunity opportunity : opportunities) {
+            Filter2OpportunityDTO filterDto = modelMapper.map(opportunity, Filter2OpportunityDTO.class);
+            filterDto.setName(opportunity.getOpportunitySkills().stream().map(Skill::getName).collect(Collectors.toList()));
+            filterDto.setCategory(opportunity.getOrganisation().getCategory().name());
+            filterDto.setCountry(opportunity.getOrganisation().getCountry());
             result.add(filterDto);
         }
         return result;
