@@ -95,4 +95,9 @@ public class OrganisationProfileController {
 
         return "profiles/organisation";
     }
+
+    @GetMapping( value = "/profile/react")
+    public String renderReactTemplate(){
+        return "profiles/organisationReact";
+    }
 }
