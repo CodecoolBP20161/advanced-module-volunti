@@ -1,6 +1,15 @@
 import React from 'react'
 
 class SideBar extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+        }
+
+    }
+    componentDidMount(){
+
+    }
     render() {
         return (
         <div className="col-md-4">
@@ -8,7 +17,7 @@ class SideBar extends React.Component {
             {/*<!-- Company Information -->*/}
             <div className="sidebar">
                 <h5 className="main-title">Organisation Information</h5>
-                <div className="sidebar-thumbnail"> <img src={this.props.profileSource} alt="/profile/organisation/image" /> </div>
+                <div className="sidebar-thumbnail"> <img src={this.props.profileSource} /> </div>
                 <div className="sidebar-information">
                     <ul className="single-category">
                         <li className="row">

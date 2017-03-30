@@ -1,6 +1,12 @@
 import React from 'react'
 
 class TabServices extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            }
+
+        }
     render() {
         return(
             <div className="profile-main">
@@ -9,7 +15,7 @@ class TabServices extends React.Component {
                     <h6>Here’s an overview of the services we provide.</h6>
                     <div className="media">
                         <div className="media-left">
-                            <div className="icon"> <img src="images/icon-prifile-1.png" alt="" /> </div>
+                            <div className="icon"> <img src="" alt="" /> </div>
                         </div>
                         <div className="media-body">
                             <h6>Engine diagnostics and repairs</h6>
@@ -20,7 +26,7 @@ class TabServices extends React.Component {
                     </div>
                     <div className="media">
                         <div className="media-left">
-                            <div className="icon"> <img src="images/icon-prifile-2.png" alt="" /> </div>
+                            <div className="icon"> <img src="" alt="" /> </div>
                         </div>
                         <div className="media-body">
                             <h6>Engine diagnostics and repairs</h6>
@@ -31,7 +37,7 @@ class TabServices extends React.Component {
                     </div>
                     <div className="media">
                         <div className="media-left">
-                            <div className="icon"> <img src="images/icon-prifile-3.png" alt="" /> </div>
+                            <div className="icon"> <img src="" alt="" /> </div>
                         </div>
                         <div className="media-body">
                             <h6>Engine diagnostics and repairs</h6>
