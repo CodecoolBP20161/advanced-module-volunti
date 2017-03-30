@@ -4,7 +4,6 @@ import com.codecool.volunti.model.Organisation;
 import com.codecool.volunti.model.User;
 import com.codecool.volunti.service.model.OrganisationService;
 import com.codecool.volunti.service.model.UserService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import springfox.documentation.spring.web.json.Json;
 
 import java.security.Principal;
 
@@ -76,27 +74,16 @@ public class OrganisationProfileController {
 
     @GetMapping("/profile/organisation/text")
     @ResponseBody
-    public Json serveText(Principal principal) throws JsonProcessingException {
-        Json json;
+    public Organisation serveText(Principal principal) {
         User user = userService.getByEmail(principal.getName());
-        Organisation organisation = user.getOrganisation();
-
-        if (organisation == null) {
-            log.warn("No organisation found in the database with this user ID.");
-            json = new Json("{\"error\": \"You haven't registered an organisation yet.\"");
-        } else {
-            json = new Json(objectMapper.writeValueAsString(organisation));
-        }
-        return json;
+        return user.getOrganisation();
     }
 
     @PostMapping( value = "/profile/organisation/saveText")
     public String saveText(Organisation organisation){
         log.info("saveText() method called ...");
-
-        //TODO: Save the text...
         organisationService.save(organisation);
-        return "profiles/organisation";  //TODO: What do we want to return here?!
+        return "profiles/organisation";
     }
 
     @GetMapping( value = "/profile/react")
