@@ -4,6 +4,8 @@ import com.codecool.volunti.model.Organisation;
 import com.codecool.volunti.model.User;
 import com.codecool.volunti.service.model.OrganisationService;
 import com.codecool.volunti.service.model.UserService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -11,7 +13,10 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import springfox.documentation.spring.web.json.Json;
 
@@ -24,6 +29,7 @@ public class OrganisationProfileController {
 
     private OrganisationService organisationService;
     private UserService userService;
+    private ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
     public OrganisationProfileController(OrganisationService organisationService, UserService userService) {
@@ -44,9 +50,16 @@ public class OrganisationProfileController {
 
     @GetMapping("/profile/organisation/image")
     @ResponseBody
-    public ResponseEntity<Resource> serveFile(Model model) {
+    public ResponseEntity<Resource> serveFile(Principal principal) {
+        User user = userService.getByEmail(principal.getName());
+        Organisation organisation = new Organisation();
 
-        Organisation organisation = organisationService.get(1);
+        if (user == null) {
+            log.warn("No user found in the database with this email address.");
+        } else {
+            organisation = user.getOrganisation();
+        }
+
         Resource file = organisationService.loadProfilePicture(organisation);
         return ResponseEntity
                 .ok()
@@ -56,20 +69,21 @@ public class OrganisationProfileController {
 
     @GetMapping("/profile/organisation/text")
     @ResponseBody
-    public Json serveText(Principal principal) {
+    public Json serveText(Principal principal) throws JsonProcessingException {
         Json json;
         User user = userService.getByEmail(principal.getName());
 
         if (user == null) {
             log.warn("No user found in the database with this email address.");
-            json = new Json("Something happened: we couldn't find this user.");
+            json = new Json("\"error\": \"Something happened: we couldn't find this user.\"");
+
         } else {
             Organisation organisation = user.getOrganisation();
             if (organisation == null) {
                 log.warn("No organisation found in the database with this user ID.");
-                json = new Json("You haven't registered an organisation yet.");
+                json = new Json("{\"error\": \"You haven't registered an organisation yet.\"");
             } else {
-                json = new Json(organisation.toString());
+                json = new Json(objectMapper.writeValueAsString(organisation));
             }
         }
         return json;
@@ -85,10 +99,18 @@ public class OrganisationProfileController {
     }
 
     @PostMapping( value = "/profile/organisation/saveImage")
-    public String saveImage(@RequestParam("file") MultipartFile file){
+    public String saveImage(@RequestParam("file") MultipartFile file, Principal principal){
         log.info("saveImage() method called...");
 
-        Organisation organisation = organisationService.get(1);
+        User user = userService.getByEmail(principal.getName());
+        Organisation organisation = new Organisation();
+
+        if (user == null) {
+            log.warn("No user found in the database with this email address.");
+        } else {
+            organisation = user.getOrganisation();
+        }
+
         log.info("our organisation: " + organisation.toString());
         organisation.setProfilePictureFileForSave(file);
         organisationService.save(organisation);
