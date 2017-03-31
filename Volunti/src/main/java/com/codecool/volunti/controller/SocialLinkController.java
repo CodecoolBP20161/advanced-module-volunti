@@ -13,17 +13,15 @@ import java.util.List;
 @RestController
 public class SocialLinkController {
 
-    OrganisationSocialLinkService organisationSocialLinkService;
     OrganisationService organisationService;
 
     @Autowired
-    public SocialLinkController(OrganisationSocialLinkService organisationSocialLinkService, OrganisationService organisationService) {
-        this.organisationSocialLinkService = organisationSocialLinkService;
+    public SocialLinkController(OrganisationService organisationService) {
         this.organisationService = organisationService;
     }
 
     @GetMapping(value = "/organisation/social-links")
     public List<OrganisationSocialLink> serveSocialLink(){
-        return organisationSocialLinkService.findByOrganisationId(organisationService.get(1));
+        return organisationService.findByOrganisationId(organisationService.get(1));
     }
 }
