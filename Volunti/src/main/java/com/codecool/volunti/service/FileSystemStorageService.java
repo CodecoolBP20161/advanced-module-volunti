@@ -59,7 +59,7 @@ public class FileSystemStorageService implements StorageService{
 
         File convFile = new File(fileLocation.toString());
         try {
-            if (file.isEmpty()) {
+            if(file.isEmpty()) {
                 throw new StorageException("Failed to store empty file " + file.toString());
             }
             file.transferTo(convFile);
@@ -85,14 +85,18 @@ public class FileSystemStorageService implements StorageService{
 
     @Override
     public void deleteOne(String fileName, Path rootLocation){
+        log.info(rootLocation.toString());
         log.info("deleteOne() menthod called ");
-        Path fileLocation = Paths.get( rootLocation.toString(), fileName);
-        try {
-            Files.delete(fileLocation);
-        } catch (IOException e) {
-            e.printStackTrace();
+        if(fileName != "profileHash"){
+            Path fileLocation = Paths.get( rootLocation.toString(), fileName);
+            try {
+                Files.delete(fileLocation);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }else{
+            log.info("this is the example data");
         }
-
 
     }
 

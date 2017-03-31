@@ -17,6 +17,7 @@ import springfox.documentation.spring.web.json.Json;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URLConnection;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.Principal;
@@ -96,22 +97,28 @@ public class OrganisationProfileController {
         Organisation organisation = organisationService.get(1);
         log.info("our organisation: " + organisation.toString());
 
-        Path rootLocation = Paths.get("/home/bt/codecool2/advanced-module-volunti/Volunti/filestorage/profile_image/");
-
-        String newFileName = UUID.randomUUID().toString();
-        Path fileLocation = Paths.get( rootLocation.toString(), newFileName);
+        if(file.getContentType().endsWith("png") ||file.getContentType().endsWith("jpg") && !file.isEmpty()){
+            log.info("this is png or jpg");
 
 
-        File convFile = new File(fileLocation.toString());
-        file.transferTo(convFile);
-
-        organisation.setProfilePictureFileForSave(convFile);
-
-        organisationService.save(organisation);
+            Path rootLocation = Paths.get("/home/bt/codecool2/advanced-module-volunti/Volunti/filestorage/profile_image/");
+            //Path rootLocation = Paths.get("filestorage/profile_image/");
 
 
+            String newFileName = UUID.randomUUID().toString();
+            Path fileLocation = Paths.get( rootLocation.toString(), newFileName);
 
+            File convFile = new File(fileLocation.toString());
+            file.transferTo(convFile);
 
+            organisation.setProfilePictureFileForSave(convFile);
+
+            organisationService.save(organisation);
+
+        }
+        else{
+            log.info("it isn't png or jpg or it is empty");
+        }
         return "profiles/organisation";
     }
 
