@@ -29,20 +29,18 @@ import static com.codecool.volunti.model.enums.RoleEnum.ROLE_USER;
 public class DataLoader {
 
     private OrganisationService organisationService;
-    private OrganisationSocialLinkService organisationSocialLinkService;
     private UserService userService;
     private VolunteerService volunteerService;
     private RoleService roleService;
     private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public DataLoader(OrganisationService organisationService, UserService userService, VolunteerService volunteerService, RoleService roleService, BCryptPasswordEncoder passwordEncoder, OrganisationSocialLinkService organisationSocialLinkService) {
+    public DataLoader(OrganisationService organisationService, UserService userService, VolunteerService volunteerService, RoleService roleService, BCryptPasswordEncoder passwordEncoder) {
         this.organisationService = organisationService;
         this.userService = userService;
         this.volunteerService = volunteerService;
         this.roleService = roleService;
         this.passwordEncoder = passwordEncoder;
-        this.organisationSocialLinkService = organisationSocialLinkService;
     }
 
     @PostConstruct
@@ -88,19 +86,19 @@ public class DataLoader {
         organisationSocialLink1.setSocialLinkType(SocialLink.FACEBOOK);
         organisationSocialLink1.setSocialLinkUrl("https://www.facebook.com/EVCPF/?fref=ts");
         organisationSocialLink1.setOrganisationId(organisation1);
-        organisationSocialLinkService.save(organisationSocialLink1);
+        organisationService.save(organisationSocialLink1);
 
         OrganisationSocialLink organisationSocialLink2 = new OrganisationSocialLink();
         organisationSocialLink2.setSocialLinkType(SocialLink.TWITTER);
         organisationSocialLink2.setSocialLinkUrl("https://twitter.com/?lang=hu");
         organisationSocialLink2.setOrganisationId(organisation1);
-        organisationSocialLinkService.save(organisationSocialLink2);
+        organisationService.save(organisationSocialLink2);
 
         OrganisationSocialLink organisationSocialLink3 = new OrganisationSocialLink();
         organisationSocialLink3.setSocialLinkType(SocialLink.LINKEDIN);
         organisationSocialLink3.setSocialLinkUrl("https://www.linkedin.com/");
         organisationSocialLink3.setOrganisationId(organisation1);
-        organisationSocialLinkService.save(organisationSocialLink3);
+        organisationService.save(organisationSocialLink3);
 
         log.info("loadData method called ...");
     }
