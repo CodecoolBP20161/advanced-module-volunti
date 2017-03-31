@@ -2,6 +2,7 @@ package com.codecool.volunti.model;
 
 
 import com.codecool.volunti.model.enums.SocialLink;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
@@ -26,6 +27,7 @@ public class OrganisationSocialLink {
     private String socialLinkUrl;
 
     @ManyToOne(fetch=FetchType.LAZY)
+    @JsonIgnore
     @JoinColumn(name="organisation_id")
     private Organisation organisationId;
 

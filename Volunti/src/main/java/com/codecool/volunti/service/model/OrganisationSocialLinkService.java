@@ -1,6 +1,7 @@
 package com.codecool.volunti.service.model;
 
 
+import com.codecool.volunti.model.Organisation;
 import com.codecool.volunti.model.OrganisationSocialLink;
 import com.codecool.volunti.repository.OrganisationSocialLinkRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +26,8 @@ public class OrganisationSocialLinkService {
         return organisationSocialLinkRepository.save(organisationSocialLink);
     }
 
-    public OrganisationSocialLink findByOrganisationId(Integer organisationId){
-        return organisationSocialLinkRepository.findByOrganisationId(organisationId);
+    public List<OrganisationSocialLink> findByOrganisationId(Organisation organisation){
+        return organisationSocialLinkRepository.findByOrganisationId(organisation);
     }
 
     public List<OrganisationSocialLink> findAll() {
