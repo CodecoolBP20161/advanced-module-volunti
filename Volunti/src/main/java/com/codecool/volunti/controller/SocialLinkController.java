@@ -19,7 +19,7 @@ public class SocialLinkController {
         this.organisationService = organisationService;
     }
 
-    @GetMapping(value = "/organisation/social-links")
+    @GetMapping(value = "/profile/organisation/social-links")
     public List<OrganisationSocialLink> serveSocialLink(){
         return organisationService.findByOrganisationId(organisationService.get(1));
     }
