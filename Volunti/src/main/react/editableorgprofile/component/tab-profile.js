@@ -6,12 +6,7 @@ class TabProfile extends React.Component {
         this.state = {}
     }
     render() {
-
-        if (this.props.videoURL === null){
-            var videoURL = "https://www.youtube.com/embed/leQ8nEcYFOc";
-        } else {
-            videoURL = this.props.videoURL;
-        }
+        var videoURL = this.props.videoURL? this.props.videoURL:  "https://www.youtube.com/embed/leQ8nEcYFOc";
 
         return (
         <div id="profile" className="tab-pane fade in active">

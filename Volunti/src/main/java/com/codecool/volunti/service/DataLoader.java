@@ -61,15 +61,8 @@ public class DataLoader {
                 spokenLanguages,
                 "Our mission is to help people in need, and make the world a better place.",
                 "Description 1: UNICEF is a non profit organisation helping mainly children." +
-                        "UNICEF is a non profit organisation helping mainly children." +
-                        "UNICEF is a non profit organisation helping mainly children." +
-                        "UNICEF is a non profit organisation helping mainly children." +
                         "UNICEF is a non profit organisation helping mainly children.",
                 "description 2: We provide the basic needs for every children: we prevent starvation, child-abuse, we grant education,  etc." +
-                        "We provide the basic needs for every children: we prevent starvation, child-abuse, we grant education,  etc." +
-                        "We provide the basic needs for every children: we prevent starvation, child-abuse, we grant education,  etc." +
-                        "We provide the basic needs for every children: we prevent starvation, child-abuse, we grant education,  etc." +
-                        "We provide the basic needs for every children: we prevent starvation, child-abuse, we grant education,  etc." +
                         "We provide the basic needs for every children: we prevent starvation, child-abuse, we grant education,  etc.",
                 "profileHash",
                 "backgroundhash");

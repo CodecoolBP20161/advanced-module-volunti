@@ -52,14 +52,14 @@ class FullProfile extends React.Component {
                     mission: response.mission,
                     description1: response.description1,
                     description2: response.description2,
-                    profilePicture: "/profile/organisation/image"
-                    // social: {
-                    //     facebook: "",
-                    //     twitter: "",
-                    //     google: "",
-                    //     linkedin: "",
-                    //     video: ""
-                    // }
+                    profilePicture: "/profile/organisation/image",
+                         social: {
+                             facebook: null,
+                             twitter: null,
+                             google: null,
+                             linkedin: null,
+                             video: null,
+                         }
 
                 })
             }.bind(this)
@@ -113,7 +113,7 @@ class FullProfile extends React.Component {
                                     {/*<!-- PROFILE -->*/}
                                     <Profile mission={this.state.mission}
                                              description1={this.state.description1}
-                                             videoURL=""
+                                             videoURL={this.state.social.video}
                                              description2={this.state.description2} />
 
                                     {/*<!-- Services -->*/}

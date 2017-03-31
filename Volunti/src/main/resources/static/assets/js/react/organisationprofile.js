@@ -9539,14 +9539,14 @@ var FullProfile = function (_React$Component) {
                         mission: response.mission,
                         description1: response.description1,
                         description2: response.description2,
-                        profilePicture: "/profile/organisation/image"
-                        // social: {
-                        //     facebook: "",
-                        //     twitter: "",
-                        //     google: "",
-                        //     linkedin: "",
-                        //     video: ""
-                        // }
+                        profilePicture: "/profile/organisation/image",
+                        social: {
+                            facebook: null,
+                            twitter: null,
+                            google: null,
+                            linkedin: null,
+                            video: null
+                        }
 
                     });
                 }.bind(this)
@@ -9632,7 +9632,7 @@ var FullProfile = function (_React$Component) {
                                     { className: 'tab-content' },
                                     _react2.default.createElement(_tabProfile2.default, { mission: this.state.mission,
                                         description1: this.state.description1,
-                                        videoURL: '',
+                                        videoURL: this.state.social.video,
                                         description2: this.state.description2 }),
                                     _react2.default.createElement(_tabServices2.default, null)
                                 )
@@ -9834,12 +9834,7 @@ var TabProfile = function (_React$Component) {
     _createClass(TabProfile, [{
         key: "render",
         value: function render() {
-
-            if (this.props.videoURL === null) {
-                var videoURL = "https://www.youtube.com/embed/leQ8nEcYFOc";
-            } else {
-                videoURL = this.props.videoURL;
-            }
+            var videoURL = this.props.videoURL ? this.props.videoURL : "https://www.youtube.com/embed/leQ8nEcYFOc";
 
             return _react2.default.createElement(
                 "div",
