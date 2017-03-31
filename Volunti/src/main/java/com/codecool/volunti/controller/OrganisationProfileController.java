@@ -4,7 +4,6 @@ import com.codecool.volunti.model.Organisation;
 import com.codecool.volunti.model.User;
 import com.codecool.volunti.service.model.OrganisationService;
 import com.codecool.volunti.service.model.UserService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -12,10 +11,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
@@ -27,7 +23,6 @@ public class OrganisationProfileController {
 
     private OrganisationService organisationService;
     private UserService userService;
-    private ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
     public OrganisationProfileController(OrganisationService organisationService, UserService userService) {
@@ -80,6 +75,7 @@ public class OrganisationProfileController {
     }
 
     @PostMapping( value = "/profile/organisation/saveText")
+    @ResponseBody
     public String saveText(Organisation organisation){
         log.info("saveText() method called ...");
         organisationService.save(organisation);
