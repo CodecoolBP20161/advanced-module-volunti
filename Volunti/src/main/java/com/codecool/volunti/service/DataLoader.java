@@ -52,7 +52,27 @@ public class DataLoader {
         spokenLanguages.add(SpokenLanguage.HUNGARIAN);
 
 
-        Organisation organisation1 = new Organisation("UNICEF", Category.TEACHING, Country.HUNGARY, "1065", "Isaszeg", "Kossuth utca", spokenLanguages, "Our mission is to help people in need, and provide make the world a better place.", "Description 1: UNICEF is a non profit organisation helping mainly children.", "description 2: We provide the basic needs for every children: we prevent starvation, child-abuse, we grant education,  etc.","profileHash", "backgroundhash");
+        Organisation organisation1 = new Organisation("UNICEF",
+                Category.TEACHING,
+                Country.HUNGARY,
+                "1065",
+                "Isaszeg",
+                "Kossuth utca",
+                spokenLanguages,
+                "Our mission is to help people in need, and make the world a better place.",
+                "Description 1: UNICEF is a non profit organisation helping mainly children." +
+                        "UNICEF is a non profit organisation helping mainly children." +
+                        "UNICEF is a non profit organisation helping mainly children." +
+                        "UNICEF is a non profit organisation helping mainly children." +
+                        "UNICEF is a non profit organisation helping mainly children.",
+                "description 2: We provide the basic needs for every children: we prevent starvation, child-abuse, we grant education,  etc." +
+                        "We provide the basic needs for every children: we prevent starvation, child-abuse, we grant education,  etc." +
+                        "We provide the basic needs for every children: we prevent starvation, child-abuse, we grant education,  etc." +
+                        "We provide the basic needs for every children: we prevent starvation, child-abuse, we grant education,  etc." +
+                        "We provide the basic needs for every children: we prevent starvation, child-abuse, we grant education,  etc." +
+                        "We provide the basic needs for every children: we prevent starvation, child-abuse, we grant education,  etc.",
+                "profileHash",
+                "backgroundhash");
 
         try {
             File testImageFile = new File( "Volunti/src/main/resources/static/images/profile_image/test_profile_image.png" );
