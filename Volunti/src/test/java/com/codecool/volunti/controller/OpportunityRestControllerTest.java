@@ -47,14 +47,10 @@ public class OpportunityRestControllerTest extends AbstractServiceTest{
         this.mockMvc.perform(get("/api/opportunities/find/1").with(csrf())).andExpect(status().isOk());
     }
 
-    @Test
-    public void findOppReturnValIsJSON() throws Exception {
-        this.mockMvc.perform(get("/api/opportunities/find/1").with(csrf())).andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
-    }
 
     @Test
     public void findOppReturnValIsContains() throws Exception {
-        this.mockMvc.perform(get("/api/opportunities/find/1").with(csrf())).andExpect(content().contentType(MediaType.TEXT_HTML));
+        this.mockMvc.perform(get("/api/opportunities/find/1").with(csrf())).andExpect(content().contentType("text/html;charset=UTF-8"));
     }
 
 

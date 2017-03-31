@@ -73,7 +73,7 @@ public class OrganisationRepositoryTest extends AbstractServiceTest {
         organisation = this.repository.findByNameIgnoreCase("Test 1");
         assertThat(organisation.getName()).isEqualTo("Test 1");
         assertThat(organisation.getCategory()).isEqualTo(Category.TEACHING);
-        assertThat(organisation.getCountry()).isEqualTo(Country.HUNGARY);
+        assertThat(organisation.getCountry()).isEqualTo(String.valueOf(Country.HUNGARY));
         assertThat(organisation.getZipcode()).isEqualTo("zipcode");
         assertThat(organisation.getCity()).isEqualTo("City");
         assertThat(organisation.getAddress()).isEqualTo("Address");

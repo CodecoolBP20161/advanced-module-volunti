@@ -91,7 +91,7 @@ public class OpportunityRepositoryTest extends AbstractServiceTest {
     @Test
     public void testForGetters() {
         this.opportunityRepository.save(opportunity);
-        opportunity = this.opportunityRepository.findOne(1);
+        opportunity = this.opportunityRepository.findOne(201);
         assertThat(opportunity.getTitle()).isEqualTo("First opportunity");
         assertThat(opportunity.getAccommodationType()).isEqualTo("Tent");
         assertThat(opportunity.getFoodType()).isEqualTo("Vega");
@@ -157,7 +157,7 @@ public class OpportunityRepositoryTest extends AbstractServiceTest {
         this.opportunityRepository.save(opportunity);
         this.opportunityRepository.save(opportunity1);
         assertEquals(countBefore + 2, countRowsInTable("opportunities"));
-        assertEquals(countSkillsBefore + 1, countRowsInTable("skills"));
+        assertEquals(countSkillsBefore, countRowsInTable("skills"));
     }
 
     @Test(expected = ConstraintViolationException.class)
