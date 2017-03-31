@@ -9,6 +9,8 @@ import org.springframework.web.context.WebApplicationContext;
 
 import javax.annotation.Resource;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -25,12 +27,12 @@ public class MainControllerTest extends AbstractServiceTest{
 
     @Before
     public void setup() {
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).apply(springSecurity()).build();
 
     }
 
     @Test
     public void indexPage() throws Exception {
-        mockMvc.perform(get("/")).andExpect(status().isOk());
+        mockMvc.perform(get("/").with(csrf())).andExpect(status().isOk());
     }
 }
