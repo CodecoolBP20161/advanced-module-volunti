@@ -5,12 +5,14 @@ import com.codecool.volunti.dto.Filter2OpportunityDTO;
 import com.codecool.volunti.exception.ErrorException;
 import com.codecool.volunti.exception.OpportunityNotFoundException;
 import com.codecool.volunti.model.*;
+import com.codecool.volunti.model.enums.Country;
 import com.codecool.volunti.repository.OpportunityRepository;
 import com.codecool.volunti.repository.OrganisationRepository;
 import com.codecool.volunti.repository.SkillRepository;
 import com.codecool.volunti.repository.VolunteerRepository;
 import com.codecool.volunti.service.Pageable;
 import com.codecool.volunti.service.model.UserService;
+import com.google.common.collect.Iterables;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,11 +82,22 @@ public class OpportunityRestController {
             toDate = stringToDate(to);
         }
 
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
         if (Objects.equals(skill, "") && Objects.equals(country, "") && Objects.equals(category, "")) {
-            page = new Pageable((List) convertToDto(opportunityRepository.findAll()), currentPage, pageSize);
+            if (auth.getName().equals("anonymousUser")){
+                page = new Pageable((List) convertToDto(opportunityRepository.findAll()), currentPage, pageSize);
+            } else {
+                User user = userService.getByEmail(auth.getName());
+                Volunteer volunteer = volunteerRepository.findOne(user.getVolunteer().getId());
+
+                String userSkill = Iterables.get(getUserSkills(volunteer.getId()), 0);
+                page = new Pageable(convertToDto(opportunityRepository.find(country, category, new java.sql.Timestamp(fromDate.getTime()), new java.sql.Timestamp(toDate.getTime()), userSkill)), currentPage, pageSize);
+            }
         } else {
             page = new Pageable(convertToDto(opportunityRepository.find(country, category, new java.sql.Timestamp(fromDate.getTime()), new java.sql.Timestamp(toDate.getTime()), skill)), currentPage, pageSize);
         }
+
 
 
         if (page.getList().size() == 0) {
@@ -146,7 +159,7 @@ public class OpportunityRestController {
         return organisationRepository.findAll().stream().map(o -> o.getCategory().name()).collect(Collectors.toSet());
     }
 
-    private Set<String> getLocations() {
+    private Set<Country> getLocations() {
         return organisationRepository.findAll().stream().map(Organisation::getCountry).collect(Collectors.toSet());
     }
 
