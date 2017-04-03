@@ -41,7 +41,8 @@ public class Organisation {
 
 
     @Column(name="country")
-    private String country;
+    @Enumerated(EnumType.STRING)
+    private Country country;
 
     @NotEmpty
     @Size(min=1, max=255)
@@ -80,7 +81,7 @@ public class Organisation {
 
     public Organisation(){}
 
-    public Organisation(String name, Category category, String country, String zipcode, String city, String address, ArrayList<SpokenLanguage> spokenLanguage, String mission, String description1, String description2) {
+    public Organisation(String name, Category category, Country country, String zipcode, String city, String address, ArrayList<SpokenLanguage> spokenLanguage, String mission, String description1, String description2) {
         this.setName(name);
         this.setCategory(category);
         this.setCountry(country);

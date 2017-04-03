@@ -5,6 +5,7 @@ import com.codecool.volunti.dto.Filter2OpportunityDTO;
 import com.codecool.volunti.exception.ErrorException;
 import com.codecool.volunti.exception.OpportunityNotFoundException;
 import com.codecool.volunti.model.*;
+import com.codecool.volunti.model.enums.Country;
 import com.codecool.volunti.repository.OpportunityRepository;
 import com.codecool.volunti.repository.OrganisationRepository;
 import com.codecool.volunti.repository.SkillRepository;
@@ -134,7 +135,7 @@ public class OpportunityRestController {
         return organisationRepository.findAll().stream().map(o -> o.getCategory().name()).collect(Collectors.toSet());
     }
 
-    private Set<String> getLocations() {
+    private Set<Country> getLocations() {
         return organisationRepository.findAll().stream().map(Organisation::getCountry).collect(Collectors.toSet());
     }
 

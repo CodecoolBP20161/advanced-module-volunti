@@ -2,10 +2,7 @@ package com.codecool.volunti.service;
 
 
 import com.codecool.volunti.model.*;
-import com.codecool.volunti.model.enums.Category;
-import com.codecool.volunti.model.enums.OpportunityHoursExpectedType;
-import com.codecool.volunti.model.enums.SpokenLanguage;
-import com.codecool.volunti.model.enums.UserStatus;
+import com.codecool.volunti.model.enums.*;
 import com.codecool.volunti.repository.*;
 import com.codecool.volunti.service.model.OrganisationService;
 import com.codecool.volunti.service.model.RoleService;
@@ -67,13 +64,13 @@ public class DataLoader {
 
 
         if (organisationRepository.count() == 0) {
-            Organisation organisation1 = new Organisation("UNICEF", Category.TEACHING, "Hungary", "1065", "Isaszeg", "Kossuth utca", spokenLanguages, "mission mission mission mission mission", "description1", "description2");
+            Organisation organisation1 = new Organisation("UNICEF", Category.TEACHING, Country.HUNGARY, "1065", "Isaszeg", "Kossuth utca", spokenLanguages, "mission mission mission mission mission", "description1", "description2");
 
-            Organisation organisation2 = new Organisation("WHATEVER", Category.AGRICULTURE, "Iceland", "1065", "Reykjavik", "Whale str", spokenLanguages, "mission mission mission mission mission", "description1", "description2");
+            Organisation organisation2 = new Organisation("WHATEVER", Category.AGRICULTURE, Country.ICELAND, "1065", "Reykjavik", "Whale str", spokenLanguages, "mission mission mission mission mission", "description1", "description2");
 
-            Organisation organisation3 = new Organisation("Doctors Without Borders", Category.MANAGEMENT, "Kenya", "1065", "Random city in kenya", "whatever str", spokenLanguages, "mission mission mission mission mission", "description1", "description2");
+            Organisation organisation3 = new Organisation("Doctors Without Borders", Category.MANAGEMENT, Country.KENYA, "1065", "Random city in kenya", "whatever str", spokenLanguages, "mission mission mission mission mission", "description1", "description2");
 
-            Organisation organisation4 = new Organisation("Feeding America", Category.OTHER, "USA", "1065", "New York", "Amsterdam Av. 106", spokenLanguages, "mission mission mission mission mission", "description1", "description2");
+            Organisation organisation4 = new Organisation("Feeding America", Category.OTHER, Country.UNITED_STATES, "1065", "New York", "Amsterdam Av. 106", spokenLanguages, "mission mission mission mission mission", "description1", "description2");
 
             Volunteer volunteer = new Volunteer();
             volunteer.setCountry("Hungary");
@@ -86,7 +83,7 @@ public class DataLoader {
             organisationRepository.save(organisation2);
             organisationRepository.save(organisation3);
             organisationRepository.save(organisation4);
-            User user1 = new User("Lajos", "Lakatos", "b@g.com", "1234", organisation1, volunteer);
+            User user1 = new User("Lajos", "Lakatos", "b@g.com", "1234", organisation2, volunteer);
             userRepository.save(user1);
 
             for (int i = 0; i < 50; i++) {
@@ -99,7 +96,7 @@ public class DataLoader {
 
 
         LOGGER.info("loadData method called ...");
-        Organisation organisation1 = new Organisation("UNICEF", Category.TEACHING, "HUNGARY", "1065", "Isaszeg", "Kossuth utca", spokenLanguages, "mission mission mission mission mission", "description1", "description2");
+        Organisation organisation1 = new Organisation("UNDICEF", Category.TEACHING, Country.HUNGARY, "1065", "Isaszeg", "Kossuth utca", spokenLanguages, "mission mission mission mission mission", "description1", "description2");
         Volunteer volunteer = new Volunteer();
 
         List<Skill> volunteerSkills = new ArrayList<>();

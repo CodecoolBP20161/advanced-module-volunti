@@ -1,6 +1,7 @@
 package com.codecool.volunti.dto;
 
 
+import com.codecool.volunti.model.enums.Country;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
@@ -24,6 +25,6 @@ public class Filter2OpportunityDTO {
 
     private String category;
 
-    private String country;
+    private Country country;
 
 }
