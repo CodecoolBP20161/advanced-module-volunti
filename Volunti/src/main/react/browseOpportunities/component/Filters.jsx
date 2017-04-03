@@ -9,7 +9,15 @@ const Filters = React.createClass({
             cache: false,
             type: "GET",
             success: function (response) {
+                console.log(response.userLocation);
+                var userSkill = (response.userSkills ==='') ? 'Skill' : response.userSkills;
+                var userLocation = (response.userLocation === '') ? 'Location' : response.userLocation;
+
+
+
                 this.setState({
+                    userSkill: userSkill,
+                    userLocation: userLocation,
                     skills: response.skills,
                     locations: response.locations,
                     categories: response.categories
@@ -22,7 +30,7 @@ const Filters = React.createClass({
     },
 
     getInitialState: function () {
-        return {skills: [], locations: [], categories: []};
+        return {skills: [], locations: [], categories: [], userLocation:'', userSkill:''};
     },
 
     componentDidMount: function () {
@@ -30,6 +38,9 @@ const Filters = React.createClass({
     },
 
     handleChange: function (e) {
+        if (e.target.id == 'skills') { this.setState({ userSkill: e.target.value }); }
+        if (e.target.id == 'location') { this.setState({ userLocation: e.target.value }); }
+
         this.props.onFilterChange(e);
     },
 
@@ -40,7 +51,7 @@ const Filters = React.createClass({
 
                 <input type="date" ref="to" id="to" onChange={this.handleChange}/>
 
-                <select ref="skills" id="skills" onChange={this.handleChange}>
+                <select value={this.state.userSkill} ref="skills" id="skills" onChange={this.handleChange}>
                     <option value="">Skill</option>
                     {this.state.skills.map(function (skill, index) {
                         return <option key={index}>{skill}</option>
@@ -54,7 +65,7 @@ const Filters = React.createClass({
                     })}
                 </select>
 
-                <select ref="location" id="location" onChange={this.handleChange}>
+                <select value={this.state.userLocation} ref="location" id="location" onChange={this.handleChange}>
                     <option value="">Location</option>
                     {this.state.locations.map(function (location, index) {
                         return <option key={index}>{location}</option>

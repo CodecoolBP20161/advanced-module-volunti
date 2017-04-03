@@ -13,7 +13,7 @@ const Table = React.createClass({
         this.props.opportunities.map(function(opportunity, i) {
 
             let skills = [];
-            opportunity.name.map(function(skill, j) {
+            opportunity.skills.map(function(skill, j) {
                 skills.push(<h6 key={j}>{skill}</h6>)
             });
 
