@@ -66,8 +66,8 @@ public class DataLoader {
         spokenLanguages.add(SpokenLanguage.HUNGARIAN);
 
 
+        Organisation organisation1 = new Organisation("UNICEF", Category.TEACHING, "Hungary", "1065", "Isaszeg", "Kossuth utca", spokenLanguages, "mission mission mission mission mission", "description1", "description2");
         if (organisationRepository.count() == 0) {
-            Organisation organisation1 = new Organisation("UNICEF", Category.TEACHING, "Hungary", "1065", "Isaszeg", "Kossuth utca", spokenLanguages, "mission mission mission mission mission", "description1", "description2");
 
             Organisation organisation2 = new Organisation("WHATEVER", Category.AGRICULTURE, "Iceland", "1065", "Reykjavik", "Whale str", spokenLanguages, "mission mission mission mission mission", "description1", "description2");
 
@@ -99,7 +99,7 @@ public class DataLoader {
 
 
         LOGGER.info("loadData method called ...");
-        Organisation organisation1 = new Organisation("UNICEF", Category.TEACHING, "HUNGARY", "1065", "Isaszeg", "Kossuth utca", spokenLanguages, "mission mission mission mission mission", "description1", "description2");
+//        Organisation organisation1 = new Organisation("UNICEF", Category.TEACHING, "HUNGARY", "1065", "Isaszeg", "Kossuth utca", spokenLanguages, "mission mission mission mission mission", "description1", "description2");
         Volunteer volunteer = new Volunteer();
 
         List<Skill> volunteerSkills = new ArrayList<>();
@@ -160,7 +160,7 @@ public class DataLoader {
             skills.remove(1);
         }
 
-        String title = df.getRandomWord() + " " + df.getRandomWord();
+        String title = df.getRandomWord() + " " + df.getRandomWord()+ " " + df.getRandomWord()+ " " + df.getRandomWord();
         Opportunity opportunity = new Opportunity();
         opportunity.setOrganisation(org);
         opportunity.setTitle(title);
