@@ -12,6 +12,7 @@ import com.codecool.volunti.repository.SkillRepository;
 import com.codecool.volunti.repository.VolunteerRepository;
 import com.codecool.volunti.service.Pageable;
 import com.codecool.volunti.service.model.UserService;
+import com.google.common.collect.Iterables;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,11 +70,22 @@ public class OpportunityRestController {
         Date toDate = stringToDate(to);
 
 
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
         if (Objects.equals(skill, "") && Objects.equals(country, "") && Objects.equals(category, "")) {
-            page = new Pageable((List) convertToDto(opportunityRepository.findAll()), currentPage, pageSize);
+            if (auth.getName().equals("anonymousUser")){
+                page = new Pageable((List) convertToDto(opportunityRepository.findAll()), currentPage, pageSize);
+            } else {
+                User user = userService.getByEmail(auth.getName());
+                Volunteer volunteer = volunteerRepository.findOne(user.getVolunteer().getId());
+
+                String userSkill = Iterables.get(getUserSkills(volunteer.getId()), 0);
+                page = new Pageable(convertToDto(opportunityRepository.find(country, category, new java.sql.Timestamp(fromDate.getTime()), new java.sql.Timestamp(toDate.getTime()), userSkill)), currentPage, pageSize);
+            }
         } else {
             page = new Pageable(convertToDto(opportunityRepository.find(country, category, new java.sql.Timestamp(fromDate.getTime()), new java.sql.Timestamp(toDate.getTime()), skill)), currentPage, pageSize);
         }
+
 
 
         if (page.getList().size() == 0) {
