@@ -98,7 +98,7 @@ public class DataLoader {
         LOGGER.info("loadData method called ...");
 //        Organisation organisation1 = new Organisation("UNICEF", Category.TEACHING, "HUNGARY", "1065", "Isaszeg", "Kossuth utca", spokenLanguages, "mission mission mission mission mission", "description1", "description2");
         Volunteer volunteer = new Volunteer();
-
+        volunteer.setCountry("ICELAND");
         List<Skill> volunteerSkills = new ArrayList<>();
         volunteerSkills.add(skillRepository.findOne(3));
         volunteer.setVolunteerSkills(volunteerSkills);
