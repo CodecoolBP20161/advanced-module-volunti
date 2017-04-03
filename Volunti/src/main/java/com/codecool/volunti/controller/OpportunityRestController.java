@@ -92,7 +92,7 @@ public class OpportunityRestController {
                 Volunteer volunteer = volunteerRepository.findOne(user.getVolunteer().getId());
 
                 String userSkill = Iterables.get(getUserSkills(volunteer.getId()), 0);
-                page = new Pageable(convertToDto(opportunityRepository.find(country, category, new java.sql.Timestamp(fromDate.getTime()), new java.sql.Timestamp(toDate.getTime()), userSkill)), currentPage, pageSize);
+                page = new Pageable(convertToDto(opportunityRepository.find(volunteer.getCountry(), category, new java.sql.Timestamp(fromDate.getTime()), new java.sql.Timestamp(toDate.getTime()), userSkill)), currentPage, pageSize);
             }
         } else {
             page = new Pageable(convertToDto(opportunityRepository.find(country, category, new java.sql.Timestamp(fromDate.getTime()), new java.sql.Timestamp(toDate.getTime()), skill)), currentPage, pageSize);
@@ -127,11 +127,11 @@ public class OpportunityRestController {
             filters.put("userSkills", "");
             filters.put("userLocation", "");
         }else {
-            User user1 = userService.getByEmail(auth.getName());
-            Volunteer volunteer = volunteerRepository.findOne(user1.getVolunteer().getId());
+            User user = userService.getByEmail(auth.getName());
+            Volunteer volunteer = volunteerRepository.findOne(user.getVolunteer().getId());
 
-            filters.put("userSkills", getUserSkills(volunteer.getId()));
-            filters.put("userLocation", "Method needs to get users location");
+            filters.put("userSkills", Iterables.get(getUserSkills(volunteer.getId()), 0));
+            filters.put("userLocation", volunteer.getCountry());
         }
         return filters;
     }
