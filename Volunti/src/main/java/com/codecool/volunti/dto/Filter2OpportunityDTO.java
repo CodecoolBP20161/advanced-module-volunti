@@ -21,7 +21,7 @@ public class Filter2OpportunityDTO {
     @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd")
     private Date dateAvailabilityTo;
 
-    private List<String> name;
+    private List<String> skills;
 
     private String category;
 
