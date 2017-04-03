@@ -5,6 +5,7 @@ import com.codecool.volunti.dto.Filter2OpportunityDTO;
 import com.codecool.volunti.exception.ErrorException;
 import com.codecool.volunti.exception.OpportunityNotFoundException;
 import com.codecool.volunti.model.*;
+import com.codecool.volunti.model.enums.Country;
 import com.codecool.volunti.repository.OpportunityRepository;
 import com.codecool.volunti.repository.OrganisationRepository;
 import com.codecool.volunti.repository.SkillRepository;
@@ -62,12 +63,24 @@ public class OpportunityRestController {
 
         Pageable page;
         Map<String, Object> result = new HashMap<>();
+        Date fromDate = new Date();
+        Date toDate = new Date();
+        Calendar c = Calendar.getInstance();
 
-        if (from == "") from = "1999-10-10";
-        if (to == "") to = "2030-10-10";
-        Date fromDate = stringToDate(from);
-        Date toDate = stringToDate(to);
-
+        if (from == "") {
+            c.setTime(fromDate);
+            c.add(Calendar.YEAR, -20);
+            fromDate = c.getTime();
+        } else {
+            fromDate = stringToDate(from);
+        }
+        if (to == "") {
+            c.setTime(toDate);
+            c.add(Calendar.YEAR, 20);
+            toDate = c.getTime();
+        } else {
+            toDate = stringToDate(to);
+        }
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
@@ -146,7 +159,7 @@ public class OpportunityRestController {
         return organisationRepository.findAll().stream().map(o -> o.getCategory().name()).collect(Collectors.toSet());
     }
 
-    private Set<String> getLocations() {
+    private Set<Country> getLocations() {
         return organisationRepository.findAll().stream().map(Organisation::getCountry).collect(Collectors.toSet());
     }
 
@@ -155,7 +168,7 @@ public class OpportunityRestController {
         List<Filter2OpportunityDTO> result = new ArrayList<>();
         for (Opportunity opportunity : opportunities) {
             Filter2OpportunityDTO filterDto = modelMapper.map(opportunity, Filter2OpportunityDTO.class);
-            filterDto.setName(opportunity.getOpportunitySkills().stream().map(Skill::getName).collect(Collectors.toList()));
+            filterDto.setSkills(opportunity.getOpportunitySkills().stream().map(Skill::getName).collect(Collectors.toList()));
             filterDto.setCategory(opportunity.getOrganisation().getCategory().name());
             filterDto.setCountry(opportunity.getOrganisation().getCountry());
             result.add(filterDto);
@@ -167,13 +180,12 @@ public class OpportunityRestController {
     private Date stringToDate (String s) {
 
         Date date = null;
+
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
             try {
                 date = simpleDateFormat.parse(s);
-                System.out.println("date : "+simpleDateFormat.format(date));
         }
             catch (ParseException ex) {
-                System.out.println("Exception "+ex);
         }
         return date;
     }

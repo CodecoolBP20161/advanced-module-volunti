@@ -13,7 +13,7 @@ const Main = React.createClass ({
         return {
             opportunities: [],
             currentPage: 1,
-            filters: {from: '1999-10-10', to: '2022-10-10', skills: '', location:'', category:'', pageSize:10},
+            filters: {from: '', to: '', skills: '', location:'', category:'', pageSize:10},
             maxPage: 0,
             totalItems: 0
 

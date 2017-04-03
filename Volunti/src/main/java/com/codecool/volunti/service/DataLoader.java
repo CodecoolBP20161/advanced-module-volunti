@@ -2,10 +2,7 @@ package com.codecool.volunti.service;
 
 
 import com.codecool.volunti.model.*;
-import com.codecool.volunti.model.enums.Category;
-import com.codecool.volunti.model.enums.OpportunityHoursExpectedType;
-import com.codecool.volunti.model.enums.SpokenLanguage;
-import com.codecool.volunti.model.enums.UserStatus;
+import com.codecool.volunti.model.enums.*;
 import com.codecool.volunti.repository.*;
 import com.codecool.volunti.service.model.OrganisationService;
 import com.codecool.volunti.service.model.RoleService;
@@ -66,14 +63,14 @@ public class DataLoader {
         spokenLanguages.add(SpokenLanguage.HUNGARIAN);
 
 
-        Organisation organisation1 = new Organisation("UNICEF", Category.TEACHING, "Hungary", "1065", "Isaszeg", "Kossuth utca", spokenLanguages, "mission mission mission mission mission", "description1", "description2");
+        Organisation organisation1 = new Organisation("UNICEF", Category.TEACHING, Country.HUNGARY, "1065", "Isaszeg", "Kossuth utca", spokenLanguages, "mission mission mission mission mission", "description1", "description2");
         if (organisationRepository.count() == 0) {
+            new Organisation("UNICEF", Category.TEACHING, Country.HUNGARY, "1065", "Isaszeg", "Kossuth utca", spokenLanguages, "mission mission mission mission mission", "description1", "description2");
+            Organisation organisation2 = new Organisation("WHATEVER", Category.AGRICULTURE, Country.ICELAND, "1065", "Reykjavik", "Whale str", spokenLanguages, "mission mission mission mission mission", "description1", "description2");
 
-            Organisation organisation2 = new Organisation("WHATEVER", Category.AGRICULTURE, "Iceland", "1065", "Reykjavik", "Whale str", spokenLanguages, "mission mission mission mission mission", "description1", "description2");
+            Organisation organisation3 = new Organisation("Doctors Without Borders", Category.MANAGEMENT, Country.KENYA, "1065", "Random city in kenya", "whatever str", spokenLanguages, "mission mission mission mission mission", "description1", "description2");
 
-            Organisation organisation3 = new Organisation("Doctors Without Borders", Category.MANAGEMENT, "Kenya", "1065", "Random city in kenya", "whatever str", spokenLanguages, "mission mission mission mission mission", "description1", "description2");
-
-            Organisation organisation4 = new Organisation("Feeding America", Category.OTHER, "USA", "1065", "New York", "Amsterdam Av. 106", spokenLanguages, "mission mission mission mission mission", "description1", "description2");
+            Organisation organisation4 = new Organisation("Feeding America", Category.OTHER, Country.UNITED_STATES, "1065", "New York", "Amsterdam Av. 106", spokenLanguages, "mission mission mission mission mission", "description1", "description2");
 
             Volunteer volunteer = new Volunteer();
             volunteer.setCountry("Hungary");

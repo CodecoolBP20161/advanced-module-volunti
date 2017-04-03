@@ -4,6 +4,7 @@ import com.codecool.volunti.model.Opportunity;
 import com.codecool.volunti.model.Organisation;
 import com.codecool.volunti.model.Skill;
 import com.codecool.volunti.model.enums.Category;
+import com.codecool.volunti.model.enums.Country;
 import com.codecool.volunti.model.enums.SpokenLanguage;
 import com.codecool.volunti.repository.OpportunityRepository;
 import com.codecool.volunti.repository.SkillRepository;
@@ -52,7 +53,7 @@ public class OpportunityRepositoryTest extends AbstractServiceTest {
         spokenLanguages.add(SpokenLanguage.ENGLISH);
         spokenLanguages.add(SpokenLanguage.HUNGARIAN);
 
-        organisation = new Organisation("Test For Opps 1", Category.TEACHING, "Country", "zipcode","City", "Address", spokenLanguages, "Mission minimum 10 character", "Desc 1 min 3 character", "Desc 2 min 3 character");
+        organisation = new Organisation("Test For Opps 1", Category.TEACHING, Country.HUNGARY, "zipcode","City", "Address", spokenLanguages, "Mission minimum 10 character", "Desc 1 min 3 character", "Desc 2 min 3 character");
         skill = new Skill("new Skill");
         List<Skill> skills = new ArrayList<>();
         skills.add(skill);
