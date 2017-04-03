@@ -9463,7 +9463,13 @@ var Filters = React.createClass({
             cache: false,
             type: "GET",
             success: function (response) {
+                console.log(response.userLocation);
+                var userSkill = response.userSkills === '' ? 'Skill' : response.userSkills;
+                var userLocation = response.userLocation === '' ? 'Location' : response.userLocation;
+
                 this.setState({
+                    userSkill: userSkill,
+                    userLocation: userLocation,
                     skills: response.skills,
                     locations: response.locations,
                     categories: response.categories
@@ -9476,7 +9482,7 @@ var Filters = React.createClass({
     },
 
     getInitialState: function getInitialState() {
-        return { skills: [], locations: [], categories: [] };
+        return { skills: [], locations: [], categories: [], userLocation: '', userSkill: '' };
     },
 
     componentDidMount: function componentDidMount() {
@@ -9484,6 +9490,13 @@ var Filters = React.createClass({
     },
 
     handleChange: function handleChange(e) {
+        if (e.target.id == 'skills') {
+            this.setState({ userSkill: e.target.value });
+        }
+        if (e.target.id == 'location') {
+            this.setState({ userLocation: e.target.value });
+        }
+
         this.props.onFilterChange(e);
     },
 
@@ -9495,7 +9508,7 @@ var Filters = React.createClass({
             React.createElement("input", { type: "date", ref: "to", id: "to", onChange: this.handleChange }),
             React.createElement(
                 "select",
-                { ref: "skills", id: "skills", onChange: this.handleChange },
+                { value: this.state.userSkill, ref: "skills", id: "skills", onChange: this.handleChange },
                 React.createElement(
                     "option",
                     { value: "" },
@@ -9527,7 +9540,7 @@ var Filters = React.createClass({
             ),
             React.createElement(
                 "select",
-                { ref: "location", id: "location", onChange: this.handleChange },
+                { value: this.state.userLocation, ref: "location", id: "location", onChange: this.handleChange },
                 React.createElement(
                     "option",
                     { value: "" },
@@ -9592,7 +9605,7 @@ var Table = React.createClass({
         this.props.opportunities.map(function (opportunity, i) {
 
             var skills = [];
-            opportunity.name.map(function (skill, j) {
+            opportunity.skills.map(function (skill, j) {
                 skills.push(React.createElement(
                     "h6",
                     { key: j },
