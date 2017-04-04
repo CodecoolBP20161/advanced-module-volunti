@@ -2,24 +2,36 @@ package com.codecool.volunti.service;
 
 
 import com.codecool.volunti.model.*;
-import com.codecool.volunti.model.enums.Category;
-import com.codecool.volunti.model.enums.OpportunityHoursExpectedType;
-import com.codecool.volunti.model.enums.SpokenLanguage;
+import com.codecool.volunti.model.enums.*;
 import com.codecool.volunti.repository.*;
+import com.codecool.volunti.service.model.OrganisationService;
+import com.codecool.volunti.service.model.RoleService;
+import com.codecool.volunti.service.model.UserService;
+import com.codecool.volunti.service.model.VolunteerService;
+import lombok.extern.slf4j.Slf4j;
 import org.fluttercode.datafactory.impl.DataFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
+import static com.codecool.volunti.model.enums.RoleEnum.ROLE_USER;
 
+@Slf4j
 @Service
+@Transactional
 public class DataLoader {
 
+    private OrganisationService organisationService;
+    private UserService userService;
+    private VolunteerService volunteerService;
+    private RoleService roleService;
+    private BCryptPasswordEncoder passwordEncoder;
     private static final Logger LOGGER = LoggerFactory.getLogger(DataLoader.class);
 
     private OrganisationRepository organisationRepository;
@@ -29,8 +41,13 @@ public class DataLoader {
     private SkillRepository skillRepository;
 
     @Autowired
-    public DataLoader(OrganisationRepository organisationRepository, UserRepository userRepository, VolunteerRepository volunteerRepository,
+    public DataLoader(OrganisationService organisationService, UserService userService, VolunteerService volunteerService, RoleService roleService, BCryptPasswordEncoder passwordEncoder , OrganisationRepository organisationRepository, UserRepository userRepository, VolunteerRepository volunteerRepository,
                       OpportunityRepository opportunityRepository, SkillRepository skillRepository) {
+        this.organisationService = organisationService;
+        this.userService = userService;
+        this.volunteerService = volunteerService;
+        this.roleService = roleService;
+        this.passwordEncoder = passwordEncoder;
         this.organisationRepository = organisationRepository;
         this.userRepository = userRepository;
         this.volunteerRepository = volunteerRepository;
@@ -45,47 +62,64 @@ public class DataLoader {
         spokenLanguages.add(SpokenLanguage.ENGLISH);
         spokenLanguages.add(SpokenLanguage.HUNGARIAN);
 
-        User user1 = new User("Anna", "Kiss", "asd@gmail.com", "asdasd", "asd");
+
+        Organisation organisation1 = new Organisation("UNICEF", Category.TEACHING, Country.HUNGARY, "1065", "Isaszeg", "Kossuth utca", spokenLanguages, "mission mission mission mission mission", "description1", "description2");
+        if (organisationRepository.count() == 0) {
+            new Organisation("UNICEF", Category.TEACHING, Country.HUNGARY, "1065", "Isaszeg", "Kossuth utca", spokenLanguages, "mission mission mission mission mission", "description1", "description2");
+            Organisation organisation2 = new Organisation("WHATEVER", Category.AGRICULTURE, Country.ICELAND, "1065", "Reykjavik", "Whale str", spokenLanguages, "mission mission mission mission mission", "description1", "description2");
+
+            Organisation organisation3 = new Organisation("Doctors Without Borders", Category.MANAGEMENT, Country.KENYA, "1065", "Random city in kenya", "whatever str", spokenLanguages, "mission mission mission mission mission", "description1", "description2");
+
+            Organisation organisation4 = new Organisation("Feeding America", Category.OTHER, Country.UNITED_STATES, "1065", "New York", "Amsterdam Av. 106", spokenLanguages, "mission mission mission mission mission", "description1", "description2");
+
+            Volunteer volunteer = new Volunteer();
+            volunteer.setCountry("Hungary");
+            volunteerRepository.save(volunteer);
+
+            if (skillRepository.count() == 0) {
+                loadSkills();
+            }
+            organisationRepository.save(organisation1);
+            organisationRepository.save(organisation2);
+            organisationRepository.save(organisation3);
+            organisationRepository.save(organisation4);
+            User user1 = new User("Lajos", "Lakatos", "b@g.com", "1234", organisation1, volunteer);
+            userRepository.save(user1);
+
+            for (int i = 0; i < 50; i++) {
+                testOpportunityGenerator(organisation1);
+                testOpportunityGenerator(organisation2);
+                testOpportunityGenerator(organisation3);
+                testOpportunityGenerator(organisation4);
+            }
+        }
+
+
+        LOGGER.info("loadData method called ...");
+//        Organisation organisation1 = new Organisation("UNICEF", Category.TEACHING, "HUNGARY", "1065", "Isaszeg", "Kossuth utca", spokenLanguages, "mission mission mission mission mission", "description1", "description2");
         Volunteer volunteer = new Volunteer();
-        volunteerRepository.save(volunteer);
-        userRepository.save(user1);
+        volunteer.setCountry("ICELAND");
+        List<Skill> volunteerSkills = new ArrayList<>();
+        volunteerSkills.add(skillRepository.findOne(3));
+        volunteer.setVolunteerSkills(volunteerSkills);
 
-        Organisation organisation1 = new Organisation("UNICEF", Category.TEACHING, "Hungary", "1065", "Isaszeg", "Kossuth utca", spokenLanguages, "mission mission mission mission mission", "description1", "description2");
-        loadSkills();
-        organisationRepository.save(organisation1);
 
-        Opportunity firstOpportunity = new Opportunity();
-        firstOpportunity.setOrganisation(organisation1);
-        firstOpportunity.setTitle("First opportunity");
-        firstOpportunity.setNumberOfVolunteers(10);
-        firstOpportunity.setAccommodationType("Tent");
-        firstOpportunity.setFoodType("Vega");
-        firstOpportunity.setHoursExpected(3);
-        firstOpportunity.setHoursExpectedType(null);
-        firstOpportunity.setMinimumStayInDays(2);
-        firstOpportunity.setAvailabilityFrom(new java.sql.Date(2017 - 02 - 16));
-        firstOpportunity.setDateAvailabilityTo(new java.sql.Date(2017 - 02 - 21));
-        firstOpportunity.setCosts("free");
-        firstOpportunity.setRequirements("English");
-        opportunityRepository.save(firstOpportunity);
+        if (roleService.findByName(ROLE_USER.getRole()) == null) {
+            organisationService.save(organisation1);
+            volunteerService.save(volunteer);
+            Role roleUser = new Role(ROLE_USER.getRole());
+            roleService.save(roleUser);
 
-        Opportunity opportunity1 = new Opportunity();
-        opportunity1.setOrganisation(organisation1);
-        opportunity1.setTitle("Second opportunity1");
-        opportunity1.setNumberOfVolunteers(10);
-        opportunity1.setAccommodationType("Tent");
-        opportunity1.setFoodType("Vega");
-        opportunity1.setHoursExpected(3);
-        opportunity1.setHoursExpectedType(null);
-        opportunity1.setMinimumStayInDays(2);
-        opportunity1.setAvailabilityFrom(new java.sql.Date(2017 - 02 - 16));
-        opportunity1.setDateAvailabilityTo(new java.sql.Date(2017 - 02 - 21));
-        opportunity1.setCosts("free");
-        opportunity1.setRequirements("English");
-        opportunityRepository.save(opportunity1);
+            User user1 = new User("Anna", "Kiss", "em@i.l", passwordEncoder.encode("password"), organisation1, volunteer);
+            User user2 = new User("Volunti", "Volunti", "volunti.trial@gmail.com", passwordEncoder.encode("password"), organisation1, volunteer);
+            user2.setUserStatus(UserStatus.ACTIVE);
 
-        for (int i = 0; i < 100; i++) {
-            saveTestTask(organisation1);
+            Set<Role> roleSet = new HashSet<>();
+            roleSet.add(roleUser);
+            user1.setRoles(roleSet);
+            user2.setRoles(roleSet);
+            userService.saveUser(user1);
+            userService.saveUser(user2);
         }
 
         LOGGER.info("loadData method called ...");
@@ -109,16 +143,22 @@ public class DataLoader {
         skillRepository.save(skills);
     }
 
-    public void saveTestTask(Organisation org){
+    public void testOpportunityGenerator(Organisation org){
         DataFactory df = new DataFactory();
 
         List<Skill> skills = new ArrayList<>();
-        skills.add(new Skill("Programming"));
-        skills.add(new Skill("Cooking"));
 
-        String title = df.getRandomWord() + " " + df.getRandomWord();
+        List<Skill> possibleSkills = (List) skillRepository.findAll();
+        for (int i=0; i < 2; i++) {
+            int randomSkill = (int) (Math.random() * possibleSkills.size());
+            skills.add(possibleSkills.get(randomSkill));
+        }
+        if (skills.get(0) == skills.get(1)){
+            skills.remove(1);
+        }
+
+        String title = df.getRandomWord() + " " + df.getRandomWord()+ " " + df.getRandomWord()+ " " + df.getRandomWord();
         Opportunity opportunity = new Opportunity();
-
         opportunity.setOrganisation(org);
         opportunity.setTitle(title);
         opportunity.setNumberOfVolunteers(df.getNumberBetween(1,100));
@@ -127,14 +167,14 @@ public class DataLoader {
         opportunity.setHoursExpected(df.getNumberBetween(3,12));
         opportunity.setHoursExpectedType(OpportunityHoursExpectedType.Day);
         opportunity.setMinimumStayInDays(df.getNumberBetween(1,99));
-        opportunity.setAvailabilityFrom(new java.sql.Date(2017 - 02 - 16));
-        opportunity.setDateAvailabilityTo(new java.sql.Date(2017 - 02 - 21));
+        opportunity.setAvailabilityFrom(df.getDateBetween(new Date(113,3,2),new Date(118,3,9)));
+        opportunity.setDateAvailabilityTo(df.getDateBetween(new Date(121,3,9),new Date(123,10,4)));
         opportunity.setCosts("free");
         opportunity.setRequirements(df.getRandomWord());
         opportunity.setOpportunitySkills(skills);
 
         opportunityRepository.save(opportunity);
+
     }
 
 }
-

@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head"></head>
+<body>
+<div id="main-wrapper">
+    <div th:replace="fragments/navbar :: navbar"></div>
+    <div class="compny-profile">
+
+        <!-- SUB Banner -->
+        <div class="profile-bnr sub-bnr user-profile-bnr">
+            <div class="position-center-center">
+                <div class="container">
+                    <h2 class="pull-left">Search Opportunities</h2>
+                </div>
+            </div>
+        </div>
+
+        <!-- search -->
+        <div class="search-pro">
+            <div class="map-search">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                                <!--Filter-->
+                                <div class="filter-flower">
+                                    <div class="row">
+                                        <div class="col-md-7">
+                                            <h5>Filter by time</h5>
+                                        </div>
+                                        <div class="row" id="react"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script src="/assets/js/react/browseOpportunities.js"></script>
+
+<div th:replace="fragments/footer :: footer"></div>
+
+</body>
+</html>

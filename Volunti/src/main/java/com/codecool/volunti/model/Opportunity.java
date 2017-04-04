@@ -2,6 +2,8 @@ package com.codecool.volunti.model;
 
 
 import com.codecool.volunti.model.enums.OpportunityHoursExpectedType;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.ToString;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -18,13 +20,14 @@ import java.util.List;
 @Entity
 @Table(name = "opportunities")
 @Data
-@ToString(exclude = "organisation")
+@ToString(exclude = {"organisation", "opportunitySkills"})
 public class Opportunity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "organisation_id")
     private Organisation organisation;
@@ -51,15 +54,29 @@ public class Opportunity{
     private int minimumStayInDays;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd")
     private Date availabilityFrom;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd")
     private Date dateAvailabilityTo;
 
     private String costs;
+
+    @Column(columnDefinition="TEXT")
     private String requirements;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @JsonIgnore
+    @ManyToMany(cascade = CascadeType.MERGE, fetch=FetchType.EAGER)
     @JoinTable(name = "opportunities_skills", joinColumns = @JoinColumn(name = "opportunity_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "skill_id", referencedColumnName = "id"))
     private List<Skill> opportunitySkills;
+
+
+    public Opportunity() {
+    }
+
+    public Opportunity(String title, String requirements) {
+        this.title = title;
+        this.requirements = requirements;
+    }
 }

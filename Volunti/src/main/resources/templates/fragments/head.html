@@ -5,6 +5,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <title>
         Volunti - to go far go together
     </title>
@@ -12,6 +14,9 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800,300" rel="stylesheet" type="text/css" />
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
     <!--  Style Sheet -->
+    <link rel="stylesheet"  th:href="@{/assets/css/owl.carousel.css}"  />
+    <link rel="stylesheet"  th:href="@{/assets/css/main-style.css}" />
+    <link rel="stylesheet"  th:href="@{/assets/css/style.css}" />
     <link rel="stylesheet" href="/assets/css/owl.carousel.css" />
     <link rel="stylesheet" href="/assets/css/main-style.css" />
     <link rel="stylesheet" href="/assets/css/style.css" />
@@ -22,6 +27,8 @@
     <script src="/assets/js/jquery-1.11.1.min.js"></script>
     <script src="/assets/js/opp-form.js"></script>
     <script type="text/javascript" src="/assets/js/selectize/selectize.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
 
 
     <!--  HTML5 Shim and Respond.js IE8 support of HTML5 elements and media

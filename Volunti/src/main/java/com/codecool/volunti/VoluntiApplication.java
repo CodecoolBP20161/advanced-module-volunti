@@ -1,34 +1,35 @@
 package com.codecool.volunti;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.codecool.volunti.model.Organisation;
 import com.codecool.volunti.model.User;
 import com.codecool.volunti.model.Volunteer;
+import com.codecool.volunti.repository.OrganisationRepository;
+import com.codecool.volunti.repository.UserRepository;
+import com.codecool.volunti.repository.VolunteerRepository;
 import com.codecool.volunti.service.DataLoader;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
 import org.springframework.boot.web.servlet.ErrorPage;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.EnableAsync;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
+
 import javax.annotation.PostConstruct;
 
+@Slf4j
 @SpringBootApplication
 @EnableAsync
 @EnableJpaRepositories(basePackages = {"com.codecool.volunti.repository"})
 public class VoluntiApplication {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(VoluntiApplication.class);
-
     DataLoader dataLoader;
+
 
     @Autowired
     com.codecool.volunti.repository.OrganisationRepository organisationRepository;
@@ -53,17 +54,24 @@ public class VoluntiApplication {
 
     @PostConstruct
     void seeData() {
-        LOGGER.info("seeData method called...");
+        log.info("seeData method called...");
         for (Organisation organisation : organisationRepository.findAll()) {
-            LOGGER.info(organisation.toString());
+            log.info(organisation.toString());
         }
 
+//    CREATE VIEW FILTER_TO_OPPORTUNITY AS
+//    SELECT DISTINCT opp.id, opp.title, opp.availability_from, opp.date_availability_to,skills.name, org.category, org.country FROM OPPORTUNITIES opp
+//    INNER JOIN ORGANISATION org
+//    ON opp.organisation_id = org.organisation_id
+//    INNER JOIN OPPORTUNITIES_SKILLS opp_skill ON opp.id = opp_skill.opportunity_id
+//    INNER JOIN SKILLS skills
+//    ON opp_skill.skill_id = skills.id
         for (User user : userRepository.findAll()) {
-            LOGGER.info(user.toString());
+            log.info(user.toString());
         }
 
         for (Volunteer volunteer : volunteerRepository.findAll()) {
-            LOGGER.info(volunteer.toString());
+            log.info(volunteer.toString());
         }
     }
 
