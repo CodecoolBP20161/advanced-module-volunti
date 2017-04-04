@@ -85,19 +85,10 @@ public class OpportunityRestController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         if (Objects.equals(skill, "") && Objects.equals(country, "") && Objects.equals(category, "")) {
-            if (auth.getName().equals("anonymousUser")){
-                page = new Pageable((List) convertToDto(opportunityRepository.findAll()), currentPage, pageSize);
-            } else {
-                User user = userService.getByEmail(auth.getName());
-                Volunteer volunteer = volunteerRepository.findOne(user.getVolunteer().getId());
-
-                String userSkill = Iterables.get(getUserSkills(volunteer.getId()), 0);
-                page = new Pageable(convertToDto(opportunityRepository.find(volunteer.getCountry(), category, new java.sql.Timestamp(fromDate.getTime()), new java.sql.Timestamp(toDate.getTime()), userSkill)), currentPage, pageSize);
-            }
+            page = new Pageable((List) convertToDto(opportunityRepository.findAll()), currentPage, pageSize);
         } else {
             page = new Pageable(convertToDto(opportunityRepository.find(country, category, new java.sql.Timestamp(fromDate.getTime()), new java.sql.Timestamp(toDate.getTime()), skill)), currentPage, pageSize);
         }
-
 
 
         if (page.getList().size() == 0) {
@@ -123,10 +114,10 @@ public class OpportunityRestController {
         filters.put("skills", getSkills());
         filters.put("locations", getLocations());
 
-        if (auth.getName().equals("anonymousUser")){
+        if (auth.getName().equals("anonymousUser")) {
             filters.put("userSkills", "");
             filters.put("userLocation", "");
-        }else {
+        } else {
             User user = userService.getByEmail(auth.getName());
             Volunteer volunteer = volunteerRepository.findOne(user.getVolunteer().getId());
 
@@ -177,15 +168,14 @@ public class OpportunityRestController {
     }
 
 
-    private Date stringToDate (String s) {
+    private Date stringToDate(String s) {
 
         Date date = null;
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            try {
-                date = simpleDateFormat.parse(s);
-        }
-            catch (ParseException ex) {
+        try {
+            date = simpleDateFormat.parse(s);
+        } catch (ParseException ex) {
         }
         return date;
     }
