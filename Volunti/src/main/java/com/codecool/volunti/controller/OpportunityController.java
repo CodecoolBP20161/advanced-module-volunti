@@ -1,6 +1,5 @@
 package com.codecool.volunti.controller;
 
-
 import com.codecool.volunti.model.Opportunity;
 import com.codecool.volunti.model.Organisation;
 import com.codecool.volunti.repository.OpportunityRepository;
