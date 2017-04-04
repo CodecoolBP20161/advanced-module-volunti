@@ -2,6 +2,7 @@ package com.codecool.volunti.controller;
 
 import com.codecool.volunti.model.Organisation;
 import com.codecool.volunti.model.User;
+import com.codecool.volunti.service.StorageService;
 import com.codecool.volunti.service.model.OrganisationService;
 import com.codecool.volunti.service.model.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -30,16 +31,18 @@ public class OrganisationProfileController {
 
     private OrganisationService organisationService;
     private UserService userService;
+    private StorageService storageService;
 
     @Autowired
-    public OrganisationProfileController(OrganisationService organisationService, UserService userService) {
+    public OrganisationProfileController(OrganisationService organisationService, UserService userService, StorageService storageService) {
         this.organisationService = organisationService;
         this.userService = userService;
+        this.storageService = storageService;
     }
 
     @GetMapping(value = "/profile/organisation")
     public String renderOrganisationProfile(Model model) {
-        log.info("renderOrganisationRProfile() method called ...");
+        log.info("renderOrganisationProfile() method called ...");
 
         Organisation organisation = organisationService.get(1);
         log.info("organisation id: " + organisation.getOrganisationId());
@@ -100,23 +103,12 @@ public class OrganisationProfileController {
         if(file.getContentType().endsWith("png") ||file.getContentType().endsWith("jpg") && !file.isEmpty()){
             log.info("this is png or jpg");
 
-
-            Path rootLocation = Paths.get("/home/bt/codecool2/advanced-module-volunti/Volunti/filestorage/profile_image/");
-            //Path rootLocation = Paths.get("filestorage/profile_image/");
-
-
-            String newFileName = UUID.randomUUID().toString();
-            Path fileLocation = Paths.get( rootLocation.toString(), newFileName);
-
-            File convFile = new File(fileLocation.toString());
-            file.transferTo(convFile);
-
+            File convFile = storageService.createTemp(file);
             organisation.setProfilePictureFileForSave(convFile);
-
             organisationService.save(organisation);
+            convFile.delete();
 
-        }
-        else{
+        } else{
             log.info("it isn't png or jpg or it is empty");
         }
         return "profiles/organisation";

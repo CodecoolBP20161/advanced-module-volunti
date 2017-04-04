@@ -44,6 +44,8 @@ fabric.properties
 .idea/
 Volunti/target/
 Volunti/volunti.iml
+/filestorage
+
 
 /Volunti/src/main/resources/application.properties
 /advanced-module-volunti.iml

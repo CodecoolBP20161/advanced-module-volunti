@@ -6,22 +6,23 @@ import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Path;
 
 public interface StorageService {
 
-    void deleteAll(Path rootLocation);
+    void deleteAll();
 
-    void init(Path rootLocation);
+    void init();
 
-    String store(File file, String fileName, Path rootLocation);
+    String store(File file);
 
-    String store(MultipartFile file, String fileName, Path rootLocation);
+    Path load(String filename);
 
-    Path load(String filename, Path rootLocation);
+    Resource loadAsResource(String filename);
 
-    Resource loadAsResource(String filename, Path rootLocation);
+    void deleteOne(String filename);
 
-    void deleteOne(String filename, Path rootLocation);
+    File createTemp(MultipartFile file);
 
 }

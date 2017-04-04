@@ -20,7 +20,6 @@ public class OrganisationService {
 
     private OrganisationRepository organisationRepository;
     private StorageService storageService;
-    private Path rootLocationProfileImage = Paths.get("filestorage/profile_image/");
 
     @Autowired
     public OrganisationService(OrganisationRepository organisationRepository, StorageService storageService) {
@@ -32,8 +31,9 @@ public class OrganisationService {
         if (organisation.getProfilePictureFileForSave() != null ) {
 
             String oldProfilePicture = organisation.getProfilePicture();
-            String newFileName = storageService.store(organisation.getProfilePictureFileForSave(), oldProfilePicture, rootLocationProfileImage);
+            String newFileName = storageService.store(organisation.getProfilePictureFileForSave());
             organisation.setProfilePicture(newFileName);
+            storageService.deleteOne(oldProfilePicture);
 
         }
         return organisationRepository.save(organisation);
@@ -48,6 +48,6 @@ public class OrganisationService {
     }
 
     public Resource loadProfilePicture(Organisation organisation) {
-        return storageService.loadAsResource(organisation.getProfilePicture(), rootLocationProfileImage);
+        return storageService.loadAsResource(organisation.getProfilePicture());
     }
 }
