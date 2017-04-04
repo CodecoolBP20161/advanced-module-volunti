@@ -20,10 +20,7 @@ const Main = React.createClass ({
         }
     },
 
-    setFilter: function(e) {
-        let newObj = {};
-        newObj[e.target.id] = e.target.value;
-
+    mergeFilter: function (newObj) {
         let newState = update(this.state.filters, {
             $merge: newObj
         });
@@ -31,6 +28,21 @@ const Main = React.createClass ({
         this.setState({opportunities: [], currentPage: 1, filters: newState});
     },
 
+    setFilter: function(e) {
+        let newObj = {};
+        newObj[e.target.id] = e.target.value;
+
+        this.mergeFilter(newObj);
+    },
+
+    setDefaultValues: function(userSkill, userLocation){
+        let newObj = {
+            skills: userSkill,
+            location: userLocation
+        };
+
+        this.mergeFilter(newObj);
+    },
 
     sendRequest: function() {
         $.ajax({
@@ -65,17 +77,19 @@ const Main = React.createClass ({
     },
 
     componentDidMount: function () {
-        this.sendRequest();
+        // this.sendRequest();
     },
 
     handlePageChange(pageNumber) {
         this.setState({currentPage: pageNumber});
     },
 
+
     render: function () {
         return(
             <div>
-                <Filters filters={this.state.filters} onFilterChange={this.setFilter}/>
+                <Filters filters={this.state.filters} onFilterChange={this.setFilter}
+                         onDefaultValues={this.setDefaultValues}/>
                 <Table opportunities={this.state.opportunities}
                        currentPage={this.state.currentPage}/>
 
