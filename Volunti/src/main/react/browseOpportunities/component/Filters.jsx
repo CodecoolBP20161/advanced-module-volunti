@@ -28,7 +28,7 @@ const Filters = React.createClass({
     },
 
     getInitialState: function () {
-        return {skills: [], locations: [], categories: [], userLocation:'', userSkill:''};
+        return {skills: [], locations: [], categories: [], userLocation: '', userSkill: ''};
     },
 
     componentDidMount: function () {
@@ -36,8 +36,12 @@ const Filters = React.createClass({
     },
 
     handleChange: function (e) {
-        if (e.target.id == 'skills') { this.setState({ userSkill: e.target.value }); }
-        if (e.target.id == 'location') { this.setState({ userLocation: e.target.value }); }
+        if (e.target.id == 'skills') {
+            this.setState({userSkill: e.target.value});
+        }
+        if (e.target.id == 'location') {
+            this.setState({userLocation: e.target.value});
+        }
 
         this.props.onFilterChange(e);
     },
@@ -46,8 +50,8 @@ const Filters = React.createClass({
         this.props.onDefaultValues(this.state.userSkill, this.state.userLocation);
     },
 
-    render: function() {
-        return(
+    render: function () {
+        return (
             <div>
                 <input type="date" ref="from" id="from" onChange={this.handleChange}/>
 

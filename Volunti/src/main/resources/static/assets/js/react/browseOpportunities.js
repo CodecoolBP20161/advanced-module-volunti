@@ -10019,10 +10019,6 @@ var Main = React.createClass({
         }
     },
 
-    componentDidMount: function componentDidMount() {
-        // this.sendRequest();
-    },
-
     handlePageChange: function handlePageChange(pageNumber) {
         this.setState({ currentPage: pageNumber });
     },
