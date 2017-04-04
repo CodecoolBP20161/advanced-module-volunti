@@ -9463,9 +9463,8 @@ var Filters = React.createClass({
             cache: false,
             type: "GET",
             success: function (response) {
-                console.log(response.userLocation);
-                var userSkill = response.userSkills === '' ? 'Skill' : response.userSkills;
-                var userLocation = response.userLocation === '' ? 'Location' : response.userLocation;
+                var userSkill = response.userSkills;
+                var userLocation = response.userLocation;
 
                 this.setState({
                     userSkill: userSkill,
@@ -9474,6 +9473,7 @@ var Filters = React.createClass({
                     locations: response.locations,
                     categories: response.categories
                 });
+                this.handleDefaultValues();
             }.bind(this),
             error: function error(msg) {
                 console.log(msg);
@@ -9498,6 +9498,10 @@ var Filters = React.createClass({
         }
 
         this.props.onFilterChange(e);
+    },
+
+    handleDefaultValues: function handleDefaultValues() {
+        this.props.onDefaultValues(this.state.userSkill, this.state.userLocation);
     },
 
     render: function render() {
@@ -9959,15 +9963,28 @@ var Main = React.createClass({
         };
     },
 
-    setFilter: function setFilter(e) {
-        var newObj = {};
-        newObj[e.target.id] = e.target.value;
-
+    mergeFilter: function mergeFilter(newObj) {
         var newState = (0, _reactAddonsUpdate2.default)(this.state.filters, {
             $merge: newObj
         });
 
         this.setState({ opportunities: [], currentPage: 1, filters: newState });
+    },
+
+    setFilter: function setFilter(e) {
+        var newObj = {};
+        newObj[e.target.id] = e.target.value;
+
+        this.mergeFilter(newObj);
+    },
+
+    setDefaultValues: function setDefaultValues(userSkill, userLocation) {
+        var newObj = {
+            skills: userSkill,
+            location: userLocation
+        };
+
+        this.mergeFilter(newObj);
     },
 
     sendRequest: function sendRequest() {
@@ -10003,7 +10020,7 @@ var Main = React.createClass({
     },
 
     componentDidMount: function componentDidMount() {
-        this.sendRequest();
+        // this.sendRequest();
     },
 
     handlePageChange: function handlePageChange(pageNumber) {
@@ -10015,7 +10032,8 @@ var Main = React.createClass({
         return React.createElement(
             'div',
             null,
-            React.createElement(_Filters2.default, { filters: this.state.filters, onFilterChange: this.setFilter }),
+            React.createElement(_Filters2.default, { filters: this.state.filters, onFilterChange: this.setFilter,
+                onDefaultValues: this.setDefaultValues }),
             React.createElement(_Table2.default, { opportunities: this.state.opportunities,
                 currentPage: this.state.currentPage }),
             this.state.opportunities.length == 0 ? React.createElement(
