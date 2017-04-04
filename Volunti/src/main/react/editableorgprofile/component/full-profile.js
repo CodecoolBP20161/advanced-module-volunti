@@ -16,6 +16,7 @@ class FullProfile extends React.Component {
             zipcode: null,
             address: null,
             profilePicture: null,
+            backgroundPicture: null,
             mission: null,
             description1: null,
             description2: null,
@@ -52,6 +53,7 @@ class FullProfile extends React.Component {
                     mission: response.mission,
                     description1: response.description1,
                     description2: response.description2,
+                    backgroundPicture: response.backgroundPicture,
                     profilePicture: "/profile/organisation/image",
                          social: {
                              facebook: null,
@@ -70,10 +72,13 @@ class FullProfile extends React.Component {
     }
 
     render() {
+        const divStyle = {
+            backgroundImage: 'url(' + this.state.backgroundPicture + ')',
+        };
         return(
             <div className="compny-profile">
                 {/*<!-- SUB Banner -->*/}
-                <div className="profile-bnr">
+                <div className="profile-bnr" style={{background: divStyle}}>
                     <div className="container">
 
                         {/*<!-- User Info -->*/}
@@ -81,6 +86,7 @@ class FullProfile extends React.Component {
                             organisationName={this.state.name}
                             category={this.state.category}
                             address={this.state.country + ", " + this.state.zipcode + ", " + this.state.city + ", " + this.state.address}
+                            social={this.state.social}
                         />
                         {/*<!-- Place of Top Right Buttons -->*/}
                     </div>
@@ -104,7 +110,8 @@ class FullProfile extends React.Component {
                             <SideBar profileSource={this.state.profilePicture}
                                      category={this.state.category}
                                      country={this.state.country}
-                                     city={this.state.city}/>
+                                     city={this.state.city}
+                                     mission={this.state.mission}/>
 
                             {/*<!-- Tab Content -->*/}
                             <div className="col-md-8">
@@ -117,7 +124,7 @@ class FullProfile extends React.Component {
                                              description2={this.state.description2} />
 
                                     {/*<!-- Services -->*/}
-                                    <Services />
+                                    {/*<Services />*/}
                                 </div>
                             </div>
                         </div>

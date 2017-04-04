@@ -22,11 +22,12 @@ class SideBar extends React.Component {
                     <ul className="single-category">
                         <li className="row">
                             <h6 className="title col-xs-6">Category</h6>
-                            <span className="subtitle col-xs-6">{this.props.category}</span> </li>
+                            <span className="subtitle col-xs-6">{this.props.category}</span>
+                        </li>
                         <li className="row">
                             <h6 className="title col-xs-6">Location</h6>
-                            <span className="subtitle col-xs-6">{this.props.city}, {this.props.country}</span> </li>
-                        {/*<li className="row">*/}
+                            <span className="subtitle col-xs-6">{this.props.city}, {this.props.country}</span>
+                        </li>
                             {/*<h6 className="title col-xs-6">Number of Employees</h6>*/}
                             {/*<span className="subtitle col-xs-6">11,245</span> </li>*/}
                         {/*<li className="row">*/}
