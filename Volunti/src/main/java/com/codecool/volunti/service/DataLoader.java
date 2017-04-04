@@ -18,7 +18,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
+import java.sql.*;
 import java.util.*;
+import java.util.Date;
 
 import static com.codecool.volunti.model.enums.RoleEnum.ROLE_USER;
 
@@ -74,6 +76,12 @@ public class DataLoader {
 
             Volunteer volunteer = new Volunteer();
             volunteer.setCountry("Hungary");
+            volunteer.setMotto("my motto");
+            volunteer.setInterest("my interest");
+            volunteer.setSpokenLanguages(spokenLanguages);
+            List<Skill> volunteerSkills = new ArrayList<>();
+            volunteerSkills.add(skillRepository.findOne(3));
+            volunteer.setVolunteerSkills(volunteerSkills);
             volunteerRepository.save(volunteer);
 
             if (skillRepository.count() == 0) {
@@ -99,6 +107,10 @@ public class DataLoader {
 //        Organisation organisation1 = new Organisation("UNICEF", Category.TEACHING, "HUNGARY", "1065", "Isaszeg", "Kossuth utca", spokenLanguages, "mission mission mission mission mission", "description1", "description2");
         Volunteer volunteer = new Volunteer();
         volunteer.setCountry("ICELAND");
+        volunteer.setMotto("my motto");
+        volunteer.setInterest("my interest");
+        volunteer.setSpokenLanguages(spokenLanguages);
+//        volunteer.setDateOfBirth(new java.sql.Date(Calendar.getInstance().getTime().getTime()));
         List<Skill> volunteerSkills = new ArrayList<>();
         volunteerSkills.add(skillRepository.findOne(3));
         volunteer.setVolunteerSkills(volunteerSkills);
