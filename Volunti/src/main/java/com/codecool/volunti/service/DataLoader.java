@@ -69,10 +69,8 @@ public class DataLoader {
         try {
             File testImageFile = new File( "Volunti/src/main/resources/static/images/profile_image/test_profile_image.png" );
             log.info(testImageFile.getAbsolutePath());
-            InputStreamSource testImage = new InputStreamResource( new FileInputStream( testImageFile ) );
-            organisation1.setProfilePictureFileForSave(testImage);
-        } catch (FileNotFoundException e) {
-            log.info(String.valueOf(organisation1.getProfilePictureFileForSave()));
+            organisation1.setProfilePictureFileForSave(testImageFile);
+        } catch (Exception e) {
             log.error("Cannot save test image: ", e);
         }
 

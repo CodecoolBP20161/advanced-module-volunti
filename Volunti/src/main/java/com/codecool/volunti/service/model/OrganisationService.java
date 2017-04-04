@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -34,15 +35,13 @@ public class OrganisationService {
 
     public Organisation save(Organisation organisation) {
         if (organisation.getProfilePictureFileForSave() != null ) {
-            log.info("it is not null");
+
             String oldProfilePicture = organisation.getProfilePicture();
-            String newFileName = storageService.store(organisation.getProfilePictureFileForSave(), oldProfilePicture, rootLocationProfileImage);
+            String newFileName = storageService.store(organisation.getProfilePictureFileForSave());
             organisation.setProfilePicture(newFileName);
+            storageService.deleteOne(oldProfilePicture);
 
-        }else{
-            log.info(" it is null");
         }
-
         return organisationRepository.save(organisation);
     }
 
@@ -55,7 +54,7 @@ public class OrganisationService {
     }
 
     public Resource loadProfilePicture(Organisation organisation) {
-        return storageService.loadAsResource(organisation.getProfilePicture(), rootLocationProfileImage);
+        return storageService.loadAsResource(organisation.getProfilePicture());
     }
 
 

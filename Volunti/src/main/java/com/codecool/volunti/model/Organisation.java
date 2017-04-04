@@ -9,6 +9,7 @@ import org.springframework.core.io.InputStreamSource;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.io.File;
 import java.util.ArrayList;
 
 @Entity
@@ -76,7 +77,7 @@ public class Organisation {
     private String profilePicture;
 
     @Transient
-    private InputStreamSource profilePictureFileForSave;
+    private File profilePictureFileForSave;
 
     @Column(name="background_picture")
     private String backgroundPicture;
@@ -101,7 +102,7 @@ public class Organisation {
         this.setBackgroundPicture(backgroundPicture);
     }
 
-    public void setProfilePictureFromFile(InputStreamSource file) {
+    public void setProfilePictureFromFile(File file) {
         this.profilePictureFileForSave = file;
     }
 
