@@ -9,11 +9,8 @@ const Filters = React.createClass({
             cache: false,
             type: "GET",
             success: function (response) {
-                console.log(response.userLocation);
-                var userSkill = (response.userSkills ==='') ? 'Skill' : response.userSkills;
-                var userLocation = (response.userLocation === '') ? 'Location' : response.userLocation;
-
-
+                var userSkill = response.userSkills;
+                var userLocation = response.userLocation;
 
                 this.setState({
                     userSkill: userSkill,
@@ -22,6 +19,7 @@ const Filters = React.createClass({
                     locations: response.locations,
                     categories: response.categories
                 });
+                this.handleDefaultValues();
             }.bind(this),
             error: function (msg) {
                 console.log(msg);
@@ -30,7 +28,7 @@ const Filters = React.createClass({
     },
 
     getInitialState: function () {
-        return {skills: [], locations: [], categories: [], userLocation:'', userSkill:''};
+        return {skills: [], locations: [], categories: [], userLocation: '', userSkill: ''};
     },
 
     componentDidMount: function () {
@@ -38,14 +36,22 @@ const Filters = React.createClass({
     },
 
     handleChange: function (e) {
-        if (e.target.id == 'skills') { this.setState({ userSkill: e.target.value }); }
-        if (e.target.id == 'location') { this.setState({ userLocation: e.target.value }); }
+        if (e.target.id == 'skills') {
+            this.setState({userSkill: e.target.value});
+        }
+        if (e.target.id == 'location') {
+            this.setState({userLocation: e.target.value});
+        }
 
         this.props.onFilterChange(e);
     },
 
-    render: function() {
-        return(
+    handleDefaultValues: function () {
+        this.props.onDefaultValues(this.state.userSkill, this.state.userLocation);
+    },
+
+    render: function () {
+        return (
             <div>
                 <input type="date" ref="from" id="from" onChange={this.handleChange}/>
 

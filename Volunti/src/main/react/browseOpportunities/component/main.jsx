@@ -7,23 +7,20 @@ import update from 'react-addons-update';
 import Pagination from 'react-js-pagination';
 
 
-const Main = React.createClass ({
+const Main = React.createClass({
 
-    getInitialState: function() {
+    getInitialState: function () {
         return {
             opportunities: [],
             currentPage: 1,
-            filters: {from: '', to: '', skills: '', location:'', category:'', pageSize:10},
+            filters: {from: '', to: '', skills: '', location: '', category: '', pageSize: 10},
             maxPage: 0,
             totalItems: 0
 
         }
     },
 
-    setFilter: function(e) {
-        let newObj = {};
-        newObj[e.target.id] = e.target.value;
-
+    mergeFilter: function (newObj) {
         let newState = update(this.state.filters, {
             $merge: newObj
         });
@@ -31,8 +28,23 @@ const Main = React.createClass ({
         this.setState({opportunities: [], currentPage: 1, filters: newState});
     },
 
+    setFilter: function (e) {
+        let newObj = {};
+        newObj[e.target.id] = e.target.value;
 
-    sendRequest: function() {
+        this.mergeFilter(newObj);
+    },
+
+    setDefaultValues: function (userSkill, userLocation) {
+        let newObj = {
+            skills: userSkill,
+            location: userLocation
+        };
+
+        this.mergeFilter(newObj);
+    },
+
+    sendRequest: function () {
         $.ajax({
             url: "/api/opportunities/find/" + this.state.currentPage,
             data: {
@@ -58,35 +70,33 @@ const Main = React.createClass ({
         })
     },
 
-    componentDidUpdate: function(prevProps, prevState) {
-        if(this.state.filters != prevState.filters || this.state.currentPage != prevState.currentPage) {
+    componentDidUpdate: function (prevProps, prevState) {
+        if (this.state.filters != prevState.filters || this.state.currentPage != prevState.currentPage) {
             this.sendRequest();
         }
-    },
-
-    componentDidMount: function () {
-        this.sendRequest();
     },
 
     handlePageChange(pageNumber) {
         this.setState({currentPage: pageNumber});
     },
 
+
     render: function () {
-        return(
+        return (
             <div>
-                <Filters filters={this.state.filters} onFilterChange={this.setFilter}/>
+                <Filters filters={this.state.filters} onFilterChange={this.setFilter}
+                         onDefaultValues={this.setDefaultValues}/>
                 <Table opportunities={this.state.opportunities}
                        currentPage={this.state.currentPage}/>
 
                 {this.state.opportunities.length == 0 ? <div>Did not found any match</div> :
-                <Pagination className="pagination"
-                    activePage={this.state.currentPage}
-                    itemsCountPerPage={parseInt(this.state.filters.pageSize)}
-                    totalItemsCount={this.state.totalItems}
-                    pageRangeDisplayed={3}
-                    onChange={this.handlePageChange}
-                />}
+                    <Pagination className="pagination"
+                                activePage={this.state.currentPage}
+                                itemsCountPerPage={parseInt(this.state.filters.pageSize)}
+                                totalItemsCount={this.state.totalItems}
+                                pageRangeDisplayed={3}
+                                onChange={this.handlePageChange}
+                    />}
             </div>
         )
     }
