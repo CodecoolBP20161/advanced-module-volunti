@@ -2,7 +2,6 @@ package com.codecool.volunti.controller;
 
 
 import com.codecool.volunti.model.Organisation;
-import com.codecool.volunti.model.Role;
 import com.codecool.volunti.model.User;
 import com.codecool.volunti.repository.OrganisationRepository;
 import com.codecool.volunti.service.email.EmailService;
@@ -17,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 
@@ -31,7 +31,7 @@ public class RegistrationController {
     private OrganisationService organisationService;
     private UserService userService;
     private EmailService emailService;
-    private ValidationService validationService = new ValidationService(organisationService, userService);
+    private ValidationService validationService;
     private BCryptPasswordEncoder passwordEncoder;
     private RoleService roleService;
 
