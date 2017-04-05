@@ -22,4 +22,6 @@ public class VolunteerService {
         volunteerRepository.save(volunteer);
     }
 
+    public Volunteer getById(Integer id){ return volunteerRepository.getOne(id);}
+
 }
