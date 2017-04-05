@@ -6,6 +6,7 @@ import com.codecool.volunti.model.OrganisationSocialLink;
 import com.codecool.volunti.repository.OrganisationRepository;
 import com.codecool.volunti.repository.OrganisationSocialLinkRepository;
 import com.codecool.volunti.service.StorageService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
@@ -13,7 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.UUID;
 
+@Slf4j
 @Service
 @Transactional
 public class OrganisationService {
@@ -32,9 +35,11 @@ public class OrganisationService {
 
     public Organisation save(Organisation organisation) {
         if (organisation.getProfilePictureFileForSave() != null ) {
+
             String oldProfilePicture = organisation.getProfilePicture();
-            String newFileName = storageService.store(organisation.getProfilePictureFileForSave(), oldProfilePicture, rootLocationProfileImage);
+            String newFileName = storageService.store(organisation.getProfilePictureFileForSave());
             organisation.setProfilePicture(newFileName);
+            storageService.deleteOne(oldProfilePicture);
 
         }
         return organisationRepository.save(organisation);
@@ -49,7 +54,7 @@ public class OrganisationService {
     }
 
     public Resource loadProfilePicture(Organisation organisation) {
-        return storageService.loadAsResource(organisation.getProfilePicture(), rootLocationProfileImage);
+        return storageService.loadAsResource(organisation.getProfilePicture());
     }
 
 
