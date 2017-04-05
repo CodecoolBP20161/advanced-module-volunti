@@ -53,66 +53,62 @@
                                               th:object="${volunteer}" method="post">
 
 
-                                            <div class="col-sm-4">
-                                                <h4>Date of birth</h4>
-                                                <input type="date" required="required" placeholder="YYYY/MM/DD"/>
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <select id="select-state" name="state[]"
+                                                            multiple="multiple"
+                                                            class="demo-default"
+                                                            required="required"
+                                                            data-validation="required"
+                                                            data-validation-length="min1"
+                                                            data-validation-error-msg="Please select a skill"
+                                                            placeholder="Choose your skills (max 5)"
+                                                            th:field="*{volunteerSkills}">
 
-                                                <div>
-                                                    <div class="custom-select-box">
-                                                        <select id="select-state" name="state[]"
-                                                                multiple="multiple"
-                                                                class="demo-default"
-                                                                required="required"
-                                                                data-validation="required"
-                                                                data-validation-length="min1"
-                                                                data-validation-error-msg="Please select a skill"
-                                                                placeholder="What skills do you require?"
-                                                                th:field="*{volunteerSkills}">
-                                                                    <span th:if="${volunteer.volunteerSkills} != null"
-                                                                          th:each="volskill : *{volunteerSkills}">
-                                                                        <option th:value="${volskill.id != null} ? ${volskill.name}"></option>
-                                                                    </span>
-                                                            <option th:each="skill : ${skills}"
-                                                                    th:value="${skill.id}"
-                                                                    th:text="${skill.name}">
-                                                            </option>
-                                                        </select>
-                                                    </div>
-
-                                                    <div class="custom-select-box">
-                                                        <select id="select-country"
-                                                                multiple="multiple"
-                                                                class="demo-default"
-                                                                data-validation="required"
-                                                                data-validation-length="min1"
-                                                                required="required"
-                                                                placeholder="Select country"
-                                                                th:field="*{country}">
-                                                            <option th:each="country : ${T(com.codecool.volunti.model.enums.Country).values()}"
-                                                                    th:value="${country}"
-                                                                    th:text="${country}">
-                                                            </option>
-                                                        </select>
-                                                    </div>
-
-                                                    <div class="custom-select-box">
-                                                        <select id="select-language"
-                                                                multiple="multiple"
-                                                                class="demo-default"
-                                                                data-validation="required"
-                                                                data-validation-length="min1"
-                                                                required="required"
-                                                                placeholder="Select language"
-                                                                th:field="*{spokenLanguages}">
-                                                            <option th:each="language : ${T(com.codecool.volunti.model.enums.SpokenLanguage).values()}"
-                                                                    th:value="${language}"
-                                                                    th:text="${language}">
-                                                            </option>
-                                                        </select>
-                                                        <script src="/assets/js/custom.js"></script>
-                                                    </div>
+                                                        <option th:each="skill : ${skills}"
+                                                                th:value="${skill.id}"
+                                                                th:text="${skill.name}">
+                                                        </option>
+                                                    </select>
                                                 </div>
 
+                                                <div class="col-sm-4">
+                                                    <select id="select-country"
+                                                            multiple="multiple"
+                                                            class="demo-default"
+                                                            data-validation="required"
+                                                            data-validation-length="min1"
+                                                            required="required"
+                                                            placeholder="Select your country"
+                                                            th:field="*{country}">
+                                                        <option th:each="country : ${T(com.codecool.volunti.model.enums.Country).values()}"
+                                                                th:value="${country}"
+                                                                th:text="${country}">
+                                                        </option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-sm-4">
+                                                    <select id="select-language"
+                                                            multiple="multiple"
+                                                            class="demo-default"
+                                                            data-validation="required"
+                                                            data-validation-length="min1"
+                                                            required="required"
+                                                            placeholder="Spoken languages"
+                                                            th:field="*{spokenLanguages}">
+                                                        <option th:each="language : ${T(com.codecool.volunti.model.enums.SpokenLanguage).values()}"
+                                                                th:value="${language}"
+                                                                th:text="${language}">
+                                                        </option>
+                                                    </select>
+                                                    <script src="/assets/js/custom.js"></script>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-4">
+                                            <h4>Date of birth</h4>
+                                            <input type="date" required="required" placeholder="YYYY/MM/DD"/>
                                             </div>
                                             <textarea required="required" minlength="1"
                                                       placeholder="Your motto (min. 1 character)"
