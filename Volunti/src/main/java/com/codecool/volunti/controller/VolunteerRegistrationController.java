@@ -2,6 +2,7 @@ package com.codecool.volunti.controller;
 
 import com.codecool.volunti.model.User;
 import com.codecool.volunti.model.Volunteer;
+import com.codecool.volunti.repository.SkillRepository;
 import com.codecool.volunti.repository.VolunteerRepository;
 import com.codecool.volunti.service.email.EmailService;
 import com.codecool.volunti.service.email.EmailType;
@@ -34,6 +35,9 @@ public class VolunteerRegistrationController {
     private ValidationService validationService;
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
+    @Autowired
+    private SkillRepository skillRepository;
+
 
     @GetMapping("/step1")
     public String stepOne(Model model, HttpSession session) {
@@ -41,6 +45,8 @@ public class VolunteerRegistrationController {
         if ( session.getAttribute("volunteer") != null ) {
             volunteer = (Volunteer) session.getAttribute("volunteer");
         }
+        model.addAttribute("skills", skillRepository.findAll());
+
         model.addAttribute("volunteer", volunteer);
         return "registration/volunteer/volunteerForm";
     }
