@@ -21,11 +21,11 @@ class FullProfile extends React.Component {
             description1: null,
             description2: null,
             social:{
-                facebook: null,
-                twitter: null,
-                google: null,
-                linkedin: null,
-                video: null
+                facebook: "valamiLink",
+                twitter: "valamiLink",
+                google: "valamiLink",
+                linkedin: "valamiLink",
+                video: "valamiLink"
             }
 
         }
@@ -42,7 +42,6 @@ class FullProfile extends React.Component {
             headers: headers,
             dataType: "json",
             success: function (response) {
-                console.log("data", response);
                 this.setState({
                     name: response.name,
                     category: response.category,
@@ -55,19 +54,18 @@ class FullProfile extends React.Component {
                     description2: response.description2,
                     backgroundPicture: response.backgroundPicture,
                     profilePicture: "/profile/organisation/image",
-                         social: {
-                             facebook: null,
-                             twitter: null,
-                             google: null,
-                             linkedin: null,
-                             video: null,
-                         }
-
+                    social: {
+                        facebook: 'facebookURL',
+                        twitter: 'twitterURL',
+                        google: 'googleURL',
+                        linkedin: 'linkedinURL',
+                        video: null,
+                    }
                 })
             }.bind(this)
          });
 }
-    componentDidMount(){
+    componentWillMount(){
         this.fetchData()
     }
 
@@ -80,7 +78,7 @@ class FullProfile extends React.Component {
                 {/*<!-- SUB Banner -->*/}
                 <div className="profile-bnr" style={{background: divStyle}}>
                     <div className="container">
-
+                        {console.log("social in Profile: ", this.state.social)}
                         {/*<!-- User Info -->*/}
                         <TopLabel
                             organisationName={this.state.name}

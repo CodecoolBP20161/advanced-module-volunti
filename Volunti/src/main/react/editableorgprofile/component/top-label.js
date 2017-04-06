@@ -5,7 +5,7 @@ class TopLabel extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            editMode: false
+            editMode: false,
         }
     }
 
@@ -16,7 +16,8 @@ class TopLabel extends React.Component {
             <h1>{this.props.organisationName} {/*<a data-toggle="tooltip" data-placement="top" title="Verified Member"> <img src="images/icon-ver.png" alt="" /> </a>*/} </h1>
             <h6>{this.props.category}</h6>
             <p>{this.props.address}</p>
-            <Social social={this.props.social} />
+            {console.log("social in Toplabel: ", this.props.social)}
+            <Social social={this.props.social}/>
             {/*Stars
             <ul className="row">
                 <li className="col-sm-6">
