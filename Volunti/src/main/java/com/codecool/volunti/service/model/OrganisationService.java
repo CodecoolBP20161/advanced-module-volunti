@@ -32,6 +32,14 @@ public class OrganisationService {
         this.organisationSocialLinkRepository = organisationSocialLinkRepository;
     }
 
+    public Organisation get(Integer id) {
+        return organisationRepository.findOne(id);
+    }
+
+    public Organisation getByName(String name) {
+        return organisationRepository.findByNameIgnoreCase(name);
+    }
+
     public Organisation save(Organisation organisation) {
         if (organisation.getProfilePictureFileForSave() != null ) {
 
@@ -52,13 +60,6 @@ public class OrganisationService {
         return organisationRepository.save(organisation);
     }
 
-    public Organisation get(Integer id) {
-        return organisationRepository.findOne(id);
-    }
-
-    public Organisation getByName(String name) {
-        return organisationRepository.findByNameIgnoreCase(name);
-    }
 
     public Resource loadProfilePicture(Organisation organisation) {
         return storageService.loadAsResource(organisation.getProfilePicture());
