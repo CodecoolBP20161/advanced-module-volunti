@@ -3265,3 +3265,11 @@ vivid green: #2ad482
 	margin-top: -6px;
 	margin-bottom: 10px;
 }
+.compny-profile .user-info .social-links a.selected{
+	background: #FFFFFF;
+	color: #333;
+}
+.compny-profile .user-info .social-links a:hover{
+	background: #FFFFFF;
+	color: #333;
+}
