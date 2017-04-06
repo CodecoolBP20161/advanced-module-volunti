@@ -50,18 +50,6 @@ public class OrganisationProfileController {
         return "profiles/organisation";
     }
 
-    @GetMapping("/profile/organisation/image")
-    @ResponseBody
-    public ResponseEntity<Resource> serveFile(Principal principal) {
-        User user = userService.getByEmail(principal.getName());
-        Organisation organisation = user.getOrganisation();
-
-        Resource file = organisationService.loadProfilePicture(organisation);
-        return ResponseEntity
-                .ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\""+file.getFilename()+"\"")
-                .body(file);
-    }
 
     @GetMapping("/profile/organisation/text")
     @ResponseBody
@@ -80,15 +68,29 @@ public class OrganisationProfileController {
         return "profiles/organisation";  //TODO: What do we want to return here?!
     }
 
+    @GetMapping("/profile/organisation/image")
+    @ResponseBody
+    public ResponseEntity<Resource> serveFile(Principal principal) {
+        User user = userService.getByEmail(principal.getName());
+        Organisation organisation = user.getOrganisation();
+
+        Resource file = organisationService.loadProfilePicture(organisation);
+        return ResponseEntity
+                .ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\""+file.getFilename()+"\"")
+                .body(file);
+    }
+
     @PostMapping( value = "/profile/organisation/saveImage")
     public String saveImage(@RequestParam("file") MultipartFile file, Principal principal) throws IOException {
         log.info("saveImage() method called...");
+        log.info("File type: " + file.getContentType());
 
         User user = userService.getByEmail(principal.getName());
         Organisation organisation = user.getOrganisation();
         log.info("our organisation: " + organisation.toString());
 
-        if(file.getContentType().endsWith("png") ||file.getContentType().endsWith("jpg") && !file.isEmpty()){
+        if(file.getContentType().endsWith("png") ||file.getContentType().endsWith("jpeg") && !file.isEmpty()){
             log.info("this is png or jpg");
 
             File convFile = storageService.createTemp(file);
@@ -97,7 +99,7 @@ public class OrganisationProfileController {
             convFile.delete();
 
         } else{
-            log.info("it isn't png or jpg or it is empty");
+            log.info("it isn't png or jpeg or it is empty");
         }
         return "profiles/organisation";
     }
