@@ -82,6 +82,9 @@ public class Organisation {
     @Column(name="background_picture")
     private String backgroundPicture;
 
+    @Transient
+    private File backgroundPictureFileForSave;
+
 //    @OneToMany(mappedBy="organisationId")
 //    private List<OrganisationSocialLink> social_link;
 
@@ -105,5 +108,10 @@ public class Organisation {
     public void setProfilePictureFromFile(File file) {
         this.profilePictureFileForSave = file;
     }
+
+    public void setBackgroundPictureFromFile(File file) {
+        this.backgroundPictureFileForSave = file;
+    }
+
 
 }

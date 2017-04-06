@@ -68,9 +68,10 @@ public class OrganisationProfileController {
         return "profiles/organisation";  //TODO: What do we want to return here?!
     }
 
-    @GetMapping("/profile/organisation/image")
+    @GetMapping("/profile/organisation/image/profile")
     @ResponseBody
-    public ResponseEntity<Resource> serveFile(Principal principal) {
+    public ResponseEntity<Resource> serveProfileImage(Principal principal) {
+        log.info("serveProfileImage() method called...");
         User user = userService.getByEmail(principal.getName());
         Organisation organisation = user.getOrganisation();
 
@@ -81,9 +82,9 @@ public class OrganisationProfileController {
                 .body(file);
     }
 
-    @PostMapping( value = "/profile/organisation/saveImage")
-    public String saveImage(@RequestParam("file") MultipartFile file, Principal principal) throws IOException {
-        log.info("saveImage() method called...");
+    @PostMapping( value = "/profile/organisation/saveProfileImage")
+    public String saveProfileImage(@RequestParam("file") MultipartFile file, Principal principal) throws IOException {
+        log.info("saveProfileImage() method called...");
         log.info("File type: " + file.getContentType());
 
         User user = userService.getByEmail(principal.getName());
@@ -95,6 +96,43 @@ public class OrganisationProfileController {
 
             File convFile = storageService.createTemp(file);
             organisation.setProfilePictureFileForSave(convFile);
+            organisationService.save(organisation);
+            convFile.delete();
+
+        } else{
+            log.info("it isn't png or jpeg or it is empty");
+        }
+        return "profiles/organisation";
+    }
+
+    @GetMapping("/profile/organisation/image/background")
+    @ResponseBody
+    public ResponseEntity<Resource> serveBackgroundImage(Principal principal) {
+        log.info("serveBackgroundImage() mehod called...");
+        User user = userService.getByEmail(principal.getName());
+        Organisation organisation = user.getOrganisation();
+
+        Resource file = organisationService.loadBackgroundPicture(organisation);
+        return ResponseEntity
+                .ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\""+file.getFilename()+"\"")
+                .body(file);
+    }
+
+    @PostMapping( value = "/profile/organisation/saveBackgroundImage")
+    public String saveBackgroundImage(@RequestParam("file") MultipartFile file, Principal principal) throws IOException {
+        log.info("saveBackgroundImage() method called...");
+        log.info("File type: " + file.getContentType());
+
+        User user = userService.getByEmail(principal.getName());
+        Organisation organisation = user.getOrganisation();
+        log.info("our organisation: " + organisation.toString());
+
+        if(file.getContentType().endsWith("png") ||file.getContentType().endsWith("jpeg") && !file.isEmpty()){
+            log.info("this is png or jpg");
+
+            File convFile = storageService.createTemp(file);
+            organisation.setBackgroundPictureFileForSave(convFile);
             organisationService.save(organisation);
             convFile.delete();
 

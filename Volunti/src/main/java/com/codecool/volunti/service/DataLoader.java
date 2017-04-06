@@ -68,8 +68,11 @@ public class DataLoader {
 
         try {
             File testImageFile = new File( "Volunti/src/main/resources/static/images/profile_image/test_profile_image.png" );
+            File testBackgroundImageFile = new File( "Volunti/src/main/resources/static/images/background_image/test_background_picture.jpg" );
+
             log.info(testImageFile.getAbsolutePath());
             organisation1.setProfilePictureFileForSave(testImageFile);
+            organisation1.setBackgroundPictureFileForSave(testBackgroundImageFile);
         } catch (Exception e) {
             log.error("Cannot save test image: ", e);
         }
