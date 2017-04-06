@@ -52,8 +52,8 @@ class FullProfile extends React.Component {
                     mission: response.mission,
                     description1: response.description1,
                     description2: response.description2,
-                    backgroundPicture: response.backgroundPicture,
-                    profilePicture: "/profile/organisation/image",
+                    backgroundPicture: "/profile/organisation/image/background",
+                    profilePicture: "/profile/organisation/image/profile",
                     social: {
                         facebook: 'facebookURL',
                         twitter: 'twitterURL',
@@ -71,12 +71,12 @@ class FullProfile extends React.Component {
 
     render() {
         const divStyle = {
-            backgroundImage: 'url(' + this.state.backgroundPicture + ')',
+            background: 'url(' + "/profile/organisation/image/background" + ')',
         };
         return(
             <div className="compny-profile">
                 {/*<!-- SUB Banner -->*/}
-                <div className="profile-bnr" style={{background: divStyle}}>
+                <div className="profile-bnr" style={divStyle}>
                     <div className="container">
                         {console.log("social in Profile: ", this.state.social)}
                         {/*<!-- User Info -->*/}

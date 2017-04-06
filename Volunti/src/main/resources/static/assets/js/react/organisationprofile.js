@@ -9539,8 +9539,8 @@ var FullProfile = function (_React$Component) {
                         mission: response.mission,
                         description1: response.description1,
                         description2: response.description2,
-                        backgroundPicture: response.backgroundPicture,
-                        profilePicture: "/profile/organisation/image",
+                        backgroundPicture: "/profile/organisation/image/background",
+                        profilePicture: "/profile/organisation/image/profile",
                         social: {
                             facebook: 'facebookURL',
                             twitter: 'twitterURL',
@@ -9561,14 +9561,14 @@ var FullProfile = function (_React$Component) {
         key: 'render',
         value: function render() {
             var divStyle = {
-                backgroundImage: 'url(' + this.state.backgroundPicture + ')'
+                background: 'url(' + "/profile/organisation/image/background" + ')'
             };
             return _react2.default.createElement(
                 'div',
                 { className: 'compny-profile' },
                 _react2.default.createElement(
                     'div',
-                    { className: 'profile-bnr', style: { background: divStyle } },
+                    { className: 'profile-bnr', style: divStyle },
                     _react2.default.createElement(
                         'div',
                         { className: 'container' },
