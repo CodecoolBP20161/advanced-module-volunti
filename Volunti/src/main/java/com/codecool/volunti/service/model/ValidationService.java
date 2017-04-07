@@ -1,6 +1,5 @@
 package com.codecool.volunti.service.model;
 
-
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,7 +23,7 @@ public class ValidationService {
     }
 
     public boolean checkIfValueExists(HashMap<String, String> payload){
-        log.info("Field Validation executed.");
+        ValidationService.log.info("Field Validation executed.");
         String entity = payload.get("entityName");
         String fieldName = payload.get("fieldName");
         String valueToCheck = payload.get("value").trim();
@@ -34,7 +33,7 @@ public class ValidationService {
                     case "email":
                         return userService.getByEmail(valueToCheck) != null;
                     default:
-                        log.error("The given field name in " + entity + " doesnt exists.");
+                        ValidationService.log.error("The given field name in " + entity + " doesnt exists.");
                         throw new NotImplementedException();
                 }
             case "organisation":
@@ -42,13 +41,15 @@ public class ValidationService {
                     case "name":
                         return organisationService.getByName(valueToCheck) != null;
                     default:
-                        log.error("The given field name in " + entity + " doesnt exists.");
+                        ValidationService.log.error("The given field name in " + entity + " doesnt exists.");
                         throw new NotImplementedException();
                 }
             default:
-                log.error("Not implemented validation type or wrong request body.");
+                ValidationService.log.error("Not implemented validation type or wrong request body.");
                 throw new NotImplementedException();
         }
     }
 
 }
+
+

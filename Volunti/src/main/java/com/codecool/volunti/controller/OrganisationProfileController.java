@@ -1,5 +1,6 @@
 package com.codecool.volunti.controller;
 
+import com.codecool.volunti.service.ImageValidationService;
 import com.codecool.volunti.model.Organisation;
 import com.codecool.volunti.model.User;
 import com.codecool.volunti.service.StorageService;
@@ -14,15 +15,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import springfox.documentation.spring.web.json.Json;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URLConnection;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.security.Principal;
-import java.util.UUID;
 
 
 @Slf4j
@@ -32,12 +28,14 @@ public class OrganisationProfileController {
     private OrganisationService organisationService;
     private UserService userService;
     private StorageService storageService;
+    private ImageValidationService imageValidationService;
 
     @Autowired
-    public OrganisationProfileController(OrganisationService organisationService, UserService userService, StorageService storageService) {
+    public OrganisationProfileController(OrganisationService organisationService, UserService userService, StorageService storageService, ImageValidationService imageValidationService) {
         this.organisationService = organisationService;
         this.userService = userService;
         this.storageService = storageService;
+        this.imageValidationService = imageValidationService;
     }
 
     @GetMapping(value = "/profile/organisation")
@@ -91,17 +89,13 @@ public class OrganisationProfileController {
         Organisation organisation = user.getOrganisation();
         log.info("our organisation: " + organisation.toString());
 
-        if(file.getContentType().endsWith("png") ||file.getContentType().endsWith("jpeg") && !file.isEmpty()){
-            log.info("this is png or jpg");
+        MultipartFile checkedFile = imageValidationService.imageTypeValidator(file);
 
-            File convFile = storageService.createTemp(file);
-            organisation.setProfilePictureFileForSave(convFile);
-            organisationService.save(organisation);
-            convFile.delete();
+        File convFile = storageService.createTemp(file);
+        organisation.setProfilePictureFileForSave(convFile);
+        organisationService.save(organisation);
+        convFile.delete();
 
-        } else{
-            log.info("it isn't png or jpeg or it is empty");
-        }
         return "profiles/organisation";
     }
 
@@ -128,17 +122,14 @@ public class OrganisationProfileController {
         Organisation organisation = user.getOrganisation();
         log.info("our organisation: " + organisation.toString());
 
-        if(file.getContentType().endsWith("png") ||file.getContentType().endsWith("jpeg") && !file.isEmpty()){
-            log.info("this is png or jpg");
+        MultipartFile checkedFile = imageValidationService.imageTypeValidator(file);
 
-            File convFile = storageService.createTemp(file);
-            organisation.setBackgroundPictureFileForSave(convFile);
-            organisationService.save(organisation);
-            convFile.delete();
+        File convFile = storageService.createTemp(checkedFile);
+        organisation.setBackgroundPictureFileForSave(convFile);
+        organisationService.save(organisation);
+        convFile.delete();
 
-        } else{
-            log.info("it isn't png or jpeg or it is empty");
-        }
+
         return "profiles/organisation";
     }
 

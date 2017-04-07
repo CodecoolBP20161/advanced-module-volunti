@@ -14,6 +14,15 @@
         <div class="profile-bnr">
             <div class="container">
 
+                <div class="btn-group btn-group-justified pull-right col-xs-12">
+                    <form method="POST" enctype="multipart/form-data" th:action="@{/profile/organisation/saveBackgroundImage}" th:object="${organisation}">
+                        <input class="btn btn-default btn-sm col-xs-6" type="file" name="file" />
+                        <input class="btn btn-default btn-sm col-xs-6" type="submit" value="upload" />
+                    </form>
+                </div>
+
+                <div class="sidebar-thumbnail"> <img th:src="@{~/profile/organisation/image/background}" alt="Profile picture"/> </div>
+
                 <!-- User Info -->
                 <div class="user-info">
                     <h1>
