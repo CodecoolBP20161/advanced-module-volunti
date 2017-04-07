@@ -9507,74 +9507,106 @@ var Filters = React.createClass({
     render: function render() {
         return React.createElement(
             "div",
-            null,
-            React.createElement("input", { type: "date", ref: "from", id: "from", onChange: this.handleChange }),
-            React.createElement("input", { type: "date", ref: "to", id: "to", onChange: this.handleChange }),
+            { className: "row opportunity-filters" },
             React.createElement(
-                "select",
-                { value: this.state.userSkill, ref: "skills", id: "skills", onChange: this.handleChange },
-                React.createElement(
-                    "option",
-                    { value: "" },
-                    "Skill"
-                ),
-                this.state.skills.map(function (skill, index) {
-                    return React.createElement(
-                        "option",
-                        { key: index },
-                        skill
-                    );
-                })
+                "div",
+                { className: "col-sm-2" },
+                React.createElement("input", { type: "date", ref: "from", id: "from",
+                    onChange: this.handleChange })
             ),
             React.createElement(
-                "select",
-                { ref: "category", id: "category", onChange: this.handleChange },
-                React.createElement(
-                    "option",
-                    { value: "" },
-                    "Category"
-                ),
-                this.state.categories.map(function (category, index) {
-                    return React.createElement(
-                        "option",
-                        { key: index },
-                        category
-                    );
-                })
+                "div",
+                { className: "col-sm-2" },
+                React.createElement("input", { type: "date", ref: "to", id: "to",
+                    onChange: this.handleChange })
             ),
             React.createElement(
-                "select",
-                { value: this.state.userLocation, ref: "location", id: "location", onChange: this.handleChange },
+                "div",
+                { className: "col-sm-2" },
                 React.createElement(
-                    "option",
-                    { value: "" },
-                    "Location"
-                ),
-                this.state.locations.map(function (location, index) {
-                    return React.createElement(
+                    "select",
+                    { value: this.state.userSkill,
+                        ref: "skills", id: "skills",
+                        onChange: this.handleChange },
+                    React.createElement(
                         "option",
-                        { key: index },
-                        location
-                    );
-                })
+                        { value: "" },
+                        "Skill"
+                    ),
+                    this.state.skills.map(function (skill, index) {
+                        return React.createElement(
+                            "option",
+                            { key: index },
+                            skill
+                        );
+                    })
+                )
             ),
             React.createElement(
-                "select",
-                { ref: "pageSize", id: "pageSize", onChange: this.handleChange },
+                "div",
+                { className: "col-sm-2" },
                 React.createElement(
-                    "option",
-                    null,
-                    "10"
-                ),
+                    "select",
+                    { ref: "category", id: "category",
+                        onChange: this.handleChange },
+                    React.createElement(
+                        "option",
+                        { value: "" },
+                        "Category"
+                    ),
+                    this.state.categories.map(function (category, index) {
+                        return React.createElement(
+                            "option",
+                            { key: index },
+                            category
+                        );
+                    })
+                )
+            ),
+            React.createElement(
+                "div",
+                { className: "col-sm-2" },
                 React.createElement(
-                    "option",
-                    null,
-                    "20"
-                ),
+                    "select",
+                    { value: this.state.userLocation,
+                        ref: "location",
+                        id: "location", onChange: this.handleChange },
+                    React.createElement(
+                        "option",
+                        { value: "" },
+                        "Location"
+                    ),
+                    this.state.locations.map(function (location, index) {
+                        return React.createElement(
+                            "option",
+                            { key: index },
+                            location
+                        );
+                    })
+                )
+            ),
+            React.createElement(
+                "div",
+                { className: "col-sm-2" },
                 React.createElement(
-                    "option",
-                    null,
-                    "30"
+                    "select",
+                    { ref: "pageSize", id: "pageSize",
+                        onChange: this.handleChange },
+                    React.createElement(
+                        "option",
+                        null,
+                        "10"
+                    ),
+                    React.createElement(
+                        "option",
+                        null,
+                        "20"
+                    ),
+                    React.createElement(
+                        "option",
+                        null,
+                        "30"
+                    )
                 )
             )
         );
@@ -10036,7 +10068,7 @@ var Main = React.createClass({
                 'div',
                 null,
                 'Did not found any match'
-            ) : React.createElement(_reactJsPagination2.default, { className: 'pagination',
+            ) : React.createElement(_reactJsPagination2.default, {
                 activePage: this.state.currentPage,
                 itemsCountPerPage: parseInt(this.state.filters.pageSize),
                 totalItemsCount: this.state.totalItems,

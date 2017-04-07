@@ -84,19 +84,24 @@ const Main = React.createClass({
     render: function () {
         return (
             <div>
-                <Filters filters={this.state.filters} onFilterChange={this.setFilter}
-                         onDefaultValues={this.setDefaultValues}/>
-                <Table opportunities={this.state.opportunities}
-                       currentPage={this.state.currentPage}/>
+
+                    <Filters filters={this.state.filters} onFilterChange={this.setFilter}
+                             onDefaultValues={this.setDefaultValues}/>
+
+                    <Table opportunities={this.state.opportunities}
+                           currentPage={this.state.currentPage}/>
+
+
 
                 {this.state.opportunities.length == 0 ? <div>Did not found any match</div> :
-                    <Pagination className="pagination"
-                                activePage={this.state.currentPage}
-                                itemsCountPerPage={parseInt(this.state.filters.pageSize)}
-                                totalItemsCount={this.state.totalItems}
-                                pageRangeDisplayed={3}
-                                onChange={this.handlePageChange}
-                    />}
+                        <Pagination
+                                    activePage={this.state.currentPage}
+                                    itemsCountPerPage={parseInt(this.state.filters.pageSize)}
+                                    totalItemsCount={this.state.totalItems}
+                                    pageRangeDisplayed={3}
+                                    onChange={this.handlePageChange}
+                        />
+                    }
             </div>
         )
     }
