@@ -10069,6 +10069,7 @@ var Main = React.createClass({
                 null,
                 'Did not found any match'
             ) : React.createElement(_reactJsPagination2.default, {
+                innerClass: 'uou-paginatin list-unstyled',
                 activePage: this.state.currentPage,
                 itemsCountPerPage: parseInt(this.state.filters.pageSize),
                 totalItemsCount: this.state.totalItems,

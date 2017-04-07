@@ -94,7 +94,11 @@ const Main = React.createClass({
 
 
                 {this.state.opportunities.length == 0 ? <div>Did not found any match</div> :
+
+
+
                         <Pagination
+                                    innerClass="uou-paginatin list-unstyled"
                                     activePage={this.state.currentPage}
                                     itemsCountPerPage={parseInt(this.state.filters.pageSize)}
                                     totalItemsCount={this.state.totalItems}
