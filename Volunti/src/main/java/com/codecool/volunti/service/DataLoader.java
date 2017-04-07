@@ -66,6 +66,18 @@ public class DataLoader {
 
         loadSkills();
 
+        organisationRepository.save(organisation1);
+        organisationRepository.save(organisation2);
+        organisationRepository.save(organisation3);
+        organisationRepository.save(organisation4);
+
+        for (int i = 0; i < 50; i++) {
+            testOpportunityGenerator(organisation1);
+            testOpportunityGenerator(organisation2);
+            testOpportunityGenerator(organisation3);
+            testOpportunityGenerator(organisation4);
+        }
+
         Volunteer volunteer = new Volunteer();
         volunteer.setCountry("Hungary");
         volunteer.setMotto("my mottos");
@@ -85,11 +97,6 @@ public class DataLoader {
 
         volunteerService.save(icelandicVolunteer);
 
-        organisationRepository.save(organisation1);
-        organisationRepository.save(organisation2);
-        organisationRepository.save(organisation3);
-        organisationRepository.save(organisation4);
-
         User userLajos = new User("Lajos", "Lakatos", "b@g.com", "1234", organisation1, volunteer);
         User userAnna = new User("Anna", "Kiss", "em@i.l", passwordEncoder.encode("password"), organisation1, volunteer);
         User userVolunti = new User("Volunti", "Volunti", "volunti.trial@gmail.com", passwordEncoder.encode("password"), organisation1, volunteer);
@@ -105,12 +112,6 @@ public class DataLoader {
         userService.saveUser(userVolunti);
         userRepository.save(userLajos);
 
-        for (int i = 0; i < 50; i++) {
-            testOpportunityGenerator(organisation1);
-            testOpportunityGenerator(organisation2);
-            testOpportunityGenerator(organisation3);
-            testOpportunityGenerator(organisation4);
-        }
         LOGGER.info("loadData method called ...");
     }
 
