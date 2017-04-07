@@ -85,6 +85,7 @@ public class RegistrationController {
         if ( session.getAttribute("user") != null ) {
             user = (User) session.getAttribute("user");
         }
+        model.addAttribute("action","/registration/organisation/step2/");
         model.addAttribute("user", user);
         model.addAttribute("organisation_id", organisation_id);
         return "registration/user";
@@ -117,6 +118,7 @@ public class RegistrationController {
         session.removeAttribute("organisation");
         session.removeAttribute("user");
         log.info("Organisation removed from session.");
+        model.addAttribute("action","/registration/organisation/step2/");
         model.addAttribute("theme", "Registration");
         model.addAttribute("message", "Registration successful! We have sent an e-mail to your email address to the given e-mail account."
                                         + "\n Please confirm your account using the given link.");

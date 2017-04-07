@@ -4,9 +4,6 @@ import java.util.List;
 
 public class Pageable<T> {
 
-    /** the default page size */
-//    public static final int DEFAULT_PAGE_SIZE = 10;
-//
     private static final int PAGE_WINDOW = 10;
 
     /** the list over which this class is paging */
