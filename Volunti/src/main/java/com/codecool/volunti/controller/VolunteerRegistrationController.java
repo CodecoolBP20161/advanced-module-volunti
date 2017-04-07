@@ -37,9 +37,10 @@ public class VolunteerRegistrationController {
         Volunteer volunteer = new Volunteer();
         if ( session.getAttribute("volunteer") != null ) {
             volunteer = (Volunteer) session.getAttribute("volunteer");
+
+            System.out.println(volunteer);
         }
         model.addAttribute("skills", skillRepository.findAll());
-
         model.addAttribute("volunteer", volunteer);
         return "registration/volunteer/volunteerForm";
     }
@@ -62,9 +63,10 @@ public class VolunteerRegistrationController {
         if (session.getAttribute("user") != null){
             user = (User) session.getAttribute("user");
         }
+        model.addAttribute("action","/registration/volunteer/step2/");
         model.addAttribute("user", user);
         model.addAttribute("volunteer_id", volunteer_id);
-        return "registration/user_volunteer";
+        return "registration/user";
     }
 
     @PostMapping("/step2")
@@ -82,6 +84,7 @@ public class VolunteerRegistrationController {
 
         session.removeAttribute("volunteer");
         session.removeAttribute("user");
+        model.addAttribute("action","/registration/volunteer/step2/");
         model.addAttribute("theme", "Registration");
         model.addAttribute("message", "Registration successful! We have sent an e-mail to your email address to the given e-mail account."
                 + "\n Please confirm your account using the given link.");
