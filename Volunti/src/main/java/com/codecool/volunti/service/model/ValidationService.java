@@ -23,7 +23,7 @@ public class ValidationService {
     }
 
     public boolean checkIfValueExists(HashMap<String, String> payload){
-        ValidationService.log.info("Field Validation executed.");
+        log.info("Field Validation executed.");
         String entity = payload.get("entityName");
         String fieldName = payload.get("fieldName");
         String valueToCheck = payload.get("value").trim();
@@ -33,7 +33,7 @@ public class ValidationService {
                     case "email":
                         return userService.getByEmail(valueToCheck) != null;
                     default:
-                        ValidationService.log.error("The given field name in " + entity + " doesnt exists.");
+                        log.error("The given field name in " + entity + " doesnt exists.");
                         throw new NotImplementedException();
                 }
             case "organisation":
@@ -41,11 +41,11 @@ public class ValidationService {
                     case "name":
                         return organisationService.getByName(valueToCheck) != null;
                     default:
-                        ValidationService.log.error("The given field name in " + entity + " doesnt exists.");
+                        log.error("The given field name in " + entity + " doesnt exists.");
                         throw new NotImplementedException();
                 }
             default:
-                ValidationService.log.error("Not implemented validation type or wrong request body.");
+                log.error("Not implemented validation type or wrong request body.");
                 throw new NotImplementedException();
         }
     }
