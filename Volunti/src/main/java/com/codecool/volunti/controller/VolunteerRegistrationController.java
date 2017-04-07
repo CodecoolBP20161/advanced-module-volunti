@@ -2,11 +2,10 @@ package com.codecool.volunti.controller;
 
 import com.codecool.volunti.model.User;
 import com.codecool.volunti.model.Volunteer;
-import com.codecool.volunti.repository.VolunteerRepository;
+import com.codecool.volunti.repository.SkillRepository;
 import com.codecool.volunti.service.email.EmailService;
 import com.codecool.volunti.service.email.EmailType;
 import com.codecool.volunti.service.model.UserService;
-import com.codecool.volunti.service.model.ValidationService;
 import com.codecool.volunti.service.model.VolunteerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -15,7 +14,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import java.util.HashMap;
 
 @Controller
 @RequestMapping(value = "/registration/volunteer")
@@ -29,11 +27,10 @@ public class VolunteerRegistrationController {
     @Autowired
     private VolunteerService volunteerService;
     @Autowired
-    private VolunteerRepository volunteerRepository;
-    @Autowired
-    private ValidationService validationService;
-    @Autowired
     private BCryptPasswordEncoder passwordEncoder;
+    @Autowired
+    private SkillRepository skillRepository;
+
 
     @GetMapping("/step1")
     public String stepOne(Model model, HttpSession session) {
@@ -41,6 +38,8 @@ public class VolunteerRegistrationController {
         if ( session.getAttribute("volunteer") != null ) {
             volunteer = (Volunteer) session.getAttribute("volunteer");
         }
+        model.addAttribute("skills", skillRepository.findAll());
+
         model.addAttribute("volunteer", volunteer);
         return "registration/volunteer/volunteerForm";
     }
@@ -64,8 +63,8 @@ public class VolunteerRegistrationController {
             user = (User) session.getAttribute("user");
         }
         model.addAttribute("user", user);
-        model.addAttribute("organisation_id", volunteer_id);
-        return "registration/user";
+        model.addAttribute("volunteer_id", volunteer_id);
+        return "registration/user_volunteer";
     }
 
     @PostMapping("/step2")
@@ -112,9 +111,9 @@ public class VolunteerRegistrationController {
         value: value
     }
     */
-    @PostMapping( value = "/ValidateFieldIfExists")
-    @ResponseBody
-    public String validateFieldIfExists(@RequestBody HashMap<String, String> payload){
-        return String.valueOf(validationService.checkIfValueExists(payload));
-    }
+//    @PostMapping( value = "/ValidateFieldIfExists")
+//    @ResponseBody
+//    public String validateFieldIfExists(@RequestBody HashMap<String, String> payload){
+//        return String.valueOf(validationService.checkIfValueExists(payload));
+//    }
 }

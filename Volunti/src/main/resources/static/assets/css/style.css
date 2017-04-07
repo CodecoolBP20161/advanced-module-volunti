@@ -1302,6 +1302,7 @@ iframe {
 }
 .banr-head input[type="email"], input[type="text"], input[type="password"] {
 	color: #000000;
+}
 .banr-head input[type="email"], .banr-head input[type="text"], .banr-head input[type="password"] {
 	color: #fff;
 }

@@ -3,6 +3,14 @@
         maxItems: 5
     });
 
+    $('#select-language').selectize({
+        maxItems: 5
+    });
+
+    $('#select-country').selectize({
+        maxItems: 1
+    });
+
     function loadScript(url, callback)
     {
         // Adding the script tag to the head as suggested before
