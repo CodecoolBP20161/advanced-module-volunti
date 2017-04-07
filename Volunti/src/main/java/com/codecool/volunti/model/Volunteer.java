@@ -51,8 +51,4 @@ public class Volunteer {
     private List<Skill> volunteerSkills;
 }
 
-    //What is your life motto? (text)
-      //  What are you interested in? Main interest (text)
-        //Spoken languages - multiplce choice (multiple select from a predefined list)
-        //Year of birth (number)
 

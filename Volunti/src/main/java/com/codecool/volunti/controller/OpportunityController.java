@@ -2,9 +2,11 @@ package com.codecool.volunti.controller;
 
 import com.codecool.volunti.model.Opportunity;
 import com.codecool.volunti.model.Organisation;
+import com.codecool.volunti.model.User;
 import com.codecool.volunti.repository.OpportunityRepository;
 import com.codecool.volunti.repository.OrganisationRepository;
 import com.codecool.volunti.repository.SkillRepository;
+import com.codecool.volunti.repository.UserRepository;
 import com.codecool.volunti.service.OpportunityService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +15,13 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
+import java.security.Principal;
 import java.util.List;
 
 @Controller
 @Slf4j
-@RequestMapping(value = "/organisation")
+@RequestMapping(value = "")
 public class OpportunityController {
 
     @Autowired
@@ -32,11 +36,15 @@ public class OpportunityController {
     @Autowired
     private SkillRepository skillRepository;
 
+    @Autowired
+    private UserRepository userRepository;
 
-    @GetMapping("/{organisation_id}/opportunities")
-    public String displayOpportunityList(@PathVariable Integer organisation_id, Model model){
 
-        Organisation organisation = organisationRepository.findOne(organisation_id);
+    @GetMapping("/profile/organisation/opportunities")
+    public String displayOpportunityList(Model model, Principal principal){
+
+        Organisation organisation = userRepository.findByEmail(principal.getName()).getOrganisation();
+
         log.info("Organisation found: " + organisation);
 
         List<Opportunity> opportunities = opportunityRepository.findByOrganisationOrderByIdAsc(organisation);
@@ -47,37 +55,39 @@ public class OpportunityController {
         return "opportunity/list";
     }
 
-    @GetMapping("/{organisation_id}/opportunity/delete/{opportunity_id}")
-    public String deleteOpportunity(@PathVariable Integer organisation_id, @PathVariable Integer opportunity_id){
+    @GetMapping("/profile/organisation/opportunity/delete/{opportunity_id}")
+    public String deleteOpportunity(@PathVariable Integer opportunity_id){
         opportunityRepository.delete(opportunity_id);
-        return "redirect:/organisation/{organisation_id}/opportunities";
+        return "redirect:/profile/organisation/opportunities";
     }
 
-    @GetMapping("/{organisation_id}/opportunity/{opportunity_id}")
-    public String editOpportunity(@PathVariable Integer organisation_id,@PathVariable Integer opportunity_id, Model model ) {
+    @GetMapping("/profile/organisation/opportunity/{opportunity_id}")
+    public String editOpportunity(@PathVariable Integer opportunity_id, Model model, Principal principal ) {
 
+        Organisation organisation = userRepository.findByEmail(principal.getName()).getOrganisation();
         String action;
         if (opportunity_id != 0) {
             Opportunity opportunity = opportunityRepository.findOne(opportunity_id);
             model.addAttribute("opportunity", opportunity);
-            action = "/organisation/" + organisation_id + "/opportunity/" + opportunity_id;
+            action = "/organisation/" + organisation.getOrganisationId() + "/opportunity/" + opportunity_id;
             log.info("opp: " + opportunity);
         } else {
             model.addAttribute("opportunity", new Opportunity());
-            action = "/organisation/" + organisation_id + "/opportunity/0";
+            action = "/organisation/" + organisation.getOrganisationId() + "/opportunity/0";
         }
 
         model.addAttribute("action", action);
         model.addAttribute("skills", skillRepository.findAll());
-        model.addAttribute("organisation", organisationRepository.findByOrganisationId(organisation_id));
+        model.addAttribute("organisation", organisation);
 
         return "opportunity/multi-form";
     }
 
 
-    @PostMapping("/{organisation_id}/opportunity/{opportunity_id}")
-    public String editSaveOpportunity(@PathVariable Integer organisation_id,@PathVariable Integer opportunity_id, Model model, Opportunity opportunity, final BindingResult bindingResult) {
-        Organisation organisation = organisationRepository.findByOrganisationId(organisation_id);
+    @PostMapping("/profile/organisation/opportunity/{opportunity_id}")
+    public String editSaveOpportunity(@PathVariable Integer opportunity_id, Model model, Opportunity opportunity, final BindingResult bindingResult, Principal principal) {
+
+        Organisation organisation = userRepository.findByEmail(principal.getName()).getOrganisation();
 
         if (opportunity_id != 0) {
         opportunityService.update(opportunity, opportunityRepository.findOne(opportunity_id));
@@ -94,7 +104,7 @@ public class OpportunityController {
             return "opportunity/multi-form";
         }
 
-        return "redirect:/organisation/{organisation_id}/opportunities";
+        return "redirect:/profile/organisation/opportunities";
     }
 
 }
