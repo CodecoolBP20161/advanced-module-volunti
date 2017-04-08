@@ -34,57 +34,57 @@ public class VolunteerRegistrationController {
 
     @GetMapping("/step1")
     public String stepOne(Model model, HttpSession session) {
-        Volunteer volunteer = new Volunteer();
-        if ( session.getAttribute("volunteer") != null ) {
-            volunteer = (Volunteer) session.getAttribute("volunteer");
-
-            System.out.println(volunteer);
-        }
-        model.addAttribute("skills", skillRepository.findAll());
-        model.addAttribute("volunteer", volunteer);
-        return "registration/volunteer/volunteerForm";
-    }
-
-    @PostMapping("/step1")
-    public String stepOnePost(Volunteer volunteer, HttpSession session) {
-        if(session.getAttribute("volunteer") == null){
-            return "redirect:/registration/volunteer/step1";
-        }
-        return "redirect:/registration/volunteer/step2/" + volunteer.getId();
-    }
-
-    @GetMapping("/step2/{volunteer_id}")
-    public String stepTwo(@PathVariable Integer volunteer_id, Model model, HttpSession session) {
-        if (session.getAttribute("volunteer") == null) {
-            return "redirect:/registration/volunteer/step1";
-        }
-
         User user = new User();
-        if (session.getAttribute("user") != null){
+        if ( session.getAttribute("user") != null ) {
             user = (User) session.getAttribute("user");
+
+            System.out.println(user);
         }
-        model.addAttribute("action","/registration/volunteer/step2/");
         model.addAttribute("user", user);
-        model.addAttribute("volunteer_id", volunteer_id);
         return "registration/user";
     }
 
-    @PostMapping("/step2")
+    @PostMapping("/step1")
+    public String stepOnePost(User user, HttpSession session) {
+        if(session.getAttribute("user") == null){
+            return "redirect:/registration/volunteer/step1";
+        }
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userService.saveUser(user);
+        user.signupSuccess(emailService, EmailType.CONFIRMATION);
+        return "redirect:/registration/volunteer/step2/" + user.getId();
+    }
+
+    @GetMapping("/step2/{user_id}")
+    public String stepTwo(@PathVariable String user_id, Model model, HttpSession session) {
+        if (session.getAttribute("user") == null) {
+            return "redirect:/registration/volunteer/step1";
+        }
+
+        Volunteer volunteer = new Volunteer();
+        if (session.getAttribute("volunteer") != null){
+            volunteer = (Volunteer) session.getAttribute("volunteer");
+        }
+        User u = (User) session.getAttribute("user");
+        model.addAttribute("skills", skillRepository.findAll());
+        model.addAttribute("action","/registration/volunteer/step2/"+u.getId());
+        model.addAttribute("volunteer", volunteer);
+        model.addAttribute("volunteer_id", volunteer.getId());
+        return "registration/volunteer/volunteerForm";
+    }
+
+    @PostMapping("/step2/{volunteer_id}")
     public String stepTwoPost(User user,Volunteer volunteer, HttpSession session, Model model) {
         if (session.getAttribute("volunteer") == null) {
             return "redirect:/registration/volunteer/step1";
         }
+        System.out.println("USER "+user.getEmail() +" "+user.getFirstName() );
         volunteer = (Volunteer) session.getAttribute("volunteer");
         volunteerService.save(volunteer);
         user.setVolunteer(volunteer);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userService.saveUser(user);
-
-        user.signupSuccess(emailService, EmailType.CONFIRMATION);
 
         session.removeAttribute("volunteer");
         session.removeAttribute("user");
-        model.addAttribute("action","/registration/volunteer/step2/");
         model.addAttribute("theme", "Registration");
         model.addAttribute("message", "Registration successful! We have sent an e-mail to your email address to the given e-mail account."
                 + "\n Please confirm your account using the given link.");
