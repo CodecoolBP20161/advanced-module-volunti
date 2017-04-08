@@ -3258,3 +3258,18 @@ vivid green: #2ad482
 	color: #333333;
 }
 
+.opportunity-filters input {
+	position: relative;
+	padding: 5px 16px;
+	margin-bottom: 0;
+	height: 35px;
+	width: 110%;
+	font-size: 14px;
+	color: #000;
+	border: 1px solid #eaeaea;
+	font-weight: normal;
+}
+
+.opportunity-filters select {
+	height: 35px !important;
+}
