@@ -15,20 +15,21 @@ class FullProfile extends React.Component {
             city: null,
             zipcode: null,
             address: null,
-            profilePicture: null,
-            backgroundPicture: null,
+            profilePicture: "/profile/organisation/image/profile",
+            backgroundPicture: "/profile/organisation/image/background",
             mission: null,
             description1: null,
             description2: null,
-            social:{
+            social: {
                 facebook: "valamiLink",
                 twitter: "valamiLink",
                 google: "valamiLink",
                 linkedin: "valamiLink",
                 video: "valamiLink"
-            }
-
+            },
+            selectedSocial: 'facebook'
         }
+
     }fetchData(){
         let csrfHeader = $("meta[name='_csrf_header']").attr("content");
         let csrfToken = $("meta[name='_csrf']").attr("content");
@@ -52,14 +53,12 @@ class FullProfile extends React.Component {
                     mission: response.mission,
                     description1: response.description1,
                     description2: response.description2,
-                    backgroundPicture: "/profile/organisation/image/background",
-                    profilePicture: "/profile/organisation/image/profile",
                     social: {
                         facebook: 'facebookURL',
                         twitter: 'twitterURL',
                         google: 'googleURL',
                         linkedin: 'linkedinURL',
-                        video: null,
+                        video: "https://www.youtube.com/embed/q4je9N26ouY",
                     }
                 })
             }.bind(this)
@@ -68,10 +67,55 @@ class FullProfile extends React.Component {
     componentWillMount(){
         this.fetchData()
     }
+    saveData(){
+        console.log("Full-Profile: Post AJAX sent, state saved.");
+        // let csrfHeader = $("meta[name='_csrf_header']").attr("content");
+        // let csrfToken = $("meta[name='_csrf']").attr("content");
+        // let headers = {};
+        // $.ajax({
+        //     url: "/profile/organisation/text",
+        //     cache: false,
+        //     type: "GET",
+        //     headers: headers,
+        //     dataType: "json",
+        //     success: function (response) {
+        //         this.setState({
+        //             name: response.name,
+        //             category: response.category,
+        //             country: response.country,
+        //             city: response.city,
+        //             zipcode: response.zipcode,
+        //             address: response.address,
+        //             mission: response.mission,
+        //             description1: response.description1,
+        //             description2: response.description2,
+        //             social: {
+        //                 facebook: 'facebookURL',
+        //                 twitter: 'twitterURL',
+        //                 google: 'googleURL',
+        //                 linkedin: 'linkedinURL',
+        //                 video: "https://www.youtube.com/embed/q4je9N26ouY",
+        //             }
+        //         })
+        //     }.bind(this)
+
+    }
+
+    saveSocial(value, selected){
+        console.log("full-profile: Social values are saved.");
+        let newSocial = this.state.social;
+        newSocial[this.state.selectedSocial] = value;
+        let newSelected = selected == null? this.state.selectedSocial : selected;
+        this.setState({
+            social: newSocial,
+            selectedSocial: newSelected
+        })
+    }
 
     render() {
         const divStyle = {
             background: 'url(' + "/profile/organisation/image/background" + ')',
+            'backgroundSize': 'contain'
         };
         return(
             <div className="compny-profile">
@@ -85,6 +129,10 @@ class FullProfile extends React.Component {
                             category={this.state.category}
                             address={this.state.country + ", " + this.state.zipcode + ", " + this.state.city + ", " + this.state.address}
                             social={this.state.social}
+                            saveSocial={(value, newSelected) => this.saveSocial(value, newSelected)}
+                            saveState={() => this.saveData()}
+                            selectedSocial={this.state.selectedSocial}
+
                         />
                         {/*<!-- Place of Top Right Buttons -->*/}
                     </div>

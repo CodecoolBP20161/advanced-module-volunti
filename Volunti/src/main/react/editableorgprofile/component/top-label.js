@@ -4,12 +4,14 @@ import Social from './toplabel-social'
 class TopLabel extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            editMode: false,
-        }
     }
+    saveSocial(value, newSelected){
+        this.props.saveSocial(value, newSelected);
 
-
+    }
+    saveState(){
+        this.props.saveState();
+    }
   render() {
     return (
         <div className="user-info">
@@ -17,7 +19,10 @@ class TopLabel extends React.Component {
             <h6>{this.props.category}</h6>
             <p>{this.props.address}</p>
             {console.log("social in Toplabel: ", this.props.social)}
-            <Social social={this.props.social}/>
+            <Social social={this.props.social}
+                    selected={this.props.selectedSocial}
+                    saveSocial={(value, newSelected) => this.saveSocial(value, newSelected)}
+                    socialEditOff={() => this.saveState()}/>
             {/*Stars
             <ul className="row">
                 <li className="col-sm-6">

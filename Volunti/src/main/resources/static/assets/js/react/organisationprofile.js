@@ -9497,8 +9497,8 @@ var FullProfile = function (_React$Component) {
             city: null,
             zipcode: null,
             address: null,
-            profilePicture: null,
-            backgroundPicture: null,
+            profilePicture: "/profile/organisation/image/profile",
+            backgroundPicture: "/profile/organisation/image/background",
             mission: null,
             description1: null,
             description2: null,
@@ -9508,9 +9508,10 @@ var FullProfile = function (_React$Component) {
                 google: "valamiLink",
                 linkedin: "valamiLink",
                 video: "valamiLink"
-            }
-
+            },
+            selectedSocial: 'facebook'
         };
+
         return _this;
     }
 
@@ -9539,14 +9540,12 @@ var FullProfile = function (_React$Component) {
                         mission: response.mission,
                         description1: response.description1,
                         description2: response.description2,
-                        backgroundPicture: "/profile/organisation/image/background",
-                        profilePicture: "/profile/organisation/image/profile",
                         social: {
                             facebook: 'facebookURL',
                             twitter: 'twitterURL',
                             google: 'googleURL',
                             linkedin: 'linkedinURL',
-                            video: null
+                            video: "https://www.youtube.com/embed/q4je9N26ouY"
                         }
                     });
                 }.bind(this)
@@ -9558,10 +9557,59 @@ var FullProfile = function (_React$Component) {
             this.fetchData();
         }
     }, {
+        key: 'saveData',
+        value: function saveData() {
+            console.log("Full-Profile: Post AJAX sent, state saved.");
+            // let csrfHeader = $("meta[name='_csrf_header']").attr("content");
+            // let csrfToken = $("meta[name='_csrf']").attr("content");
+            // let headers = {};
+            // $.ajax({
+            //     url: "/profile/organisation/text",
+            //     cache: false,
+            //     type: "GET",
+            //     headers: headers,
+            //     dataType: "json",
+            //     success: function (response) {
+            //         this.setState({
+            //             name: response.name,
+            //             category: response.category,
+            //             country: response.country,
+            //             city: response.city,
+            //             zipcode: response.zipcode,
+            //             address: response.address,
+            //             mission: response.mission,
+            //             description1: response.description1,
+            //             description2: response.description2,
+            //             social: {
+            //                 facebook: 'facebookURL',
+            //                 twitter: 'twitterURL',
+            //                 google: 'googleURL',
+            //                 linkedin: 'linkedinURL',
+            //                 video: "https://www.youtube.com/embed/q4je9N26ouY",
+            //             }
+            //         })
+            //     }.bind(this)
+        }
+    }, {
+        key: 'saveSocial',
+        value: function saveSocial(value, selected) {
+            console.log("full-profile: Social values are saved.");
+            var newSocial = this.state.social;
+            newSocial[this.state.selectedSocial] = value;
+            var newSelected = selected == null ? this.state.selectedSocial : selected;
+            this.setState({
+                social: newSocial,
+                selectedSocial: newSelected
+            });
+        }
+    }, {
         key: 'render',
         value: function render() {
+            var _this2 = this;
+
             var divStyle = {
-                background: 'url(' + "/profile/organisation/image/background" + ')'
+                background: 'url(' + "/profile/organisation/image/background" + ')',
+                'backgroundSize': 'contain'
             };
             return _react2.default.createElement(
                 'div',
@@ -9577,7 +9625,15 @@ var FullProfile = function (_React$Component) {
                             organisationName: this.state.name,
                             category: this.state.category,
                             address: this.state.country + ", " + this.state.zipcode + ", " + this.state.city + ", " + this.state.address,
-                            social: this.state.social
+                            social: this.state.social,
+                            saveSocial: function saveSocial(value, newSelected) {
+                                return _this2.saveSocial(value, newSelected);
+                            },
+                            saveState: function saveState() {
+                                return _this2.saveData();
+                            },
+                            selectedSocial: this.state.selectedSocial
+
                         })
                     )
                 ),
@@ -10069,17 +10125,24 @@ var TopLabel = function (_React$Component) {
     function TopLabel(props) {
         _classCallCheck(this, TopLabel);
 
-        var _this = _possibleConstructorReturn(this, (TopLabel.__proto__ || Object.getPrototypeOf(TopLabel)).call(this, props));
-
-        _this.state = {
-            editMode: false
-        };
-        return _this;
+        return _possibleConstructorReturn(this, (TopLabel.__proto__ || Object.getPrototypeOf(TopLabel)).call(this, props));
     }
 
     _createClass(TopLabel, [{
+        key: 'saveSocial',
+        value: function saveSocial(value, newSelected) {
+            this.props.saveSocial(value, newSelected);
+        }
+    }, {
+        key: 'saveState',
+        value: function saveState() {
+            this.props.saveState();
+        }
+    }, {
         key: 'render',
         value: function render() {
+            var _this2 = this;
+
             return _react2.default.createElement(
                 'div',
                 { className: 'user-info' },
@@ -10101,7 +10164,14 @@ var TopLabel = function (_React$Component) {
                     this.props.address
                 ),
                 console.log("social in Toplabel: ", this.props.social),
-                _react2.default.createElement(_toplabelSocial2.default, { social: this.props.social })
+                _react2.default.createElement(_toplabelSocial2.default, { social: this.props.social,
+                    selected: this.props.selectedSocial,
+                    saveSocial: function saveSocial(value, newSelected) {
+                        return _this2.saveSocial(value, newSelected);
+                    },
+                    socialEditOff: function socialEditOff() {
+                        return _this2.saveState();
+                    } })
             );
         }
     }]);
@@ -10146,11 +10216,7 @@ var Social = function (_React$Component) {
 
         _this.state = {
             mouseOver: false,
-            isEditing: false,
-            selected: null,
-            data: null,
-            value: null
-
+            isEditing: false
         };
 
         return _this;
@@ -10159,6 +10225,7 @@ var Social = function (_React$Component) {
     _createClass(Social, [{
         key: 'toggleEditModeOff',
         value: function toggleEditModeOff() {
+            this.props.socialEditOff();
             this.setState({
                 isEditing: false
             });
@@ -10167,23 +10234,7 @@ var Social = function (_React$Component) {
         key: 'toggleEditModeOn',
         value: function toggleEditModeOn() {
             this.setState({
-                data: this.props.social,
-                isEditing: true,
-                selected: 'facebook',
-                value: this.state.data.facebook
-            });
-        }
-    }, {
-        key: 'componentWillMount',
-        value: function componentWillMount() {
-            this.setState({
-                data: {
-                    facebook: this.props.social.facebook,
-                    twitter: this.props.social.twitter,
-                    google: this.props.social.google,
-                    linkedin: this.props.social.linkedin
-                },
-                value: this.props.social.facebook
+                isEditing: true
             });
         }
     }, {
@@ -10194,32 +10245,23 @@ var Social = function (_React$Component) {
     }, {
         key: 'select',
         value: function select(event) {
-            console.log('new Value: ', this.state.data[this.state.selected]);
-            this.setState({
-                value: this.state.data[this.state.selected],
-                selected: event.currentTarget.id
-            });
+            this.props.saveSocial(this.textInput.value, event.currentTarget.id);
         }
     }, {
         key: 'saveChange',
-        value: function saveChange(event) {
-            var newData = this.state.data;
-            console.log('to save: ', event.target.value);
-            newData[this.state.selected] = event.target.value;
-            this.setState({
-                data: newData
-            });
+        value: function saveChange() {
+            this.props.saveSocial(this.textInput.value);
         }
     }, {
         key: 'render',
         value: function render() {
             var _this2 = this;
 
-            console.log("social in Social: ", this.props.social);
+            console.log("Social: ", this.props.social);
             var socialLink = [];
             for (var key in this.props.social) {
                 if (this.props.social.hasOwnProperty(key) && key != 'video') {
-                    if (this.state.selected == key) {
+                    if (this.props.selected == key) {
                         socialLink.push(_react2.default.createElement(
                             'a',
                             { onClick: function onClick(e) {
@@ -10244,6 +10286,7 @@ var Social = function (_React$Component) {
                     }
                 }
             }
+            var inputValue = this.props.social[this.props.selected];
             return _react2.default.createElement(
                 'div',
                 { className: 'social-links', onMouseEnter: function onMouseEnter() {
@@ -10254,8 +10297,14 @@ var Social = function (_React$Component) {
                 this.state.isEditing && _react2.default.createElement(
                     'div',
                     { className: 'col-md-12 row' },
-                    _react2.default.createElement('input', { className: 'col-md-12 socialInput', type: 'text', id: 'socialInput', defaultValue: this.state.value, placeholder: this.state.value, onChange: function onChange(e) {
-                            return _this2.saveChange(e);
+                    _react2.default.createElement('input', { className: 'col-md-12 socialInput', type: 'text', id: 'socialInput',
+                        defaultValue: inputValue,
+                        placeholder: inputValue,
+                        ref: function ref(input) {
+                            return _this2.textInput = input;
+                        },
+                        onChange: function onChange() {
+                            return _this2.saveChange();
                         } })
                 ),
                 socialLink,
