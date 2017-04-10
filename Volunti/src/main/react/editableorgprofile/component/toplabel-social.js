@@ -9,17 +9,13 @@ class Social extends React.Component {
         };
 
     }
-    toggleEditModeOff(){
-        this.props.socialEditOff();
+    toggleEditMode(){
+        if (this.state.isEditing){
+            this.props.socialEditOff();
+        }
         this.setState({
-            isEditing: false
+            isEditing: !this.state.isEditing
         })
-    }
-    toggleEditModeOn(){
-        this.setState({
-            isEditing: true
-        });
-
     }
     toggleEditButton(){
         this.setState({mouseOver: !this.state.mouseOver});
@@ -71,7 +67,7 @@ class Social extends React.Component {
                     }
                     {socialLink}
                     {this.state.mouseOver  &&
-                    <button type="submit"  onClick={(this.state.isEditing? () => this.toggleEditModeOff(): () => this.toggleEditModeOn())}>{this.state.isEditing? 'Done': 'Edit'}</button>
+                    <button type="submit"  onClick={() => this.toggleEditMode()}>{this.state.isEditing? 'Done': 'Edit'}</button>
                     }
                 </div>
         );
