@@ -9547,9 +9547,37 @@ var FullProfile = function (_React$Component) {
                             linkedin: 'linkedinURL',
                             video: "https://www.youtube.com/embed/q4je9N26ouY"
                         }
+
                     });
                 }.bind(this)
             });
+            // $.ajax({
+            //     url: "/profile/organisation/text",
+            //     cache: false,
+            //     type: "GET",
+            //     headers: headers,
+            //     dataType: "json",
+            //     success: function (response) {
+            //         let social = {
+            //             facebook: null,
+            //             twitter: null,
+            //             linkedin: null,
+            //             google: null,
+            //             video: null
+            //         };
+            //         for (let link in response){
+            //             social.facebook = [link['socialLinkType']]
+            //         }
+            //         this.setState({
+            //             social: {
+            //                 facebook: 'facebookURL',
+            //                 twitter: 'twitterURL',
+            //                 google: 'googleURL',
+            //                 linkedin: 'linkedinURL',
+            //                 video: "https://www.youtube.com/embed/q4je9N26ouY",
+            //             }
+            //         })
+            //     }.bind(this)
         }
     }, {
         key: 'componentWillMount',
@@ -9609,7 +9637,7 @@ var FullProfile = function (_React$Component) {
 
             var divStyle = {
                 background: 'url(' + "/profile/organisation/image/background" + ')',
-                'backgroundSize': 'contain'
+                'background-size': 'cover'
             };
             return _react2.default.createElement(
                 'div',
@@ -10223,18 +10251,13 @@ var Social = function (_React$Component) {
     }
 
     _createClass(Social, [{
-        key: 'toggleEditModeOff',
-        value: function toggleEditModeOff() {
-            this.props.socialEditOff();
+        key: 'toggleEditMode',
+        value: function toggleEditMode() {
+            if (this.state.isEditing) {
+                this.props.socialEditOff();
+            }
             this.setState({
-                isEditing: false
-            });
-        }
-    }, {
-        key: 'toggleEditModeOn',
-        value: function toggleEditModeOn() {
-            this.setState({
-                isEditing: true
+                isEditing: !this.state.isEditing
             });
         }
     }, {
@@ -10309,10 +10332,8 @@ var Social = function (_React$Component) {
                 socialLink,
                 this.state.mouseOver && _react2.default.createElement(
                     'button',
-                    { type: 'submit', onClick: this.state.isEditing ? function () {
-                            return _this2.toggleEditModeOff();
-                        } : function () {
-                            return _this2.toggleEditModeOn();
+                    { type: 'submit', onClick: function onClick() {
+                            return _this2.toggleEditMode();
                         } },
                     this.state.isEditing ? 'Done' : 'Edit'
                 )
