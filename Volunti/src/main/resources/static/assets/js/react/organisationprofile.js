@@ -10257,11 +10257,11 @@ var Social = function (_React$Component) {
         value: function render() {
             var _this2 = this;
 
-            console.log("Social: ", this.props.social);
+            // console.log("Social: ", this.props.social);
             var socialLink = [];
             for (var key in this.props.social) {
                 if (this.props.social.hasOwnProperty(key) && key != 'video') {
-                    if (this.props.selected == key) {
+                    if (this.props.selected == key && this.state.isEditing) {
                         socialLink.push(_react2.default.createElement(
                             'a',
                             { onClick: function onClick(e) {
@@ -10298,8 +10298,7 @@ var Social = function (_React$Component) {
                     'div',
                     { className: 'col-md-12 row' },
                     _react2.default.createElement('input', { className: 'col-md-12 socialInput', type: 'text', id: 'socialInput',
-                        defaultValue: inputValue,
-                        placeholder: inputValue,
+                        value: inputValue,
                         ref: function ref(input) {
                             return _this2.textInput = input;
                         },
@@ -10325,6 +10324,22 @@ var Social = function (_React$Component) {
 }(_react2.default.Component);
 
 exports.default = Social;
+
+
+var MyInput = function MyInput(props) {
+    return _react2.default.createElement(
+        'div',
+        { className: 'col-md-12 row' },
+        _react2.default.createElement('input', { className: 'col-md-12 socialInput', type: 'text', id: 'socialInput',
+            value: props.inputValue,
+            ref: function ref(input) {
+                return props.textInput.textInput = input;
+            },
+            onChange: function onChange() {
+                return props.saveChange();
+            } })
+    );
+};
 
 /***/ }),
 /* 88 */

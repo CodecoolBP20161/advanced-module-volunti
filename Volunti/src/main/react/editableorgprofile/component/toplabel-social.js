@@ -31,11 +31,11 @@ class Social extends React.Component {
         this.props.saveSocial(this.textInput.value);
     }
     render() {
-        console.log("Social: ", this.props.social);
+        // console.log("Social: ", this.props.social);
         let socialLink = [];
         for(var key in this.props.social) {
             if (this.props.social.hasOwnProperty(key) && key != 'video') {
-                if (this.props.selected == key) {
+                if (this.props.selected == key && this.state.isEditing) {
                     socialLink.push(
                         <a onClick={(e) => this.select(e)} id={key} className='selected'>
                             <i className={"fa fa-" + key}/>
@@ -64,9 +64,8 @@ class Social extends React.Component {
                     {this.state.isEditing &&
                     <div className="col-md-12 row">
                         <input className="col-md-12 socialInput" type="text" id="socialInput"
-                               defaultValue={inputValue}
-                               placeholder={inputValue}
-                               ref={(input) => this.textInput = input}
+                               value={inputValue}
+                               ref={(input) =>this.textInput = input}
                                onChange={() => this.saveChange()}/>
                     </div>
                     }
@@ -79,3 +78,12 @@ class Social extends React.Component {
     }
 }
 export default Social
+
+const MyInput = (props) => (
+    <div className="col-md-12 row">
+        <input className="col-md-12 socialInput" type="text" id="socialInput"
+               value={props.inputValue}
+               ref={(input) => props.textInput.textInput = input}
+               onChange={()=>props.saveChange()}/>
+    </div>
+)
