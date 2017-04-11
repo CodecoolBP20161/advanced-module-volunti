@@ -86,9 +86,9 @@ public class Organisation {
     @Transient
     private File backgroundPictureFileForSave;
 
-    @OneToMany(mappedBy="organisationId")
-    @JsonSerialize(using = CustomListSerializer.class)
-    private List<OrganisationSocialLink> social_link;
+    //@OneToMany(mappedBy="organisationId")
+    //@JsonSerialize(using = CustomListSerializer.class)
+    //private List<OrganisationSocialLink> social_link;
 
     public Organisation(){}
 

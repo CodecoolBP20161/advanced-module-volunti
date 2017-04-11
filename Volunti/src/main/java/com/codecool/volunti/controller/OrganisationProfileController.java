@@ -132,13 +132,7 @@ public class OrganisationProfileController {
         BufferedImage resizedImage = imageValidationService.resize(convFile,1349,496);
 
         File convFile2 = new File(String.valueOf(convFile));
-        if(checkedFile.getContentType().endsWith("jpeg")){
-            ImageIO.write(resizedImage, "jpg", convFile2);
-        }
-        if(checkedFile.getContentType().endsWith("png")) {
-            ImageIO.write(resizedImage, "png", convFile2);
-        }
-
+        ImageIO.write(resizedImage, "jpg", convFile2);
 
         organisation.setBackgroundPictureFileForSave(convFile2);
         organisationService.save(organisation);
