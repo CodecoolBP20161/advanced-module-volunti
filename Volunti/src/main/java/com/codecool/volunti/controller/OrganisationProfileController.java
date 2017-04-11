@@ -125,25 +125,24 @@ public class OrganisationProfileController {
         Organisation organisation = user.getOrganisation();
         log.info("our organisation: " + organisation.toString());
 
-
-        //check if it is jpeg or png
         MultipartFile checkedFile = imageValidationService.imageTypeValidator(file);
 
-        //create File from MultipartFile
         File convFile = storageService.createTemp(checkedFile);
 
-        //resize image
-        File resizedImage = imageValidationService.resize(convFile,100,100);
+        BufferedImage resizedImage = imageValidationService.resize(convFile,1349,496);
 
-        //File convFile2 = new File(String.valueOf(resizedImage));
-        //ImageIO.write(resizedImage, "jpg", convFile2);
+        File convFile2 = new File(String.valueOf(convFile));
+        if(checkedFile.getContentType().endsWith("jpeg")){
+            ImageIO.write(resizedImage, "jpg", convFile2);
+        }
+        if(checkedFile.getContentType().endsWith("png")) {
+            ImageIO.write(resizedImage, "png", convFile2);
+        }
 
 
-
-        organisation.setBackgroundPictureFileForSave(resizedImage);
+        organisation.setBackgroundPictureFileForSave(convFile2);
         organisationService.save(organisation);
-        resizedImage.delete();
-
+        convFile2.delete();
 
         return "profiles/organisation";
     }
