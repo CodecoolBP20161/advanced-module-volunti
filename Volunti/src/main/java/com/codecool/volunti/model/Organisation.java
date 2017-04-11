@@ -3,14 +3,15 @@ package com.codecool.volunti.model;
 import com.codecool.volunti.model.enums.Category;
 import com.codecool.volunti.model.enums.Country;
 import com.codecool.volunti.model.enums.SpokenLanguage;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;
-import org.springframework.core.io.InputStreamSource;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name="organisations")
@@ -85,8 +86,9 @@ public class Organisation {
     @Transient
     private File backgroundPictureFileForSave;
 
-//    @OneToMany(mappedBy="organisationId")
-//    private List<OrganisationSocialLink> social_link;
+    //@OneToMany(mappedBy="organisationId")
+    //@JsonSerialize(using = CustomListSerializer.class)
+    //private List<OrganisationSocialLink> social_link;
 
     public Organisation(){}
 

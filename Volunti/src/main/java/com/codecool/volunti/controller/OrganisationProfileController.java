@@ -16,6 +16,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.security.Principal;
@@ -92,9 +95,16 @@ public class OrganisationProfileController {
         MultipartFile checkedFile = imageValidationService.imageTypeValidator(file);
 
         File convFile = storageService.createTemp(file);
-        organisation.setProfilePictureFileForSave(convFile);
+
+        BufferedImage resizedImage = imageValidationService.resize(convFile,309,233);
+
+        File convFile2 = new File(String.valueOf(convFile));
+        ImageIO.write(resizedImage, "jpg", convFile2);
+
+
+        organisation.setProfilePictureFileForSave(convFile2);
         organisationService.save(organisation);
-        convFile.delete();
+        convFile2.delete();
 
         return "profiles/organisation";
     }
@@ -125,13 +135,20 @@ public class OrganisationProfileController {
         MultipartFile checkedFile = imageValidationService.imageTypeValidator(file);
 
         File convFile = storageService.createTemp(checkedFile);
-        organisation.setBackgroundPictureFileForSave(convFile);
-        organisationService.save(organisation);
-        convFile.delete();
 
+        BufferedImage resizedImage = imageValidationService.resize(convFile,1349,496);
+
+        File convFile2 = new File(String.valueOf(convFile));
+        ImageIO.write(resizedImage, "jpg", convFile2);
+
+        organisation.setBackgroundPictureFileForSave(convFile2);
+        organisationService.save(organisation);
+        convFile2.delete();
 
         return "profiles/organisation";
     }
+
+
 
     @GetMapping( value = "/profile/react")
     public String renderReactTemplate(){
