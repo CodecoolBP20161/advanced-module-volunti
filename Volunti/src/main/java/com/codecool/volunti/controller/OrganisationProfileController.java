@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -125,26 +126,29 @@ public class OrganisationProfileController {
         log.info("our organisation: " + organisation.toString());
 
 
+        //check if it is jpeg or png
         MultipartFile checkedFile = imageValidationService.imageTypeValidator(file);
 
+        //create File from MultipartFile
         File convFile = storageService.createTemp(checkedFile);
 
+        //resize image
+        File resizedImage = imageValidationService.resize(convFile,100,100);
 
-        BufferedImage originalImage = ImageIO.read(convFile);
-        BufferedImage croppedImage = originalImage.getSubimage(100,100,100,100);
-
-        File convFile2 = new File(String.valueOf(convFile));
-        //File outputfile = new File("image.jpg");
-        ImageIO.write(croppedImage, "jpg", convFile2);
+        //File convFile2 = new File(String.valueOf(resizedImage));
+        //ImageIO.write(resizedImage, "jpg", convFile2);
 
 
-        organisation.setBackgroundPictureFileForSave(convFile2);
+
+        organisation.setBackgroundPictureFileForSave(resizedImage);
         organisationService.save(organisation);
-        convFile2.delete();
+        resizedImage.delete();
 
 
         return "profiles/organisation";
     }
+
+
 
     @GetMapping( value = "/profile/react")
     public String renderReactTemplate(){
