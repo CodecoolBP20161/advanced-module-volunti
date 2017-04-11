@@ -9939,13 +9939,19 @@ var ProfileBanner = function (_React$Component) {
         value: function savePicture(e) {
             e.preventDefault();
             this.props.savePicture(this.backGroundInput.files[0]);
-            console.log('forceUpdate');
         }
     }, {
-        key: 'toggleEditButton',
-        value: function toggleEditButton() {
+        key: 'toggleEditButtonOn',
+        value: function toggleEditButtonOn() {
             this.setState({
-                mouseOver: !this.state.mouseOver
+                mouseOver: true
+            });
+        }
+    }, {
+        key: 'toggleEditButtonOff',
+        value: function toggleEditButtonOff() {
+            this.setState({
+                mouseOver: false
             });
         }
     }, {
@@ -9963,9 +9969,9 @@ var ProfileBanner = function (_React$Component) {
             return _react2.default.createElement(
                 'div',
                 { className: 'profile-bnr', style: this.props.divStyle, key: this.props.key, onMouseEnter: function onMouseEnter() {
-                        return _this2.toggleEditButton();
+                        return _this2.toggleEditButtonOn();
                     }, onMouseLeave: function onMouseLeave() {
-                        return _this2.toggleEditButton();
+                        return _this2.toggleEditButtonOff();
                     } },
                 _react2.default.createElement(
                     'div',
@@ -9978,7 +9984,7 @@ var ProfileBanner = function (_React$Component) {
                             { method: 'POST', encType: 'multipart/form-data', action: '/profile/organisation/saveBackgroundImage' },
                             _react2.default.createElement('input', { className: 'btn btn-default btn-sm col-xs-6', ref: function ref(input) {
                                     return _this2.backGroundInput = input;
-                                }, type: 'file', required: 'required', name: 'file' }),
+                                }, type: 'file', required: 'required', name: 'file', accept: '.png,.jpg' }),
                             _react2.default.createElement('input', { className: 'btn btn-default btn-sm col-xs-6', type: 'submit', onClick: function onClick(e) {
                                     return _this2.savePicture(e);
                                 }, value: 'upload' })

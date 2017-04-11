@@ -13,11 +13,15 @@ class ProfileBanner extends React.Component {
     savePicture(e){
         e.preventDefault();
         this.props.savePicture(this.backGroundInput.files[0]);
-        console.log('forceUpdate');
     }
-    toggleEditButton(){
+    toggleEditButtonOn(){
         this.setState({
-            mouseOver: !this.state.mouseOver
+            mouseOver: true
+        })
+    }
+    toggleEditButtonOff(){
+        this.setState({
+            mouseOver: false
         })
     }
     toggleEditMode(){
@@ -28,12 +32,12 @@ class ProfileBanner extends React.Component {
 
     render(){
         return (
-            <div className="profile-bnr" style={this.props.divStyle} key={this.props.key} onMouseEnter={() => this.toggleEditButton()} onMouseLeave={() => this.toggleEditButton()}>
+            <div className="profile-bnr" style={this.props.divStyle} key={this.props.key} onMouseEnter={() => this.toggleEditButtonOn()} onMouseLeave={() => this.toggleEditButtonOff()}>
                 <div className="container">
                     {this.state.isEditing &&
                     <div className="btn-group btn-group-justified pull-right col-xs-12">
                         <form method="POST" encType="multipart/form-data" action="/profile/organisation/saveBackgroundImage">
-                            <input className="btn btn-default btn-sm col-xs-6" ref={(input) => this.backGroundInput = input} type="file" required="required" name="file" />
+                            <input className="btn btn-default btn-sm col-xs-6" ref={(input) => this.backGroundInput = input} type="file" required="required" name="file" accept=".png,.jpg"/>
                             <input className="btn btn-default btn-sm col-xs-6" type="submit" onClick={(e) => this.savePicture(e)} value="upload" />
                         </form>
                     </div>}
