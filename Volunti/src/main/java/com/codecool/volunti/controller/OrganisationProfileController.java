@@ -16,6 +16,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.security.Principal;
@@ -122,12 +124,23 @@ public class OrganisationProfileController {
         Organisation organisation = user.getOrganisation();
         log.info("our organisation: " + organisation.toString());
 
+
         MultipartFile checkedFile = imageValidationService.imageTypeValidator(file);
 
         File convFile = storageService.createTemp(checkedFile);
-        organisation.setBackgroundPictureFileForSave(convFile);
+
+
+        BufferedImage originalImage = ImageIO.read(convFile);
+        BufferedImage croppedImage = originalImage.getSubimage(100,100,100,100);
+
+        File convFile2 = new File(String.valueOf(convFile));
+        //File outputfile = new File("image.jpg");
+        ImageIO.write(croppedImage, "jpg", convFile2);
+
+
+        organisation.setBackgroundPictureFileForSave(convFile2);
         organisationService.save(organisation);
-        convFile.delete();
+        convFile2.delete();
 
 
         return "profiles/organisation";

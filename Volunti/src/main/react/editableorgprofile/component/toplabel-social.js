@@ -9,17 +9,13 @@ class Social extends React.Component {
         };
 
     }
-    toggleEditModeOff(){
-        this.props.socialEditOff();
+    toggleEditMode(){
+        if (this.state.isEditing){
+            this.props.socialEditOff();
+        }
         this.setState({
-            isEditing: false
+            isEditing: !this.state.isEditing
         })
-    }
-    toggleEditModeOn(){
-        this.setState({
-            isEditing: true
-        });
-
     }
     toggleEditButton(){
         this.setState({mouseOver: !this.state.mouseOver});
@@ -31,11 +27,11 @@ class Social extends React.Component {
         this.props.saveSocial(this.textInput.value);
     }
     render() {
-        console.log("Social: ", this.props.social);
+        // console.log("Social: ", this.props.social);
         let socialLink = [];
         for(var key in this.props.social) {
             if (this.props.social.hasOwnProperty(key) && key != 'video') {
-                if (this.props.selected == key) {
+                if (this.props.selected == key && this.state.isEditing) {
                     socialLink.push(
                         <a onClick={(e) => this.select(e)} id={key} className='selected'>
                             <i className={"fa fa-" + key}/>
@@ -64,18 +60,26 @@ class Social extends React.Component {
                     {this.state.isEditing &&
                     <div className="col-md-12 row">
                         <input className="col-md-12 socialInput" type="text" id="socialInput"
-                               defaultValue={inputValue}
-                               placeholder={inputValue}
-                               ref={(input) => this.textInput = input}
+                               value={inputValue}
+                               ref={(input) =>this.textInput = input}
                                onChange={() => this.saveChange()}/>
                     </div>
                     }
                     {socialLink}
                     {this.state.mouseOver  &&
-                    <button type="submit"  onClick={(this.state.isEditing? () => this.toggleEditModeOff(): () => this.toggleEditModeOn())}>{this.state.isEditing? 'Done': 'Edit'}</button>
+                    <button type="submit"  onClick={() => this.toggleEditMode()}>{this.state.isEditing? 'Done': 'Edit'}</button>
                     }
                 </div>
         );
     }
 }
 export default Social
+
+const MyInput = (props) => (
+    <div className="col-md-12 row">
+        <input className="col-md-12 socialInput" type="text" id="socialInput"
+               value={props.inputValue}
+               ref={(input) => props.textInput.textInput = input}
+               onChange={()=>props.saveChange()}/>
+    </div>
+)
