@@ -4,11 +4,13 @@ import TopLabel from './top-label'
 import SideBar from './side-bar'
 import Profile from './tab-profile'
 import Services from './tab-services'
+import ProfileBanner from './profile-banner'
 
 class FullProfile extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            key: Math.random(),
             name: null,
             category: null,
             country: null,
@@ -130,7 +132,6 @@ class FullProfile extends React.Component {
     }
 
     saveSocial(value, selected){
-        console.log("full-profile: Social values are saved.");
         let newSocial = this.state.social;
         newSocial[this.state.selectedSocial] = value;
         let newSelected = selected == null? this.state.selectedSocial : selected;
@@ -139,32 +140,54 @@ class FullProfile extends React.Component {
             selectedSocial: newSelected
         })
     }
+    saveBackgroundPicture(picture){
+        let csrfHeader = $("meta[name='_csrf_header']").attr("content");
+        let csrfToken = $("meta[name='_csrf']").attr("content");
+        let headers = {};
+
+        headers[csrfHeader] = csrfToken;
+        let formData = new FormData();
+        formData.append("file", picture);
+        console.log(picture);
+        $.ajax({
+            url: "/profile/organisation/saveBackgroundImage",
+            cache: false,
+            type: "POST",
+            headers: headers,
+            contentType: false,
+            processData: false,
+            async: true,
+            data: formData,
+            success: function (response) {
+                this.setState({
+                    key: Math.random(),
+                    backgroundPicture: "/profile/organisation/image/background"
+                })
+            }.bind(this)
+        })
+    }
 
     render() {
         const divStyle = {
-            background: 'url(' + "/profile/organisation/image/background" + ')',
+            background: 'url(' + this.state.backgroundPicture + ')',
             'background-size': 'cover'
         };
+
         return(
             <div className="compny-profile">
                 {/*<!-- SUB Banner -->*/}
-                <div className="profile-bnr" style={divStyle}>
-                    <div className="container">
-                        {console.log("social in Profile: ", this.state.social)}
-                        {/*<!-- User Info -->*/}
-                        <TopLabel
-                            organisationName={this.state.name}
-                            category={this.state.category}
-                            address={this.state.country + ", " + this.state.zipcode + ", " + this.state.city + ", " + this.state.address}
-                            social={this.state.social}
-                            saveSocial={(value, newSelected) => this.saveSocial(value, newSelected)}
-                            saveState={() => this.saveData()}
-                            selectedSocial={this.state.selectedSocial}
-
-                        />
-                        {/*<!-- Place of Top Right Buttons -->*/}
-                    </div>
-                </div>
+                <ProfileBanner
+                    key={this.state.key}
+                    organisationName={this.state.name}
+                    category={this.state.category}
+                    address={this.state.country + ", " + this.state.zipcode + ", " + this.state.city + ", " + this.state.address}
+                    social={this.state.social}
+                    saveSocial={(value, newSelected) => this.saveSocial(value, newSelected)}
+                    saveState={() => this.saveData()}
+                    savePicture={(picture) => this.saveBackgroundPicture(picture)}
+                    selectedSocial={this.state.selectedSocial}
+                    divStyle={divStyle}
+                />
 
 
                 {/*<!-- Profile Company Content -->*/}
