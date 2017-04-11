@@ -95,9 +95,16 @@ public class OrganisationProfileController {
         MultipartFile checkedFile = imageValidationService.imageTypeValidator(file);
 
         File convFile = storageService.createTemp(file);
-        organisation.setProfilePictureFileForSave(convFile);
+
+        BufferedImage resizedImage = imageValidationService.resize(convFile,309,233);
+
+        File convFile2 = new File(String.valueOf(convFile));
+        ImageIO.write(resizedImage, "jpg", convFile2);
+
+
+        organisation.setProfilePictureFileForSave(convFile2);
         organisationService.save(organisation);
-        convFile.delete();
+        convFile2.delete();
 
         return "profiles/organisation";
     }
