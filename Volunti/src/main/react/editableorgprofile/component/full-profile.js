@@ -60,9 +60,37 @@ class FullProfile extends React.Component {
                         linkedin: 'linkedinURL',
                         video: "https://www.youtube.com/embed/q4je9N26ouY",
                     }
+
                 })
             }.bind(this)
          });
+        // $.ajax({
+        //     url: "/profile/organisation/text",
+        //     cache: false,
+        //     type: "GET",
+        //     headers: headers,
+        //     dataType: "json",
+        //     success: function (response) {
+        //         let social = {
+        //             facebook: null,
+        //             twitter: null,
+        //             linkedin: null,
+        //             google: null,
+        //             video: null
+        //         };
+        //         for (let link in response){
+        //             social.facebook = [link['socialLinkType']]
+        //         }
+        //         this.setState({
+        //             social: {
+        //                 facebook: 'facebookURL',
+        //                 twitter: 'twitterURL',
+        //                 google: 'googleURL',
+        //                 linkedin: 'linkedinURL',
+        //                 video: "https://www.youtube.com/embed/q4je9N26ouY",
+        //             }
+        //         })
+        //     }.bind(this)
 }
     componentWillMount(){
         this.fetchData()
@@ -115,7 +143,7 @@ class FullProfile extends React.Component {
     render() {
         const divStyle = {
             background: 'url(' + "/profile/organisation/image/background" + ')',
-            'backgroundSize': 'contain'
+            'background-size': 'cover'
         };
         return(
             <div className="compny-profile">
