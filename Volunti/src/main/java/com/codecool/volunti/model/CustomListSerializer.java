@@ -29,7 +29,7 @@ public class CustomListSerializer extends StdSerializer<List<OrganisationSocialL
 
         HashMap<SocialLink, String> socialLinks = new HashMap<>();
         for (OrganisationSocialLink organisationSocialLink : items) {
-git            socialLinks.put(organisationSocialLink.getSocialLinkType(), organisationSocialLink.getSocialLinkUrl());
+            socialLinks.put(organisationSocialLink.getSocialLinkType(), organisationSocialLink.getSocialLinkUrl());
         }
         generator.writeObject(socialLinks);
     }
