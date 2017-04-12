@@ -84,7 +84,7 @@ public class OrganisationProfileController {
     }
 
     @PostMapping( value = "/profile/organisation/saveProfileImage")
-    public String saveProfileImage(@RequestParam("file") MultipartFile file, Principal principal) throws IOException {
+    public boolean saveProfileImage(@RequestParam("file") MultipartFile file, Principal principal) throws IOException {
         log.info("saveProfileImage() method called...");
         log.info("File type: " + file.getContentType());
 
@@ -92,21 +92,22 @@ public class OrganisationProfileController {
         Organisation organisation = user.getOrganisation();
         log.info("our organisation: " + organisation.toString());
 
-        MultipartFile checkedFile = imageValidationService.imageTypeValidator(file);
+        if(imageValidationService.imageTypeValidator(file)){
+            File convFile = storageService.createTemp(file);
+            BufferedImage resizedImage = imageValidationService.resize(convFile,309,233);
 
-        File convFile = storageService.createTemp(file);
-
-        BufferedImage resizedImage = imageValidationService.resize(convFile,309,233);
-
-        File convFile2 = new File(String.valueOf(convFile));
-        ImageIO.write(resizedImage, "jpg", convFile2);
+            File convFile2 = new File(String.valueOf(convFile));
+            ImageIO.write(resizedImage, "jpg", convFile2);
 
 
-        organisation.setProfilePictureFileForSave(convFile2);
-        organisationService.save(organisation);
-        convFile2.delete();
+            organisation.setProfilePictureFileForSave(convFile2);
+            organisationService.save(organisation);
+            convFile2.delete();
+            return true;
+        }else{
+            return false;
+        }
 
-        return "profiles/organisation";
     }
 
     @GetMapping("/profile/organisation/image/background")
@@ -124,7 +125,7 @@ public class OrganisationProfileController {
     }
 
     @PostMapping( value = "/profile/organisation/saveBackgroundImage")
-    public String saveBackgroundImage(@RequestParam("file") MultipartFile file, Principal principal) throws IOException {
+    public Boolean saveBackgroundImage(@RequestParam("file") MultipartFile file, Principal principal) throws IOException {
         log.info("saveBackgroundImage() method called...");
         log.info("File type: " + file.getContentType());
 
@@ -132,22 +133,22 @@ public class OrganisationProfileController {
         Organisation organisation = user.getOrganisation();
         log.info("our organisation: " + organisation.toString());
 
-        MultipartFile checkedFile = imageValidationService.imageTypeValidator(file);
+        if(imageValidationService.imageTypeValidator(file)){
+            File convFile = storageService.createTemp(file);
+            BufferedImage resizedImage = imageValidationService.resize(convFile,1349,496);
 
-        File convFile = storageService.createTemp(checkedFile);
+            File convFile2 = new File(String.valueOf(convFile));
+            ImageIO.write(resizedImage, "jpg", convFile2);
 
-        BufferedImage resizedImage = imageValidationService.resize(convFile,1349,496);
+            organisation.setBackgroundPictureFileForSave(convFile2);
+            organisationService.save(organisation);
+            convFile2.delete();
+            return true;
+        }else{
+            return false;
+        }
 
-        File convFile2 = new File(String.valueOf(convFile));
-        ImageIO.write(resizedImage, "jpg", convFile2);
-
-        organisation.setBackgroundPictureFileForSave(convFile2);
-        organisationService.save(organisation);
-        convFile2.delete();
-
-        return "profiles/organisation";
     }
-
 
 
     @GetMapping( value = "/profile/react")
