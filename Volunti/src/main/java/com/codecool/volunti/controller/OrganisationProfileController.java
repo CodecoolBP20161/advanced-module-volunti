@@ -42,13 +42,8 @@ public class OrganisationProfileController {
     }
 
     @GetMapping(value = "/profile/organisation")
-    public String renderOrganisationProfile(Model model) {
-        log.info("renderOrganisationProfile() method called ...");
-
-        Organisation organisation = organisationService.get(1);
-        log.info("organisation id: " + organisation.getOrganisationId());
-        model.addAttribute("organisation", organisation);
-        return "profiles/organisation";
+    public String renderReactTemplate() {
+        return "profiles/organisationReact";
     }
 
 
@@ -59,9 +54,9 @@ public class OrganisationProfileController {
         return user.getOrganisation();
     }
 
-    @PostMapping( value = "/profile/organisation/saveText")
+    @PostMapping(value = "/profile/organisation/saveText")
     @ResponseBody
-    public String saveText(Organisation organisation){
+    public String saveText(Organisation organisation) {
         log.info("saveText() method called ...");
 
         //TODO: Save the text...
@@ -79,11 +74,11 @@ public class OrganisationProfileController {
         Resource file = organisationService.loadProfilePicture(organisation);
         return ResponseEntity
                 .ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\""+file.getFilename()+"\"")
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + file.getFilename() + "\"")
                 .body(file);
     }
 
-    @PostMapping( value = "/profile/organisation/saveProfileImage")
+    @PostMapping(value = "/profile/organisation/saveProfileImage")
     public String saveProfileImage(@RequestParam("file") MultipartFile file, Principal principal) throws IOException {
         log.info("saveProfileImage() method called...");
         log.info("File type: " + file.getContentType());
@@ -96,7 +91,7 @@ public class OrganisationProfileController {
 
         File convFile = storageService.createTemp(file);
 
-        BufferedImage resizedImage = imageValidationService.resize(convFile,309,233);
+        BufferedImage resizedImage = imageValidationService.resize(convFile, 309, 233);
 
         File convFile2 = new File(String.valueOf(convFile));
         ImageIO.write(resizedImage, "jpg", convFile2);
@@ -119,11 +114,11 @@ public class OrganisationProfileController {
         Resource file = organisationService.loadBackgroundPicture(organisation);
         return ResponseEntity
                 .ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\""+file.getFilename()+"\"")
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + file.getFilename() + "\"")
                 .body(file);
     }
 
-    @PostMapping( value = "/profile/organisation/saveBackgroundImage")
+    @PostMapping(value = "/profile/organisation/saveBackgroundImage")
     public String saveBackgroundImage(@RequestParam("file") MultipartFile file, Principal principal) throws IOException {
         log.info("saveBackgroundImage() method called...");
         log.info("File type: " + file.getContentType());
@@ -136,7 +131,7 @@ public class OrganisationProfileController {
 
         File convFile = storageService.createTemp(checkedFile);
 
-        BufferedImage resizedImage = imageValidationService.resize(convFile,1349,496);
+        BufferedImage resizedImage = imageValidationService.resize(convFile, 1349, 496);
 
         File convFile2 = new File(String.valueOf(convFile));
         ImageIO.write(resizedImage, "jpg", convFile2);
@@ -147,11 +142,5 @@ public class OrganisationProfileController {
 
         return "profiles/organisation";
     }
-
-
-
-    @GetMapping( value = "/profile/react")
-    public String renderReactTemplate(){
-        return "profiles/organisationReact";
-    }
 }
+
