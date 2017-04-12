@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head"> </head>
+
+<body>
+<div id="main-wrapper">
+
+    <!-- Navbar -->
+    <div th:replace="fragments/navbar :: navbar"></div>
+
+    <!-- Main content -->
+    <div class="compny-profile">
+
+        <!-- SUB Banner -->
+        <div class="profile-bnr user-profile-bnr">
+            <div class="container">
+                <div class="pull-left">
+                    <h2>Registration</h2>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Company Content -->
+        <div class="profile-company-content user-profile main-user" data-bg-color="f5f5f5">
+            <div class="container">
+                <div class="row">
+
+                    <!-- Nav Tabs -->
+                    <div class="col-md-12">
+                        <ul class="nav nav-tabs not-clickable">
+                            <li class="active"><a>Step 1</a></li>
+                            <li><a>Step 2</a></li>
+                            <li><a>Step 3</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Tab Content -->
+                    <div class="col-md-12">
+                        <div class="tab-content">
+
+                            <!-- Registration form -->
+                            <div id="contact" class="tab-pane fade in active">
+                                <div class="profile-main">
+                                    <h3>Register your organisation!</h3>
+                                    <div class="profile-in">
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptate quis tenetur velit! Provident eum molestias aperiam suscipit distinctio ipsum cupiditate quasi, dolor sunt, cum reprehenderit quibusdam, repellendus eaque, quas magni.</p>
+
+
+                                        <form action="#" th:action="@{/registration/organisation/step1}" th:object="${organisation}" method="post">
+
+                                            <input type="hidden" th:field="*{organisationId}" />
+
+                                            <input type="text" minlength="1" maxlength="255" required="required" autofocus="autofocus" placeholder="name of your organisation (1-255 characters)" value="" th:field="*{name}"/>
+
+                                            <select th:field="*{category}" required="required">
+                                                <option value="" hidden="hidden" selected="selected">the category of your organisation</option>
+                                                <option th:each="category : ${T(com.codecool.volunti.model.enums.Category).values()}"
+                                                        th:value="${category}"
+                                                        th:text="${category}">
+                                                </option>
+                                            </select>
+
+                                            <h4>Address</h4>
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <select th:field="*{country}" required="required">
+                                                        <option value="" hidden="hidden" selected="selected">country</option>
+                                                        <option th:each="country : ${T(com.codecool.volunti.model.enums.Country).values()}"
+                                                                th:value="${country}"
+                                                                th:text="${country}">
+                                                        </option>
+                                                    </select>
+                                                </div>
+                <h4>Address</h4>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <select th:field="*{country}" required="required">
+                            <option value="" hidden="hidden" selected="selected">country</option>
+                            <option th:each="country : ${T(com.codecool.volunti.model.enums.Country).values()}"
+                                    th:value="${country}"
+                                    th:text="${country}">
+                            </option>
+                        </select>
+                    </div>
+
+                                                <div class="col-sm-4">
+                                                    <input type="text" minlength="1" maxlength="255" required="required" value="" placeholder="ZIP (1-255 characters)" />
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <input type="text" minlength="1" maxlength="255" required="required" value="" placeholder="city (1-255 characters)" th:field="*{city}"/>
+                                                </div>
+                                            </div>
+                                            <input type="text" minlength="1" maxlength="255" required="required" value="" placeholder="address (1-255 characters)" th:field="*{address}"/>
+                    <div class="col-sm-4">
+                        <input type="text" minlength="1" maxlength="255" required="required" value="" placeholder="ZIP (1-255 characters)" th:field="*{zipcode}"/>
+                    </div>
+                    <div class="col-sm-4">
+                        <input type="text" minlength="1" maxlength="255" required="required" value="" placeholder="city (1-255 characters)" th:field="*{city}"/>
+                    </div>
+                </div>
+                <input type="text" minlength="1" maxlength="255" required="required" value="" placeholder="address (1-255 characters)" th:field="*{address}"/>
+
+                                            spoken languages at your organisation (press and hold ctrl to select multiple)
+                                            <select multiple="multiple" th:field="*{spokenLanguage}" required="required">
+                                                <option th:each="language : ${T(com.codecool.volunti.model.enums.SpokenLanguage).values()}"
+                                                        th:value="${language}"
+                                                        th:text="${language}">
+                                                </option>
+                                            </select>
+
+                                            <h4>Purpose and mission</h4>
+                                            <textarea required="required" minlength="1" placeholder="the organisation's mission statement (min. 1 character)" th:field="*{mission}"></textarea>
+                                            <textarea required="required" minlength="1" placeholder="What kind of help do you need? (min. 1 character)" th:field="*{description1}"></textarea>
+                                            <textarea required="required" minlength="1" placeholder="What can volunteers learn here?" th:field="*{description2}"></textarea>
+
+                                            <button type="submit" class="btn mb20 btn-large btn-primary">next</button>
+                                        </form>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- / Registration form -->
+
+                        </div>
+                    </div>
+                    <!-- / Tab Content -->
+                </div>
+            </div>
+        </div>
+        <!-- / Profile Company Content -->
+    </div>
+    <!-- / Main content -->
+</div>
+<!-- / Main wrapper -->
+
+<!--  Footer -->
+<div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>

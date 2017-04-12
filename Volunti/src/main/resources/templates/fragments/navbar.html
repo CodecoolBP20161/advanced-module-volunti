@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
+<body>
+
+    <!--Navbar-->
+    <div th:fragment="navbar">
+
+        <div class="box-shadow-for-ui">
+            <div class="uou-block-2b">
+                <div class="container">
+                    <a th:href="@{/}" class="logo"><img src="/assets/images/logo.png" alt="" /></a>
+                    <a th:href="@{/}" class="mobile-sidebar-button mobile-sidebar-toggle"><span></span></a>
+
+                    <nav class="nav">
+                        <ul class="sf-menu">
+                            <li class="active">
+                                <a th:href="@{/}"><i class="fa fa-home"></i></a>
+                            </li>
+                            <li>
+                                <a th:href="@{/opportunities}">Opportunities</a>
+                            </li>
+                            <li>
+                                <a th:href="@{/}">Professionals</a>
+                            </li>
+                            <li>
+                                <a th:href="@{/}">Pages</a>
+                                <ul>
+                                    <li>
+                                        <a th:href="@{/}">Profile
+                                            Company</a>
+                                    </li>
+                                    <li>
+                                        <a th:href="@{/}">Profile
+                                            Company No Tabs</a>
+                                    </li>
+                                    <li>
+                                        <a
+                                                th:href="@{/}">User
+                                            Dashboard 1</a>
+                                    </li>
+                                    <li>
+                                        <a
+                                                th:href="@{/}">User
+                                            Dashboard 2</a>
+                                    </li>
+                                    <li>
+                                        <a
+                                                th:href="@{/}">User
+                                            Dashboard 3</a>
+                                    </li>
+                                    <li>
+                                        <a
+                                                th:href="@{/}">User
+                                            Dashboard 4</a>
+                                    </li>
+                                    <li>
+                                        <a th:href="@{/}">Blog Post</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a th:href="@{/}">User
+                                    Profile</a>
+                            </li>
+                            <li>
+                                <a th:href="@{/}">Blog</a>
+                            </li>
+                            <li>
+                                <a th:href="@{/}">GUI KIT</a>
+                            </li>
+                            <li >
+                                <a sec:authorize="!isAuthenticated()" th:href="@{/login}">LogIn</a>
+                                <a sec:authorize="isAuthenticated()" th:href="@{/logout}">Logout</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            <!--  end .uou-block-2b -->
+        </div>
+
+    </div>
+</body>
+</html>
