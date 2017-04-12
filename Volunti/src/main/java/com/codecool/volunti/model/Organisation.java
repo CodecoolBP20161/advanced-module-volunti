@@ -5,6 +5,7 @@ import com.codecool.volunti.model.enums.Country;
 import com.codecool.volunti.model.enums.SpokenLanguage;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
+import lombok.ToString;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
@@ -16,6 +17,7 @@ import java.util.List;
 @Entity
 @Table(name="organisations")
 @Data
+@ToString(exclude = "organisationSocialLinks")
 public class Organisation {
 
     @Id
@@ -86,9 +88,9 @@ public class Organisation {
     @Transient
     private File backgroundPictureFileForSave;
 
-    //@OneToMany(mappedBy="organisationId")
-    //@JsonSerialize(using = CustomListSerializer.class)
-    //private List<OrganisationSocialLink> social_link;
+    @OneToMany(mappedBy="organisationId")
+    @JsonSerialize(using = CustomListSerializer.class)
+    private List<OrganisationSocialLink> organisationSocialLinks;
 
     public Organisation(){}
 
