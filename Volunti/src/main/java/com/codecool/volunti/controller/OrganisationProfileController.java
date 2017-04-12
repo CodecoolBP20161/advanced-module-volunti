@@ -54,9 +54,9 @@ public class OrganisationProfileController {
         return user.getOrganisation();
     }
 
-    @PostMapping(value = "/profile/organisation/saveText")
+    @PostMapping( value = "/profile/organisation/saveText")
     @ResponseBody
-    public String saveText(Organisation organisation) {
+    public String saveText(Organisation organisation){
         log.info("saveText() method called ...");
 
         //TODO: Save the text...
@@ -74,12 +74,12 @@ public class OrganisationProfileController {
         Resource file = organisationService.loadProfilePicture(organisation);
         return ResponseEntity
                 .ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + file.getFilename() + "\"")
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\""+file.getFilename()+"\"")
                 .body(file);
     }
 
-    @PostMapping(value = "/profile/organisation/saveProfileImage")
-    public String saveProfileImage(@RequestParam("file") MultipartFile file, Principal principal) throws IOException {
+    @PostMapping( value = "/profile/organisation/saveProfileImage")
+    public boolean saveProfileImage(@RequestParam("file") MultipartFile file, Principal principal) throws IOException {
         log.info("saveProfileImage() method called...");
         log.info("File type: " + file.getContentType());
 
@@ -87,19 +87,21 @@ public class OrganisationProfileController {
         Organisation organisation = user.getOrganisation();
         log.info("our organisation: " + organisation.toString());
 
-        MultipartFile checkedFile = imageValidationService.imageTypeValidator(file);
+        if(imageValidationService.imageTypeValidator(file)){
+            File convFile = storageService.createTemp(file);
+            BufferedImage resizedImage = imageValidationService.resize(convFile,309,233);
 
-        File convFile = storageService.createTemp(file);
-
-        BufferedImage resizedImage = imageValidationService.resize(convFile, 309, 233);
-
-        File convFile2 = new File(String.valueOf(convFile));
-        ImageIO.write(resizedImage, "jpg", convFile2);
+            File convFile2 = new File(String.valueOf(convFile));
+            ImageIO.write(resizedImage, "jpg", convFile2);
 
 
-        organisation.setProfilePictureFileForSave(convFile2);
-        organisationService.save(organisation);
-        convFile2.delete();
+            organisation.setProfilePictureFileForSave(convFile2);
+            organisationService.save(organisation);
+            convFile2.delete();
+            return true;
+        }else{
+            return false;
+        }
 
         return "profiles/organisation";
     }
@@ -114,12 +116,12 @@ public class OrganisationProfileController {
         Resource file = organisationService.loadBackgroundPicture(organisation);
         return ResponseEntity
                 .ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + file.getFilename() + "\"")
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\""+file.getFilename()+"\"")
                 .body(file);
     }
 
-    @PostMapping(value = "/profile/organisation/saveBackgroundImage")
-    public String saveBackgroundImage(@RequestParam("file") MultipartFile file, Principal principal) throws IOException {
+    @PostMapping( value = "/profile/organisation/saveBackgroundImage")
+    public Boolean saveBackgroundImage(@RequestParam("file") MultipartFile file, Principal principal) throws IOException {
         log.info("saveBackgroundImage() method called...");
         log.info("File type: " + file.getContentType());
 
@@ -127,20 +129,20 @@ public class OrganisationProfileController {
         Organisation organisation = user.getOrganisation();
         log.info("our organisation: " + organisation.toString());
 
-        MultipartFile checkedFile = imageValidationService.imageTypeValidator(file);
+        if(imageValidationService.imageTypeValidator(file)){
+            File convFile = storageService.createTemp(file);
+            BufferedImage resizedImage = imageValidationService.resize(convFile,1349,496);
 
-        File convFile = storageService.createTemp(checkedFile);
+            File convFile2 = new File(String.valueOf(convFile));
+            ImageIO.write(resizedImage, "jpg", convFile2);
 
-        BufferedImage resizedImage = imageValidationService.resize(convFile, 1349, 496);
+            organisation.setBackgroundPictureFileForSave(convFile2);
+            organisationService.save(organisation);
+            convFile2.delete();
+            return true;
+        }else{
+            return false;
+        }
 
-        File convFile2 = new File(String.valueOf(convFile));
-        ImageIO.write(resizedImage, "jpg", convFile2);
-
-        organisation.setBackgroundPictureFileForSave(convFile2);
-        organisationService.save(organisation);
-        convFile2.delete();
-
-        return "profiles/organisation";
     }
 }
-

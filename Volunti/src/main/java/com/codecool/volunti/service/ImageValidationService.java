@@ -15,15 +15,15 @@ import java.io.IOException;
 @Slf4j
 public class ImageValidationService {
 
-    public MultipartFile imageTypeValidator(MultipartFile file) {
+    public Boolean imageTypeValidator(MultipartFile file) {
         log.info("imageTypeValidator() method called");
 
         if (file.getContentType().endsWith("png") || file.getContentType().endsWith("jpeg") && !file.isEmpty()) {
             log.info("this image is png or jpeg");
-            return file;
+            return true;
         } else {
             log.info("this image isn't png or jpeg");
-            return file;
+            return false;
         }
     }
 
