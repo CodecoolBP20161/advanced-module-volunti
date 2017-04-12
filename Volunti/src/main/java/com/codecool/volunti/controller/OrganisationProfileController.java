@@ -102,8 +102,6 @@ public class OrganisationProfileController {
         }else{
             return false;
         }
-
-        return "profiles/organisation";
     }
 
     @GetMapping("/profile/organisation/image/background")
