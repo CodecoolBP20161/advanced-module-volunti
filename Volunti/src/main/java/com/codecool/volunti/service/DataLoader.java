@@ -1,11 +1,13 @@
 package com.codecool.volunti.service;
 
 
+import com.codecool.volunti.configuration.DataloaderProperties;
 import com.codecool.volunti.model.*;
 import com.codecool.volunti.model.enums.*;
 import com.codecool.volunti.service.model.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.InputStreamSource;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -34,18 +36,26 @@ public class DataLoader {
     private VolunteerService volunteerService;
     private RoleService roleService;
     private BCryptPasswordEncoder passwordEncoder;
+    private final DataloaderProperties properties;
 
     @Autowired
-    public DataLoader(OrganisationService organisationService, UserService userService, VolunteerService volunteerService, RoleService roleService, BCryptPasswordEncoder passwordEncoder) {
+    public DataLoader(OrganisationService organisationService, UserService userService, VolunteerService volunteerService, RoleService roleService, BCryptPasswordEncoder passwordEncoder, DataloaderProperties properties) {
         this.organisationService = organisationService;
         this.userService = userService;
         this.volunteerService = volunteerService;
         this.roleService = roleService;
         this.passwordEncoder = passwordEncoder;
+        this.properties = properties;
     }
 
     @PostConstruct
     public void loadData() {
+
+        if ( ! this.properties.isEnabled() ) {
+            log.info("SKIP DataLoader - loadData()");
+            return;
+        }
+
         ArrayList<SpokenLanguage> spokenLanguages = new ArrayList<>();
         spokenLanguages.add(SpokenLanguage.ENGLISH);
         spokenLanguages.add(SpokenLanguage.HUNGARIAN);

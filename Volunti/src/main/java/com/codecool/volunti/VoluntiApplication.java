@@ -1,5 +1,6 @@
 package com.codecool.volunti;
 
+import com.codecool.volunti.configuration.DataloaderProperties;
 import com.codecool.volunti.model.Organisation;
 import com.codecool.volunti.model.User;
 import com.codecool.volunti.model.Volunteer;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.ErrorPage;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
@@ -26,6 +28,7 @@ import javax.annotation.PostConstruct;
 @Slf4j
 @SpringBootApplication
 @EnableAsync
+@EnableConfigurationProperties(DataloaderProperties.class)
 public class VoluntiApplication {
 
     DataLoader dataLoader;
