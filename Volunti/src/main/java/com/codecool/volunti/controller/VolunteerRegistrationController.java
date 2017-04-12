@@ -82,9 +82,7 @@ public class VolunteerRegistrationController {
         volunteer = (Volunteer) session.getAttribute("volunteer");
         volunteerService.save(volunteer);
         user.setVolunteer(volunteer);
-
-        session.removeAttribute("volunteer");
-        session.removeAttribute("user");
+        userService.saveUser(user);
         model.addAttribute("theme", "Registration");
         model.addAttribute("message", "Registration successful! We have sent an e-mail to your email address to the given e-mail account."
                 + "\n Please confirm your account using the given link.");
@@ -105,6 +103,8 @@ public class VolunteerRegistrationController {
         model.addAttribute("user", newUser);
         model.addAttribute("theme", "Registration");
         model.addAttribute("message", "Account Confirmation is done.");
+        session.removeAttribute("volunteer");
+        session.removeAttribute("user");
         return "information";
     }
     /* Expected Request body:
