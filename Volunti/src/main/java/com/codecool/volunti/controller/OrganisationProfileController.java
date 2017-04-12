@@ -43,7 +43,7 @@ public class OrganisationProfileController {
 
     @GetMapping(value = "/profile/organisation")
     public String renderReactTemplate() {
-        return "profiles/organisationReact";
+        return "profiles/organisation";
     }
 
 
