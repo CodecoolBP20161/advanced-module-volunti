@@ -42,13 +42,8 @@ public class OrganisationProfileController {
     }
 
     @GetMapping(value = "/profile/organisation")
-    public String renderOrganisationProfile(Model model) {
-        log.info("renderOrganisationProfile() method called ...");
-
-        Organisation organisation = organisationService.get(1);
-        log.info("organisation id: " + organisation.getOrganisationId());
-        model.addAttribute("organisation", organisation);
-        return "profiles/organisation";
+    public String renderReactTemplate() {
+        return "profiles/organisationReact";
     }
 
 
@@ -107,7 +102,6 @@ public class OrganisationProfileController {
         }else{
             return false;
         }
-
     }
 
     @GetMapping("/profile/organisation/image/background")
@@ -148,11 +142,5 @@ public class OrganisationProfileController {
             return false;
         }
 
-    }
-
-
-    @GetMapping( value = "/profile/react")
-    public String renderReactTemplate(){
-        return "profiles/organisationReact";
     }
 }
