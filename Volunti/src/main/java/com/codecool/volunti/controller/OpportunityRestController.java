@@ -67,20 +67,20 @@ public class OpportunityRestController {
         Date toDate = new Date();
         Calendar c = Calendar.getInstance();
 
-        if (from == "") {
-            c.setTime(fromDate);
-            c.add(Calendar.YEAR, -20);
-            fromDate = c.getTime();
-        } else {
-            fromDate = stringToDate(from);
+        if (from.equals("") || to.equals("")) {
+            if (from.equals("")) {
+                c.setTime(fromDate);
+                c.add(Calendar.YEAR, -20);
+                fromDate = c.getTime();
+            }
+            if (to.equals("")) {
+                c.setTime(toDate);
+                c.add(Calendar.YEAR, 20);
+                toDate = c.getTime();
+            }
         }
-        if (to == "") {
-            c.setTime(toDate);
-            c.add(Calendar.YEAR, 20);
-            toDate = c.getTime();
-        } else {
-            toDate = stringToDate(to);
-        }
+        else if (!from.equals("")) fromDate = stringToDate(from);
+        else if (!to.equals("")) toDate = stringToDate(to);
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 

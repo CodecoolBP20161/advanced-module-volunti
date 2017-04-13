@@ -3,6 +3,7 @@ package com.codecool.volunti.controller;
 import com.codecool.volunti.model.Skill;
 import com.codecool.volunti.model.User;
 import com.codecool.volunti.model.Volunteer;
+import com.codecool.volunti.model.enums.Country;
 import com.codecool.volunti.model.enums.SpokenLanguage;
 import com.codecool.volunti.model.enums.UserStatus;
 import com.codecool.volunti.repository.SkillRepository;
@@ -96,66 +97,72 @@ public class VolunteerRegistrationControllerTest extends AbstractServiceTest {
         this.mockMvc.perform(get("/registration/volunteer/step1")
                 .with(csrf()))
                 .andExpect(status().isOk())
-                .andExpect(view().name("registration/volunteer/volunteer"));
+                .andExpect(view().name("registration/user"));
     }
 
     @Test
-    public void test_step1_GET_OrganisationIsInSession() throws Exception {
-        this.mockMvc.perform(get("/registration/volunteer/step1").sessionAttr("volunteer", volunteer)
+    public void test_step1_GET_UserIsInSession() throws Exception {
+        this.mockMvc.perform(get("/registration/volunteer/step1").sessionAttr("user", user)
                 .with(csrf()))
                 .andExpect(status().isOk())
-                .andExpect(view().name("registration/volunteer/volunteer"))
-                .andExpect(content().string(containsString("my motto")));
+                .andExpect(view().name("registration/user"))
+                .andExpect(content().string(containsString("test.user")));
     }
 
     @Test
     public void test_step1_POST_EmptySession() throws Exception {
         this.mockMvc.perform(post("/registration/volunteer/step1")
                 .with(csrf())
-                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .content(validVolunteerFormData))
+        )
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/registration/volunteer/step1"));
     }
 
     @Test
-    public void test_step1_POST_OrganisationIsInSession() throws Exception {
+    public void test_step1_POST_UserIsInSession() throws Exception {
+        User user = new User();
         this.mockMvc.perform(get("/registration/volunteer/step1").with(csrf()));
-        this.mockMvc.perform(post("/registration/volunteer/step1").sessionAttr("volunteer", volunteer)
+        this.mockMvc.perform(post("/registration/volunteer/step1")
                 .with(csrf())
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .content(validVolunteerFormData))
+                .param("firstName", "firstName")
+                .param("lastName", "lastName")
+                .param("email", "email@email.hu")
+                .param("password", "password")
+                .sessionAttr("user", user)
+        )
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/registration/volunteer/step2/0"));
+                .andExpect(redirectedUrl("/registration/volunteer/step2/" + user.getId()));
 
     }
 
     @Test
     public void test_step2_GET_EmptySession() throws Exception {
-        this.mockMvc.perform(get("/registration/volunteer/step2/0")
+        this.mockMvc.perform(get("/registration/volunteer/step2/" + user.getId())
                 .with(csrf()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/registration/volunteer/step1"));
     }
 
     @Test
-    public void test_step2_GET_OrganisationIsInSession() throws Exception {
-        this.mockMvc.perform(get("/registration/volunteer/step2/0").sessionAttr("volunteer", volunteer)
+    public void test_step2_GET_UserIsInSession() throws Exception {
+        this.mockMvc.perform(get("/registration/volunteer/step2/" + user.getId())
+                .sessionAttr("user", user)
                 .with(csrf()))
                 .andExpect(status().isOk())
-                .andExpect(view().name("registration/user"));
+                .andExpect(view().name("registration/volunteer/volunteerForm"));
     }
 
     @Test
     public void test_step2_POST_EmptySession() throws Exception {
-        this.mockMvc.perform(post("/registration/volunteer/step2/")
+        this.mockMvc.perform(post("/registration/volunteer/step2/" + user.getId())
                 .with(csrf())
-                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .content(validUserFormData))
+        )
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/registration/volunteer/step1"));
 
     }
+
 
     @Test
     public void test_step3_GET_InValidActivationID() throws Exception {
