@@ -73,6 +73,7 @@ public class VolunteerRegistrationController {
             return "redirect:/registration/volunteer/step1";
         }
         volunteer = (Volunteer) session.getAttribute("volunteer");
+        //http://stackoverflow.com/questions/4024544/how-to-parse-dates-in-multiple-formats-using-simpledateformat
         volunteerService.save(volunteer);
         user.setVolunteer(volunteer);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
