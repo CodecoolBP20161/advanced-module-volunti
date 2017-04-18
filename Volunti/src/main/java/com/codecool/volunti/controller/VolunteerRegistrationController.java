@@ -41,6 +41,8 @@ public class VolunteerRegistrationController {
             user = (User) session.getAttribute("user");
         }
         model.addAttribute("user", user);
+        model.addAttribute("action","/registration/volunteer/step1");
+        model.addAttribute("button", "next");
         return "registration/user";
     }
 
@@ -66,7 +68,6 @@ public class VolunteerRegistrationController {
         User user = (User) session.getAttribute("user");
 
         model.addAttribute("skills", skillRepository.findAll());
-        model.addAttribute("action","/registration/volunteer/step2");
         model.addAttribute("volunteer", volunteer);
 //        model.addAttribute("volunteer_id", volunteer.getId());
 
@@ -82,20 +83,17 @@ public class VolunteerRegistrationController {
         log.info("USER " + user.getEmail() + " " + user.getFirstName());
         volunteer = (Volunteer) session.getAttribute("volunteer");
         //http://stackoverflow.com/questions/4024544/how-to-parse-dates-in-multiple-formats-using-simpledateformat
+
+        // TODO: catch exceptions, email sender exception is not caught??
         volunteerService.save(volunteer);
         user.setVolunteer(volunteer);
         userService.saveUser(user);
-        try {
-            user.signupSuccess(emailService, EmailType.CONFIRMATION);
+        user.signupSuccess(emailService, EmailType.CONFIRMATION);
 
-            model.addAttribute("theme", "Registration");
-            model.addAttribute("message", "Registration successful! We have sent an e-mail to your email address to the given e-mail account."
-                    + "\n Please confirm your account using the given link.");
-            return "information";
-        } catch (Exception e) {
-            model.addAttribute("exception", e.getMessage());
-            return "error";
-        }
+        model.addAttribute("theme", "Registration");
+        model.addAttribute("message", "Registration successful! We have sent an e-mail to your email address to the given e-mail account."
+                + "\n Please confirm your account using the given link.");
+        return "information";
     }
 
     @GetMapping( value = "/step3/{activation_id}")
