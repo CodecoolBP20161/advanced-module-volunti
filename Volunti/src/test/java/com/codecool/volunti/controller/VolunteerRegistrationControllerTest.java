@@ -132,13 +132,13 @@ public class VolunteerRegistrationControllerTest extends AbstractServiceTest {
                 .sessionAttr("user", user)
         )
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/registration/volunteer/step2/" + user.getId()));
+                .andExpect(redirectedUrl("/registration/volunteer/step2"));
 
     }
 
     @Test
     public void test_step2_GET_EmptySession() throws Exception {
-        this.mockMvc.perform(get("/registration/volunteer/step2/" + user.getId())
+        this.mockMvc.perform(get("/registration/volunteer/step2")
                 .with(csrf()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/registration/volunteer/step1"));
@@ -146,7 +146,7 @@ public class VolunteerRegistrationControllerTest extends AbstractServiceTest {
 
     @Test
     public void test_step2_GET_UserIsInSession() throws Exception {
-        this.mockMvc.perform(get("/registration/volunteer/step2/" + user.getId())
+        this.mockMvc.perform(get("/registration/volunteer/step2")
                 .sessionAttr("user", user)
                 .with(csrf()))
                 .andExpect(status().isOk())
@@ -155,7 +155,7 @@ public class VolunteerRegistrationControllerTest extends AbstractServiceTest {
 
     @Test
     public void test_step2_POST_EmptySession() throws Exception {
-        this.mockMvc.perform(post("/registration/volunteer/step2/" + user.getId())
+        this.mockMvc.perform(post("/registration/volunteer/step2")
                 .with(csrf())
         )
                 .andExpect(status().is3xxRedirection())
