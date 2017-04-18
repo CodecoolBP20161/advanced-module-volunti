@@ -80,6 +80,7 @@ public class VolunteerRegistrationController {
         }
         System.out.println("USER "+user.getEmail() +" "+user.getFirstName() );
         volunteer = (Volunteer) session.getAttribute("volunteer");
+        //http://stackoverflow.com/questions/4024544/how-to-parse-dates-in-multiple-formats-using-simpledateformat
         volunteerService.save(volunteer);
         user.setVolunteer(volunteer);
         userService.saveUser(user);

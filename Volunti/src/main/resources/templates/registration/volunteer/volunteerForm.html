@@ -49,8 +49,8 @@
                                             eaque, quas magni.</p>
 
 
-                                        <form action="#" th:action="${action}"
-                                              th:object="${volunteer}" method="post">
+                                        <form action="#" th:action="@{/registration/volunteer/step1}"
+                                              th:object="${volunteer}" method="post" class="volunteer-form">
 
 
                                             <div class="row">
@@ -61,7 +61,7 @@
                                                             required="required"
                                                             data-validation="required"
                                                             data-validation-length="min1"
-                                                            data-validation-error-msg="Please select a skill"
+                                                            data-validation-error-msg="Please select a state"
                                                             placeholder="Choose your skills (max 5)"
                                                             th:field="*{volunteerSkills}">
 
@@ -109,12 +109,23 @@
                                             <div class="col-sm-4">
                                             <h4>Date of birth</h4>
                                             <input type="date" required="required" placeholder="YYYY/MM/DD"
-                                            th:field="*{dateOfBirth}"/>
+                                            th:field="*{dateOfBirth}"
+                                                   data-validation="required"
+                                                   data-validation-length="min1"
+                                                   data-validation-error-msg="Please select a date"/>
                                             </div>
-                                            <textarea required="required" minlength="1"
+                                            <textarea
+                                                      required="required" minlength="1"
+                                                      data-validation="required"
+                                                      data-validation-length="min1"
+                                                      data-validation-error-msg="Please select a state"
                                                       placeholder="Your motto (min. 1 character)"
                                                       th:field="*{motto}"></textarea>
-                                            <textarea required="required" minlength="1"
+                                            <textarea
+                                                    required="required" minlength="1"
+                                                      data-validation="required"
+                                                      data-validation-length="min1"
+                                                      data-validation-error-msg="Please select a state"
                                                       placeholder="Your interest (min. 1 character)"
                                                       th:field="*{interest}"></textarea>
 
@@ -123,6 +134,14 @@
                                                     class="btn mb20 btn-large btn-primary">next
                                             </button>
                                         </form>
+                                        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
+                                        <script>
+                                            $.validate({
+                                                form: ".volunteer-form",
+                                                borderColorOnError: '#F00',
+                                                validateOnBlur: true, // disable validation when input looses focus
+                                            });
+                                        </script>
 
 
                                     </div>
@@ -144,5 +163,6 @@
 
 <!--  Footer -->
 <div th:replace="fragments/footer :: footer"></div>
+<script type="text/javascript" src="/assets/js/custom.js"></script>
 </body>
 </html>
