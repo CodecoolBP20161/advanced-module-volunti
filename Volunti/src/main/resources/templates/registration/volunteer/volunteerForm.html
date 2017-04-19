@@ -48,6 +48,7 @@
                                             cupiditate quasi, dolor sunt, cum reprehenderit quibusdam, repellendus
                                             eaque, quas magni.</p>
 
+                                        <div class="alert alert-error" th:if="${error}" th:text="${error}"></div>
 
                                         <form action="#" th:action="@{/registration/volunteer/step2}"
                                               th:object="${volunteer}" method="post" class="volunteer-form">
@@ -121,6 +122,7 @@
                                                    data-validation="required"
                                                    data-validation-length="min1"
                                                    data-validation-error-msg="Please select a date"/>
+                                                <div class="alert alert-error alert-dismissible" th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}">Date Error</div>
                                             </div>
                                                 </div>
                                             <h4>Write a life motto</h4>

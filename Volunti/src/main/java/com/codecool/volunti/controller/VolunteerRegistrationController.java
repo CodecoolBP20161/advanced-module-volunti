@@ -12,9 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindException;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 @Slf4j
 @Controller
@@ -60,6 +63,7 @@ public class VolunteerRegistrationController {
         if (session.getAttribute("user") == null) {
             return "redirect:/registration/volunteer/step1";
         }
+        log.info("Volunteer Registration Step 2");
 
         Volunteer volunteer = new Volunteer();
         if (session.getAttribute("volunteer") != null){
@@ -69,31 +73,33 @@ public class VolunteerRegistrationController {
 
         model.addAttribute("skills", skillRepository.findAll());
         model.addAttribute("volunteer", volunteer);
-//        model.addAttribute("volunteer_id", volunteer.getId());
 
         return "registration/volunteer/volunteerForm";
     }
 
     @PostMapping("/step2")
-    public String stepTwoPost(User user,Volunteer volunteer, HttpSession session, Model model) {
+    public String stepTwoPost(@Valid Volunteer volunteer, BindingResult bindingResult, HttpSession session, Model model) {
         if (session.getAttribute("volunteer") == null) {
             return "redirect:/registration/volunteer/step1";
         }
 
-        log.info("USER " + user.getEmail() + " " + user.getFirstName());
-        volunteer = (Volunteer) session.getAttribute("volunteer");
-        //http://stackoverflow.com/questions/4024544/how-to-parse-dates-in-multiple-formats-using-simpledateformat
+        log.info("Volunteer Registration Step 2 / SAVE");
 
-        // TODO: catch exceptions, email sender exception is not caught??
-        volunteerService.save(volunteer);
-        user.setVolunteer(volunteer);
-        userService.saveUser(user);
-        user.signupSuccess(emailService, EmailType.CONFIRMATION);
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("error", bindingResult.getErrorCount() + " errors occured!" );
+            return "registration/volunteer/volunteerForm";
+        } else {
+            volunteerService.save(volunteer);
+            User user = (User) session.getAttribute("user");
+            user.setVolunteer(volunteer);
+            userService.saveUser(user);
+            user.signupSuccess(emailService, EmailType.CONFIRMATION);
+            model.addAttribute("theme", "Registration");
+            model.addAttribute("message", "Registration successful! We have sent an e-mail to your email address to the given e-mail account."
+                    + "\n Please confirm your account using the given link.");
+            return "information";
+        }
 
-        model.addAttribute("theme", "Registration");
-        model.addAttribute("message", "Registration successful! We have sent an e-mail to your email address to the given e-mail account."
-                + "\n Please confirm your account using the given link.");
-        return "information";
     }
 
     @GetMapping( value = "/step3/{activation_id}")
