@@ -3273,3 +3273,7 @@ vivid green: #2ad482
 .opportunity-filters select {
 	height: 35px !important;
 }
+
+.volunteer-form textarea{
+	height: 150px !important;
+}

@@ -12,8 +12,6 @@ import com.codecool.volunti.service.model.UserService;
 import com.codecool.volunti.service.model.VolunteerService;
 import lombok.extern.slf4j.Slf4j;
 import org.fluttercode.datafactory.impl.DataFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -28,8 +26,6 @@ import static com.codecool.volunti.model.enums.RoleEnum.ROLE_USER;
 @Service
 @Transactional
 public class DataLoader {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(DataLoader.class);
 
     @Autowired
     private UserService userService;
@@ -112,7 +108,7 @@ public class DataLoader {
         userService.saveUser(userVolunti);
         userRepository.save(userLajos);
 
-        LOGGER.info("loadData method called ...");
+        log.info("loadData method called ...");
     }
 
     private void loadSkills() {

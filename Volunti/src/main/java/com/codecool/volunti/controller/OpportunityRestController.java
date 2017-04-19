@@ -10,8 +10,12 @@ import com.codecool.volunti.repository.OpportunityRepository;
 import com.codecool.volunti.repository.OrganisationRepository;
 import com.codecool.volunti.repository.SkillRepository;
 import com.codecool.volunti.repository.VolunteerRepository;
+import com.codecool.volunti.service.OpportunityService;
 import com.codecool.volunti.service.Pageable;
+import com.codecool.volunti.service.model.OrganisationService;
+import com.codecool.volunti.service.model.SkillService;
 import com.codecool.volunti.service.model.UserService;
+import com.codecool.volunti.service.model.VolunteerService;
 import com.google.common.collect.Iterables;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -37,18 +41,30 @@ public class OpportunityRestController {
     private SkillRepository skillRepository;
     private OpportunityRepository opportunityRepository;
     private OrganisationRepository organisationRepository;
-    private ModelMapper modelMapper;
+
     @Autowired
     VolunteerRepository volunteerRepository;
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private SkillService skillService;
 
     @Autowired
-    public OpportunityRestController(SkillRepository skillRepository, OrganisationRepository organisationRepository, ModelMapper modelMapper, OpportunityRepository opportunityRepository) {
+    private VolunteerService volunteerService;
+
+    @Autowired
+    private OrganisationService organisationService;
+
+    @Autowired
+    private OpportunityService opportunityService;
+
+
+
+    @Autowired
+    public OpportunityRestController(SkillRepository skillRepository, OrganisationRepository organisationRepository, OpportunityRepository opportunityRepository) {
         this.skillRepository = skillRepository;
         this.organisationRepository = organisationRepository;
-        this.modelMapper = modelMapper;
         this.opportunityRepository = opportunityRepository;
     }
 
@@ -85,9 +101,9 @@ public class OpportunityRestController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         if (Objects.equals(skill, "") && Objects.equals(country, "") && Objects.equals(category, "")) {
-            page = new Pageable((List) convertToDto(opportunityRepository.findAll()), currentPage, pageSize);
+            page = new Pageable(opportunityService.convertToDto(opportunityRepository.findAll()), currentPage, pageSize);
         } else {
-            page = new Pageable(convertToDto(opportunityRepository.find(country, category, new java.sql.Timestamp(fromDate.getTime()), new java.sql.Timestamp(toDate.getTime()), skill)), currentPage, pageSize);
+            page = new Pageable(opportunityService.convertToDto(opportunityRepository.find(country, category, new java.sql.Timestamp(fromDate.getTime()), new java.sql.Timestamp(toDate.getTime()), skill)), currentPage, pageSize);
         }
 
 
@@ -110,9 +126,9 @@ public class OpportunityRestController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         filters.put("pageSize", pageSize);
-        filters.put("categories", getCategories());
-        filters.put("skills", getSkills());
-        filters.put("locations", getLocations());
+        filters.put("categories", organisationService.getCategories());
+        filters.put("skills", skillService.getSkills());
+        filters.put("locations", organisationService.getLocations());
 
         if (auth.getName().equals("anonymousUser")) {
             filters.put("userSkills", "");
@@ -121,7 +137,7 @@ public class OpportunityRestController {
             User user = userService.getByEmail(auth.getName());
             Volunteer volunteer = volunteerRepository.findOne(user.getVolunteer().getId());
 
-            filters.put("userSkills", Iterables.get(getUserSkills(volunteer.getId()), 0));
+            filters.put("userSkills", Iterables.get(volunteerService.getUserSkills(volunteer.getId()), 0));
             filters.put("userLocation", volunteer.getCountry());
         }
         return filters;
@@ -135,37 +151,8 @@ public class OpportunityRestController {
         return new ErrorException(4, "Spittle Opportunity not found");
     }
 
-    // Finds the user's skills
-    private Set<String> getUserSkills(int id) {
-        List<Skill> skills = volunteerRepository.findOne(id).getVolunteerSkills();
-        return skills.stream().map(Skill::getName).collect(Collectors.toSet());
-    }
-
-    private Set<String> getSkills() {
-        List<Skill> skills = (List<Skill>) skillRepository.findAll();
-        return skills.stream().map(Skill::getName).collect(Collectors.toSet());
-    }
-
-    private Set<String> getCategories() {
-        return organisationRepository.findAll().stream().map(o -> o.getCategory().name()).collect(Collectors.toSet());
-    }
-
-    private Set<Country> getLocations() {
-        return organisationRepository.findAll().stream().map(Organisation::getCountry).collect(Collectors.toSet());
-    }
 
 
-    private List<Filter2OpportunityDTO> convertToDto(List<Opportunity> opportunities) {
-        List<Filter2OpportunityDTO> result = new ArrayList<>();
-        for (Opportunity opportunity : opportunities) {
-            Filter2OpportunityDTO filterDto = modelMapper.map(opportunity, Filter2OpportunityDTO.class);
-            filterDto.setSkills(opportunity.getOpportunitySkills().stream().map(Skill::getName).collect(Collectors.toList()));
-            filterDto.setCategory(opportunity.getOrganisation().getCategory().name());
-            filterDto.setCountry(opportunity.getOrganisation().getCountry());
-            result.add(filterDto);
-        }
-        return result;
-    }
 
 
     private Date stringToDate(String s) {

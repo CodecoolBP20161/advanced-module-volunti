@@ -41,7 +41,7 @@
                             <!-- Registration form -->
                             <div id="contact" class="tab-pane fade in active">
                                 <div class="profile-main">
-                                    <h3>Register as a new volunteer!</h3>
+                                    <h3>Volunteer Registration</h3>
                                     <div class="profile-in">
                                         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptate quis
                                             tenetur velit! Provident eum molestias aperiam suscipit distinctio ipsum
@@ -55,6 +55,7 @@
 
                                             <div class="row">
                                                 <div class="col-sm-4">
+                                                    <h4>Choose your skills</h4>
                                                     <select id="select-state" name="state[]"
                                                             multiple="multiple"
                                                             class="demo-default"
@@ -71,7 +72,13 @@
                                                         </option>
                                                     </select>
                                                 </div>
-
+                                                </div>
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <h4>Your location and language</h4>
+                                                    </div>
+                                                </div>
+                                            <div class="row">
                                                 <div class="col-sm-4">
                                                     <select id="select-country"
                                                             multiple="multiple"
@@ -106,14 +113,19 @@
                                                 </div>
                                             </div>
 
+                                            <div class="row">
                                             <div class="col-sm-4">
-                                            <h4>Date of birth</h4>
+                                            <h4>Date of birth (example: 01/04/2010)</h4>
                                             <input type="date" required="required" placeholder="YYYY/MM/DD"
                                             th:field="*{dateOfBirth}"
                                                    data-validation="required"
                                                    data-validation-length="min1"
                                                    data-validation-error-msg="Please select a date"/>
                                             </div>
+                                                </div>
+                                            <h4>Write a life motto</h4>
+                                            <div class="row">
+                                                <div class="col-sm-8">
                                             <textarea
                                                       required="required" minlength="1"
                                                       data-validation="required"
@@ -121,6 +133,7 @@
                                                       data-validation-error-msg="Please select a state"
                                                       placeholder="Your motto (min. 1 character)"
                                                       th:field="*{motto}"></textarea>
+                                            <h4>Your interests</h4>
                                             <textarea
                                                     required="required" minlength="1"
                                                       data-validation="required"
@@ -129,6 +142,8 @@
                                                       placeholder="Your interest (min. 1 character)"
                                                       th:field="*{interest}"></textarea>
 
+                                                    </div>
+                                                </div>
 
                                             <button id="submitButton" type="submit"
                                                     class="btn mb20 btn-large btn-primary">submit
