@@ -69,11 +69,11 @@ public class OpportunityController {
         if (opportunity_id != 0) {
             Opportunity opportunity = opportunityRepository.findOne(opportunity_id);
             model.addAttribute("opportunity", opportunity);
-            action = "/organisation/" + organisation.getOrganisationId() + "/opportunity/" + opportunity_id;
+            action = "/profile/organisation/opportunity" + opportunity_id;
             log.info("opp: " + opportunity);
         } else {
             model.addAttribute("opportunity", new Opportunity());
-            action = "/organisation/" + organisation.getOrganisationId() + "/opportunity/0";
+            action = "/profile/organisation/opportunity/0";
         }
 
         model.addAttribute("action", action);
