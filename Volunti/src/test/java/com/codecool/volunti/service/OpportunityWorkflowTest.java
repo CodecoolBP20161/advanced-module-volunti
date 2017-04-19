@@ -64,16 +64,16 @@ public class OpportunityWorkflowTest extends AbstractServiceTest {
         skillRepository.save(skill);
 
         organisation = new Organisation();
-        organisation.setName("Test 1");
+        organisation.setName("Test 11");
         organisation.setCategory(Category.TEACHING);
         organisation.setCountry(Country.HUNGARY);
-        organisation.setZipcode("zipcode");
-        organisation.setCity("City");
-        organisation.setAddress("Address");
+        organisation.setZipcode("zipcode1");
+        organisation.setCity("City1");
+        organisation.setAddress("Address1");
         organisation.setSpokenLanguage(spokenLanguages);
-        organisation.setMission("Mission minimum 10 character");
-        organisation.setDescription1("Desc 1 min 3 character");
-        organisation.setDescription2("Desc 2 min 3 character");
+        organisation.setMission("Mission minimum 20 character");
+        organisation.setDescription1("Desc 2 min 3 character");
+        organisation.setDescription2("Desc 3 min 3 character");
         organisationRepository.save(organisation);
 
         opportunity = new Opportunity();
