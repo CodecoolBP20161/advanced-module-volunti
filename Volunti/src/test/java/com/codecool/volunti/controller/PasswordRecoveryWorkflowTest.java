@@ -20,6 +20,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 
@@ -41,7 +42,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-public class  PasswordRecoveryWorkflowTest extends AbstractServiceTest {
+@Transactional
+public class PasswordRecoveryWorkflowTest extends AbstractServiceTest {
 
     @Resource
     private WebApplicationContext webApplicationContext;
@@ -77,7 +79,7 @@ public class  PasswordRecoveryWorkflowTest extends AbstractServiceTest {
         organisation.setSpokenLanguage(new ArrayList<>(Arrays.asList(SpokenLanguage.AFAR, SpokenLanguage.ALBANIAN)));
         organisationRepository.save(organisation);
 
-        user = new User("Test", "User", "volunti.trial+PasswordRecoveryTest@gmail.com", "testPassword", organisation, null);
+        user = new User("Test", "User", "volunti.trial.PasswordRecoveryTest@gmail.com", "testPassword", organisation, null);
         user.setUserStatus(UserStatus.ACTIVE);
         user = userRepository.save(user);
 
@@ -96,7 +98,7 @@ public class  PasswordRecoveryWorkflowTest extends AbstractServiceTest {
         this.mockMvc.perform(post("/forgotPassword/step1")
                 .with(csrf())
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .content("emailAddress=volunti.trial+PasswordRecoveryTest@gmail.com"))
+                .content("emailAddress=volunti.trial.PasswordRecoveryTest@gmail.com"))
                 .andExpect(status().isOk())
             .andExpect(view().name("information"))
             .andExpect(content().string(containsString("If your email address exists in our database,we have sent an e-mail to you with a reset link.")));
@@ -120,7 +122,7 @@ public class  PasswordRecoveryWorkflowTest extends AbstractServiceTest {
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .content("emailAddress=not.used.email@gmail.com"));
 
-        user = userRepository.findByEmail("volunti.trial+PasswordRecoveryTest@gmail.com");
+        user = userRepository.findByEmail("volunti.trial.PasswordRecoveryTest@gmail.com");
 
         this.mockMvc.perform(get("/forgotPassword/step2/"  + user.getActivationID()))
                 .andExpect(status().isOk())
@@ -130,15 +132,14 @@ public class  PasswordRecoveryWorkflowTest extends AbstractServiceTest {
     @Test
     public void test_step2_POST_HappyPath() throws Exception {
         String oldPassword = user.getPassword();
-        String validPasswordFormURL =   "id=2&" +
+        String validPasswordFormURL = "id=" + user.getId() + "&" +
                 "firstName=Test&" +
                 "lastName=User&" +
-                "email=volunti.trial+PasswordRecoveryTest@gmail.com&" +
-                "activationID=" + user.getActivationID() +
+                "email=volunti.trial.PasswordRecoveryTest@gmail.com&" +
+                "activationID=" + user.getActivationID() + "&" +
                 "userStatus=ACTIVE&" +
                 "organisation=2&" +
                 "volunteer=&" +
-                //"roles=&" +
                 "password=newPassword";
 
         this.mockMvc.perform(post("/forgotPassword/step2/")
@@ -147,7 +148,8 @@ public class  PasswordRecoveryWorkflowTest extends AbstractServiceTest {
                     .content(validPasswordFormURL))
                 .andExpect(status().isOk())
                 .andExpect(view().name("index"));
-        user = userRepository.findByEmail("volunti.trial+PasswordRecoveryTest@gmail.com");
+
+        user = userRepository.findByEmail("volunti.trial.PasswordRecoveryTest@gmail.com");
         assertNotSame(oldPassword, user.getPassword());
     }
 
