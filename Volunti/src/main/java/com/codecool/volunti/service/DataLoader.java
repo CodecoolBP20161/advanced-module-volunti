@@ -75,7 +75,7 @@ public class DataLoader {
         }
 
         Volunteer volunteer = new Volunteer();
-        volunteer.setCountry("Hungary");
+        volunteer.setCountry("HUNGARY");
         volunteer.setMotto("my mottos");
         volunteer.setInterest("my interest");
         volunteer.setSpokenLanguages(spokenLanguages);
