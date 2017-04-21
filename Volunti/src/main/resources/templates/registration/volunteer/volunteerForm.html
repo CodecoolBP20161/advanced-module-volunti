@@ -116,8 +116,8 @@
 
                                             <div class="row">
                                             <div class="col-sm-4">
-                                            <h4>Date of birth (example: 01/04/2010)</h4>
-                                            <input type="date" required="required" placeholder="YYYY/MM/DD"
+                                            <h4>Date of birth (example: 2010-01-01)</h4>
+                                            <input type="date" required="required" placeholder="YYYY-MM-DD" pattern="\d{4}-\d{1,2}-\d{1,2}"
                                             th:field="*{dateOfBirth}"
                                                    data-validation="required"
                                                    data-validation-length="min1"
