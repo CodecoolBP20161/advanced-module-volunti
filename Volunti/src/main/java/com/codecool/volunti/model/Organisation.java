@@ -59,6 +59,7 @@ public class Organisation {
     @Column(name="address")
     private String address;
 
+    //TODO: unify with nameing
     @NotEmpty
     @Size(min=1)
     @Column(name="spoken_language")

@@ -34,7 +34,7 @@ public class EmailProperties {
             emailPropertiesContainer.put("welcome2", prop.getProperty("welcome2"));
 
         } catch (Exception e) {
-            System.out.println("Exception: " + e);
+            log.warn("Exception: " + e);
         } finally {
             try {
                 inputStream.close();

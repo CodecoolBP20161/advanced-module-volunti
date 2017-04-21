@@ -14,14 +14,13 @@ import java.util.HashMap;
 @Transactional
 public class ValidationService {
 
-    private UserService userService;
-    private OrganisationService organisationService;
-
     @Autowired
-    public ValidationService(OrganisationService organisationService, UserService userService){
-        this. organisationService = organisationService;
-        this. userService = userService;
-    }
+    private UserService userService;
+    @Autowired
+    private OrganisationService organisationService;
+    @Autowired
+    private VolunteerService volunteerService;
+
 
     public boolean checkIfValueExists(HashMap<String, String> payload){
         log.info("Field Validation executed.");
@@ -41,6 +40,14 @@ public class ValidationService {
                 switch (fieldName) {
                     case "name":
                         return organisationService.getByName(valueToCheck) != null;
+                    default:
+                        log.error("The given field name in " + entity + " doesnt exists.");
+                        throw new NotImplementedException();
+                }
+            case "volunteer":
+                switch (fieldName) {
+                    case "name":
+                        return volunteerService.getById(Integer.valueOf(valueToCheck)) != null;
                     default:
                         log.error("The given field name in " + entity + " doesnt exists.");
                         throw new NotImplementedException();

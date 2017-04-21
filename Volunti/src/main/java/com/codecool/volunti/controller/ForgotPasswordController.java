@@ -18,7 +18,7 @@ import java.util.UUID;
 @Controller
 public class ForgotPasswordController {
 
-    private static EmailType EMAILTYPE = EmailType.FORGOT_PASSWORD;
+    private static final EmailType EMAILTYPE = EmailType.FORGOT_PASSWORD;
 
 
     private UserService userService;
@@ -73,9 +73,10 @@ public class ForgotPasswordController {
 
     @PostMapping( value = "/forgotPassword/step2/")
     public String saveNewPassword(User user) {
-        log.info("saveNewPassword() method called ...");
+        log.info("saveNewPassword() method called for user: " + user.getEmail());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userService.saveUser(user);
+        log.info("saveNewPassword() finished for user: " + user.getEmail());
         return "index";
     }
 
