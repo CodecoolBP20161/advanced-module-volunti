@@ -64,14 +64,14 @@
                 </div>
             </div>
 
-            <h4>Password</h4>
+            <h4>Password (UpperCase, LowerCase and Number)</h4>
             <div class="row">
                 <div class="col-sm-4">
                     <div id="passwordMatcherSpan" hidden="hidden"
                          class="alert alert-error alert-dismissible"
                          role="alert"></div>
-                    <input id="passWordInput1" type="password" minlength="1" required="required" th:field="*{password}"/>
-                    <input id="passWordInput2" type="password" minlength="1" required="required"/>
+                    <input id="passWordInput1" type="password" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$" minlength="6" placeholder="Min 6 character" required="required" th:field="*{password}"/>
+                    <input id="passWordInput2" type="password" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$" minlength="6" placeholder="Min 6 character" required="required"/>
 
                 </div>
             </div>
