@@ -44,6 +44,7 @@ public class Volunteer {
 
     public Volunteer() {
     }
+
     @JsonIgnore
     @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinTable(name = "volunteers_skills", joinColumns = @JoinColumn(name = "volunteer_id"),

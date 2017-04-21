@@ -102,7 +102,7 @@ public class User {
             // send a notification
             emailService.sendEmail(this, emailType);
         } catch (Exception e) {
-            log.warn("Email not sent: " + e.getMessage());
+            log.warn("Email not sent: " + e);
         }
         return "Thank you for registering with us.";
     }

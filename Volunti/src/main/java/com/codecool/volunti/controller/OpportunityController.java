@@ -24,6 +24,10 @@ import java.util.List;
 @RequestMapping(value = "")
 public class OpportunityController {
 
+    private static final String ORGANISATION = "organisation";
+    private static final String OPPORTUNITY = "opportunity";
+
+
     @Autowired
     private OpportunityRepository opportunityRepository;
 
@@ -51,7 +55,7 @@ public class OpportunityController {
         log.info("Opportunities found: " + opportunities);
 
         model.addAttribute("opportunities", opportunities);
-        model.addAttribute("organisation", organisation);
+        model.addAttribute(ORGANISATION, organisation);
         return "opportunity/list";
     }
 
@@ -68,17 +72,17 @@ public class OpportunityController {
         String action;
         if (opportunity_id != 0) {
             Opportunity opportunity = opportunityRepository.findOne(opportunity_id);
-            model.addAttribute("opportunity", opportunity);
+            model.addAttribute(OPPORTUNITY, opportunity);
             action = "/profile/organisation/opportunity" + opportunity_id;
             log.info("opp: " + opportunity);
         } else {
-            model.addAttribute("opportunity", new Opportunity());
+            model.addAttribute(OPPORTUNITY, new Opportunity());
             action = "/profile/organisation/opportunity/0";
         }
 
         model.addAttribute("action", action);
         model.addAttribute("skills", skillRepository.findAll());
-        model.addAttribute("organisation", organisation);
+        model.addAttribute(ORGANISATION, organisation);
 
         return "opportunity/multi-form";
     }
@@ -97,8 +101,8 @@ public class OpportunityController {
         }
         log.info("opp: " + opportunity);
 
-        model.addAttribute("opportunity", opportunity);
-        model.addAttribute("organisation", organisation);
+        model.addAttribute(OPPORTUNITY, opportunity);
+        model.addAttribute(ORGANISATION, organisation);
 
         if (bindingResult.hasErrors()) {
             return "opportunity/multi-form";
