@@ -49,7 +49,7 @@ $(document).ready(function() {
             var input2 = $('#' + inputID2);
             var submitButton = $('#' + submitButtonID);
             var informationContainer = $('#' + informationContainerID);
-            if (input1.val() !== input2.val()) {
+            if (input1.val() !== input2.val() && input1.val().length === input2.val().length) {
                 informationContainer.text("Passwords are not matching.");
                 informationContainer.css("display", "block");
                 submitButton.prop('disabled', true);
