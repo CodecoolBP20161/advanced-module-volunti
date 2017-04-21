@@ -30,8 +30,6 @@ public class OrganisationController {
         Organisation selectOrganisation = opportunityRepository.findOne(oppId).getOrganisation();
         model.addAttribute("foundOppObject",selectedOpportunity);
         model.addAttribute("foundOrgObject", selectOrganisation);
-        System.out.println(selectedOpportunity + " fffff");
-        System.out.println(selectOrganisation + " fffff");
         return "opportunity/single_opportunity_view";
     }
 }

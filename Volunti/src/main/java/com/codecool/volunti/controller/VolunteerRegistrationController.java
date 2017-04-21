@@ -25,6 +25,14 @@ import javax.validation.Valid;
 @SessionAttributes({"volunteer", "user"})
 public class VolunteerRegistrationController {
 
+    private static final String VOLUNTEER = "volunteer";
+    private static final String THEME = "theme";
+    private static final String REGISTRATION = "Registration";
+    private static final String INFORMATION = "information";
+    private static final String MESSAGE = "message";
+    private static final String STEP1 = "redirect:/registration/volunteer/step1";
+
+
     @Autowired
     private UserService userService;
     @Autowired
@@ -52,7 +60,7 @@ public class VolunteerRegistrationController {
     @PostMapping("/step1")
     public String stepOnePost(User user, HttpSession session) {
         if(session.getAttribute("user") == null){
-            return "redirect:/registration/volunteer/step1";
+            return STEP1;
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return "redirect:/registration/volunteer/step2";
@@ -61,26 +69,25 @@ public class VolunteerRegistrationController {
     @GetMapping("/step2")
     public String stepTwo(Model model, HttpSession session) {
         if (session.getAttribute("user") == null) {
-            return "redirect:/registration/volunteer/step1";
+            return STEP1;
         }
         log.info("Volunteer Registration Step 2");
 
         Volunteer volunteer = new Volunteer();
-        if (session.getAttribute("volunteer") != null){
-            volunteer = (Volunteer) session.getAttribute("volunteer");
+        if (session.getAttribute(VOLUNTEER) != null){
+            volunteer = (Volunteer) session.getAttribute(VOLUNTEER);
         }
-        User user = (User) session.getAttribute("user");
 
         model.addAttribute("skills", skillRepository.findAll());
-        model.addAttribute("volunteer", volunteer);
+        model.addAttribute(VOLUNTEER, volunteer);
 
         return "registration/volunteer/volunteerForm";
     }
 
     @PostMapping("/step2")
     public String stepTwoPost(@Valid Volunteer volunteer, BindingResult bindingResult, HttpSession session, Model model) {
-        if (session.getAttribute("volunteer") == null) {
-            return "redirect:/registration/volunteer/step1";
+        if (session.getAttribute(VOLUNTEER) == null) {
+            return STEP1;
         }
 
         log.info("Volunteer Registration Step 2 / SAVE");
@@ -94,10 +101,10 @@ public class VolunteerRegistrationController {
             user.setVolunteer(volunteer);
             userService.saveUser(user);
             user.signupSuccess(emailService, EmailType.CONFIRMATION);
-            model.addAttribute("theme", "Registration");
-            model.addAttribute("message", "Registration successful! We have sent an e-mail to your email address to the given e-mail account."
+            model.addAttribute(THEME, REGISTRATION);
+            model.addAttribute(MESSAGE, "Registration successful! We have sent an e-mail to your email address to the given e-mail account."
                     + "\n Please confirm your account using the given link.");
-            return "information";
+            return INFORMATION;
         }
 
     }
@@ -106,19 +113,19 @@ public class VolunteerRegistrationController {
     public String volunteerConfirmation(@PathVariable String activation_id, Model model, HttpSession session) {
         User newUser = userService.confirmRegistration(activation_id);
         if (newUser == null) {
-            model.addAttribute("theme", "Registration");
-            model.addAttribute("message", "Account confirmation is unsuccessful.\nPlease try again or contact us for more help.");
-            return "information";
+            model.addAttribute(THEME, REGISTRATION);
+            model.addAttribute(MESSAGE, "Account confirmation is unsuccessful.\nPlease try again or contact us for more help.");
+            return INFORMATION;
         } else {
             //TODO: Log in newUser. Note:It can be also null for various reasons(see ConfirmRegistration())
         }
 
         model.addAttribute("user", newUser);
-        model.addAttribute("theme", "Registration");
-        model.addAttribute("message", "Account Confirmation is done.");
-        session.removeAttribute("volunteer");
+        model.addAttribute(THEME, REGISTRATION);
+        model.addAttribute(MESSAGE, "Account Confirmation is done.");
+        session.removeAttribute(VOLUNTEER);
         session.removeAttribute("user");
-        return "information";
+        return INFORMATION;
     }
 
     /* Expected Request body:

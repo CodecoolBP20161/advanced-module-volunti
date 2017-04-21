@@ -19,35 +19,38 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
+import java.util.Map;
 
 @Slf4j
 @Controller
 @SessionAttributes({"organisation", "user"})
 public class RegistrationController {
 
-    private static EmailType EMAILTYPE = EmailType.CONFIRMATION;
+    private static final EmailType EMAILTYPE = EmailType.CONFIRMATION;
+    private static final String ORGANISATION = "organisation";
+    private static final String THEME = "theme";
+    private static final String REGISTRATION = "Registration";
+    private static final String INFORMATION = "information";
+    private static final String MESSAGE = "message";
+    private static final String STEP1 = "redirect:/registration/organisation/step1";
 
-    private OrganisationRepository organisationRepository;
     private OrganisationService organisationService;
     private UserService userService;
     private EmailService emailService;
     private ValidationService validationService;
     private BCryptPasswordEncoder passwordEncoder;
-    private RoleService roleService;
 
     @Autowired
-    public RegistrationController(OrganisationRepository organisationRepository,
+    public RegistrationController(
                                   OrganisationService organisationService,
                                   UserService userService,
                                   EmailService emailService,
-                                  ValidationService validationService, BCryptPasswordEncoder passwordEncoder, RoleService roleService) {
-        this.organisationRepository = organisationRepository;
+                                  ValidationService validationService, BCryptPasswordEncoder passwordEncoder) {
         this.organisationService = organisationService;
         this.userService = userService;
         this.emailService = emailService;
         this.validationService = validationService;
         this.passwordEncoder = passwordEncoder;
-        this.roleService = roleService;
     }
 
 
@@ -56,18 +59,18 @@ public class RegistrationController {
     public String renderOrganisationRegistration(Model model, HttpSession session) {
         log.info("renderOrganisationRegistration() method called ...");
         Organisation organisation = new Organisation();
-        if ( session.getAttribute("organisation") != null ) {
-            organisation = (Organisation) session.getAttribute("organisation");
+        if ( session.getAttribute(ORGANISATION) != null ) {
+            organisation = (Organisation) session.getAttribute(ORGANISATION);
         }
-        model.addAttribute("organisation", organisation);
+        model.addAttribute(ORGANISATION, organisation);
         return "registration/organisation/organisation";
     }
 
     @PostMapping( value = "/registration/organisation/step1")
     public String saveOrganisation(Organisation organisation, HttpSession session) {
         log.info("saveOrganisation() method called...");
-        if(session.getAttribute("organisation") == null){
-            return "redirect:/registration/organisation/step1";
+        if(session.getAttribute(ORGANISATION) == null){
+            return STEP1;
         }
         return "redirect:/registration/organisation/step2/" + organisation.getOrganisationId();
     }
@@ -75,12 +78,12 @@ public class RegistrationController {
     @GetMapping( value = "/registration/organisation/step2/{organisation_id}")
     public String renderUserRegistration(@PathVariable Integer organisation_id, Model model, HttpSession session) {
         log.info("renderUserRegistration() method called...");
-        if(session.getAttribute("organisation") == null){
+        if(session.getAttribute(ORGANISATION) == null){
             log.info("Step1 is not done, redirecting to renderOrganisationRegistration.");
-            return "redirect:/registration/organisation/step1";
+            return STEP1;
         }
 
-        log.info("session in the renderUserRegistration: " + session.getAttribute("organisation").toString());
+        log.info("session in the renderUserRegistration: " + session.getAttribute(ORGANISATION).toString());
         User user = new User();
         if ( session.getAttribute("user") != null ) {
             user = (User) session.getAttribute("user");
@@ -96,14 +99,14 @@ public class RegistrationController {
     @PostMapping(value = "/registration/organisation/step2/")
     public String saveUser(User user, HttpSession session, Organisation organisation, Model model) {
         log.info("saveUser() method called...");
-        if(session.getAttribute("organisation") == null){
+        if(session.getAttribute(ORGANISATION) == null){
             log.info("Step1 is not done, redirecting to renderOrganisationRegistration.");
             return "redirect:/registration/organisation/step1";
         }
-        log.info("session: " + session.getAttribute("organisation").toString());
+        log.info("session: " + session.getAttribute(ORGANISATION).toString());
 
         //save the organisation from the session into database
-        organisation = (Organisation) session.getAttribute("organisation");
+        organisation = (Organisation) session.getAttribute(ORGANISATION);
         Organisation savedOrganisation = organisationService.saveOrganisation(organisation);
         log.info("organisation saved: {}", savedOrganisation);
 
@@ -116,13 +119,13 @@ public class RegistrationController {
         user.signupSuccess(emailService, EMAILTYPE);
 
         //clean the session
-        session.removeAttribute("organisation");
+        session.removeAttribute(ORGANISATION);
         session.removeAttribute("user");
         log.info("Organisation removed from session.");
-        model.addAttribute("theme", "Registration");
-        model.addAttribute("message", "Registration successful! We have sent an e-mail to your email address to the given e-mail account."
+        model.addAttribute(THEME, REGISTRATION);
+        model.addAttribute(MESSAGE, "Registration successful! We have sent an e-mail to your email address to the given e-mail account."
                                         + "\n Please confirm your account using the given link.");
-        return "information";
+        return INFORMATION;
     }
 
     @GetMapping( value = "/registration/organisation/step3/{activation_id}")
@@ -131,18 +134,18 @@ public class RegistrationController {
         User newUser = userService.confirmRegistration(activation_id);
         if (newUser == null){
             log.warn("Activation failed.");
-            model.addAttribute("theme", "Registration");
-            model.addAttribute("message", "Account confirmation is unsuccessful.\nPlease try again or contact us for more help.");
-            return "information";
+            model.addAttribute(THEME, REGISTRATION);
+            model.addAttribute(MESSAGE, "Account confirmation is unsuccessful.\nPlease try again or contact us for more help.");
+            return INFORMATION;
         } else{
             log.info("User profile has been activated.");
             //TODO: Log in newUser. Note:It can be also null for various reasons(see ConfirmRegistration())
         }
 
         model.addAttribute("user", newUser);
-        model.addAttribute("theme", "Registration");
-        model.addAttribute("message", "Account Confirmation is done.");
-        return "information";
+        model.addAttribute(THEME, REGISTRATION);
+        model.addAttribute(MESSAGE, "Account Confirmation is done.");
+        return INFORMATION;
     }
     /* Expected Request body:
     {

@@ -18,7 +18,7 @@ import java.util.UUID;
 @Controller
 public class ForgotPasswordController {
 
-    private static EmailType EMAILTYPE = EmailType.FORGOT_PASSWORD;
+    private static final EmailType EMAILTYPE = EmailType.FORGOT_PASSWORD;
 
 
     private UserService userService;
