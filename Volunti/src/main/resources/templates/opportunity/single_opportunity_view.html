@@ -26,6 +26,7 @@
                         <!-- SIDE BAR -->
                         <div class="col-md-4">
 
+
                             <!-- Company Information -->
                             <div class="sidebar">
                                 <h5 class="main-title">Opportunity Information</h5>
@@ -40,10 +41,10 @@
                                             <span class="subtitle col-xs-6" th:text="${foundOppObject.location}"></span> </li>-->
                                         <li class="row">
                                             <h6 class="title col-xs-6">Availability from</h6>
-                                            <span class="subtitle col-xs-6" th:text="${foundOppObject.availabilityFrom}"></span> </li>
+                                            <span class="subtitle col-xs-6" th:text="${#dates.format(foundOppObject.availabilityFrom,'yyyy-MM-dd')}"></span> </li>
                                         <li class="row">
                                             <h6 class="title col-xs-6">Availability to</h6>
-                                            <span class="subtitle col-xs-6" th:text="${foundOppObject.dateAvailabilityTo}"></span> </li>
+                                            <span class="subtitle col-xs-6" th:text="${#dates.format(foundOppObject.dateAvailabilityTo, 'yyyy-MM-dd')}"></span> </li>
                                         <li class="row">
                                             <h6 class="title col-xs-6">Hours expected</h6>
                                             <span class="subtitle col-xs-6" th:text="${foundOppObject.hoursExpected} +' ' + ${foundOppObject.hoursExpectedType}"> </span></li>

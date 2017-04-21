@@ -71,9 +71,7 @@ public class Opportunity{
     @JoinTable(name = "opportunities_skills", joinColumns = @JoinColumn(name = "opportunity_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "skill_id", referencedColumnName = "id"))
     private List<Skill> opportunitySkills;
 
-
-    public Opportunity() {
-    }
+    public Opportunity(){}
 
     public Opportunity(String title, String requirements) {
         this.title = title;

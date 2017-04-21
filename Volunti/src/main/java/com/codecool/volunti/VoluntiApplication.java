@@ -1,14 +1,8 @@
 package com.codecool.volunti;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import com.codecool.volunti.model.Organisation;
 import com.codecool.volunti.model.User;
 import com.codecool.volunti.model.Volunteer;
-import com.codecool.volunti.repository.OrganisationRepository;
-import com.codecool.volunti.repository.UserRepository;
-import com.codecool.volunti.repository.VolunteerRepository;
-import com.codecool.volunti.service.DataLoader;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -27,9 +21,6 @@ import javax.annotation.PostConstruct;
 @EnableAsync
 @EnableJpaRepositories(basePackages = {"com.codecool.volunti.repository"})
 public class VoluntiApplication {
-
-    DataLoader dataLoader;
-
 
     @Autowired
     com.codecool.volunti.repository.OrganisationRepository organisationRepository;
@@ -59,13 +50,6 @@ public class VoluntiApplication {
             log.info(organisation.toString());
         }
 
-//    CREATE VIEW FILTER_TO_OPPORTUNITY AS
-//    SELECT DISTINCT opp.id, opp.title, opp.availability_from, opp.date_availability_to,skills.name, org.category, org.country FROM OPPORTUNITIES opp
-//    INNER JOIN ORGANISATION org
-//    ON opp.organisation_id = org.organisation_id
-//    INNER JOIN OPPORTUNITIES_SKILLS opp_skill ON opp.id = opp_skill.opportunity_id
-//    INNER JOIN SKILLS skills
-//    ON opp_skill.skill_id = skills.id
         for (User user : userRepository.findAll()) {
             log.info(user.toString());
         }

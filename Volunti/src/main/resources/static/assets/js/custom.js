@@ -3,6 +3,23 @@
         maxItems: 5
     });
 
+    $('#select-language').selectize({
+        maxItems: 5
+    });
+
+    $('#select-country').selectize({
+        maxItems: 1
+    });
+
+
+    $('textarea').each(function () {
+        this.setAttribute('style', 'height:' + (this.scrollHeight) + 'px;overflow-y:hidden;');
+    }).on('input', function () {
+        this.style.height = 'auto';
+        this.style.height = (this.scrollHeight) + 'px';
+    });
+
+
     function loadScript(url, callback)
     {
         // Adding the script tag to the head as suggested before

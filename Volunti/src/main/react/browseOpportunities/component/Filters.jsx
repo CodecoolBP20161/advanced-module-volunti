@@ -3,6 +3,7 @@ const React = require('react');
 
 const Filters = React.createClass({
 
+
     loadDataFromServer: function () {
         $.ajax({
             url: "/api/opportunities/filters",
@@ -52,37 +53,53 @@ const Filters = React.createClass({
 
     render: function () {
         return (
-            <div>
-                <input type="date" ref="from" id="from" onChange={this.handleChange}/>
+            <div className="row opportunity-filters">
 
-                <input type="date" ref="to" id="to" onChange={this.handleChange}/>
-
-                <select value={this.state.userSkill} ref="skills" id="skills" onChange={this.handleChange}>
+                <div className="col-sm-2">
+                <input type="date" ref="from" id="from"
+                       onChange={this.handleChange}/>
+                </div>
+                <div className="col-sm-2">
+                <input type="date" ref="to" id="to"
+                       onChange={this.handleChange}/>
+                </div>
+                <div className="col-sm-2">
+                <select value={this.state.userSkill}
+                        ref="skills" id="skills"
+                        onChange={this.handleChange}>
                     <option value="">Skill</option>
                     {this.state.skills.map(function (skill, index) {
                         return <option key={index}>{skill}</option>
                     })}
                 </select>
-
-                <select ref="category" id="category" onChange={this.handleChange}>
+                </div>
+                <div className="col-sm-2">
+                <select ref="category" id="category"
+                        onChange={this.handleChange}>
                     <option value="">Category</option>
                     {this.state.categories.map(function (category, index) {
                         return <option key={index}>{category}</option>
                     })}
                 </select>
-
-                <select value={this.state.userLocation} ref="location" id="location" onChange={this.handleChange}>
+                </div>
+                <div className="col-sm-2">
+                <select value={this.state.userLocation}
+                        ref="location"
+                        id="location" onChange={this.handleChange}>
                     <option value="">Location</option>
                     {this.state.locations.map(function (location, index) {
                         return <option key={index}>{location}</option>
                     })}
                 </select>
-
-                <select ref="pageSize" id="pageSize" onChange={this.handleChange}>
+                </div>
+                <div className="col-sm-2">
+                <select ref="pageSize" id="pageSize"
+                        onChange={this.handleChange}>
                     <option>10</option>
                     <option>20</option>
                     <option>30</option>
                 </select>
+                </div>
             </div>
         )
     }

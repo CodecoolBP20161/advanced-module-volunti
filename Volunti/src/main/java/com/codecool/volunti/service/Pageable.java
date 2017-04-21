@@ -4,9 +4,6 @@ import java.util.List;
 
 public class Pageable<T> {
 
-    /** the default page size */
-//    public static final int DEFAULT_PAGE_SIZE = 10;
-//
     private static final int PAGE_WINDOW = 10;
 
     /** the list over which this class is paging */
@@ -133,56 +130,9 @@ public class Pageable<T> {
         return this.maxPages;
     }
 
-    /**
-     * Determines whether there is a previous page and gets the page number.
-     *
-     * @return  the previous page number, or zero
-     */
-    public int getPreviousPage() {
-        if (page > 1) {
-            return page-1;
-        } else {
-            return 0;
-        }
+    public int getStartingIndex() {
+        return startingIndex;
     }
 
-    /**
-     * Determines whether there is a next page and gets the page number.
-     *
-     * @return  the next page number, or 0
-     */
-    public int getNextPage() {
-        if (page < maxPages) {
-            return page+1;
-        } else {
-            return 0;
-        }
-    }
-
-    /**
-     * Gets the minimum page in the window.
-     *
-     * @return  the page number
-     */
-    public int getMinPageRange() {
-        if (getPage() > PAGE_WINDOW) {
-            return getPage() - PAGE_WINDOW;
-        } else {
-            return 1;
-        }
-    }
-
-    /**
-     * Gets the maximum page in the window.
-     *
-     * @return  the page number
-     */
-    public int getMaxPageRange() {
-        if (getPage() < (getMaxPages() - PAGE_WINDOW)) {
-            return getPage() + PAGE_WINDOW;
-        } else {
-            return getMaxPages();
-        }
-    }
 
 }
