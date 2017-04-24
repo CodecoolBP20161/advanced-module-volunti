@@ -132,7 +132,7 @@ public class  PasswordRecoveryWorkflowTest extends AbstractServiceTest {
     @Test
     public void test_step2_POST_HappyPath() throws Exception {
         String oldPassword = user.getPassword();
-        String validPasswordFormURL =   "id=2&" +
+        String validPasswordFormURL = "id=" + user.getId() + "&" +
                 "firstName=Test&" +
                 "lastName=User&" +
                 "email=volunti.trial.PasswordRecoveryTest@gmail.com&" +
