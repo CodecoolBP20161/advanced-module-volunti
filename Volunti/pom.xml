@@ -67,6 +67,11 @@
             <version>1.5.2.RELEASE</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.4.193</version>
+        </dependency>
 
         <!-- Lombok  -->
         <dependency>
