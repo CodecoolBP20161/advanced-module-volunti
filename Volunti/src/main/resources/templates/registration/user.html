@@ -70,8 +70,19 @@
                     <div id="passwordMatcherSpan" hidden="hidden"
                          class="alert alert-error alert-dismissible"
                          role="alert"></div>
-                    <input id="passWordInput1" type="password" pattern="(?=^.{6,256}$) ^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$" placeholder="Min 6 character" required="required" th:field="*{password}"/>
-                    <input id="passWordInput2" type="password" pattern="(?=^.{6,256}$) ^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$" placeholder="Min 6 character" required="required"/>
+                    <input id="passWordInput1" type="password"
+                           name="passw1"
+                           minlength="6" maxlength="256"
+                           pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$"
+                           placeholder="Min 6 character"
+                           required="required"
+                           th:field="*{password}"/>
+                    <input id="passWordInput2" type="password"
+                           name="passw2"
+                           minlength="6" maxlength="256"
+                           pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$"
+                           placeholder="Min 6 character"
+                           required="required"/>
 
                 </div>
             </div>
