@@ -51,6 +51,7 @@ public class VolunteerRegistrationController {
         if ( session.getAttribute("user") != null ) {
             user = (User) session.getAttribute("user");
         }
+
         model.addAttribute("user", user);
         model.addAttribute("action","/registration/volunteer/step1");
         model.addAttribute("button", "next");
@@ -76,9 +77,12 @@ public class VolunteerRegistrationController {
         Volunteer volunteer = new Volunteer();
         if (session.getAttribute(VOLUNTEER) != null){
             volunteer = (Volunteer) session.getAttribute(VOLUNTEER);
+            log.info("session11");
         }
 
+        log.info("session22");
         model.addAttribute("skills", skillRepository.findAll());
+        log.info("session32");
         model.addAttribute(VOLUNTEER, volunteer);
 
         return "registration/volunteer/volunteerForm";
@@ -97,6 +101,7 @@ public class VolunteerRegistrationController {
             return "registration/volunteer/volunteerForm";
         } else {
             volunteerService.save(volunteer);
+//            System.out.println("volunteerSkill2: " + volunteer.getVolunteerSkills().get(0));
             User user = (User) session.getAttribute("user");
             user.setVolunteer(volunteer);
             userService.saveUser(user);
