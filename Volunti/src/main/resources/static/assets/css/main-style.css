@@ -11519,7 +11519,7 @@ p i {
 .sb-slider-section.default.custom-bullet .ms-bullets.ms-dir-h {
 	bottom: 38%;
 }
-@media screen and (768px) {
+@media screen and (max-width: 768px) {
  .sb-slider-section.default.custom-bullet .ms-bullets.ms-dir-h {
  bottom: 40px;
 }

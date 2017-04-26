@@ -3,6 +3,7 @@ package com.codecool.volunti.model;
 import com.codecool.volunti.model.enums.Category;
 import com.codecool.volunti.model.enums.Country;
 import com.codecool.volunti.model.enums.SpokenLanguage;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
 import lombok.ToString;
@@ -91,6 +92,11 @@ public class Organisation {
     @OneToMany(mappedBy="organisationId")
     @JsonSerialize(using = CustomListSerializer.class)
     private List<OrganisationSocialLink> organisationSocialLinks;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "organisationId")
+    private List<OrganisationVideo> organisationVideos;
+
 
     public Organisation(){}
 

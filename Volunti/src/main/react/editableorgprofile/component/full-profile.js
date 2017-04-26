@@ -19,9 +19,6 @@ class FullProfile extends React.Component {
             address: null,
             profilePicture: "/profile/organisation/image/profile",
             backgroundPicture: "/profile/organisation/image/background",
-            mission: null,
-            description1: null,
-            description2: null,
             social: {
                 facebook: "valamiLink",
                 twitter: "valamiLink",
@@ -30,9 +27,11 @@ class FullProfile extends React.Component {
                 video: "valamiLink"
             },
             selectedSocial: 'facebook'
-        }
+        };
 
-    }fetchData(){
+    }
+
+    fetchData(){
         let csrfHeader = $("meta[name='_csrf_header']").attr("content");
         let csrfToken = $("meta[name='_csrf']").attr("content");
         let headers = {};
@@ -52,9 +51,9 @@ class FullProfile extends React.Component {
                     city: response.city,
                     zipcode: response.zipcode,
                     address: response.address,
-                    mission: response.mission,
-                    description1: response.description1,
-                    description2: response.description2,
+                    // mission: response.mission,
+                    // description1: response.description1,
+                    // description2: response.description2,
                     social: {
                         facebook: 'facebookURL',
                         twitter: 'twitterURL',
@@ -66,6 +65,8 @@ class FullProfile extends React.Component {
                 })
             }.bind(this)
          });
+
+
         // $.ajax({
         //     url: "/profile/organisation/text",
         //     cache: false,
@@ -93,42 +94,14 @@ class FullProfile extends React.Component {
         //             }
         //         })
         //     }.bind(this)
-}
-    componentWillMount(){
+    }
+
+    componentDidMount() {
         this.fetchData()
     }
-    saveData(){
-        console.log("Full-Profile: Post AJAX sent, state saved.");
-        // let csrfHeader = $("meta[name='_csrf_header']").attr("content");
-        // let csrfToken = $("meta[name='_csrf']").attr("content");
-        // let headers = {};
-        // $.ajax({
-        //     url: "/profile/organisation/text",
-        //     cache: false,
-        //     type: "GET",
-        //     headers: headers,
-        //     dataType: "json",
-        //     success: function (response) {
-        //         this.setState({
-        //             name: response.name,
-        //             category: response.category,
-        //             country: response.country,
-        //             city: response.city,
-        //             zipcode: response.zipcode,
-        //             address: response.address,
-        //             mission: response.mission,
-        //             description1: response.description1,
-        //             description2: response.description2,
-        //             social: {
-        //                 facebook: 'facebookURL',
-        //                 twitter: 'twitterURL',
-        //                 google: 'googleURL',
-        //                 linkedin: 'linkedinURL',
-        //                 video: "https://www.youtube.com/embed/q4je9N26ouY",
-        //             }
-        //         })
-        //     }.bind(this)
 
+    componentWillMount(){
+        this.fetchData()
     }
 
     saveSocial(value, selected){
@@ -148,7 +121,6 @@ class FullProfile extends React.Component {
         headers[csrfHeader] = csrfToken;
         let formData = new FormData();
         formData.append("file", picture);
-        console.log(picture);
         $.ajax({
             url: "/profile/organisation/saveBackgroundImage",
             cache: false,
@@ -215,10 +187,7 @@ class FullProfile extends React.Component {
                                 <div className="tab-content">
 
                                     {/*<!-- PROFILE -->*/}
-                                    <Profile mission={this.state.mission}
-                                             description1={this.state.description1}
-                                             videoURL={this.state.social.video}
-                                             description2={this.state.description2} />
+                                    <Profile videoURL={this.state.social.video} />
 
                                     {/*<!-- Services -->*/}
                                     {/*<Services />*/}

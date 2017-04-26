@@ -126,6 +126,10 @@ public class DataLoader {
         organisationSocialLink3.setOrganisationId(organisation1);
         organisationService.save(organisationSocialLink3);
 
+        OrganisationVideo organisationVideo = new OrganisationVideo();
+        organisationVideo.setEmbedCode("23riu23tr8t723di");
+        organisationVideo.setOrganisationId(organisation1);
+        organisationService.save(organisationVideo);
         log.info("loadData method called ...");
     }
 }
