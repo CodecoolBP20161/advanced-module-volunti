@@ -1,5 +1,6 @@
 package com.codecool.volunti.controller;
 
+import com.codecool.volunti.model.OrganisationVideo;
 import com.codecool.volunti.service.ImageValidationService;
 import com.codecool.volunti.model.Organisation;
 import com.codecool.volunti.model.User;
@@ -22,6 +23,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.security.Principal;
+import java.util.Arrays;
 
 
 @Slf4j
@@ -67,6 +69,21 @@ public class OrganisationProfileController {
         organisation.setDescription2(editedOrganisation.getDescription2());
 
         organisationService.save(organisation);
+        return "profiles/organisation";
+    }
+
+    @PostMapping( value = "/profile/organisation/saveVideo")
+    @ResponseBody
+    public String saveVideo(@RequestBody OrganisationVideo editedOrganisationVideo, Principal principal){
+        log.info("saveVideo() method called ...");
+
+        User user = userService.getByEmail(principal.getName());
+        Organisation organisation = user.getOrganisation();
+        OrganisationVideo organisationVideo = new OrganisationVideo();
+        organisationVideo.setOrganisationId(organisation);
+        organisationVideo.setEmbedCode(editedOrganisationVideo.getEmbedCode());
+
+        organisationService.save(organisationVideo);
         return "profiles/organisation";
     }
 
