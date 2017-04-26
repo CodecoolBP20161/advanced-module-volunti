@@ -53,7 +53,6 @@
                                         <form action="#" th:action="@{/registration/volunteer/step2}"
                                               th:object="${volunteer}" method="post" class="volunteer-form">
 
-
                                             <div class="row">
                                                 <div class="col-sm-4">
                                                     <h4>Choose your skills</h4>
@@ -65,15 +64,11 @@
                                                             data-validation-length="min1"
                                                             placeholder="Choose your skills (max 5)"
                                                             th:field="*{volunteerSkills}">
-                                                        <!--<span th:if="${volunteer.volunteerSkills} != null"-->
-                                                              <!--th:each="volskill : *{volunteerSkills}">-->
-                                                                        <!--<option th:value="${volskill.id}"  th:text="${volskill.name}"></option>-->
-                                                                    <!--</span>-->
-
                                                         <option th:each="skill : ${skills}"
                                                                 th:value="${skill.id}"
                                                                 th:text="${skill.name}">
                                                         </option>
+
                                                     </select>
                                                 </div>
                                                 </div>

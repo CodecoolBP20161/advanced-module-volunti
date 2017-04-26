@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.support.SessionStatus;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -77,19 +78,15 @@ public class VolunteerRegistrationController {
         Volunteer volunteer = new Volunteer();
         if (session.getAttribute(VOLUNTEER) != null){
             volunteer = (Volunteer) session.getAttribute(VOLUNTEER);
-            log.info("session11");
         }
 
-        log.info("session22");
         model.addAttribute("skills", skillRepository.findAll());
-        log.info("session32");
         model.addAttribute(VOLUNTEER, volunteer);
-
         return "registration/volunteer/volunteerForm";
     }
 
     @PostMapping("/step2")
-    public String stepTwoPost(@Valid Volunteer volunteer, BindingResult bindingResult, HttpSession session, Model model) {
+    public String stepTwoPost(@Valid Volunteer volunteer, BindingResult bindingResult, HttpSession session, Model model, SessionStatus status) {
         if (session.getAttribute(VOLUNTEER) == null) {
             return STEP1;
         }
@@ -133,16 +130,4 @@ public class VolunteerRegistrationController {
         return INFORMATION;
     }
 
-    /* Expected Request body:
-    {
-        entityName: entityName,
-        fieldName: fieldName,
-        value: value
-    }
-    */
-//    @PostMapping( value = "/ValidateFieldIfExists")
-//    @ResponseBody
-//    public String validateFieldIfExists(@RequestBody HashMap<String, String> payload){
-//        return String.valueOf(validationService.checkIfValueExists(payload));
-//    }
 }
