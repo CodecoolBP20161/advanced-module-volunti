@@ -7,17 +7,23 @@ import com.codecool.volunti.service.StorageService;
 import com.codecool.volunti.service.model.OrganisationService;
 import com.codecool.volunti.service.model.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.util.http.fileupload.FileUploadBase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.validation.BeanPropertyBindingResult;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -120,6 +126,21 @@ public class OrganisationProfileController {
 
     @PostMapping( value = "/profile/organisation/saveBackgroundImage")
     public Boolean saveBackgroundImage(@RequestParam("file") MultipartFile file, Principal principal) throws IOException {
+        log.info("here it is");
+        log.info("file size: " + file.getSize());
+
+        /*if(bindingResult.hasErrors()){
+            log.error(file.getSize() + "error");
+        }*/
+
+        /*if(file.getSize() >= 1048576){
+            BindingResult bindingResult = new BeanPropertyBindingResult(file, "image to upload");
+            bindingResult.addError(new ObjectError("multipartFile","image size is bigger than 1048576"));
+            log.error(bindingResult.getErrorCount() + bindingResult.toString());
+            throw new FileUploadBase.SizeLimitExceededException("Too big picture", 1048576, file.getSize());
+        }*/
+
+
         log.info("saveBackgroundImage() method called...");
         log.info("File type: " + file.getContentType());
 
@@ -143,4 +164,6 @@ public class OrganisationProfileController {
         }
 
     }
+
+
 }
