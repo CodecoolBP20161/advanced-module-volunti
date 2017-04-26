@@ -56,12 +56,18 @@ public class OrganisationProfileController {
 
     @PostMapping( value = "/profile/organisation/saveText")
     @ResponseBody
-    public String saveText(Organisation organisation){
+    public String saveText(@RequestBody Organisation editedOrganisation, Principal principal){
         log.info("saveText() method called ...");
 
-        //TODO: Save the text...
+        User user = userService.getByEmail(principal.getName());
+        Organisation organisation = user.getOrganisation();
+
+        organisation.setMission(editedOrganisation.getMission());
+        organisation.setDescription1(editedOrganisation.getDescription1());
+        organisation.setDescription2(editedOrganisation.getDescription2());
+
         organisationService.save(organisation);
-        return "profiles/organisation";  //TODO: What do we want to return here?!
+        return "profiles/organisation";
     }
 
     @GetMapping("/profile/organisation/image/profile")

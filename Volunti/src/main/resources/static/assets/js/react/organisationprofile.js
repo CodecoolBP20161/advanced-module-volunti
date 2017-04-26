@@ -1,41 +1,41 @@
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
-
+/******/
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
-
+/******/
 /******/ 		// Check if module is in cache
 /******/ 		if(installedModules[moduleId])
 /******/ 			return installedModules[moduleId].exports;
-
+/******/
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			i: moduleId,
 /******/ 			l: false,
 /******/ 			exports: {}
 /******/ 		};
-
+/******/
 /******/ 		// Execute the module function
 /******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-
+/******/
 /******/ 		// Flag the module as loaded
 /******/ 		module.l = true;
-
+/******/
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
-
-
+/******/
+/******/
 /******/ 	// expose the modules object (__webpack_modules__)
 /******/ 	__webpack_require__.m = modules;
-
+/******/
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
-
+/******/
 /******/ 	// identity function for calling harmony imports with the correct context
 /******/ 	__webpack_require__.i = function(value) { return value; };
-
+/******/
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
@@ -46,7 +46,7 @@
 /******/ 			});
 /******/ 		}
 /******/ 	};
-
+/******/
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
 /******/ 	__webpack_require__.n = function(module) {
 /******/ 		var getter = module && module.__esModule ?
@@ -55,13 +55,13 @@
 /******/ 		__webpack_require__.d(getter, 'a', getter);
 /******/ 		return getter;
 /******/ 	};
-
+/******/
 /******/ 	// Object.prototype.hasOwnProperty.call
 /******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
-
+/******/
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = "";
-
+/******/
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(__webpack_require__.s = 83);
 /******/ })
@@ -6799,7 +6799,6 @@ var TopLabel = function (_React$Component) {
                     null,
                     this.props.address
                 ),
-                console.log("social in Toplabel: ", this.props.social),
                 _react2.default.createElement(_toplabelSocial2.default, { social: this.props.social,
                     selected: this.props.selectedSocial,
                     saveSocial: function saveSocial(value, newSelected) {
@@ -9595,9 +9594,6 @@ var FullProfile = function (_React$Component) {
             address: null,
             profilePicture: "/profile/organisation/image/profile",
             backgroundPicture: "/profile/organisation/image/background",
-            mission: null,
-            description1: null,
-            description2: null,
             social: {
                 facebook: "valamiLink",
                 twitter: "valamiLink",
@@ -9633,9 +9629,9 @@ var FullProfile = function (_React$Component) {
                         city: response.city,
                         zipcode: response.zipcode,
                         address: response.address,
-                        mission: response.mission,
-                        description1: response.description1,
-                        description2: response.description2,
+                        // mission: response.mission,
+                        // description1: response.description1,
+                        // description2: response.description2,
                         social: {
                             facebook: 'facebookURL',
                             twitter: 'twitterURL',
@@ -9647,6 +9643,7 @@ var FullProfile = function (_React$Component) {
                     });
                 }.bind(this)
             });
+
             // $.ajax({
             //     url: "/profile/organisation/text",
             //     cache: false,
@@ -9676,43 +9673,14 @@ var FullProfile = function (_React$Component) {
             //     }.bind(this)
         }
     }, {
-        key: 'componentWillMount',
-        value: function componentWillMount() {
+        key: 'componentDidMount',
+        value: function componentDidMount() {
             this.fetchData();
         }
     }, {
-        key: 'saveData',
-        value: function saveData() {
-            console.log("Full-Profile: Post AJAX sent, state saved.");
-            // let csrfHeader = $("meta[name='_csrf_header']").attr("content");
-            // let csrfToken = $("meta[name='_csrf']").attr("content");
-            // let headers = {};
-            // $.ajax({
-            //     url: "/profile/organisation/text",
-            //     cache: false,
-            //     type: "GET",
-            //     headers: headers,
-            //     dataType: "json",
-            //     success: function (response) {
-            //         this.setState({
-            //             name: response.name,
-            //             category: response.category,
-            //             country: response.country,
-            //             city: response.city,
-            //             zipcode: response.zipcode,
-            //             address: response.address,
-            //             mission: response.mission,
-            //             description1: response.description1,
-            //             description2: response.description2,
-            //             social: {
-            //                 facebook: 'facebookURL',
-            //                 twitter: 'twitterURL',
-            //                 google: 'googleURL',
-            //                 linkedin: 'linkedinURL',
-            //                 video: "https://www.youtube.com/embed/q4je9N26ouY",
-            //             }
-            //         })
-            //     }.bind(this)
+        key: 'componentWillMount',
+        value: function componentWillMount() {
+            this.fetchData();
         }
     }, {
         key: 'saveSocial',
@@ -9735,7 +9703,6 @@ var FullProfile = function (_React$Component) {
             headers[csrfHeader] = csrfToken;
             var formData = new FormData();
             formData.append("file", picture);
-            console.log(picture);
             $.ajax({
                 url: "/profile/organisation/saveBackgroundImage",
                 cache: false,
@@ -9839,10 +9806,7 @@ var FullProfile = function (_React$Component) {
                                 _react2.default.createElement(
                                     'div',
                                     { className: 'tab-content' },
-                                    _react2.default.createElement(_tabProfile2.default, { mission: this.state.mission,
-                                        description1: this.state.description1,
-                                        videoURL: this.state.social.video,
-                                        description2: this.state.description2 })
+                                    _react2.default.createElement(_tabProfile2.default, { videoURL: this.state.social.video })
                                 )
                             )
                         )
@@ -10148,6 +10112,10 @@ var _react = __webpack_require__(13);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _reactAddonsUpdate = __webpack_require__(186);
+
+var _reactAddonsUpdate2 = _interopRequireDefault(_reactAddonsUpdate);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -10164,44 +10132,187 @@ var TabProfile = function (_React$Component) {
 
         var _this = _possibleConstructorReturn(this, (TabProfile.__proto__ || Object.getPrototypeOf(TabProfile)).call(this, props));
 
-        _this.state = {};
+        _this.state = {
+            mouseOver: false,
+            isEditing: false,
+            mission: null,
+            description1: null,
+            description2: null
+        };
+        _this.handleChange = _this.handleChange.bind(_this);
         return _this;
     }
 
     _createClass(TabProfile, [{
-        key: "render",
+        key: 'fetchData',
+        value: function fetchData() {
+            var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+            var csrfToken = $("meta[name='_csrf']").attr("content");
+            var headers = {};
+
+            headers[csrfHeader] = csrfToken;
+            $.ajax({
+                url: "/profile/organisation/text",
+                cache: false,
+                type: "GET",
+                headers: headers,
+                dataType: "json",
+                success: function (response) {
+                    this.setState({
+                        mission: response.mission,
+                        description1: response.description1,
+                        description2: response.description2
+                    });
+                }.bind(this)
+            });
+        }
+    }, {
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            this.fetchData();
+        }
+    }, {
+        key: 'toggleEditMode',
+        value: function toggleEditMode() {
+            if (this.state.isEditing) {
+                this.saveData();
+            }
+            this.setState({
+                isEditing: !this.state.isEditing
+            });
+        }
+    }, {
+        key: 'toggleEditButton',
+        value: function toggleEditButton() {
+            this.setState({ mouseOver: !this.state.mouseOver });
+        }
+    }, {
+        key: 'mergeState',
+        value: function mergeState(newObj) {
+            var newState = (0, _reactAddonsUpdate2.default)(this.state, {
+                $merge: newObj
+            });
+
+            this.setState(newState);
+        }
+    }, {
+        key: 'handleChange',
+        value: function handleChange(event) {
+            var newObj = {};
+            newObj[event.target.name] = event.target.value;
+
+            this.mergeState(newObj);
+        }
+    }, {
+        key: 'saveData',
+        value: function saveData() {
+            var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+            var csrfToken = $("meta[name='_csrf']").attr("content");
+            var headers = {};
+
+            headers[csrfHeader] = csrfToken;
+            var formData = {};
+            formData["mission"] = this.state.mission;
+            formData["description1"] = this.state.description1;
+            formData["description2"] = this.state.description2;
+
+            $.ajax({
+                url: "/profile/organisation/saveText",
+                cache: false,
+                type: "POST",
+                headers: headers,
+                data: JSON.stringify(formData),
+                dataType: 'json',
+                contentType: 'application/json',
+                processData: false,
+                async: true,
+                // data: formData,
+                success: function () {}.bind(this)
+            });
+        }
+    }, {
+        key: 'render',
         value: function render() {
+            var _this2 = this;
+
             var videoURL = this.props.videoURL ? this.props.videoURL : "https://www.youtube.com/embed/leQ8nEcYFOc";
 
             return _react2.default.createElement(
-                "div",
-                { id: "profile", className: "tab-pane fade in active" },
+                'div',
+                { id: 'profile', className: 'tab-pane fade in active',
+                    onMouseEnter: function onMouseEnter() {
+                        return _this2.toggleEditButton();
+                    },
+                    onMouseLeave: function onMouseLeave() {
+                        return _this2.toggleEditButton();
+                    } },
                 _react2.default.createElement(
-                    "div",
-                    { className: "profile-main" },
+                    'div',
+                    { className: 'profile-main' },
                     _react2.default.createElement(
-                        "h3",
-                        null,
-                        "About the Company"
+                        'div',
+                        { className: 'filter-flower' },
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'row' },
+                            _react2.default.createElement(
+                                'h3',
+                                { className: 'col-sm-7' },
+                                'About the Company'
+                            ),
+                            (this.state.mouseOver || this.state.isEditing) && _react2.default.createElement(
+                                'button',
+                                { type: 'submit', className: 'col-sm-4', onClick: function onClick() {
+                                        return _this2.toggleEditMode();
+                                    } },
+                                this.state.isEditing ? 'Done' : 'Edit'
+                            )
+                        )
                     ),
-                    _react2.default.createElement(
-                        "div",
-                        { className: "profile-in" },
+                    !this.state.isEditing && _react2.default.createElement(
+                        'div',
+                        { className: 'profile-in' },
                         _react2.default.createElement(
-                            "p",
+                            'p',
                             null,
-                            this.props.mission
+                            this.state.mission
                         ),
                         _react2.default.createElement(
-                            "p",
+                            'p',
                             null,
-                            this.props.description1
+                            this.state.description1
                         ),
-                        _react2.default.createElement("iframe", { src: videoURL }),
+                        _react2.default.createElement('iframe', { src: videoURL }),
                         _react2.default.createElement(
-                            "p",
+                            'p',
                             null,
-                            this.props.description2
+                            this.state.description2
+                        )
+                    ),
+                    this.state.isEditing && _react2.default.createElement(
+                        'div',
+                        { className: 'profile-in' },
+                        _react2.default.createElement(
+                            'p',
+                            null,
+                            _react2.default.createElement('textarea', { value: this.state.mission,
+                                name: 'mission',
+                                onChange: this.handleChange })
+                        ),
+                        _react2.default.createElement(
+                            'p',
+                            null,
+                            _react2.default.createElement('textarea', { value: this.state.description1,
+                                name: 'description1',
+                                onChange: this.handleChange })
+                        ),
+                        _react2.default.createElement('iframe', { src: videoURL }),
+                        _react2.default.createElement(
+                            'p',
+                            null,
+                            _react2.default.createElement('textarea', { value: this.state.description2,
+                                name: 'description2',
+                                onChange: this.handleChange })
                         )
                     )
                 )
@@ -10439,7 +10550,6 @@ var Social = function (_React$Component) {
         value: function render() {
             var _this2 = this;
 
-            // console.log("Social: ", this.props.social);
             var socialLink = [];
             for (var key in this.props.social) {
                 if (this.props.social.hasOwnProperty(key) && key != 'video') {
@@ -10448,7 +10558,7 @@ var Social = function (_React$Component) {
                             'a',
                             { onClick: function onClick(e) {
                                     return _this2.select(e);
-                                }, id: key, className: 'selected' },
+                                }, id: key, key: key, className: 'selected' },
                             _react2.default.createElement('i', { className: "fa fa-" + key })
                         ));
                     } else if (this.state.isEditing) {
@@ -10456,13 +10566,13 @@ var Social = function (_React$Component) {
                             'a',
                             { onClick: function onClick(e) {
                                     return _this2.select(e);
-                                }, id: key },
+                                }, id: key, key: key },
                             _react2.default.createElement('i', { className: "fa fa-" + key })
                         ));
                     } else {
                         socialLink.push(_react2.default.createElement(
                             'a',
-                            { href: this.props.social[key], id: key },
+                            { href: this.props.social[key], id: key, key: key },
                             _react2.default.createElement('i', { className: "fa fa-" + key })
                         ));
                     }
@@ -22779,6 +22889,130 @@ try {
 
 module.exports = g;
 
+
+/***/ }),
+/* 186 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(187);
+
+/***/ }),
+/* 187 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(process) {/**
+ * Copyright 2013-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
+ *
+ */
+
+/* global hasOwnProperty:true */
+
+
+
+var _prodInvariant = __webpack_require__(17),
+    _assign = __webpack_require__(4);
+
+var invariant = __webpack_require__(1);
+var hasOwnProperty = {}.hasOwnProperty;
+
+function shallowCopy(x) {
+  if (Array.isArray(x)) {
+    return x.concat();
+  } else if (x && typeof x === 'object') {
+    return _assign(new x.constructor(), x);
+  } else {
+    return x;
+  }
+}
+
+var COMMAND_PUSH = '$push';
+var COMMAND_UNSHIFT = '$unshift';
+var COMMAND_SPLICE = '$splice';
+var COMMAND_SET = '$set';
+var COMMAND_MERGE = '$merge';
+var COMMAND_APPLY = '$apply';
+
+var ALL_COMMANDS_LIST = [COMMAND_PUSH, COMMAND_UNSHIFT, COMMAND_SPLICE, COMMAND_SET, COMMAND_MERGE, COMMAND_APPLY];
+
+var ALL_COMMANDS_SET = {};
+
+ALL_COMMANDS_LIST.forEach(function (command) {
+  ALL_COMMANDS_SET[command] = true;
+});
+
+function invariantArrayCase(value, spec, command) {
+  !Array.isArray(value) ? process.env.NODE_ENV !== 'production' ? invariant(false, 'update(): expected target of %s to be an array; got %s.', command, value) : _prodInvariant('1', command, value) : void 0;
+  var specValue = spec[command];
+  !Array.isArray(specValue) ? process.env.NODE_ENV !== 'production' ? invariant(false, 'update(): expected spec of %s to be an array; got %s. Did you forget to wrap your parameter in an array?', command, specValue) : _prodInvariant('2', command, specValue) : void 0;
+}
+
+/**
+ * Returns a updated shallow copy of an object without mutating the original.
+ * See https://facebook.github.io/react/docs/update.html for details.
+ */
+function update(value, spec) {
+  !(typeof spec === 'object') ? process.env.NODE_ENV !== 'production' ? invariant(false, 'update(): You provided a key path to update() that did not contain one of %s. Did you forget to include {%s: ...}?', ALL_COMMANDS_LIST.join(', '), COMMAND_SET) : _prodInvariant('3', ALL_COMMANDS_LIST.join(', '), COMMAND_SET) : void 0;
+
+  if (hasOwnProperty.call(spec, COMMAND_SET)) {
+    !(Object.keys(spec).length === 1) ? process.env.NODE_ENV !== 'production' ? invariant(false, 'Cannot have more than one key in an object with %s', COMMAND_SET) : _prodInvariant('4', COMMAND_SET) : void 0;
+
+    return spec[COMMAND_SET];
+  }
+
+  var nextValue = shallowCopy(value);
+
+  if (hasOwnProperty.call(spec, COMMAND_MERGE)) {
+    var mergeObj = spec[COMMAND_MERGE];
+    !(mergeObj && typeof mergeObj === 'object') ? process.env.NODE_ENV !== 'production' ? invariant(false, 'update(): %s expects a spec of type \'object\'; got %s', COMMAND_MERGE, mergeObj) : _prodInvariant('5', COMMAND_MERGE, mergeObj) : void 0;
+    !(nextValue && typeof nextValue === 'object') ? process.env.NODE_ENV !== 'production' ? invariant(false, 'update(): %s expects a target of type \'object\'; got %s', COMMAND_MERGE, nextValue) : _prodInvariant('6', COMMAND_MERGE, nextValue) : void 0;
+    _assign(nextValue, spec[COMMAND_MERGE]);
+  }
+
+  if (hasOwnProperty.call(spec, COMMAND_PUSH)) {
+    invariantArrayCase(value, spec, COMMAND_PUSH);
+    spec[COMMAND_PUSH].forEach(function (item) {
+      nextValue.push(item);
+    });
+  }
+
+  if (hasOwnProperty.call(spec, COMMAND_UNSHIFT)) {
+    invariantArrayCase(value, spec, COMMAND_UNSHIFT);
+    spec[COMMAND_UNSHIFT].forEach(function (item) {
+      nextValue.unshift(item);
+    });
+  }
+
+  if (hasOwnProperty.call(spec, COMMAND_SPLICE)) {
+    !Array.isArray(value) ? process.env.NODE_ENV !== 'production' ? invariant(false, 'Expected %s target to be an array; got %s', COMMAND_SPLICE, value) : _prodInvariant('7', COMMAND_SPLICE, value) : void 0;
+    !Array.isArray(spec[COMMAND_SPLICE]) ? process.env.NODE_ENV !== 'production' ? invariant(false, 'update(): expected spec of %s to be an array of arrays; got %s. Did you forget to wrap your parameters in an array?', COMMAND_SPLICE, spec[COMMAND_SPLICE]) : _prodInvariant('8', COMMAND_SPLICE, spec[COMMAND_SPLICE]) : void 0;
+    spec[COMMAND_SPLICE].forEach(function (args) {
+      !Array.isArray(args) ? process.env.NODE_ENV !== 'production' ? invariant(false, 'update(): expected spec of %s to be an array of arrays; got %s. Did you forget to wrap your parameters in an array?', COMMAND_SPLICE, spec[COMMAND_SPLICE]) : _prodInvariant('8', COMMAND_SPLICE, spec[COMMAND_SPLICE]) : void 0;
+      nextValue.splice.apply(nextValue, args);
+    });
+  }
+
+  if (hasOwnProperty.call(spec, COMMAND_APPLY)) {
+    !(typeof spec[COMMAND_APPLY] === 'function') ? process.env.NODE_ENV !== 'production' ? invariant(false, 'update(): expected spec of %s to be a function; got %s.', COMMAND_APPLY, spec[COMMAND_APPLY]) : _prodInvariant('9', COMMAND_APPLY, spec[COMMAND_APPLY]) : void 0;
+    nextValue = spec[COMMAND_APPLY](nextValue);
+  }
+
+  for (var k in spec) {
+    if (!(ALL_COMMANDS_SET.hasOwnProperty(k) && ALL_COMMANDS_SET[k])) {
+      nextValue[k] = update(value[k], spec[k]);
+    }
+  }
+
+  return nextValue;
+}
+
+module.exports = update;
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ })
 /******/ ]);
