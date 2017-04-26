@@ -53,24 +53,22 @@
                                         <form action="#" th:action="@{/registration/volunteer/step2}"
                                               th:object="${volunteer}" method="post" class="volunteer-form">
 
-
                                             <div class="row">
                                                 <div class="col-sm-4">
                                                     <h4>Choose your skills</h4>
-                                                    <select id="select-state" name="state[]"
+                                                    <select id="select-skill"
                                                             multiple="multiple"
                                                             class="demo-default"
                                                             required="required"
                                                             data-validation="required"
                                                             data-validation-length="min1"
-                                                            data-validation-error-msg="Please select a state"
                                                             placeholder="Choose your skills (max 5)"
                                                             th:field="*{volunteerSkills}">
-
                                                         <option th:each="skill : ${skills}"
                                                                 th:value="${skill.id}"
                                                                 th:text="${skill.name}">
                                                         </option>
+
                                                     </select>
                                                 </div>
                                                 </div>
@@ -84,9 +82,9 @@
                                                     <select id="select-country"
                                                             multiple="multiple"
                                                             class="demo-default"
+                                                            required="required"
                                                             data-validation="required"
                                                             data-validation-length="min1"
-                                                            required="required"
                                                             placeholder="Select your country"
                                                             th:field="*{country}">
                                                         <option th:each="country : ${T(com.codecool.volunti.model.enums.Country).values()}"
@@ -110,7 +108,6 @@
                                                                 th:text="${language}">
                                                         </option>
                                                     </select>
-                                                    <script src="/assets/js/custom.js"></script>
                                                 </div>
                                             </div>
 
@@ -151,14 +148,6 @@
                                                     class="btn mb20 btn-large btn-primary">submit
                                             </button>
                                         </form>
-                                        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
-                                        <script>
-                                            $.validate({
-                                                form: ".volunteer-form",
-                                                borderColorOnError: '#F00',
-                                                validateOnBlur: true, // disable validation when input looses focus
-                                            });
-                                        </script>
 
 
                                     </div>
@@ -180,6 +169,5 @@
 
 <!--  Footer -->
 <div th:replace="fragments/footer :: footer"></div>
-<script type="text/javascript" src="/assets/js/custom.js"></script>
 </body>
 </html>
