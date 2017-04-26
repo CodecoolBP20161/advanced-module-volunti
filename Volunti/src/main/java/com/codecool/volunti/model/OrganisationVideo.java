@@ -19,7 +19,7 @@ public class OrganisationVideo {
     private int id;
 
 
-    private String videoUrl;
+    private String embedCode;
 
 
     @ManyToOne(fetch = FetchType.LAZY)
