@@ -92,6 +92,10 @@ public class Organisation {
     @JsonSerialize(using = CustomListSerializer.class)
     private List<OrganisationSocialLink> organisationSocialLinks;
 
+    @OneToMany(mappedBy = "organisationId")
+    private List<OrganisationVideo> organisationVideos;
+
+
     public Organisation(){}
 
     public Organisation(String name, Category category, Country country, String zipcode, String city, String address, ArrayList<SpokenLanguage> spokenLanguage, String mission, String description1, String description2, String profilePicture, String backgroundPicture) {
