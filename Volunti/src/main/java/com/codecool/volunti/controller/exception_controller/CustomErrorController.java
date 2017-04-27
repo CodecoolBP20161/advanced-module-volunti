@@ -1,5 +1,6 @@
 package com.codecool.volunti.controller.exception_controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.ErrorAttributes;
 import org.springframework.boot.autoconfigure.web.ErrorController;
@@ -12,8 +13,10 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
+@Slf4j
 @Controller
 public class CustomErrorController implements ErrorController {
+
 
 	private static final String ERROR_PATH = "/error";
 	private static final String ERROR_TEMPLATE = "customError";
@@ -27,6 +30,8 @@ public class CustomErrorController implements ErrorController {
 
 	@RequestMapping(ERROR_PATH)
 	public String error(Model model, HttpServletRequest request) {
+
+		log.info("error method called");
 		
 		// {error={timestamp=Mon Nov 02 12:40:50 EST 2015, status=404, error=Not Found, message=No message available, path=/foo}}
 		Map<String,Object> error = getErrorAttributes(request, true);
