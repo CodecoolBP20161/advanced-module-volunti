@@ -64,7 +64,7 @@ public class OrganisationProfileController {
 
     @PostMapping( value = "/profile/organisation/saveText")
     @ResponseBody
-    public String saveText(@RequestBody Organisation editedOrganisation, Principal principal){
+    public boolean saveText(@RequestBody Organisation editedOrganisation, Principal principal){
         log.info("saveText() method called ...");
 
         User user = userService.getByEmail(principal.getName());
@@ -75,7 +75,7 @@ public class OrganisationProfileController {
         organisation.setDescription2(editedOrganisation.getDescription2());
 
         organisationService.save(organisation);
-        return "profiles/organisation";
+        return true;
     }
 
     @PostMapping( value = "/profile/organisation/saveVideo")

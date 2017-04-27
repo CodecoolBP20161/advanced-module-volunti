@@ -1,9 +1,7 @@
 import React from 'react'
 
-import TopLabel from './top-label'
 import SideBar from './side-bar'
 import Profile from './tab-profile'
-import Services from './tab-services'
 import ProfileBanner from './profile-banner'
 
 class FullProfile extends React.Component {
@@ -52,9 +50,6 @@ class FullProfile extends React.Component {
                     city: response.city,
                     zipcode: response.zipcode,
                     address: response.address,
-                    // mission: response.mission,
-                    // description1: response.description1,
-                    // description2: response.description2,
                     social: {
                         facebook: 'facebookURL',
                         twitter: 'twitterURL',
@@ -66,42 +61,9 @@ class FullProfile extends React.Component {
                 })
             }.bind(this)
          });
-
-
-        // $.ajax({
-        //     url: "/profile/organisation/text",
-        //     cache: false,
-        //     type: "GET",
-        //     headers: headers,
-        //     dataType: "json",
-        //     success: function (response) {
-        //         let social = {
-        //             facebook: null,
-        //             twitter: null,
-        //             linkedin: null,
-        //             google: null,
-        //             video: null
-        //         };
-        //         for (let link in response){
-        //             social.facebook = [link['socialLinkType']]
-        //         }
-        //         this.setState({
-        //             social: {
-        //                 facebook: 'facebookURL',
-        //                 twitter: 'twitterURL',
-        //                 google: 'googleURL',
-        //                 linkedin: 'linkedinURL',
-        //                 video: "https://www.youtube.com/embed/q4je9N26ouY",
-        //             }
-        //         })
-        //     }.bind(this)
     }
 
-    componentDidMount() {
-        this.fetchData()
-    }
-
-    componentWillMount(){
+    componentDidMount(){
         this.fetchData()
     }
 
@@ -182,7 +144,8 @@ class FullProfile extends React.Component {
                                 </ul>
                             </div>
 
-                            <SideBar profileSource={this.state.profilePicture}
+                            <SideBar profilePicture={this.state.profilePicture}
+                                     name={this.state.name}
                                      category={this.state.category}
                                      country={this.state.country}
                                      city={this.state.city}
