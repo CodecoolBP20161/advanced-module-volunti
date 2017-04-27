@@ -83,7 +83,7 @@ public class OrganisationProfileController {
         organisationVideo.setOrganisationId(organisation);
         organisationVideo.setEmbedCode(editedOrganisationVideo.getEmbedCode());
 
-        organisationService.save(organisationVideo);
+//        organisationService.save(organisationVideo);
         return "profiles/organisation";
     }
 

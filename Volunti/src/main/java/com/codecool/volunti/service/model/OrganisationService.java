@@ -3,20 +3,16 @@ package com.codecool.volunti.service.model;
 
 import com.codecool.volunti.model.Organisation;
 import com.codecool.volunti.model.OrganisationSocialLink;
-import com.codecool.volunti.model.OrganisationVideo;
 import com.codecool.volunti.repository.OrganisationRepository;
 import com.codecool.volunti.repository.OrganisationSocialLinkRepository;
-import com.codecool.volunti.repository.OrganisationVideoRepository;
 import com.codecool.volunti.service.StorageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+
 import java.util.List;
-import java.util.UUID;
 
 @Slf4j
 @Service
@@ -25,15 +21,13 @@ public class OrganisationService {
 
     private OrganisationRepository organisationRepository;
     private OrganisationSocialLinkRepository organisationSocialLinkRepository;
-    private OrganisationVideoRepository organisationVideoRepository;
     private StorageService storageService;
 
     @Autowired
-    public OrganisationService(OrganisationRepository organisationRepository, StorageService storageService, OrganisationSocialLinkRepository organisationSocialLinkRepository, OrganisationVideoRepository organisationVideoRepository) {
+    public OrganisationService(OrganisationRepository organisationRepository, StorageService storageService, OrganisationSocialLinkRepository organisationSocialLinkRepository) {
         this.organisationRepository = organisationRepository;
         this.storageService = storageService;
         this.organisationSocialLinkRepository = organisationSocialLinkRepository;
-        this.organisationVideoRepository = organisationVideoRepository;
     }
 
     public Organisation get(Integer id) {
@@ -83,17 +77,6 @@ public class OrganisationService {
 
     public List<OrganisationSocialLink> findAll() {
         return organisationSocialLinkRepository.findAll();
-    }
-    public List<OrganisationVideo> findVideoByOrganisationId(Organisation organisation){
-        return organisationVideoRepository.findByOrganisationId(organisation);
-    }
-
-    public List<OrganisationVideo> findAllVideo() {
-        return organisationVideoRepository.findAll();
-    }
-
-    public OrganisationVideo save(OrganisationVideo organisationVideo) {
-        return organisationVideoRepository.save(organisationVideo);
     }
 
 
