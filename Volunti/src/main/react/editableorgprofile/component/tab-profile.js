@@ -1,6 +1,7 @@
 import React from 'react'
 import update from 'react-addons-update';
 
+
 class TabProfile extends React.Component {
     constructor(props) {
         super(props);
@@ -10,8 +11,12 @@ class TabProfile extends React.Component {
             mission: null,
             description1: null,
             description2: null,
+            isVideoEditing: false,
+            isOpen: false,
+            videoUrl: null,
         };
         this.handleChange = this.handleChange.bind(this);
+        this.handleVideo = this.handleVideo.bind(this);
     }
 
 
@@ -50,6 +55,17 @@ class TabProfile extends React.Component {
         })
     }
 
+    toggleVideoEditMode(){
+        this.setState({
+            isVideoEditing: !this.state.isVideoEditing
+        })
+        if (this.state.isVideoEditing){
+
+            this.saveVideoData(this.state.videoUrl);
+            this.props.changeVideo(this.state.videoUrl);
+        }
+    }
+
     toggleEditButton(){
         this.setState({mouseOver: !this.state.mouseOver});
     }
@@ -67,6 +83,10 @@ class TabProfile extends React.Component {
         newObj[event.target.name] = event.target.value;
 
         this.mergeState(newObj);
+    }
+
+    handleVideo(event) {
+        this.setState({videoUrl: event.target.value })
     }
 
     saveData() {
@@ -96,10 +116,36 @@ class TabProfile extends React.Component {
         });
     }
 
+    saveVideoData(embedcode) {
+        const csrfHeader = $("meta[name='_csrf_header']").attr("content");
+        const csrfToken = $("meta[name='_csrf']").attr("content");
+        const headers = {};
+
+        headers[csrfHeader] = csrfToken;
+        const formData = {};
+        formData["embedCode"] = embedcode;
+
+        $.ajax({
+            url: "/profile/organisation/saveVideo",
+            cache: false,
+            type: "POST",
+            headers: headers,
+            data : JSON.stringify(formData),
+            dataType : 'json',
+            contentType: 'application/json',
+            processData: false,
+            async: true,
+            // data: formData,
+            success: function () {
+            }.bind(this)
+        });
+    }
+
     render() {
         const videoURL = this.props.videoURL ? this.props.videoURL:  "https://www.youtube.com/embed/leQ8nEcYFOc";
 
         return (
+
         <div id="profile" className="tab-pane fade in active"
              onMouseEnter={() => this.toggleEditButton()}
              onMouseLeave={() => this.toggleEditButton()}>
@@ -119,6 +165,15 @@ class TabProfile extends React.Component {
                         <p>{this.state.mission}</p>
                         <p>{this.state.description1}</p>
                         {/*<!-- Video -->*/}
+                        {(this.state.mouseOver || this.state.isVideoEditing) &&
+                        <button type="submit" className="col-sm-4" onClick={() =>
+                            this.toggleVideoEditMode()
+                        }>
+                            {this.state.isVideoEditing ? 'Done' : 'Edit'}</button>
+                        }
+                        {this.state.isVideoEditing &&
+                        <input type="text" value={this.state.videoUrl} onChange={this.handleVideo}/>
+                        }
                         <iframe src={videoURL} ></iframe>
                         <p>{this.state.description2}</p>
                     </div>
@@ -155,7 +210,10 @@ class TabProfile extends React.Component {
 
 
             </div>
-        </div>)
+
+        </div>
+
+        )
         }
 }
 export default TabProfile

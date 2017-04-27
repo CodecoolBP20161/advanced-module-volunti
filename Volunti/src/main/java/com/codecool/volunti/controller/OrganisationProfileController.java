@@ -88,9 +88,10 @@ public class OrganisationProfileController {
         OrganisationVideo organisationVideo = new OrganisationVideo();
         //organisationVideo.setOrganisationId(organisation);
         organisationVideo.setEmbedCode(editedOrganisationVideo.getEmbedCode());
-
+        
         //organisationService.save(organisationVideo);
         return true;
+
     }
 
     @GetMapping("/profile/organisation/image/profile")
