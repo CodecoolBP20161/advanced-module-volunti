@@ -1,4 +1,4 @@
-import FullProfile from './full-profile'
+import FullProfile from './FullProfile'
 import React from 'react'
 import ReactDOM from 'react-dom'
 

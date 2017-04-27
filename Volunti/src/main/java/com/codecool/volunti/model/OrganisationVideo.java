@@ -26,4 +26,8 @@ public class OrganisationVideo {
     @JsonIgnore
     @JoinColumn(name = "organisation_id")
     private Organisation organisationId;
+
+    public OrganisationVideo() {
+    }
+
 }
