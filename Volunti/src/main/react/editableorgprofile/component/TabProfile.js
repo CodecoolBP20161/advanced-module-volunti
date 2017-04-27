@@ -105,12 +105,19 @@ class TabProfile extends React.Component {
              onMouseLeave={() => this.toggleEditButton()}>
             <div className="profile-main">
                 <div className="filter-flower">
-                    <div className="row">
-                        <h3 className="col-sm-7">About the Company</h3>
-                        {(this.state.mouseOver  || this.state.isEditing) &&
-                        <button type="submit" className="col-sm-4" onClick={() => this.toggleEditMode()}>
-                            {this.state.isEditing? 'Done': 'Edit'}</button>
-                        }
+                    <div>
+                        <div className="row">
+                            <div className="col-sm-7">
+                                <h3>About the Company</h3>
+                            </div>
+                            <div className="col-sm-5">
+                            {(this.state.mouseOver  || this.state.isEditing) &&
+                            <button type="submit" className="btn btn-med btn-success" onClick={() => this.toggleEditMode()}>
+                                <i className="fa fa-pencil-square-o"/>
+                                {this.state.isEditing? 'Done': 'Edit'}</button>
+                            }
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -144,15 +151,7 @@ class TabProfile extends React.Component {
                                       onChange={this.handleChange}/>
                         </p>
                     </div>
-
                 }
-                {/*<div className="col-md-12 row">*/}
-                    {/*<input className="col-md-12 socialInput" type="text" id="socialInput"*/}
-                           {/*value={inputValue}*/}
-                           {/*ref={(input) =>this.textInput = input}*/}
-                           {/*onChange={() => this.saveChange()}/>*/}
-                {/*</div>*/}
-
 
             </div>
         </div>)
