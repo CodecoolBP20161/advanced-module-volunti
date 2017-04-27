@@ -17,6 +17,7 @@ class TabProfile extends React.Component {
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleVideo = this.handleVideo.bind(this);
+        this.saveData = this.saveData.bind(this);
     }
 
 
@@ -55,10 +56,10 @@ class TabProfile extends React.Component {
         })
     }
 
-    toggleVideoEditMode(){
+    toggleVideoEditMode() {
         this.setState({
             isVideoEditing: !this.state.isVideoEditing
-        })
+        });
         if (this.state.isVideoEditing){
 
             this.saveVideoData(this.state.videoUrl);
@@ -66,7 +67,7 @@ class TabProfile extends React.Component {
         }
     }
 
-    toggleEditButton(){
+    toggleEditButton() {
         this.setState({mouseOver: !this.state.mouseOver});
     }
 
@@ -109,21 +110,18 @@ class TabProfile extends React.Component {
             dataType : 'json',
             contentType: 'application/json',
             processData: false,
-            async: true,
-            // data: formData,
-            success: function () {
-            }.bind(this)
+            async: true
         });
     }
 
-    saveVideoData(embedcode) {
+    saveVideoData(embedCode) {
         const csrfHeader = $("meta[name='_csrf_header']").attr("content");
         const csrfToken = $("meta[name='_csrf']").attr("content");
         const headers = {};
 
         headers[csrfHeader] = csrfToken;
         const formData = {};
-        formData["embedCode"] = embedcode;
+        formData["embedCode"] = embedCode;
 
         $.ajax({
             url: "/profile/organisation/saveVideo",
@@ -134,10 +132,7 @@ class TabProfile extends React.Component {
             dataType : 'json',
             contentType: 'application/json',
             processData: false,
-            async: true,
-            // data: formData,
-            success: function () {
-            }.bind(this)
+            async: true
         });
     }
 
@@ -209,10 +204,8 @@ class TabProfile extends React.Component {
                 }
 
             </div>
-
         </div>
-
         )
-        }
+    }
 }
 export default TabProfile

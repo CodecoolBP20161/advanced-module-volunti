@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 83);
+/******/ 	return __webpack_require__(__webpack_require__.s = 84);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -9458,19 +9458,21 @@ var _react = __webpack_require__(15);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _SideBar = __webpack_require__(187);
+var _SideBar = __webpack_require__(82);
 
 var _SideBar2 = _interopRequireDefault(_SideBar);
 
-var _TabProfile = __webpack_require__(82);
+var _TabProfile = __webpack_require__(83);
 
 var _TabProfile2 = _interopRequireDefault(_TabProfile);
 
-var _profileBanner = __webpack_require__(84);
+var _profileBanner = __webpack_require__(85);
 
 var _profileBanner2 = _interopRequireDefault(_profileBanner);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -9492,7 +9494,7 @@ var FullProfile = function (_React$Component) {
             category: null,
             country: null,
             city: null,
-            zipcode: null,
+            zipcode: 0,
             address: null,
             profilePicture: "/profile/organisation/image/profile",
             backgroundPicture: "/profile/organisation/image/background",
@@ -9505,6 +9507,10 @@ var FullProfile = function (_React$Component) {
             },
             selectedSocial: 'facebook'
         };
+
+        _this.changeVideoUrl = _this.changeVideoUrl.bind(_this);
+        _this.handleSideBarDataChange = _this.handleSideBarDataChange.bind(_this);
+        _this.saveSideBarData = _this.saveSideBarData.bind(_this);
 
         return _this;
     }
@@ -9536,7 +9542,7 @@ var FullProfile = function (_React$Component) {
                             twitter: 'twitterURL',
                             google: 'googleURL',
                             linkedin: 'linkedinURL',
-                            video: "https://www.youtube.com/embed/q4je9N26ouY"
+                            video: response.organisationVideos
                         }
 
                     });
@@ -9558,6 +9564,11 @@ var FullProfile = function (_React$Component) {
                 social: newSocial,
                 selectedSocial: newSelected
             });
+        }
+    }, {
+        key: 'changeVideoUrl',
+        value: function changeVideoUrl(embedCode) {
+            this.setState({ social: { video: embedCode } });
         }
     }, {
         key: 'saveBackgroundPicture',
@@ -9587,13 +9598,46 @@ var FullProfile = function (_React$Component) {
             });
         }
     }, {
+        key: 'handleSideBarDataChange',
+        value: function handleSideBarDataChange(name, value) {
+            this.setState(_defineProperty({}, name, value));
+        }
+    }, {
+        key: 'saveSideBarData',
+        value: function saveSideBarData() {
+            var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+            var csrfToken = $("meta[name='_csrf']").attr("content");
+            var headers = {};
+
+            headers[csrfHeader] = csrfToken;
+            var formData = {};
+            formData["name"] = this.state.name;
+            formData["category"] = this.state.category;
+            formData["country"] = this.state.country;
+            formData["address"] = this.state.address;
+            formData["city"] = this.state.city;
+            formData["zipcode"] = this.state.zipcode;
+
+            $.ajax({
+                url: "/profile/organisation/saveText",
+                cache: false,
+                type: "POST",
+                headers: headers,
+                data: JSON.stringify(formData),
+                dataType: 'json',
+                contentType: 'application/json',
+                processData: false,
+                async: true
+            });
+        }
+    }, {
         key: 'render',
         value: function render() {
             var _this2 = this;
 
             var divStyle = {
                 background: 'url(' + this.state.backgroundPicture + ')',
-                'background-size': 'cover'
+                'backgroundSize': 'cover'
             };
 
             return _react2.default.createElement(
@@ -9666,14 +9710,18 @@ var FullProfile = function (_React$Component) {
                                 category: this.state.category,
                                 country: this.state.country,
                                 city: this.state.city,
-                                mission: this.state.mission }),
+                                zipcode: this.state.zipcode,
+                                address: this.state.address,
+                                mission: this.state.mission,
+                                saveData: this.saveSideBarData,
+                                onChange: this.handleSideBarDataChange }),
                             _react2.default.createElement(
                                 'div',
                                 { className: 'col-md-8' },
                                 _react2.default.createElement(
                                     'div',
                                     { className: 'tab-content' },
-                                    _react2.default.createElement(_TabProfile2.default, { videoURL: this.state.social.video })
+                                    _react2.default.createElement(_TabProfile2.default, { videoURL: this.state.social.video, changeVideo: this.changeVideoUrl })
                                 )
                             )
                         )
@@ -9715,6 +9763,348 @@ var _react = __webpack_require__(15);
 
 var _react2 = _interopRequireDefault(_react);
 
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var SideBar = function (_React$Component) {
+    _inherits(SideBar, _React$Component);
+
+    function SideBar(props) {
+        _classCallCheck(this, SideBar);
+
+        var _this = _possibleConstructorReturn(this, (SideBar.__proto__ || Object.getPrototypeOf(SideBar)).call(this, props));
+
+        _this.state = {
+            mouseOver: false,
+            isEditing: false,
+            countries: [],
+            categories: []
+        };
+        _this.handleChange = _this.handleChange.bind(_this);
+        return _this;
+    }
+
+    _createClass(SideBar, [{
+        key: "fetchData",
+        value: function fetchData() {
+            var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+            var csrfToken = $("meta[name='_csrf']").attr("content");
+            var headers = {};
+            headers[csrfHeader] = csrfToken;
+
+            $.ajax({
+                url: "/api/organisation/profile-data",
+                cache: false,
+                type: "GET",
+                headers: headers,
+                dataType: "json",
+                success: function (response) {
+                    this.setState({
+                        countries: response.countries,
+                        categories: response.categories
+                    });
+                }.bind(this)
+            });
+        }
+    }, {
+        key: "componentDidMount",
+        value: function componentDidMount() {
+            this.fetchData();
+        }
+    }, {
+        key: "toggleEditMode",
+        value: function toggleEditMode() {
+            if (this.state.isEditing) {
+                this.props.saveData();
+            }
+            this.setState({
+                isEditing: !this.state.isEditing
+            });
+        }
+    }, {
+        key: "toggleEditButton",
+        value: function toggleEditButton() {
+            this.setState({ mouseOver: !this.state.mouseOver });
+        }
+    }, {
+        key: "handleChange",
+        value: function handleChange(event) {
+            this.props.onChange(event.target.name, event.target.value);
+        }
+    }, {
+        key: "render",
+        value: function render() {
+            var _this2 = this;
+
+            return _react2.default.createElement(
+                "div",
+                { className: "col-md-4",
+                    onMouseEnter: function onMouseEnter() {
+                        return _this2.toggleEditButton();
+                    },
+                    onMouseLeave: function onMouseLeave() {
+                        return _this2.toggleEditButton();
+                    } },
+                _react2.default.createElement(
+                    "div",
+                    { className: "sidebar" },
+                    _react2.default.createElement(
+                        "div",
+                        { className: "filter-flower" },
+                        _react2.default.createElement(
+                            "div",
+                            { className: "row" },
+                            _react2.default.createElement(
+                                "ul",
+                                null,
+                                _react2.default.createElement(
+                                    "li",
+                                    null,
+                                    _react2.default.createElement(
+                                        "h5",
+                                        { className: "main-title" },
+                                        "Organisation Information"
+                                    )
+                                ),
+                                (this.state.mouseOver || this.state.isEditing) && _react2.default.createElement(
+                                    "button",
+                                    { type: "submit", className: "btn btn-small btn-success", onClick: function onClick() {
+                                            return _this2.toggleEditMode();
+                                        } },
+                                    this.state.isEditing ? 'Done' : 'Edit'
+                                )
+                            )
+                        )
+                    ),
+                    !this.state.isEditing && _react2.default.createElement(
+                        "div",
+                        null,
+                        _react2.default.createElement(
+                            "div",
+                            { className: "sidebar-thumbnail" },
+                            " ",
+                            _react2.default.createElement("img", { src: this.props.profilePicture }),
+                            " "
+                        ),
+                        _react2.default.createElement(
+                            "div",
+                            { className: "sidebar-information" },
+                            _react2.default.createElement(
+                                "ul",
+                                { className: "single-category" },
+                                _react2.default.createElement(
+                                    "li",
+                                    { className: "row" },
+                                    _react2.default.createElement(
+                                        "h6",
+                                        { className: "title col-xs-4" },
+                                        "Name"
+                                    ),
+                                    _react2.default.createElement(
+                                        "span",
+                                        { className: "subtitle col-xs-6" },
+                                        this.props.name
+                                    )
+                                ),
+                                _react2.default.createElement(
+                                    "li",
+                                    { className: "row" },
+                                    _react2.default.createElement(
+                                        "h6",
+                                        { className: "title col-xs-4" },
+                                        "Category"
+                                    ),
+                                    _react2.default.createElement(
+                                        "span",
+                                        { className: "subtitle col-xs-6" },
+                                        this.props.category
+                                    )
+                                ),
+                                _react2.default.createElement(
+                                    "li",
+                                    { className: "row" },
+                                    _react2.default.createElement(
+                                        "h6",
+                                        { className: "title col-xs-4" },
+                                        "Location"
+                                    ),
+                                    _react2.default.createElement(
+                                        "span",
+                                        { className: "subtitle col-xs-6" },
+                                        this.props.city,
+                                        ", ",
+                                        this.props.country
+                                    )
+                                )
+                            )
+                        )
+                    ),
+                    this.state.isEditing && _react2.default.createElement(
+                        "div",
+                        null,
+                        _react2.default.createElement(
+                            "div",
+                            { className: "sidebar-thumbnail" },
+                            " ",
+                            _react2.default.createElement("img", { src: this.props.profilePicture }),
+                            " "
+                        ),
+                        _react2.default.createElement(
+                            "div",
+                            { className: "sidebar-information" },
+                            _react2.default.createElement(
+                                "ul",
+                                { className: "single-category" },
+                                _react2.default.createElement(
+                                    "li",
+                                    { className: "row" },
+                                    _react2.default.createElement(
+                                        "h6",
+                                        { className: "title col-xs-4" },
+                                        "Name"
+                                    ),
+                                    _react2.default.createElement(
+                                        "span",
+                                        { className: "subtitle col-xs-8" },
+                                        _react2.default.createElement("input", { defaultValue: this.props.name, name: "name",
+                                            required: "required",
+                                            onChange: this.handleChange })
+                                    )
+                                ),
+                                _react2.default.createElement(
+                                    "li",
+                                    { className: "row" },
+                                    _react2.default.createElement(
+                                        "h6",
+                                        { className: "title col-xs-4" },
+                                        "Category"
+                                    ),
+                                    _react2.default.createElement(
+                                        "span",
+                                        { className: "subtitle col-xs-8" },
+                                        _react2.default.createElement(
+                                            "select",
+                                            { selected: this.props.category,
+                                                required: "required",
+                                                name: "category",
+                                                onChange: this.handleChange },
+                                            this.state.categories.map(function (category, i) {
+                                                return _react2.default.createElement(
+                                                    "option",
+                                                    { key: i },
+                                                    category
+                                                );
+                                            })
+                                        )
+                                    )
+                                ),
+                                _react2.default.createElement(
+                                    "li",
+                                    { className: "row" },
+                                    _react2.default.createElement(
+                                        "h6",
+                                        { className: "title col-xs-4" },
+                                        "Location"
+                                    ),
+                                    _react2.default.createElement(
+                                        "span",
+                                        { className: "subtitle col-xs-8" },
+                                        _react2.default.createElement(
+                                            "select",
+                                            { selected: this.props.country,
+                                                required: "required",
+                                                name: "country",
+                                                onChange: this.handleChange },
+                                            this.state.countries.map(function (country, i) {
+                                                return _react2.default.createElement(
+                                                    "option",
+                                                    { key: i },
+                                                    country
+                                                );
+                                            })
+                                        )
+                                    )
+                                ),
+                                _react2.default.createElement(
+                                    "li",
+                                    { className: "row" },
+                                    _react2.default.createElement(
+                                        "h6",
+                                        { className: "title col-xs-4" },
+                                        "City"
+                                    ),
+                                    _react2.default.createElement(
+                                        "span",
+                                        { className: "subtitle col-xs-8" },
+                                        _react2.default.createElement("input", { defaultValue: this.props.city, name: "city", onChange: this.handleChange })
+                                    )
+                                ),
+                                _react2.default.createElement(
+                                    "li",
+                                    { className: "row" },
+                                    _react2.default.createElement(
+                                        "h6",
+                                        { className: "title col-xs-4" },
+                                        "Address"
+                                    ),
+                                    _react2.default.createElement(
+                                        "span",
+                                        { className: "subtitle col-xs-8" },
+                                        _react2.default.createElement("input", { defaultValue: this.props.address, name: "address", onChange: this.handleChange })
+                                    )
+                                ),
+                                _react2.default.createElement(
+                                    "li",
+                                    { className: "row" },
+                                    _react2.default.createElement(
+                                        "h6",
+                                        { className: "title col-xs-4" },
+                                        "ZipCode"
+                                    ),
+                                    _react2.default.createElement(
+                                        "span",
+                                        { className: "subtitle col-xs-8" },
+                                        _react2.default.createElement("input", { defaultValue: this.props.zipcode, name: "zipcode",
+                                            max: "9999", min: "1000",
+                                            type: "number",
+                                            onChange: this.handleChange })
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            );
+        }
+    }]);
+
+    return SideBar;
+}(_react2.default.Component);
+
+exports.default = SideBar;
+
+/***/ }),
+/* 83 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(15);
+
+var _react2 = _interopRequireDefault(_react);
+
 var _reactAddonsUpdate = __webpack_require__(102);
 
 var _reactAddonsUpdate2 = _interopRequireDefault(_reactAddonsUpdate);
@@ -9740,9 +10130,14 @@ var TabProfile = function (_React$Component) {
             isEditing: false,
             mission: null,
             description1: null,
-            description2: null
+            description2: null,
+            isVideoEditing: false,
+            isOpen: false,
+            videoUrl: null
         };
         _this.handleChange = _this.handleChange.bind(_this);
+        _this.handleVideo = _this.handleVideo.bind(_this);
+        _this.saveData = _this.saveData.bind(_this);
         return _this;
     }
 
@@ -9785,6 +10180,18 @@ var TabProfile = function (_React$Component) {
             });
         }
     }, {
+        key: 'toggleVideoEditMode',
+        value: function toggleVideoEditMode() {
+            this.setState({
+                isVideoEditing: !this.state.isVideoEditing
+            });
+            if (this.state.isVideoEditing) {
+
+                this.saveVideoData(this.state.videoUrl);
+                this.props.changeVideo(this.state.videoUrl);
+            }
+        }
+    }, {
         key: 'toggleEditButton',
         value: function toggleEditButton() {
             this.setState({ mouseOver: !this.state.mouseOver });
@@ -9807,6 +10214,11 @@ var TabProfile = function (_React$Component) {
             this.mergeState(newObj);
         }
     }, {
+        key: 'handleVideo',
+        value: function handleVideo(event) {
+            this.setState({ videoUrl: event.target.value });
+        }
+    }, {
         key: 'saveData',
         value: function saveData() {
             var csrfHeader = $("meta[name='_csrf_header']").attr("content");
@@ -9821,6 +10233,29 @@ var TabProfile = function (_React$Component) {
 
             $.ajax({
                 url: "/profile/organisation/saveText",
+                cache: false,
+                type: "POST",
+                headers: headers,
+                data: JSON.stringify(formData),
+                dataType: 'json',
+                contentType: 'application/json',
+                processData: false,
+                async: true
+            });
+        }
+    }, {
+        key: 'saveVideoData',
+        value: function saveVideoData(embedCode) {
+            var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+            var csrfToken = $("meta[name='_csrf']").attr("content");
+            var headers = {};
+
+            headers[csrfHeader] = csrfToken;
+            var formData = {};
+            formData["embedCode"] = embedCode;
+
+            $.ajax({
+                url: "/profile/organisation/saveVideo",
                 cache: false,
                 type: "POST",
                 headers: headers,
@@ -9896,6 +10331,14 @@ var TabProfile = function (_React$Component) {
                             null,
                             this.state.description1
                         ),
+                        (this.state.mouseOver || this.state.isVideoEditing) && _react2.default.createElement(
+                            'button',
+                            { type: 'submit', className: 'col-sm-4', onClick: function onClick() {
+                                    return _this2.toggleVideoEditMode();
+                                } },
+                            this.state.isVideoEditing ? 'Done' : 'Edit'
+                        ),
+                        this.state.isVideoEditing && _react2.default.createElement('input', { type: 'text', value: this.state.videoUrl, onChange: this.handleVideo }),
                         _react2.default.createElement('iframe', { src: videoURL }),
                         _react2.default.createElement(
                             'p',
@@ -9940,7 +10383,7 @@ var TabProfile = function (_React$Component) {
 exports.default = TabProfile;
 
 /***/ }),
-/* 83 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9963,7 +10406,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 _reactDom2.default.render(_react2.default.createElement(_FullProfile2.default, null), document.getElementById("main-wrapper"));
 
 /***/ }),
-/* 84 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10096,7 +10539,6 @@ var ProfileBanner = function (_React$Component) {
 exports.default = ProfileBanner;
 
 /***/ }),
-/* 85 */,
 /* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -10169,7 +10611,6 @@ var TopLabel = function (_React$Component) {
                     null,
                     this.props.address
                 ),
-                console.log("social in Toplabel: ", this.props.social),
                 _react2.default.createElement(_toplabelSocial2.default, { social: this.props.social,
                     selected: this.props.selectedSocial,
                     saveSocial: function saveSocial(value, newSelected) {
@@ -22721,235 +23162,6 @@ try {
 
 module.exports = g;
 
-
-/***/ }),
-/* 187 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(15);
-
-var _react2 = _interopRequireDefault(_react);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var SideBar = function (_React$Component) {
-    _inherits(SideBar, _React$Component);
-
-    function SideBar(props) {
-        _classCallCheck(this, SideBar);
-
-        var _this = _possibleConstructorReturn(this, (SideBar.__proto__ || Object.getPrototypeOf(SideBar)).call(this, props));
-
-        _this.state = {
-            mouseOver: false,
-            isEditing: false
-        };
-
-        return _this;
-    }
-
-    _createClass(SideBar, [{
-        key: "toggleEditMode",
-        value: function toggleEditMode() {
-            // if (this.state.isEditing){
-            //     this.saveData();
-            // }
-            this.setState({
-                isEditing: !this.state.isEditing
-            });
-        }
-    }, {
-        key: "toggleEditButton",
-        value: function toggleEditButton() {
-            this.setState({ mouseOver: !this.state.mouseOver });
-        }
-    }, {
-        key: "render",
-        value: function render() {
-            var _this2 = this;
-
-            return _react2.default.createElement(
-                "div",
-                { className: "col-md-4",
-                    onMouseEnter: function onMouseEnter() {
-                        return _this2.toggleEditButton();
-                    },
-                    onMouseLeave: function onMouseLeave() {
-                        return _this2.toggleEditButton();
-                    } },
-                _react2.default.createElement(
-                    "div",
-                    { className: "sidebar" },
-                    _react2.default.createElement(
-                        "div",
-                        { className: "row" },
-                        _react2.default.createElement(
-                            "div",
-                            null,
-                            _react2.default.createElement(
-                                "h5",
-                                { className: "main-title" },
-                                "Organisation Information"
-                            ),
-                            (this.state.mouseOver || this.state.isEditing) && _react2.default.createElement(
-                                "button",
-                                { type: "submit", className: "btn btn-small btn-success", onClick: function onClick() {
-                                        return _this2.toggleEditMode();
-                                    } },
-                                this.state.isEditing ? 'Done' : 'Edit'
-                            )
-                        )
-                    ),
-                    !this.state.isEditing && _react2.default.createElement(
-                        "div",
-                        null,
-                        _react2.default.createElement(
-                            "div",
-                            { className: "sidebar-thumbnail" },
-                            " ",
-                            _react2.default.createElement("img", { src: this.props.profilePicture }),
-                            " "
-                        ),
-                        _react2.default.createElement(
-                            "div",
-                            { className: "sidebar-information" },
-                            _react2.default.createElement(
-                                "ul",
-                                { className: "single-category" },
-                                _react2.default.createElement(
-                                    "li",
-                                    { className: "row" },
-                                    _react2.default.createElement(
-                                        "h6",
-                                        { className: "title col-xs-6" },
-                                        "Name"
-                                    ),
-                                    _react2.default.createElement(
-                                        "span",
-                                        { className: "subtitle col-xs-6" },
-                                        this.props.name
-                                    )
-                                ),
-                                _react2.default.createElement(
-                                    "li",
-                                    { className: "row" },
-                                    _react2.default.createElement(
-                                        "h6",
-                                        { className: "title col-xs-6" },
-                                        "Category"
-                                    ),
-                                    _react2.default.createElement(
-                                        "span",
-                                        { className: "subtitle col-xs-6" },
-                                        this.props.category
-                                    )
-                                ),
-                                _react2.default.createElement(
-                                    "li",
-                                    { className: "row" },
-                                    _react2.default.createElement(
-                                        "h6",
-                                        { className: "title col-xs-6" },
-                                        "Location"
-                                    ),
-                                    _react2.default.createElement(
-                                        "span",
-                                        { className: "subtitle col-xs-6" },
-                                        this.props.city,
-                                        ", ",
-                                        this.props.country
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                    this.state.isEditing && _react2.default.createElement(
-                        "div",
-                        null,
-                        _react2.default.createElement(
-                            "div",
-                            { className: "sidebar-thumbnail" },
-                            " ",
-                            _react2.default.createElement("img", { src: this.props.profilePicture }),
-                            " "
-                        ),
-                        _react2.default.createElement(
-                            "div",
-                            { className: "sidebar-information" },
-                            _react2.default.createElement(
-                                "ul",
-                                { className: "single-category" },
-                                _react2.default.createElement(
-                                    "li",
-                                    { className: "row" },
-                                    _react2.default.createElement(
-                                        "h6",
-                                        { className: "title col-xs-6" },
-                                        "Name"
-                                    ),
-                                    _react2.default.createElement(
-                                        "span",
-                                        { className: "subtitle col-xs-6" },
-                                        this.props.name
-                                    )
-                                ),
-                                _react2.default.createElement(
-                                    "li",
-                                    { className: "row" },
-                                    _react2.default.createElement(
-                                        "h6",
-                                        { className: "title col-xs-6" },
-                                        "Category"
-                                    ),
-                                    _react2.default.createElement(
-                                        "span",
-                                        { className: "subtitle col-xs-6" },
-                                        this.props.category
-                                    )
-                                ),
-                                _react2.default.createElement(
-                                    "li",
-                                    { className: "row" },
-                                    _react2.default.createElement(
-                                        "h6",
-                                        { className: "title col-xs-6" },
-                                        "Location"
-                                    ),
-                                    _react2.default.createElement(
-                                        "span",
-                                        { className: "subtitle col-xs-6" },
-                                        this.props.city,
-                                        ", ",
-                                        this.props.country
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-            );
-        }
-    }]);
-
-    return SideBar;
-}(_react2.default.Component);
-
-exports.default = SideBar;
 
 /***/ })
 /******/ ]);

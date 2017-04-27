@@ -13,7 +13,7 @@ class FullProfile extends React.Component {
             category: null,
             country: null,
             city: null,
-            zipcode: null,
+            zipcode: 0,
             address: null,
             profilePicture: "/profile/organisation/image/profile",
             backgroundPicture: "/profile/organisation/image/background",
@@ -27,13 +27,16 @@ class FullProfile extends React.Component {
             selectedSocial: 'facebook'
         };
 
-        this.changeVideoUrl = this.changeVideoUrl.bind(this)
+        this.changeVideoUrl = this.changeVideoUrl.bind(this);
+        this.handleSideBarDataChange = this.handleSideBarDataChange.bind(this);
+        this.saveSideBarData = this.saveSideBarData.bind(this);
+
     }
 
     fetchData(){
-        let csrfHeader = $("meta[name='_csrf_header']").attr("content");
-        let csrfToken = $("meta[name='_csrf']").attr("content");
-        let headers = {};
+        const csrfHeader = $("meta[name='_csrf_header']").attr("content");
+        const csrfToken = $("meta[name='_csrf']").attr("content");
+        const headers = {};
 
         headers[csrfHeader] = csrfToken;
          $.ajax({
@@ -68,26 +71,27 @@ class FullProfile extends React.Component {
     }
 
     saveSocial(value, selected){
-        let newSocial = this.state.social;
+        const newSocial = this.state.social;
         newSocial[this.state.selectedSocial] = value;
-        let newSelected = selected == null? this.state.selectedSocial : selected;
+        const newSelected = selected == null? this.state.selectedSocial : selected;
         this.setState({
             social: newSocial,
             selectedSocial: newSelected
         })
     }
 
-    changeVideoUrl(embedcode){
-        this.setState({social:{video: embedcode}});
+    changeVideoUrl(embedCode){
+        this.setState({social:{video: embedCode}});
 
     }
+
     saveBackgroundPicture(picture){
-        let csrfHeader = $("meta[name='_csrf_header']").attr("content");
-        let csrfToken = $("meta[name='_csrf']").attr("content");
-        let headers = {};
+        const csrfHeader = $("meta[name='_csrf_header']").attr("content");
+        const csrfToken = $("meta[name='_csrf']").attr("content");
+        const headers = {};
 
         headers[csrfHeader] = csrfToken;
-        let formData = new FormData();
+        const formData = new FormData();
         formData.append("file", picture);
         $.ajax({
             url: "/profile/organisation/saveBackgroundImage",
@@ -98,7 +102,7 @@ class FullProfile extends React.Component {
             processData: false,
             async: true,
             data: formData,
-            success: function (response) {
+            success: function() {
                 this.setState({
                     key: Math.random(),
                     backgroundPicture: "/profile/organisation/image/background"
@@ -107,10 +111,43 @@ class FullProfile extends React.Component {
         })
     }
 
+    handleSideBarDataChange(name, value) {
+        this.setState({
+            [name]: value
+        });
+    }
+
+    saveSideBarData() {
+        const csrfHeader = $("meta[name='_csrf_header']").attr("content");
+        const csrfToken = $("meta[name='_csrf']").attr("content");
+        const headers = {};
+
+        headers[csrfHeader] = csrfToken;
+        const formData = {};
+        formData["name"] = this.state.name;
+        formData["category"] = this.state.category;
+        formData["country"] = this.state.country;
+        formData["address"] = this.state.address;
+        formData["city"] = this.state.city;
+        formData["zipcode"] = this.state.zipcode;
+
+        $.ajax({
+            url: "/profile/organisation/saveText",
+            cache: false,
+            type: "POST",
+            headers: headers,
+            data : JSON.stringify(formData),
+            dataType : 'json',
+            contentType: 'application/json',
+            processData: false,
+            async: true
+        });
+    }
+
     render() {
         const divStyle = {
             background: 'url(' + this.state.backgroundPicture + ')',
-            'background-size': 'cover'
+            'backgroundSize': 'cover'
         };
 
         return(
@@ -149,9 +186,11 @@ class FullProfile extends React.Component {
                                      category={this.state.category}
                                      country={this.state.country}
                                      city={this.state.city}
-                                     zipCode={this.state.zipcode}
+                                     zipcode={this.state.zipcode}
                                      address={this.state.address}
-                                     mission={this.state.mission}/>
+                                     mission={this.state.mission}
+                                     saveData={this.saveSideBarData}
+                                     onChange={this.handleSideBarDataChange}/>
 
                             {/*<!-- Tab Content -->*/}
                             <div className="col-md-8">
