@@ -27,6 +27,7 @@ class FullProfile extends React.Component {
             selectedSocial: 'facebook'
         };
 
+        this.changeVideoUrl = this.changeVideoUrl.bind(this)
     }
 
     fetchData(){
@@ -54,7 +55,7 @@ class FullProfile extends React.Component {
                         twitter: 'twitterURL',
                         google: 'googleURL',
                         linkedin: 'linkedinURL',
-                        video: "https://www.youtube.com/embed/q4je9N26ouY",
+                        video: response.organisationVideos,
                     }
 
                 })
@@ -74,6 +75,11 @@ class FullProfile extends React.Component {
             social: newSocial,
             selectedSocial: newSelected
         })
+    }
+
+    changeVideoUrl(embedcode){
+        this.setState({social:{video: embedcode}});
+
     }
     saveBackgroundPicture(picture){
         let csrfHeader = $("meta[name='_csrf_header']").attr("content");
@@ -150,7 +156,7 @@ class FullProfile extends React.Component {
                                 <div className="tab-content">
 
                                     {/*<!-- PROFILE -->*/}
-                                    <Profile videoURL={this.state.social.video} />
+                                    <Profile videoURL={this.state.social.video} changeVideo={this.changeVideoUrl}/>
 
                                     {/*<!-- Services -->*/}
                                     {/*<Services />*/}
