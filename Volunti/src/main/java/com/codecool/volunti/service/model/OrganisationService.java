@@ -3,8 +3,10 @@ package com.codecool.volunti.service.model;
 
 import com.codecool.volunti.model.Organisation;
 import com.codecool.volunti.model.OrganisationSocialLink;
+import com.codecool.volunti.model.OrganisationVideo;
 import com.codecool.volunti.repository.OrganisationRepository;
 import com.codecool.volunti.repository.OrganisationSocialLinkRepository;
+import com.codecool.volunti.repository.OrganisationVideoRepository;
 import com.codecool.volunti.service.StorageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +23,13 @@ public class OrganisationService {
 
     private OrganisationRepository organisationRepository;
     private OrganisationSocialLinkRepository organisationSocialLinkRepository;
+    private OrganisationVideoRepository organisationVideoRepository;
     private StorageService storageService;
 
     @Autowired
-    public OrganisationService(OrganisationRepository organisationRepository, StorageService storageService, OrganisationSocialLinkRepository organisationSocialLinkRepository) {
+    public OrganisationService(OrganisationRepository organisationRepository, StorageService storageService, OrganisationSocialLinkRepository organisationSocialLinkRepository, OrganisationVideoRepository organisationVideoRepository) {
         this.organisationRepository = organisationRepository;
+        this.organisationVideoRepository = organisationVideoRepository;
         this.storageService = storageService;
         this.organisationSocialLinkRepository = organisationSocialLinkRepository;
     }
@@ -77,6 +81,18 @@ public class OrganisationService {
 
     public List<OrganisationSocialLink> findAll() {
         return organisationSocialLinkRepository.findAll();
+    }
+
+    public List<OrganisationVideo> findVideoByOrganisationId(Organisation organisation){
+        return organisationVideoRepository.findByOrganisationId(organisation);
+    }
+
+    public List<OrganisationVideo> findAllVideo() {
+        return organisationVideoRepository.findAll();
+    }
+
+    public OrganisationVideo save(OrganisationVideo organisationVideo) {
+        return organisationVideoRepository.save(organisationVideo);
     }
 
 
