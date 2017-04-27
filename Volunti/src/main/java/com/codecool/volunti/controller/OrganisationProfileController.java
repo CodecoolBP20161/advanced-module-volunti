@@ -80,17 +80,17 @@ public class OrganisationProfileController {
 
     @PostMapping( value = "/profile/organisation/saveVideo")
     @ResponseBody
-    public String saveVideo(@RequestBody OrganisationVideo editedOrganisationVideo, Principal principal){
+    public boolean saveVideo(@RequestBody OrganisationVideo editedOrganisationVideo, Principal principal){
         log.info("saveVideo() method called ...");
 
         User user = userService.getByEmail(principal.getName());
         Organisation organisation = user.getOrganisation();
         OrganisationVideo organisationVideo = new OrganisationVideo();
-        organisationVideo.setOrganisationId(organisation);
+        //organisationVideo.setOrganisationId(organisation);
         organisationVideo.setEmbedCode(editedOrganisationVideo.getEmbedCode());
 
-        organisationService.save(organisationVideo);
-        return "profiles/organisation";
+        //organisationService.save(organisationVideo);
+        return true;
     }
 
     @GetMapping("/profile/organisation/image/profile")
@@ -149,7 +149,7 @@ public class OrganisationProfileController {
 
     @PostMapping( value = "/profile/organisation/saveBackgroundImage")
     public Boolean saveBackgroundImage(@RequestParam("file") MultipartFile file, Principal principal) throws IOException {
-        log.info("here it is");
+
         log.info("file size: " + file.getSize());
 
         /*if(bindingResult.hasErrors()){
