@@ -1,7 +1,7 @@
 import React from 'react'
 
-import SideBar from './side-bar'
-import Profile from './tab-profile'
+import SideBar from './SideBar'
+import Profile from './TabProfile'
 import ProfileBanner from './profile-banner'
 
 class FullProfile extends React.Component {
@@ -149,6 +149,8 @@ class FullProfile extends React.Component {
                                      category={this.state.category}
                                      country={this.state.country}
                                      city={this.state.city}
+                                     zipCode={this.state.zipcode}
+                                     address={this.state.address}
                                      mission={this.state.mission}/>
 
                             {/*<!-- Tab Content -->*/}
