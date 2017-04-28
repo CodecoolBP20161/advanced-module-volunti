@@ -3,6 +3,7 @@ package com.codecool.volunti.controller;
 import com.codecool.volunti.model.Organisation;
 import com.codecool.volunti.model.OrganisationVideo;
 import com.codecool.volunti.model.User;
+import com.codecool.volunti.repository.OrganisationVideoRepository;
 import com.codecool.volunti.service.ImageValidationService;
 import com.codecool.volunti.service.StorageService;
 import com.codecool.volunti.service.model.OrganisationService;
@@ -21,6 +22,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.security.Principal;
+import java.util.Arrays;
+import java.util.List;
 
 
 @Slf4j
@@ -28,16 +31,18 @@ import java.security.Principal;
 public class OrganisationProfileController {
 
     private OrganisationService organisationService;
+    private OrganisationVideoRepository organisationVideoRepository;
     private UserService userService;
     private StorageService storageService;
     private ImageValidationService imageValidationService;
 
     @Autowired
-    public OrganisationProfileController(OrganisationService organisationService, UserService userService, StorageService storageService, ImageValidationService imageValidationService) {
+    public OrganisationProfileController(OrganisationService organisationService, UserService userService, StorageService storageService, ImageValidationService imageValidationService, OrganisationVideoRepository organisationVideoRepository) {
         this.organisationService = organisationService;
         this.userService = userService;
         this.storageService = storageService;
         this.imageValidationService = imageValidationService;
+        this.organisationVideoRepository = organisationVideoRepository;
     }
 
     @GetMapping(value = "/profile/organisation")
@@ -86,11 +91,14 @@ public class OrganisationProfileController {
 
         User user = userService.getByEmail(principal.getName());
         Organisation organisation = user.getOrganisation();
-        OrganisationVideo organisationVideo = new OrganisationVideo();
-        organisationVideo.setOrganisationId(organisation);
-        organisationVideo.setEmbedCode(editedOrganisationVideo.getEmbedCode());
-
-        //organisationService.save(organisationVideo);
+        List<OrganisationVideo> organisationVideos = organisationService.findVideoByOrganisationId(organisation);
+//        if (!organisationVideos.isEmpty()){
+//            for (OrganisationVideo video : organisationVideos) {
+//                organisationVideoRepository.delete(video);
+//            }
+//        }
+        editedOrganisationVideo.setOrganisationId(organisation);
+        organisationService.save(editedOrganisationVideo);
         return true;
 
     }

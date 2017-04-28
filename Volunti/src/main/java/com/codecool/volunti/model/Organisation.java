@@ -18,7 +18,7 @@ import java.util.List;
 @Entity
 @Table(name="organisations")
 @Data
-@ToString(exclude = "organisationSocialLinks")
+@ToString(exclude = {"organisationSocialLinks, organisationVideos"})
 public class Organisation {
 
     @Id
@@ -93,7 +93,6 @@ public class Organisation {
     @JsonSerialize(using = CustomListSerializer.class)
     private List<OrganisationSocialLink> organisationSocialLinks;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "organisationId")
     private List<OrganisationVideo> organisationVideos;
 
