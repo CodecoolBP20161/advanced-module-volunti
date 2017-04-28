@@ -9466,9 +9466,9 @@ var _TabProfile = __webpack_require__(83);
 
 var _TabProfile2 = _interopRequireDefault(_TabProfile);
 
-var _profileBanner = __webpack_require__(85);
+var _ProfileBanner = __webpack_require__(187);
 
-var _profileBanner2 = _interopRequireDefault(_profileBanner);
+var _ProfileBanner2 = _interopRequireDefault(_ProfileBanner);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -9643,7 +9643,7 @@ var FullProfile = function (_React$Component) {
             return _react2.default.createElement(
                 'div',
                 { className: 'compny-profile' },
-                _react2.default.createElement(_profileBanner2.default, {
+                _react2.default.createElement(_ProfileBanner2.default, {
                     key: this.state.key,
                     organisationName: this.state.name,
                     category: this.state.category,
@@ -10105,10 +10105,6 @@ var _react = __webpack_require__(15);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactAddonsUpdate = __webpack_require__(102);
-
-var _reactAddonsUpdate2 = _interopRequireDefault(_reactAddonsUpdate);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -10144,7 +10140,7 @@ var TabProfile = function (_React$Component) {
     }
 
     _createClass(TabProfile, [{
-        key: 'fetchData',
+        key: "fetchData",
         value: function fetchData() {
             var csrfHeader = $("meta[name='_csrf_header']").attr("content");
             var csrfToken = $("meta[name='_csrf']").attr("content");
@@ -10167,12 +10163,12 @@ var TabProfile = function (_React$Component) {
             });
         }
     }, {
-        key: 'componentDidMount',
+        key: "componentDidMount",
         value: function componentDidMount() {
             this.fetchData();
         }
     }, {
-        key: 'toggleEditMode',
+        key: "toggleEditMode",
         value: function toggleEditMode() {
             if (this.state.isEditing) {
                 this.saveData();
@@ -10182,7 +10178,7 @@ var TabProfile = function (_React$Component) {
             });
         }
     }, {
-        key: 'toggleVideoEditMode',
+        key: "toggleVideoEditMode",
         value: function toggleVideoEditMode() {
             this.setState({
                 isVideoEditing: !this.state.isVideoEditing
@@ -10194,22 +10190,22 @@ var TabProfile = function (_React$Component) {
             }
         }
     }, {
-        key: 'toggleEditButton',
+        key: "toggleEditButton",
         value: function toggleEditButton() {
             this.setState({ mouseOver: !this.state.mouseOver });
         }
     }, {
-        key: 'handleChange',
+        key: "handleChange",
         value: function handleChange(event) {
             this.setState(_defineProperty({}, event.target.name, event.target.value));
         }
     }, {
-        key: 'handleVideo',
+        key: "handleVideo",
         value: function handleVideo(event) {
             this.setState({ videoUrl: event.target.value });
         }
     }, {
-        key: 'saveData',
+        key: "saveData",
         value: function saveData() {
             var csrfHeader = $("meta[name='_csrf_header']").attr("content");
             var csrfToken = $("meta[name='_csrf']").attr("content");
@@ -10234,7 +10230,7 @@ var TabProfile = function (_React$Component) {
             });
         }
     }, {
-        key: 'saveVideoData',
+        key: "saveVideoData",
         value: function saveVideoData(embedCode) {
             var csrfHeader = $("meta[name='_csrf_header']").attr("content");
             var csrfToken = $("meta[name='_csrf']").attr("content");
@@ -10257,15 +10253,15 @@ var TabProfile = function (_React$Component) {
             });
         }
     }, {
-        key: 'render',
+        key: "render",
         value: function render() {
             var _this2 = this;
 
             var videoURL = this.props.videoURL ? this.props.videoURL : "https://www.youtube.com/embed/leQ8nEcYFOc";
 
             return _react2.default.createElement(
-                'div',
-                { id: 'profile', className: 'tab-pane fade in active',
+                "div",
+                { id: "profile", className: "tab-pane fade in active",
                     onMouseEnter: function onMouseEnter() {
                         return _this2.toggleEditButton();
                     },
@@ -10273,35 +10269,35 @@ var TabProfile = function (_React$Component) {
                         return _this2.toggleEditButton();
                     } },
                 _react2.default.createElement(
-                    'div',
-                    { className: 'profile-main' },
+                    "div",
+                    { className: "profile-main" },
                     _react2.default.createElement(
-                        'div',
-                        { className: 'filter-flower' },
+                        "div",
+                        { className: "filter-flower" },
                         _react2.default.createElement(
-                            'div',
+                            "div",
                             null,
                             _react2.default.createElement(
-                                'div',
-                                { className: 'row' },
+                                "div",
+                                { className: "row" },
                                 _react2.default.createElement(
-                                    'div',
-                                    { className: 'col-sm-7' },
+                                    "div",
+                                    { className: "col-sm-7" },
                                     _react2.default.createElement(
-                                        'h3',
+                                        "h3",
                                         null,
-                                        'About the Company'
+                                        "About the Company"
                                     )
                                 ),
                                 _react2.default.createElement(
-                                    'div',
-                                    { className: 'col-sm-5' },
+                                    "div",
+                                    { className: "col-sm-5" },
                                     (this.state.mouseOver || this.state.isEditing) && _react2.default.createElement(
-                                        'button',
-                                        { type: 'submit', className: 'btn btn-med btn-success', onClick: function onClick() {
+                                        "button",
+                                        { type: "submit", className: "btn btn-med btn-success", onClick: function onClick() {
                                                 return _this2.toggleEditMode();
                                             } },
-                                        _react2.default.createElement('i', { className: 'fa fa-pencil-square-o' }),
+                                        _react2.default.createElement("i", { className: "fa fa-pencil-square-o" }),
                                         this.state.isEditing ? 'Done' : 'Edit'
                                     )
                                 )
@@ -10309,56 +10305,56 @@ var TabProfile = function (_React$Component) {
                         )
                     ),
                     !this.state.isEditing && _react2.default.createElement(
-                        'div',
-                        { className: 'profile-in' },
+                        "div",
+                        { className: "profile-in" },
                         _react2.default.createElement(
-                            'p',
+                            "p",
                             null,
                             this.state.mission
                         ),
                         _react2.default.createElement(
-                            'p',
+                            "p",
                             null,
                             this.state.description1
                         ),
                         (this.state.mouseOver || this.state.isVideoEditing) && _react2.default.createElement(
-                            'button',
-                            { type: 'submit', className: 'col-sm-4', onClick: function onClick() {
+                            "button",
+                            { type: "submit", className: "col-sm-4", onClick: function onClick() {
                                     return _this2.toggleVideoEditMode();
                                 } },
                             this.state.isVideoEditing ? 'Done' : 'Edit'
                         ),
-                        this.state.isVideoEditing && _react2.default.createElement('input', { type: 'text', value: this.state.videoUrl, onChange: this.handleVideo }),
-                        _react2.default.createElement('iframe', { src: videoURL }),
+                        this.state.isVideoEditing && _react2.default.createElement("input", { type: "text", value: this.state.videoUrl, onChange: this.handleVideo }),
+                        _react2.default.createElement("iframe", { src: videoURL }),
                         _react2.default.createElement(
-                            'p',
+                            "p",
                             null,
                             this.state.description2
                         )
                     ),
                     this.state.isEditing && _react2.default.createElement(
-                        'div',
-                        { className: 'profile-in' },
+                        "div",
+                        { className: "profile-in" },
                         _react2.default.createElement(
-                            'p',
+                            "p",
                             null,
-                            _react2.default.createElement('textarea', { value: this.state.mission,
-                                name: 'mission',
+                            _react2.default.createElement("textarea", { value: this.state.mission,
+                                name: "mission",
                                 onChange: this.handleChange })
                         ),
                         _react2.default.createElement(
-                            'p',
+                            "p",
                             null,
-                            _react2.default.createElement('textarea', { value: this.state.description1,
-                                name: 'description1',
+                            _react2.default.createElement("textarea", { value: this.state.description1,
+                                name: "description1",
                                 onChange: this.handleChange })
                         ),
-                        _react2.default.createElement('iframe', { src: videoURL }),
+                        _react2.default.createElement("iframe", { src: videoURL }),
                         _react2.default.createElement(
-                            'p',
+                            "p",
                             null,
-                            _react2.default.createElement('textarea', { value: this.state.description2,
-                                name: 'description2',
+                            _react2.default.createElement("textarea", { value: this.state.description2,
+                                name: "description2",
                                 onChange: this.handleChange })
                         )
                     )
@@ -10396,381 +10392,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 _reactDom2.default.render(_react2.default.createElement(_FullProfile2.default, null), document.getElementById("main-wrapper"));
 
 /***/ }),
-/* 85 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(15);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _topLabel = __webpack_require__(86);
-
-var _topLabel2 = _interopRequireDefault(_topLabel);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var ProfileBanner = function (_React$Component) {
-    _inherits(ProfileBanner, _React$Component);
-
-    function ProfileBanner(props) {
-        _classCallCheck(this, ProfileBanner);
-
-        var _this = _possibleConstructorReturn(this, (ProfileBanner.__proto__ || Object.getPrototypeOf(ProfileBanner)).call(this, props));
-
-        _this.state = {
-            mouseOver: false,
-            isEditing: false
-        };
-        return _this;
-    }
-
-    _createClass(ProfileBanner, [{
-        key: 'savePicture',
-        value: function savePicture(e) {
-            e.preventDefault();
-            this.props.savePicture(this.backGroundInput.files[0]);
-        }
-    }, {
-        key: 'toggleEditButtonOn',
-        value: function toggleEditButtonOn() {
-            this.setState({
-                mouseOver: true
-            });
-        }
-    }, {
-        key: 'toggleEditButtonOff',
-        value: function toggleEditButtonOff() {
-            this.setState({
-                mouseOver: false
-            });
-        }
-    }, {
-        key: 'toggleEditMode',
-        value: function toggleEditMode() {
-            this.setState({
-                isEditing: !this.state.isEditing
-            });
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            var _this2 = this;
-
-            return _react2.default.createElement(
-                'div',
-                { className: 'profile-bnr', style: this.props.divStyle, key: this.props.key,
-                    onMouseEnter: function onMouseEnter() {
-                        return _this2.toggleEditButtonOn();
-                    },
-                    onMouseLeave: function onMouseLeave() {
-                        return _this2.toggleEditButtonOff();
-                    } },
-                _react2.default.createElement(
-                    'div',
-                    { className: 'container' },
-                    this.state.isEditing && _react2.default.createElement(
-                        'div',
-                        { className: 'btn-group btn-group-justified pull-right col-xs-12' },
-                        _react2.default.createElement(
-                            'form',
-                            { method: 'POST', encType: 'multipart/form-data', action: '/profile/organisation/saveBackgroundImage' },
-                            _react2.default.createElement('input', { className: 'btn btn-default btn-sm', ref: function ref(input) {
-                                    return _this2.backGroundInput = input;
-                                }, type: 'file', required: 'required', name: 'file', accept: '.png,.jpg' }),
-                            _react2.default.createElement('input', { className: 'btn btn-default btn-sm', type: 'submit', onClick: function onClick(e) {
-                                    return _this2.savePicture(e);
-                                }, value: 'upload' })
-                        )
-                    ),
-                    _react2.default.createElement(_topLabel2.default, {
-                        organisationName: this.props.organisationName,
-                        category: this.props.category,
-                        address: this.props.address,
-                        social: this.props.social,
-                        saveSocial: function saveSocial(value, newSelected) {
-                            return _this2.props.saveSocial(value, newSelected);
-                        },
-                        saveState: function saveState() {
-                            return _this2.props.saveState;
-                        },
-                        selectedSocial: this.props.selectedSocial
-                    })
-                ),
-                this.state.mouseOver && _react2.default.createElement(
-                    'button',
-                    { type: 'submit', className: 'btn btn-default btn-sm',
-                        onClick: function onClick() {
-                            return _this2.toggleEditMode();
-                        } },
-                    this.state.isEditing ? 'Done' : 'Edit'
-                )
-            );
-        }
-    }]);
-
-    return ProfileBanner;
-}(_react2.default.Component);
-
-exports.default = ProfileBanner;
-
-/***/ }),
-/* 86 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(15);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _toplabelSocial = __webpack_require__(87);
-
-var _toplabelSocial2 = _interopRequireDefault(_toplabelSocial);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var TopLabel = function (_React$Component) {
-    _inherits(TopLabel, _React$Component);
-
-    function TopLabel(props) {
-        _classCallCheck(this, TopLabel);
-
-        return _possibleConstructorReturn(this, (TopLabel.__proto__ || Object.getPrototypeOf(TopLabel)).call(this, props));
-    }
-
-    _createClass(TopLabel, [{
-        key: 'saveSocial',
-        value: function saveSocial(value, newSelected) {
-            this.props.saveSocial(value, newSelected);
-        }
-    }, {
-        key: 'saveState',
-        value: function saveState() {
-            this.props.saveState();
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            var _this2 = this;
-
-            return _react2.default.createElement(
-                'div',
-                { className: 'user-info' },
-                _react2.default.createElement(
-                    'h1',
-                    null,
-                    this.props.organisationName,
-                    ' ',
-                    ' '
-                ),
-                _react2.default.createElement(
-                    'h6',
-                    null,
-                    this.props.category
-                ),
-                _react2.default.createElement(
-                    'p',
-                    null,
-                    this.props.address
-                ),
-                _react2.default.createElement(_toplabelSocial2.default, { social: this.props.social,
-                    selected: this.props.selectedSocial,
-                    saveSocial: function saveSocial(value, newSelected) {
-                        return _this2.saveSocial(value, newSelected);
-                    },
-                    socialEditOff: function socialEditOff() {
-                        return _this2.saveState();
-                    } })
-            );
-        }
-    }]);
-
-    return TopLabel;
-}(_react2.default.Component);
-
-exports.default = TopLabel;
-
-/***/ }),
-/* 87 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(15);
-
-var _react2 = _interopRequireDefault(_react);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Social = function (_React$Component) {
-    _inherits(Social, _React$Component);
-
-    function Social(props) {
-        _classCallCheck(this, Social);
-
-        var _this = _possibleConstructorReturn(this, (Social.__proto__ || Object.getPrototypeOf(Social)).call(this, props));
-
-        _this.state = {
-            mouseOver: false,
-            isEditing: false
-        };
-
-        return _this;
-    }
-
-    _createClass(Social, [{
-        key: 'toggleEditMode',
-        value: function toggleEditMode() {
-            if (this.state.isEditing) {
-                this.props.socialEditOff();
-            }
-            this.setState({
-                isEditing: !this.state.isEditing
-            });
-        }
-    }, {
-        key: 'toggleEditButton',
-        value: function toggleEditButton() {
-            this.setState({ mouseOver: !this.state.mouseOver });
-        }
-    }, {
-        key: 'select',
-        value: function select(event) {
-            this.props.saveSocial(this.textInput.value, event.currentTarget.id);
-        }
-    }, {
-        key: 'saveChange',
-        value: function saveChange() {
-            this.props.saveSocial(this.textInput.value);
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            var _this2 = this;
-
-            var socialLink = [];
-            for (var key in this.props.social) {
-                if (this.props.social.hasOwnProperty(key) && key != 'video') {
-                    if (this.props.selected == key && this.state.isEditing) {
-                        socialLink.push(_react2.default.createElement(
-                            'a',
-                            { onClick: function onClick(e) {
-                                    return _this2.select(e);
-                                }, id: key, key: key, className: 'selected' },
-                            _react2.default.createElement('i', { className: "fa fa-" + key })
-                        ));
-                    } else if (this.state.isEditing) {
-                        socialLink.push(_react2.default.createElement(
-                            'a',
-                            { onClick: function onClick(e) {
-                                    return _this2.select(e);
-                                }, id: key, key: key },
-                            _react2.default.createElement('i', { className: "fa fa-" + key })
-                        ));
-                    } else {
-                        socialLink.push(_react2.default.createElement(
-                            'a',
-                            { href: this.props.social[key], id: key, key: key },
-                            _react2.default.createElement('i', { className: "fa fa-" + key })
-                        ));
-                    }
-                }
-            }
-            var inputValue = this.props.social[this.props.selected];
-            return _react2.default.createElement(
-                'div',
-                { className: 'social-links', onMouseEnter: function onMouseEnter() {
-                        return _this2.toggleEditButton();
-                    }, onMouseLeave: function onMouseLeave() {
-                        return _this2.toggleEditButton();
-                    } },
-                this.state.isEditing && _react2.default.createElement(
-                    'div',
-                    { className: 'col-md-12 row' },
-                    _react2.default.createElement('input', { className: 'col-md-12 socialInput', type: 'text', id: 'socialInput',
-                        value: inputValue,
-                        ref: function ref(input) {
-                            return _this2.textInput = input;
-                        },
-                        onChange: function onChange() {
-                            return _this2.saveChange();
-                        } })
-                ),
-                socialLink,
-                this.state.mouseOver && _react2.default.createElement(
-                    'button',
-                    { type: 'submit', onClick: function onClick() {
-                            return _this2.toggleEditMode();
-                        } },
-                    this.state.isEditing ? 'Done' : 'Edit'
-                )
-            );
-        }
-    }]);
-
-    return Social;
-}(_react2.default.Component);
-
-exports.default = Social;
-
-
-var MyInput = function MyInput(props) {
-    return _react2.default.createElement(
-        'div',
-        { className: 'col-md-12 row' },
-        _react2.default.createElement('input', { className: 'col-md-12 socialInput', type: 'text', id: 'socialInput',
-            value: props.inputValue,
-            ref: function ref(input) {
-                return props.textInput.textInput = input;
-            },
-            onChange: function onChange() {
-                return props.saveChange();
-            } })
-    );
-};
-
-/***/ }),
+/* 85 */,
+/* 86 */,
+/* 87 */,
 /* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11510,12 +11134,7 @@ if (performance.now) {
 module.exports = performanceNow;
 
 /***/ }),
-/* 102 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(185);
-
-/***/ }),
+/* 102 */,
 /* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -23009,124 +22628,7 @@ module.exports = traverseAllChildren;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 185 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(process) {/**
- * Copyright 2013-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- *
- */
-
-/* global hasOwnProperty:true */
-
-
-
-var _prodInvariant = __webpack_require__(14),
-    _assign = __webpack_require__(4);
-
-var invariant = __webpack_require__(1);
-var hasOwnProperty = {}.hasOwnProperty;
-
-function shallowCopy(x) {
-  if (Array.isArray(x)) {
-    return x.concat();
-  } else if (x && typeof x === 'object') {
-    return _assign(new x.constructor(), x);
-  } else {
-    return x;
-  }
-}
-
-var COMMAND_PUSH = '$push';
-var COMMAND_UNSHIFT = '$unshift';
-var COMMAND_SPLICE = '$splice';
-var COMMAND_SET = '$set';
-var COMMAND_MERGE = '$merge';
-var COMMAND_APPLY = '$apply';
-
-var ALL_COMMANDS_LIST = [COMMAND_PUSH, COMMAND_UNSHIFT, COMMAND_SPLICE, COMMAND_SET, COMMAND_MERGE, COMMAND_APPLY];
-
-var ALL_COMMANDS_SET = {};
-
-ALL_COMMANDS_LIST.forEach(function (command) {
-  ALL_COMMANDS_SET[command] = true;
-});
-
-function invariantArrayCase(value, spec, command) {
-  !Array.isArray(value) ? process.env.NODE_ENV !== 'production' ? invariant(false, 'update(): expected target of %s to be an array; got %s.', command, value) : _prodInvariant('1', command, value) : void 0;
-  var specValue = spec[command];
-  !Array.isArray(specValue) ? process.env.NODE_ENV !== 'production' ? invariant(false, 'update(): expected spec of %s to be an array; got %s. Did you forget to wrap your parameter in an array?', command, specValue) : _prodInvariant('2', command, specValue) : void 0;
-}
-
-/**
- * Returns a updated shallow copy of an object without mutating the original.
- * See https://facebook.github.io/react/docs/update.html for details.
- */
-function update(value, spec) {
-  !(typeof spec === 'object') ? process.env.NODE_ENV !== 'production' ? invariant(false, 'update(): You provided a key path to update() that did not contain one of %s. Did you forget to include {%s: ...}?', ALL_COMMANDS_LIST.join(', '), COMMAND_SET) : _prodInvariant('3', ALL_COMMANDS_LIST.join(', '), COMMAND_SET) : void 0;
-
-  if (hasOwnProperty.call(spec, COMMAND_SET)) {
-    !(Object.keys(spec).length === 1) ? process.env.NODE_ENV !== 'production' ? invariant(false, 'Cannot have more than one key in an object with %s', COMMAND_SET) : _prodInvariant('4', COMMAND_SET) : void 0;
-
-    return spec[COMMAND_SET];
-  }
-
-  var nextValue = shallowCopy(value);
-
-  if (hasOwnProperty.call(spec, COMMAND_MERGE)) {
-    var mergeObj = spec[COMMAND_MERGE];
-    !(mergeObj && typeof mergeObj === 'object') ? process.env.NODE_ENV !== 'production' ? invariant(false, 'update(): %s expects a spec of type \'object\'; got %s', COMMAND_MERGE, mergeObj) : _prodInvariant('5', COMMAND_MERGE, mergeObj) : void 0;
-    !(nextValue && typeof nextValue === 'object') ? process.env.NODE_ENV !== 'production' ? invariant(false, 'update(): %s expects a target of type \'object\'; got %s', COMMAND_MERGE, nextValue) : _prodInvariant('6', COMMAND_MERGE, nextValue) : void 0;
-    _assign(nextValue, spec[COMMAND_MERGE]);
-  }
-
-  if (hasOwnProperty.call(spec, COMMAND_PUSH)) {
-    invariantArrayCase(value, spec, COMMAND_PUSH);
-    spec[COMMAND_PUSH].forEach(function (item) {
-      nextValue.push(item);
-    });
-  }
-
-  if (hasOwnProperty.call(spec, COMMAND_UNSHIFT)) {
-    invariantArrayCase(value, spec, COMMAND_UNSHIFT);
-    spec[COMMAND_UNSHIFT].forEach(function (item) {
-      nextValue.unshift(item);
-    });
-  }
-
-  if (hasOwnProperty.call(spec, COMMAND_SPLICE)) {
-    !Array.isArray(value) ? process.env.NODE_ENV !== 'production' ? invariant(false, 'Expected %s target to be an array; got %s', COMMAND_SPLICE, value) : _prodInvariant('7', COMMAND_SPLICE, value) : void 0;
-    !Array.isArray(spec[COMMAND_SPLICE]) ? process.env.NODE_ENV !== 'production' ? invariant(false, 'update(): expected spec of %s to be an array of arrays; got %s. Did you forget to wrap your parameters in an array?', COMMAND_SPLICE, spec[COMMAND_SPLICE]) : _prodInvariant('8', COMMAND_SPLICE, spec[COMMAND_SPLICE]) : void 0;
-    spec[COMMAND_SPLICE].forEach(function (args) {
-      !Array.isArray(args) ? process.env.NODE_ENV !== 'production' ? invariant(false, 'update(): expected spec of %s to be an array of arrays; got %s. Did you forget to wrap your parameters in an array?', COMMAND_SPLICE, spec[COMMAND_SPLICE]) : _prodInvariant('8', COMMAND_SPLICE, spec[COMMAND_SPLICE]) : void 0;
-      nextValue.splice.apply(nextValue, args);
-    });
-  }
-
-  if (hasOwnProperty.call(spec, COMMAND_APPLY)) {
-    !(typeof spec[COMMAND_APPLY] === 'function') ? process.env.NODE_ENV !== 'production' ? invariant(false, 'update(): expected spec of %s to be a function; got %s.', COMMAND_APPLY, spec[COMMAND_APPLY]) : _prodInvariant('9', COMMAND_APPLY, spec[COMMAND_APPLY]) : void 0;
-    nextValue = spec[COMMAND_APPLY](nextValue);
-  }
-
-  for (var k in spec) {
-    if (!(ALL_COMMANDS_SET.hasOwnProperty(k) && ALL_COMMANDS_SET[k])) {
-      nextValue[k] = update(value[k], spec[k]);
-    }
-  }
-
-  return nextValue;
-}
-
-module.exports = update;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
-
-/***/ }),
+/* 185 */,
 /* 186 */
 /***/ (function(module, exports) {
 
@@ -23152,6 +22654,381 @@ try {
 
 module.exports = g;
 
+
+/***/ }),
+/* 187 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(15);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _TopLabel = __webpack_require__(188);
+
+var _TopLabel2 = _interopRequireDefault(_TopLabel);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var ProfileBanner = function (_React$Component) {
+    _inherits(ProfileBanner, _React$Component);
+
+    function ProfileBanner(props) {
+        _classCallCheck(this, ProfileBanner);
+
+        var _this = _possibleConstructorReturn(this, (ProfileBanner.__proto__ || Object.getPrototypeOf(ProfileBanner)).call(this, props));
+
+        _this.state = {
+            mouseOver: false,
+            isEditing: false
+        };
+        return _this;
+    }
+
+    _createClass(ProfileBanner, [{
+        key: 'savePicture',
+        value: function savePicture(e) {
+            e.preventDefault();
+            this.props.savePicture(this.backGroundInput.files[0]);
+        }
+    }, {
+        key: 'toggleEditButtonOn',
+        value: function toggleEditButtonOn() {
+            this.setState({
+                mouseOver: true
+            });
+        }
+    }, {
+        key: 'toggleEditButtonOff',
+        value: function toggleEditButtonOff() {
+            this.setState({
+                mouseOver: false
+            });
+        }
+    }, {
+        key: 'toggleEditMode',
+        value: function toggleEditMode() {
+            this.setState({
+                isEditing: !this.state.isEditing
+            });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _this2 = this;
+
+            return _react2.default.createElement(
+                'div',
+                { className: 'profile-bnr', style: this.props.divStyle, key: this.props.key,
+                    onMouseEnter: function onMouseEnter() {
+                        return _this2.toggleEditButtonOn();
+                    },
+                    onMouseLeave: function onMouseLeave() {
+                        return _this2.toggleEditButtonOff();
+                    } },
+                _react2.default.createElement(
+                    'div',
+                    { className: 'container' },
+                    this.state.isEditing && _react2.default.createElement(
+                        'div',
+                        { className: 'btn-group btn-group-justified pull-right col-xs-12' },
+                        _react2.default.createElement(
+                            'form',
+                            { method: 'POST', encType: 'multipart/form-data', action: '/profile/organisation/saveBackgroundImage' },
+                            _react2.default.createElement('input', { className: 'btn btn-default btn-sm', ref: function ref(input) {
+                                    return _this2.backGroundInput = input;
+                                }, type: 'file', required: 'required', name: 'file', accept: '.png,.jpg' }),
+                            _react2.default.createElement('input', { className: 'btn btn-default btn-sm', type: 'submit', onClick: function onClick(e) {
+                                    return _this2.savePicture(e);
+                                }, value: 'upload' })
+                        )
+                    ),
+                    _react2.default.createElement(_TopLabel2.default, {
+                        organisationName: this.props.organisationName,
+                        category: this.props.category,
+                        address: this.props.address,
+                        social: this.props.social,
+                        saveSocial: function saveSocial(value, newSelected) {
+                            return _this2.props.saveSocial(value, newSelected);
+                        },
+                        saveState: function saveState() {
+                            return _this2.props.saveState;
+                        },
+                        selectedSocial: this.props.selectedSocial
+                    })
+                ),
+                this.state.mouseOver && _react2.default.createElement(
+                    'button',
+                    { type: 'submit', className: 'btn btn-default btn-sm',
+                        onClick: function onClick() {
+                            return _this2.toggleEditMode();
+                        } },
+                    this.state.isEditing ? 'Done' : 'Edit'
+                )
+            );
+        }
+    }]);
+
+    return ProfileBanner;
+}(_react2.default.Component);
+
+exports.default = ProfileBanner;
+
+/***/ }),
+/* 188 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(15);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _Social = __webpack_require__(189);
+
+var _Social2 = _interopRequireDefault(_Social);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var TopLabel = function (_React$Component) {
+    _inherits(TopLabel, _React$Component);
+
+    function TopLabel(props) {
+        _classCallCheck(this, TopLabel);
+
+        return _possibleConstructorReturn(this, (TopLabel.__proto__ || Object.getPrototypeOf(TopLabel)).call(this, props));
+    }
+
+    _createClass(TopLabel, [{
+        key: 'saveSocial',
+        value: function saveSocial(value, newSelected) {
+            this.props.saveSocial(value, newSelected);
+        }
+    }, {
+        key: 'saveState',
+        value: function saveState() {
+            this.props.saveState();
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _this2 = this;
+
+            return _react2.default.createElement(
+                'div',
+                { className: 'user-info' },
+                _react2.default.createElement(
+                    'h1',
+                    null,
+                    this.props.organisationName,
+                    ' ',
+                    ' '
+                ),
+                _react2.default.createElement(
+                    'h6',
+                    null,
+                    this.props.category
+                ),
+                _react2.default.createElement(
+                    'p',
+                    null,
+                    this.props.address
+                ),
+                _react2.default.createElement(_Social2.default, { social: this.props.social,
+                    selected: this.props.selectedSocial,
+                    saveSocial: function saveSocial(value, newSelected) {
+                        return _this2.saveSocial(value, newSelected);
+                    },
+                    socialEditOff: function socialEditOff() {
+                        return _this2.saveState();
+                    } })
+            );
+        }
+    }]);
+
+    return TopLabel;
+}(_react2.default.Component);
+
+exports.default = TopLabel;
+
+/***/ }),
+/* 189 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(15);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Social = function (_React$Component) {
+    _inherits(Social, _React$Component);
+
+    function Social(props) {
+        _classCallCheck(this, Social);
+
+        var _this = _possibleConstructorReturn(this, (Social.__proto__ || Object.getPrototypeOf(Social)).call(this, props));
+
+        _this.state = {
+            mouseOver: false,
+            isEditing: false
+        };
+
+        return _this;
+    }
+
+    _createClass(Social, [{
+        key: 'toggleEditMode',
+        value: function toggleEditMode() {
+            if (this.state.isEditing) {
+                this.props.socialEditOff();
+            }
+            this.setState({
+                isEditing: !this.state.isEditing
+            });
+        }
+    }, {
+        key: 'toggleEditButton',
+        value: function toggleEditButton() {
+            this.setState({ mouseOver: !this.state.mouseOver });
+        }
+    }, {
+        key: 'select',
+        value: function select(event) {
+            this.props.saveSocial(this.textInput.value, event.currentTarget.id);
+        }
+    }, {
+        key: 'saveChange',
+        value: function saveChange() {
+            this.props.saveSocial(this.textInput.value);
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _this2 = this;
+
+            var socialLink = [];
+            for (var key in this.props.social) {
+                if (this.props.social.hasOwnProperty(key) && key != 'video') {
+                    if (this.props.selected == key && this.state.isEditing) {
+                        socialLink.push(_react2.default.createElement(
+                            'a',
+                            { onClick: function onClick(e) {
+                                    return _this2.select(e);
+                                }, id: key, key: key, className: 'selected' },
+                            _react2.default.createElement('i', { className: "fa fa-" + key })
+                        ));
+                    } else if (this.state.isEditing) {
+                        socialLink.push(_react2.default.createElement(
+                            'a',
+                            { onClick: function onClick(e) {
+                                    return _this2.select(e);
+                                }, id: key, key: key },
+                            _react2.default.createElement('i', { className: "fa fa-" + key })
+                        ));
+                    } else {
+                        socialLink.push(_react2.default.createElement(
+                            'a',
+                            { href: this.props.social[key], id: key, key: key },
+                            _react2.default.createElement('i', { className: "fa fa-" + key })
+                        ));
+                    }
+                }
+            }
+            var inputValue = this.props.social[this.props.selected];
+            return _react2.default.createElement(
+                'div',
+                { className: 'social-links', onMouseEnter: function onMouseEnter() {
+                        return _this2.toggleEditButton();
+                    }, onMouseLeave: function onMouseLeave() {
+                        return _this2.toggleEditButton();
+                    } },
+                this.state.isEditing && _react2.default.createElement(
+                    'div',
+                    { className: 'col-md-12 row' },
+                    _react2.default.createElement('input', { className: 'col-md-12 socialInput', type: 'text', id: 'socialInput',
+                        value: inputValue,
+                        ref: function ref(input) {
+                            return _this2.textInput = input;
+                        },
+                        onChange: function onChange() {
+                            return _this2.saveChange();
+                        } })
+                ),
+                socialLink,
+                this.state.mouseOver && _react2.default.createElement(
+                    'button',
+                    { type: 'submit', onClick: function onClick() {
+                            return _this2.toggleEditMode();
+                        } },
+                    this.state.isEditing ? 'Done' : 'Edit'
+                )
+            );
+        }
+    }]);
+
+    return Social;
+}(_react2.default.Component);
+
+exports.default = Social;
+
+
+var MyInput = function MyInput(props) {
+    return _react2.default.createElement(
+        'div',
+        { className: 'col-md-12 row' },
+        _react2.default.createElement('input', { className: 'col-md-12 socialInput', type: 'text', id: 'socialInput',
+            value: props.inputValue,
+            ref: function ref(input) {
+                return props.textInput.textInput = input;
+            },
+            onChange: function onChange() {
+                return props.saveChange();
+            } })
+    );
+};
 
 /***/ })
 /******/ ]);

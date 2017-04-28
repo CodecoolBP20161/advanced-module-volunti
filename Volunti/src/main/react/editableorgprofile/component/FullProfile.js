@@ -2,7 +2,7 @@ import React from 'react'
 
 import SideBar from './SideBar'
 import Profile from './TabProfile'
-import ProfileBanner from './profile-banner'
+import ProfileBanner from './ProfileBanner'
 
 class FullProfile extends React.Component {
     constructor(props) {

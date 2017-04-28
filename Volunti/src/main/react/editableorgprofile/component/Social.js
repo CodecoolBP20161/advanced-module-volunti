@@ -27,25 +27,24 @@ class Social extends React.Component {
         this.props.saveSocial(this.textInput.value);
     }
     render() {
-        // console.log("Social: ", this.props.social);
         let socialLink = [];
         for(var key in this.props.social) {
             if (this.props.social.hasOwnProperty(key) && key != 'video') {
                 if (this.props.selected == key && this.state.isEditing) {
                     socialLink.push(
-                        <a onClick={(e) => this.select(e)} id={key} className='selected'>
+                        <a onClick={(e) => this.select(e)} id={key} key={key} className='selected'>
                             <i className={"fa fa-" + key}/>
                         </a>
                     );
                 } else if (this.state.isEditing){
                     socialLink.push(
-                        <a onClick={(e) => this.select(e)} id={key}>
+                        <a onClick={(e) => this.select(e)} id={key} key={key}>
                             <i className={"fa fa-" + key}/>
                         </a>
                     )
                 } else {
                     socialLink.push(
-                        <a href={this.props.social[key]} id={key}>
+                        <a href={this.props.social[key]} id={key} key={key}>
                             <i className={"fa fa-" + key}/>
                         </a>
                     );
