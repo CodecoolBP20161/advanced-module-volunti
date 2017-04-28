@@ -9989,7 +9989,7 @@ var SideBar = function (_React$Component) {
                                         { className: "subtitle col-xs-8" },
                                         _react2.default.createElement(
                                             "select",
-                                            { selected: this.props.category,
+                                            { defaultValue: this.props.category,
                                                 required: "required",
                                                 name: "category",
                                                 onChange: this.handleChange },
@@ -10016,7 +10016,7 @@ var SideBar = function (_React$Component) {
                                         { className: "subtitle col-xs-8" },
                                         _react2.default.createElement(
                                             "select",
-                                            { selected: this.props.country,
+                                            { defaultValue: this.props.country,
                                                 required: "required",
                                                 name: "country",
                                                 onChange: this.handleChange },
@@ -10070,8 +10070,8 @@ var SideBar = function (_React$Component) {
                                         "span",
                                         { className: "subtitle col-xs-8" },
                                         _react2.default.createElement("input", { defaultValue: this.props.zipcode, name: "zipcode",
-                                            max: "9999", min: "1000",
-                                            type: "number",
+                                            maxLength: "20",
+                                            type: "text",
                                             onChange: this.handleChange })
                                     )
                                 )
@@ -10110,6 +10110,8 @@ var _reactAddonsUpdate = __webpack_require__(102);
 var _reactAddonsUpdate2 = _interopRequireDefault(_reactAddonsUpdate);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -10197,21 +10199,9 @@ var TabProfile = function (_React$Component) {
             this.setState({ mouseOver: !this.state.mouseOver });
         }
     }, {
-        key: 'mergeState',
-        value: function mergeState(newObj) {
-            var newState = (0, _reactAddonsUpdate2.default)(this.state, {
-                $merge: newObj
-            });
-
-            this.setState(newState);
-        }
-    }, {
         key: 'handleChange',
         value: function handleChange(event) {
-            var newObj = {};
-            newObj[event.target.name] = event.target.value;
-
-            this.mergeState(newObj);
+            this.setState(_defineProperty({}, event.target.name, event.target.value));
         }
     }, {
         key: 'handleVideo',

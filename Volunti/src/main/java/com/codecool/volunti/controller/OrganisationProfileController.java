@@ -58,16 +58,21 @@ public class OrganisationProfileController {
     public boolean saveText(@RequestBody Organisation editedOrganisation, Principal principal){
         log.info("saveText() method called ...");
 
+        log.info(editedOrganisation.toString());
         User user = userService.getByEmail(principal.getName());
         Organisation organisation = user.getOrganisation();
-        if(editedOrganisation.getName().isEmpty()) {
+        if(editedOrganisation.getName() == null) {
             organisation.setMission(editedOrganisation.getMission());
             organisation.setDescription1(editedOrganisation.getDescription1());
             organisation.setDescription2(editedOrganisation.getDescription2());
         } else {
             organisation.setName(editedOrganisation.getName());
-            organisation.setAddress(editedOrganisation.getAddress());
             organisation.setCategory(editedOrganisation.getCategory());
+            organisation.setCountry(editedOrganisation.getCountry());
+            organisation.setAddress(editedOrganisation.getAddress());
+            organisation.setCity(editedOrganisation.getCity());
+            organisation.setZipcode(editedOrganisation.getZipcode());
+
         }
 
         organisationService.save(organisation);
