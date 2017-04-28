@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head"></head>
+
+<body>
+<div id="main-wrapper">
+
+    <!-- Navbar -->
+    <div th:replace="fragments/navbar :: navbar"></div>
+
+    <!-- Main content -->
+    <div class="compny-profile">
+
+        <!-- SUB Banner -->
+        <div class="profile-bnr user-profile-bnr">
+            <div class="container">
+                <div class="pull-left">
+                    <h2 th:text="${theme}"></h2>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Company Content -->
+        <div class="profile-company-content user-profile main-user" data-bg-color="f5f5f5">
+            <div class="container">
+                <div class="row">
+
+                    <!-- Tab Content -->
+                    <div class="col-md-12">
+                        <div class="tab-content">
+
+                            <!-- Registration form -->
+                            <div id="contact" class="tab-pane fade in active">
+                                <div class="profile-main">
+                                    <h3 th:text="${theme}"></h3>
+                                    <div class="profile-in">
+                                        <h6 th:text="${message}"></h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- / Registration form -->
+
+                        </div>
+                    </div>
+                    <!-- / Tab Content -->
+                </div>
+            </div>
+        </div>
+        <!-- / Profile Company Content -->
+    </div>
+    <!-- / Main content -->
+</div>
+<!-- / Main wrapper -->
+
+<!--  Footer -->
+<div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>

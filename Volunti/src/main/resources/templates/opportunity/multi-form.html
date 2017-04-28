@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="fragments/head :: head"></head>
+
+<body>
+<div id="main-wrapper">
+    <div th:replace="fragments/navbar :: navbar"></div>
+
+    <div class="compny-profile">
+
+        <!-- SUB Banner -->
+        <div class="profile-bnr user-profile-bnr">
+            <div class="container">
+                <div class="pull-left">
+                    <h2>Registration</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="profile-company-content user-profile main-user main-user" data-bg-color="f5f5f5">
+            <div class="container">
+                <div class="row">
+
+                    <!-- Nav Tabs -->
+                    <div class="col-md-12">
+                        <ul class="nav nav-tabs not-clickable">
+                            <li class="active"><a>Step 1</a></li>
+                            <li><a>Step 2</a></li>
+                            <li><a>Step 3</a></li>
+                            <li><a>Step 4</a></li>
+
+                        </ul>
+                    </div>
+
+                    <!-- Tab Content -->
+                    <div class="col-md-12">
+                        <div class="tab-content">
+
+                            <!-- Registration form -->
+                            <div id="contact" class="tab-pane fade in active">
+                                <div class="profile-main">
+
+                                    <h3>Set up your Opportunity:</h3>
+
+                                    <div class="profile-in">
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptate quis
+                                            tenetur
+                                            velit! Provident eum molestias aperiam suscipit distinctio ipsum cupiditate
+                                            quasi,
+                                            dolor sunt, cum reprehenderit quibusdam, repellendus eaque, quas magni.</p>
+
+                                        <form role="form"
+                                              th:action="${action}"
+                                              th:object="${opportunity}"
+                                              method="post"
+                                              class="opportunity-form">
+                                            <fieldset style="border: 0">
+                                                <h4>Opportunity title</h4>
+                                                <div class="row">
+                                                    <div class="col-sm-6 ">
+                                                        <input type="text"
+                                                               name="title"
+                                                               autofocus="autofocus"
+                                                               required="required"
+                                                               placeholder="What are you looking for? "
+                                                               class="title"
+                                                               data-validation="required"
+                                                               data-validation-error-msg="Please fill the title field! "
+                                                               th:value="${opportunity.title != null} ? ${opportunity.title} : '' "
+                                                               th:field="*{title}"/>
+                                                    </div>
+                                                    <div class="col-sm-8 ">
+                                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                                                            Voluptate quis tenetur
+                                                            velit! Provident eum molestias aperiam suscipit distinctio
+                                                            ipsum
+                                                            cupiditate quasi,
+                                                            dolor sunt, cum reprehenderit quibusdam, repellendus eaque,
+                                                            quas
+                                                            magni.</p>
+                                                    </div>
+                                                </div>
+                                                <h4>Skills</h4>
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <div class="control-group">
+                                                            <div class="custom-select-box">
+                                                                <select id="select-state" name="state[]"
+                                                                        multiple="multiple"
+                                                                        class="demo-default"
+                                                                        required="required"
+                                                                        style="width:50%"
+                                                                        data-validation="required"
+                                                                        data-validation-length="min1"
+                                                                        data-validation-error-msg="Please select a skill"
+                                                                        placeholder="What skills do you require?"
+                                                                        th:field="*{opportunitySkills}">
+                                                                    <span th:if="${opportunity.opportunitySkills} != null"
+                                                                          th:each="opskill : *{opportunitySkills}">
+                                                                        <option th:value="${opskill.id != null} ? ${opskill.name}"></option>
+                                                                    </span>
+                                                                    <option th:each="skill : ${skills}"
+                                                                            th:value="${skill.id}"
+                                                                            th:text="${skill.name}">
+                                                                    </option>
+                                                                </select>
+
+                                                            </div>
+                                                            <div class="col-sm-8">
+                                                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing
+                                                                    elit.
+                                                                    Voluptate quis tenetur velit! Provident eum
+                                                                    molestias aperiam
+                                                                    suscipit distinctio ipsum cupiditate quasi, dolor
+                                                                    sunt, cum
+                                                                    reprehenderit quibusdam, repellendus eaque, quas
+                                                                    magni.</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <h4>Number of
+                                                    volunteers</h4>
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <input type="number"
+                                                               name="numberOfVolunteers"
+                                                               min="0"
+                                                               required="required"
+                                                               placeholder="How many volunteers you need?"
+                                                               class="numberOfVolunteers"
+                                                               data-validation-allowing="range[0;100]"
+                                                               data-validation="required, number"
+                                                               data-validation-error-msg="Please fill the form with number 0-100"
+                                                               th:value="${opportunity.numberOfVolunteers != null} ? ${opportunity.numberOfVolunteers} : '' "
+                                                               th:field="*{numberOfVolunteers}"/>
+                                                    </div>
+                                                    <div class="col-sm-8">
+                                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                                                            Voluptate quis tenetur velit! Provident eum molestias
+                                                            aperiam
+                                                            suscipit distinctio ipsum cupiditate quasi, dolor sunt, cum
+                                                            reprehenderit quibusdam, repellendus eaque, quas magni.</p>
+                                                    </div>
+                                                </div>
+                                                <button type="button"
+                                                        class="btn btn-next mb20 btn-medium btn-primary">Next
+                                                </button>
+                                            </fieldset>
+
+                                            <fieldset style="border: 0">
+                                                <h4>Accomodation</h4>
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <input type="text" name="accomodation" autofocus="autofocus"
+                                                               placeholder="Type of accomodation?"
+                                                               class="accommodationType"
+                                                               th:value="${opportunity.accommodationType != null} ? ${opportunity.accommodationType} : '' "
+                                                               th:field="*{accommodationType}"/>
+                                                    </div>
+                                                    <div class="col-sm-8">
+                                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                                                            Voluptate quis tenetur velit! Provident eum molestias
+                                                            aperiam
+                                                            suscipit distinctio ipsum cupiditate quasi, dolor sunt, cum
+                                                            reprehenderit quibusdam, repellendus eaque, quas magni.</p>
+                                                    </div>
+                                                </div>
+                                                <h4>Food</h4>
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <input type="text"
+                                                               name="form-food"
+                                                               placeholder="Type of food / meals?"
+                                                               class="foodType"
+                                                               th:value="${opportunity.foodType != null} ? ${opportunity.foodType} : '' "
+                                                               th:field="*{foodType}"/>
+                                                    </div>
+                                                    <div class="col-sm-8">
+                                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                                                            Voluptate quis tenetur velit! Provident eum molestias
+                                                            aperiam
+                                                            suscipit distinctio ipsum cupiditate quasi, dolor sunt, cum
+                                                            reprehenderit quibusdam, repellendus eaque, quas magni.</p>
+                                                    </div>
+                                                </div>
+                                                <button type="button"
+                                                        class="btn btn-previous mb20 btn-medium btn-primary">
+                                                    Previous
+                                                </button>
+                                                <button type="button"
+                                                        class="btn btn-next mb20 btn-medium btn-primary">Next
+                                                </button>
+                                            </fieldset>
+
+                                            <fieldset style="border: 0">
+                                                <h4>Expected hours</h4>
+                                                <div class="row">
+                                                    <div class="col-sm-4">
+                                                        <input type="number"
+                                                               min="0"
+                                                               name="hoursExpected"
+                                                               autofocus="autofocus"
+                                                               placeholder="Volunteer hours expected (per day or week)"
+                                                               class="hoursExpected"
+                                                               data-validation-allowing="range[0;100]"
+                                                               data-validation="number"
+                                                               data-validation-error-msg="Please fill the form with number 0-100"
+
+                                                               th:value="${opportunity.hoursExpected != null} ? ${opportunity.hoursExpected}"
+                                                               th:field="*{hoursExpected}"/>
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <select name="hoursExpectedType"
+                                                                class="hoursExpectedType"
+                                                                th:field="*{hoursExpectedType}">
+                                                            <option value="" hidden="hidden" selected="selected">Select type</option>
+                                                            <option th:each="type : ${T(com.codecool.volunti.model.enums.OpportunityHoursExpectedType).values()}"
+                                                                    th:value="${type}"
+                                                                    th:text="${type}"></option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-sm-8">
+                                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                                                            Voluptate quis tenetur velit! Provident eum molestias
+                                                            aperiam
+                                                            suscipit distinctio ipsum cupiditate quasi, dolor sunt, cum
+                                                            reprehenderit quibusdam, repellendus eaque, quas magni.</p>
+                                                    </div>
+                                                </div>
+                                                <h4>Expected stay</h4>
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <input type="number"
+                                                               min="0"
+                                                               name="minimumStay"
+                                                               placeholder="Minimum stay expected (number of days)"
+                                                               class="minimumStay"
+                                                               data-validation-allowing="range[0;100]"
+                                                               data-validation="number"
+                                                               data-validation-error-msg="Please fill the form with number 0-100"
+                                                               th:value="${opportunity.minimumStayInDays != null} ? ${opportunity.minimumStayInDays}"
+                                                               th:field="*{minimumStayInDays}"/>
+                                                    </div>
+                                                    <div class="col-sm-8">
+                                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                                                            Voluptate quis tenetur velit! Provident eum molestias
+                                                            aperiam
+                                                            suscipit distinctio ipsum cupiditate quasi, dolor sunt, cum
+                                                            reprehenderit quibusdam, repellendus eaque, quas magni.</p>
+                                                    </div>
+                                                </div>
+                                                <h4>Available from -
+                                                    to</h4>
+                                                <div class="row">
+                                                    <div class="col-sm-4">
+                                                        <input type="date"
+                                                               name="availabilityFrom"
+                                                               placeholder="Availablity  from "
+                                                               class="availabilityFrom"
+                                                               th:value="${opportunity.availabilityFrom != null} ? ${opportunity.availabilityFrom}"
+                                                               th:field="*{availabilityFrom}"/>
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        <input type="date"
+                                                               name="dateAvailabilityTo"
+                                                               placeholder="Availablity  to "
+                                                               class="dateAvailabilityTo"
+                                                               th:value="${opportunity.dateAvailabilityTo != null} ? ${opportunity.dateAvailabilityTo}"
+                                                               th:field="*{dateAvailabilityTo}"/>
+                                                    </div>
+                                                    <div class="col-sm-8">
+                                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                                                            Voluptate quis tenetur
+                                                            velit! Provident eum molestias aperiam suscipit distinctio
+                                                            ipsum
+                                                            cupiditate quasi,
+                                                            dolor sunt, cum reprehenderit quibusdam, repellendus eaque,
+                                                            quas
+                                                            magni.</p>
+                                                    </div>
+                                                </div>
+                                                <button type="button"
+                                                        class="btn btn-previous mb20 btn-medium btn-primary">
+                                                    Previous
+                                                </button>
+                                                <button type="button"
+                                                        class="btn btn-next mb20 btn-medium btn-primary">Next
+                                                </button>
+                                            </fieldset>
+                                            <fieldset style="border: 0">
+                                                <h4>Costs</h4>
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <input type="text"
+                                                               name="costs"
+                                                               autofocus="autofocus"
+                                                               placeholder="What costs can you cover?"
+                                                               class="costs"
+                                                               th:value="${opportunity.costs != null} ? ${opportunity.costs}"
+                                                               th:field="*{costs}"/>
+                                                    </div>
+                                                    <div class="col-sm-8">
+                                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                                                            Voluptate quis tenetur velit! Provident eum molestias
+                                                            aperiam
+                                                            suscipit distinctio ipsum cupiditate quasi, dolor sunt, cum
+                                                            reprehenderit quibusdam, repellendus eaque, quas magni.</p>
+                                                    </div>
+                                                </div>
+                                                <h4>Requirements</h4>
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                    <textarea name="requirements"
+                                                              placeholder="Other requirements"
+                                                              class="requirements"
+                                                              th:value="${opportunity.requirements != null} ? ${opportunity.requirements}"
+                                                              th:field="*{requirements}"></textarea>
+                                                    </div>
+                                                    <div class="col-sm-8">
+                                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                                                            Voluptate quis tenetur velit! Provident eum molestias
+                                                            aperiam
+                                                            suscipit distinctio ipsum cupiditate quasi, dolor sunt, cum
+                                                            reprehenderit quibusdam, repellendus eaque, quas magni.</p>
+                                                    </div>
+                                                </div>
+                                                <button type="button"
+                                                        class="btn btn-previous mb20 btn-medium btn-primary">
+                                                    Previous
+                                                </button>
+                                                <span th:if="${opportunity.title} != null">
+                                                <button type="submit"
+                                                        class="btn btn-submit mb20 btn-medium btn-primary">Update
+                                                    Opportunity!
+                                                </button>
+                                                </span>
+                                                <span th:if="${opportunity.title} == null">
+                                                <button type="submit"
+                                                        class="btn btn-submit mb20 btn-medium btn-primary">Save
+                                                    Opportunity!
+                                                </button>
+                                                </span>
+
+                                            </fieldset>
+                                        </form>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="fragments/footer :: footer"></div>
+
+</body>
+
+</html>
+
