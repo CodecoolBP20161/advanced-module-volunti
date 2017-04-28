@@ -1,5 +1,11 @@
 
+$( document ).ready(function() {
+
     $('#select-state').selectize({
+        maxItems: 5
+    });
+
+    $('#select-skill').selectize({
         maxItems: 5
     });
 
@@ -10,6 +16,19 @@
     $('#select-country').selectize({
         maxItems: 1
     });
+
+    $.validate({
+        form: ".volunteer-form",
+        borderColorOnError: '#F00',
+        validateOnBlur: true, // disable validation when input looses focus
+    });
+
+    $.validate({
+        form: ".opportunity-form",
+        borderColorOnError: '#F00',
+        validateOnBlur: true, // disable validation when input looses focus
+    });
+});
 
 
     $('textarea').each(function () {
@@ -38,7 +57,6 @@
     }
 
     var errors = [],
-
 // Validation configuration
         conf = {
             onElementValidate : function(valid, $el, $form, errorMess) {
@@ -48,14 +66,13 @@
                 }
             }
         },
-
 // Optional language object
         lang = {
             lang:'en'
         };
 
     // Manually load the modules used in this form
-    $.formUtils.loadModules('security, date');
+    // $.formUtils.loadModules('security, date');
 
     $('#check-form').on('click', function() {
         // reset error array
