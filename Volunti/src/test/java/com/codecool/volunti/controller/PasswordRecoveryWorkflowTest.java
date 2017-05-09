@@ -2,7 +2,6 @@ package com.codecool.volunti.controller;
 
 import com.codecool.volunti.model.Organisation;
 import com.codecool.volunti.model.User;
-import com.codecool.volunti.model.Volunteer;
 import com.codecool.volunti.model.enums.Category;
 import com.codecool.volunti.model.enums.Country;
 import com.codecool.volunti.model.enums.SpokenLanguage;
@@ -10,7 +9,6 @@ import com.codecool.volunti.model.enums.UserStatus;
 import com.codecool.volunti.repository.OrganisationRepository;
 import com.codecool.volunti.repository.UserRepository;
 import com.codecool.volunti.service.AbstractServiceTest;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,19 +21,14 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
-
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.*;
-
-
-
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.Assert.assertNotSame;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -68,7 +61,7 @@ public class  PasswordRecoveryWorkflowTest extends AbstractServiceTest {
 
         organisation = new Organisation();
         organisation.setName("TestName");
-        organisation.setCategory(Category.ADVERTISING_AGENCY);
+        organisation.setCategory(Category.Educational);
         organisation.setCountry(Country.HUNGARY);
         organisation.setZipcode("ZIPCODE");
         organisation.setCity("TestCity");
