@@ -3,7 +3,6 @@ package com.codecool.volunti.model;
 import com.codecool.volunti.model.enums.Category;
 import com.codecool.volunti.model.enums.Country;
 import com.codecool.volunti.model.enums.SpokenLanguage;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
 import lombok.ToString;
@@ -18,7 +17,7 @@ import java.util.List;
 @Entity
 @Table(name="organisations")
 @Data
-@ToString(exclude = "organisationSocialLinks")
+@ToString(exclude = {"organisationSocialLinks", "organisationVideos"})
 public class Organisation {
 
     @Id
@@ -93,10 +92,8 @@ public class Organisation {
     @JsonSerialize(using = CustomListSerializer.class)
     private List<OrganisationSocialLink> organisationSocialLinks;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "organisationId")
     private List<OrganisationVideo> organisationVideos;
-
 
     public Organisation(){}
 

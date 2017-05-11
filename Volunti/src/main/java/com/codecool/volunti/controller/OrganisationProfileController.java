@@ -1,8 +1,11 @@
 package com.codecool.volunti.controller;
 
 import com.codecool.volunti.model.Organisation;
+import com.codecool.volunti.model.OrganisationSocialLink;
 import com.codecool.volunti.model.OrganisationVideo;
 import com.codecool.volunti.model.User;
+import com.codecool.volunti.repository.OrganisationSocialLinkRepository;
+import com.codecool.volunti.repository.OrganisationVideoRepository;
 import com.codecool.volunti.service.ImageValidationService;
 import com.codecool.volunti.service.StorageService;
 import com.codecool.volunti.service.model.OrganisationService;
@@ -13,6 +16,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,23 +25,30 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Slf4j
 @Controller
+@Transactional
 public class OrganisationProfileController {
 
     private OrganisationService organisationService;
+    private OrganisationVideoRepository organisationVideoRepository;
     private UserService userService;
     private StorageService storageService;
     private ImageValidationService imageValidationService;
+    private OrganisationSocialLinkRepository organisationSocialLinkRepository;
 
     @Autowired
-    public OrganisationProfileController(OrganisationService organisationService, UserService userService, StorageService storageService, ImageValidationService imageValidationService) {
+    public OrganisationProfileController(OrganisationService organisationService, OrganisationVideoRepository organisationVideoRepository, UserService userService, StorageService storageService, ImageValidationService imageValidationService, OrganisationSocialLinkRepository organisationSocialLinkRepository) {
         this.organisationService = organisationService;
+        this.organisationVideoRepository = organisationVideoRepository;
         this.userService = userService;
         this.storageService = storageService;
         this.imageValidationService = imageValidationService;
+        this.organisationSocialLinkRepository = organisationSocialLinkRepository;
     }
 
     @GetMapping(value = "/profile/organisation")
@@ -58,16 +69,21 @@ public class OrganisationProfileController {
     public boolean saveText(@RequestBody Organisation editedOrganisation, Principal principal){
         log.info("saveText() method called ...");
 
+        log.info(editedOrganisation.toString());
         User user = userService.getByEmail(principal.getName());
         Organisation organisation = user.getOrganisation();
-        if(editedOrganisation.getName().isEmpty()) {
+        if(editedOrganisation.getName() == null) {
             organisation.setMission(editedOrganisation.getMission());
             organisation.setDescription1(editedOrganisation.getDescription1());
             organisation.setDescription2(editedOrganisation.getDescription2());
         } else {
             organisation.setName(editedOrganisation.getName());
-            organisation.setAddress(editedOrganisation.getAddress());
             organisation.setCategory(editedOrganisation.getCategory());
+            organisation.setCountry(editedOrganisation.getCountry());
+            organisation.setAddress(editedOrganisation.getAddress());
+            organisation.setCity(editedOrganisation.getCity());
+            organisation.setZipcode(editedOrganisation.getZipcode());
+
         }
 
         organisationService.save(organisation);
@@ -81,11 +97,14 @@ public class OrganisationProfileController {
 
         User user = userService.getByEmail(principal.getName());
         Organisation organisation = user.getOrganisation();
-        OrganisationVideo organisationVideo = new OrganisationVideo();
-        organisationVideo.setOrganisationId(organisation);
-        organisationVideo.setEmbedCode(editedOrganisationVideo.getEmbedCode());
-
-        //organisationService.save(organisationVideo);
+        List<OrganisationVideo> organisationVideos = organisationService.findVideoByOrganisationId(organisation);
+//        if (!organisationVideos.isEmpty()){
+//            for (OrganisationVideo video : organisationVideos) {
+//                organisationVideoRepository.delete(video);
+//            }
+//        }
+        editedOrganisationVideo.setOrganisationId(organisation);
+        organisationService.save(editedOrganisationVideo);
         return true;
 
     }
@@ -185,5 +204,25 @@ public class OrganisationProfileController {
 
     }
 
+    @PostMapping(value = "/profile/organisation/process")
+    @ResponseBody
+    public void saveSocialLinks(@RequestBody List<OrganisationSocialLink> organisationSocialLinks, Principal principal){
+        User user = userService.getByEmail(principal.getName());
+        Organisation organisation = user.getOrganisation();
+
+        OrganisationSocialLink organisationSocialLink;
+        List<OrganisationSocialLink> newOrgList = new ArrayList<>();
+        organisationSocialLinkRepository.deleteByOrganisationId(organisation);
+
+        for (OrganisationSocialLink item : organisationSocialLinks) {
+            organisationSocialLink = new OrganisationSocialLink(item.getSocialLinkType(), item.getSocialLinkUrl(), organisation);
+            newOrgList.add(organisationSocialLink);
+        }
+
+        organisationSocialLinkRepository.save(newOrgList);
+        organisation.setOrganisationSocialLinks(newOrgList);
+
+        log.info(organisation.getOrganisationSocialLinks().toString());
+    }
 
 }

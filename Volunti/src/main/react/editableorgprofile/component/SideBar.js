@@ -112,7 +112,7 @@ class SideBar extends React.Component {
                             <li className="row">
                                 <h6 className="title col-xs-4">Category</h6>
                                 <span className="subtitle col-xs-8">
-                                    <select selected={this.props.category}
+                                    <select defaultValue={this.props.category}
                                             required="required"
                                             name="category"
                                             onChange={this.handleChange}>
@@ -125,7 +125,7 @@ class SideBar extends React.Component {
                             <li className="row">
                                 <h6 className="title col-xs-4">Location</h6>
                                 <span className="subtitle col-xs-8">
-                                    <select selected={this.props.country}
+                                    <select defaultValue={this.props.country}
                                             required="required"
                                             name="country"
                                             onChange={this.handleChange}>
@@ -151,8 +151,8 @@ class SideBar extends React.Component {
                                 <h6 className="title col-xs-4">ZipCode</h6>
                                 <span className="subtitle col-xs-8">
                                     <input defaultValue={this.props.zipcode} name="zipcode"
-                                           max="9999" min="1000"
-                                           type="number"
+                                           maxLength="20"
+                                           type="text"
                                            onChange={this.handleChange}/>
                                 </span>
                             </li>

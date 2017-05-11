@@ -1,6 +1,6 @@
 import React from 'react'
 
-import TopLabel from './top-label'
+import TopLabel from './TopLabel'
 
 class ProfileBanner extends React.Component {
     constructor(props) {
@@ -32,13 +32,16 @@ class ProfileBanner extends React.Component {
 
     render(){
         return (
-            <div className="profile-bnr" style={this.props.divStyle} key={this.props.key} onMouseEnter={() => this.toggleEditButtonOn()} onMouseLeave={() => this.toggleEditButtonOff()}>
+            <div className="profile-bnr" style={this.props.divStyle} key={this.props.key}
+                 onMouseEnter={() => this.toggleEditButtonOn()}
+                 onMouseLeave={() => this.toggleEditButtonOff()}>
+
                 <div className="container">
                     {this.state.isEditing &&
                     <div className="btn-group btn-group-justified pull-right col-xs-12">
                         <form method="POST" encType="multipart/form-data" action="/profile/organisation/saveBackgroundImage">
-                            <input className="btn btn-default btn-sm col-xs-6" ref={(input) => this.backGroundInput = input} type="file" required="required" name="file" accept=".png,.jpg"/>
-                            <input className="btn btn-default btn-sm col-xs-6" type="submit" onClick={(e) => this.savePicture(e)} value="upload" />
+                            <input className="btn btn-default btn-sm" ref={(input) => this.backGroundInput = input} type="file" required="required" name="file" accept=".png,.jpg"/>
+                            <input className="btn btn-default btn-sm" type="submit" onClick={(e) => this.savePicture(e)} value="upload" />
                         </form>
                     </div>}
                     {/*<!-- User Info -->*/}
@@ -54,7 +57,7 @@ class ProfileBanner extends React.Component {
                     {/*<!-- Place of Top Right Buttons -->*/}
                 </div>
                 { this.state.mouseOver &&
-                    <button type="submit" className="btn btn-default btn-sm col-xs-12"
+                    <button type="submit" className="btn btn-default btn-sm"
                             onClick={() => this.toggleEditMode()}>{this.state.isEditing? 'Done': 'Edit'}</button>
                 }
             </div>

@@ -43,7 +43,7 @@ public class OrganisationProfileControllerTest extends AbstractServiceTest {
         ArrayList<SpokenLanguage> spokenLanguages = new ArrayList<>();
         spokenLanguages.add(SpokenLanguage.ENGLISH);
         spokenLanguages.add(SpokenLanguage.HUNGARIAN);
-        organisation = new Organisation("testOrg", Category.TEACHING, Country.HUNGARY,
+        organisation = new Organisation("testOrg", Category.Educational, Country.HUNGARY,
                 "1065", "Isaszeg", "Kossuth utca", spokenLanguages,
                 "mission", "description1",
                 "description2", "profileHash", "backgroundhash");

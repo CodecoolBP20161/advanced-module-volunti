@@ -3,12 +3,16 @@ package com.codecool.volunti.model.enums;
 
 public enum Category {
 
-    TEACHING,
-    ADVERTISING_AGENCY,
-    TELEVISION,
-    MANAGEMENT,
-    AGRICULTURE,
-    TRAINING,
-    OTHER
-
+    Animal_Charity,
+    Agricultural,
+    Arts_and_Culture,
+    Development_and_Housing,
+    Environmental,
+    Educational,
+    Health,
+    Law_and_advocacy,
+    Religious,
+    Social,
+    Sport,
+    Other
 }

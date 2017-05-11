@@ -1,5 +1,5 @@
 import React from 'react'
-import Social from './toplabel-social'
+import Social from './Social'
 
 class TopLabel extends React.Component {
     constructor(props) {
@@ -18,7 +18,7 @@ class TopLabel extends React.Component {
             <h1>{this.props.organisationName} {/*<a data-toggle="tooltip" data-placement="top" title="Verified Member"> <img src="images/icon-ver.png" alt="" /> </a>*/} </h1>
             <h6>{this.props.category}</h6>
             <p>{this.props.address}</p>
-            {console.log("social in Toplabel: ", this.props.social)}
+            {/*{console.log("social in Toplabel: ", this.props.social)}*/}
             <Social social={this.props.social}
                     selected={this.props.selectedSocial}
                     saveSocial={(value, newSelected) => this.saveSocial(value, newSelected)}

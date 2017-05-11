@@ -57,7 +57,7 @@ public class RegistrationWorkflowTest extends AbstractServiceTest {
 
     private String validOrganisationFormData = "organisationId=0" +
             "&name=TestName" +
-            "&category=TELEVISION" +
+            "&category=Animal_Charity" +
             "&country=BARBADOS" +
             "&zipcode=1234zipTest" +
             "&city=testCity" +
@@ -83,7 +83,7 @@ public class RegistrationWorkflowTest extends AbstractServiceTest {
 
         organisation = new Organisation();
         organisation.setName("TestName");
-        organisation.setCategory(Category.TEACHING);
+        organisation.setCategory(Category.Educational);
         organisation.setCountry(Country.HUNGARY);
         organisation.setZipcode("1011");
         organisation.setCity("TestCity");

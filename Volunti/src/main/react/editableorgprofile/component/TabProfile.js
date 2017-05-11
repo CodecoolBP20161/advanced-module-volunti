@@ -1,5 +1,4 @@
 import React from 'react'
-import update from 'react-addons-update';
 
 
 class TabProfile extends React.Component {
@@ -71,19 +70,10 @@ class TabProfile extends React.Component {
         this.setState({mouseOver: !this.state.mouseOver});
     }
 
-    mergeState(newObj) {
-        const newState = update(this.state, {
-            $merge: newObj
-        });
-
-        this.setState(newState);
-    }
-
     handleChange(event) {
-        const newObj = {};
-        newObj[event.target.name] = event.target.value;
-
-        this.mergeState(newObj);
+        this.setState({
+            [event.target.name]: event.target.value
+        });
     }
 
     handleVideo(event) {
