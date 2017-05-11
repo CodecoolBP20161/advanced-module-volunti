@@ -9502,7 +9502,8 @@ var FullProfile = function (_React$Component) {
             profilePicture: "/profile/organisation/image/profile",
             backgroundPicture: "/profile/organisation/image/background",
             video: [],
-            selectedSocial: 'facebook'
+            selectedSocial: 'facebook',
+            hasError: false
         };
 
         _this.changeVideoUrl = _this.changeVideoUrl.bind(_this);
@@ -9576,8 +9577,18 @@ var FullProfile = function (_React$Component) {
                         key: Math.random(),
                         backgroundPicture: "/profile/organisation/image/background"
                     });
+                }.bind(this),
+                error: function (response) {
+                    this.handleError(response);
                 }.bind(this)
             });
+        }
+    }, {
+        key: 'handleError',
+        value: function handleError(response) {
+            if (response.status === 413) {
+                alert(response.responseText);
+            }
         }
     }, {
         key: 'handleDataChange',
@@ -10065,7 +10076,7 @@ var SideBar = function (_React$Component) {
                                     ),
                                     this.state.isEditing && this.state.editCategory && _react2.default.createElement(
                                         "span",
-                                        { className: "subtitle col-xs-6" },
+                                        { className: "subtitle col-xs-5" },
                                         _react2.default.createElement(
                                             "select",
                                             { defaultValue: this.props.category,
@@ -10112,7 +10123,7 @@ var SideBar = function (_React$Component) {
                                     ),
                                     this.state.isEditing && this.state.editLocation && _react2.default.createElement(
                                         "span",
-                                        { className: "subtitle col-xs-6" },
+                                        { className: "subtitle col-xs-5" },
                                         _react2.default.createElement(
                                             "select",
                                             { defaultValue: this.props.country,
@@ -10131,13 +10142,13 @@ var SideBar = function (_React$Component) {
                                     _react2.default.createElement(
                                         "div",
                                         { className: "edit col-xs-3" },
-                                        this.state.editLocation && !this.state.isEditing && _react2.default.createElement(
+                                        this.state.editLocation && _react2.default.createElement(
                                             "a",
                                             { type: "submit", className: "btn btn-small btn-success",
                                                 onClick: function onClick() {
                                                     return _this2.toggleEditMode();
                                                 } },
-                                            "Edit"
+                                            this.state.isEditing ? 'Save' : 'Edit'
                                         )
                                     )
                                 ),
@@ -10189,18 +10200,6 @@ var SideBar = function (_React$Component) {
                                                 onChange: this.handleChange })
                                         )
                                     )
-                                ),
-                                _react2.default.createElement(
-                                    "div",
-                                    { className: "edit col-xs-3" },
-                                    this.state.editLocation && this.state.isEditing && _react2.default.createElement(
-                                        "a",
-                                        { type: "submit", className: "btn btn-small btn-success",
-                                            onClick: function onClick() {
-                                                return _this2.toggleEditMode();
-                                            } },
-                                        "Save"
-                                    )
                                 )
                             )
                         )
@@ -10250,16 +10249,85 @@ var Social = function (_React$Component) {
 
         _this.state = {
             mouseOver: false,
-            isEditing: false
+            isEditing: false,
+            socialLinks: {
+                facebook: null,
+                twitter: null,
+                google: null,
+                linkedin: null
+            },
+            selectedSocial: 'facebook'
         };
 
         return _this;
     }
 
     _createClass(Social, [{
+        key: 'fetchData',
+        value: function fetchData() {
+            var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+            var csrfToken = $("meta[name='_csrf']").attr("content");
+            var headers = {};
+
+            headers[csrfHeader] = csrfToken;
+            $.ajax({
+                url: "/profile/organisation/text",
+                cache: false,
+                type: "GET",
+                headers: headers,
+                dataType: "json",
+                success: function (response) {
+                    this.setState({
+                        socialLinks: {
+                            facebook: response.organisationSocialLinks.FACEBOOK ? response.organisationSocialLinks.FACEBOOK : '',
+                            twitter: response.organisationSocialLinks.TWITTER ? response.organisationSocialLinks.TWITTER : '',
+                            google: response.organisationSocialLinks.GOOGLE ? response.organisationSocialLinks.GOOGLE : '',
+                            linkedin: response.organisationSocialLinks.LINKEDIN ? response.organisationSocialLinks.LINKEDIN : ''
+                        }
+                    });
+                }.bind(this)
+            });
+        }
+    }, {
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            this.fetchData();
+        }
+    }, {
+        key: 'filterNulls',
+        value: function filterNulls(obj) {
+            return obj.socialLinkUrl != '';
+        }
+    }, {
+        key: 'saveSocial',
+        value: function saveSocial(value) {
+            var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+            var csrfToken = $("meta[name='_csrf']").attr("content");
+            var headers = {};
+            headers[csrfHeader] = csrfToken;
+
+            var myArray = [{ socialLinkType: 'FACEBOOK', 'socialLinkUrl': this.state.socialLinks.facebook }, { socialLinkType: 'TWITTER', socialLinkUrl: this.state.socialLinks.twitter }, { socialLinkType: 'GOOGLE', socialLinkUrl: this.state.socialLinks.google }, { socialLinkType: 'LINKEDIN', socialLinkUrl: this.state.socialLinks.linkedin }].filter(this.filterNulls);
+
+            $.ajax({
+                url: "/profile/organisation/process",
+                cache: false,
+                type: "POST",
+                headers: headers,
+                dataType: "json",
+                contentType: "application/json",
+                processData: false,
+                async: true,
+                data: JSON.stringify(myArray),
+                success: function (response) {
+                    console.log("Fasza");
+                }.bind(this)
+            });
+        }
+    }, {
         key: 'toggleEditMode',
         value: function toggleEditMode() {
             if (this.state.isEditing) {
+                this.saveSocial();
                 this.props.socialEditOff();
             }
             this.setState({
@@ -10274,12 +10342,16 @@ var Social = function (_React$Component) {
     }, {
         key: 'select',
         value: function select(event) {
-            this.props.saveSocial(this.textInput.value, event.currentTarget.id);
-        }
-    }, {
-        key: 'saveChange',
-        value: function saveChange() {
-            this.props.saveSocial(this.textInput.value);
+            var newSocial = this.state.socialLinks;
+            newSocial[this.state.selectedSocial] = this.textInput.value;
+            var newSelected = event.currentTarget.id == null ? this.state.selectedSocial : event.currentTarget.id;
+            console.log(event.currentTarget.id);
+            console.log(newSelected);
+            this.setState({
+                socialLinks: newSocial,
+                selectedSocial: newSelected
+            });
+            console.log(this.state.selectedSocial);
         }
     }, {
         key: 'render',
@@ -10287,14 +10359,14 @@ var Social = function (_React$Component) {
             var _this2 = this;
 
             var socialLink = [];
-            for (var key in this.props.social) {
-                if (this.props.social.hasOwnProperty(key) && key != 'video') {
-                    if (this.props.selected == key && this.state.isEditing) {
+            for (var key in this.state.socialLinks) {
+                if (this.state.socialLinks.hasOwnProperty(key) && key != 'video') {
+                    if (this.state.selectedSocial == key && this.state.isEditing) {
                         socialLink.push(_react2.default.createElement(
                             'a',
                             { onClick: function onClick(e) {
                                     return _this2.select(e);
-                                }, id: key, key: key, className: 'selected' },
+                                }, id: key, className: 'selected' },
                             _react2.default.createElement('i', { className: "fa fa-" + key })
                         ));
                     } else if (this.state.isEditing) {
@@ -10302,24 +10374,25 @@ var Social = function (_React$Component) {
                             'a',
                             { onClick: function onClick(e) {
                                     return _this2.select(e);
-                                }, id: key, key: key },
+                                }, id: key },
                             _react2.default.createElement('i', { className: "fa fa-" + key })
                         ));
                     } else {
                         socialLink.push(_react2.default.createElement(
                             'a',
-                            { href: this.props.social[key], id: key, key: key },
+                            { href: this.state.socialLinks[key], id: key },
                             _react2.default.createElement('i', { className: "fa fa-" + key })
                         ));
                     }
                 }
             }
-            var inputValue = this.props.social[this.props.selected];
+            var inputValue = this.state.socialLinks[this.state.selectedSocial];
             return _react2.default.createElement(
                 'div',
                 { className: 'social-links', onMouseEnter: function onMouseEnter() {
                         return _this2.toggleEditButton();
-                    }, onMouseLeave: function onMouseLeave() {
+                    },
+                    onMouseLeave: function onMouseLeave() {
                         return _this2.toggleEditButton();
                     } },
                 this.state.isEditing && _react2.default.createElement(
@@ -10331,13 +10404,14 @@ var Social = function (_React$Component) {
                             return _this2.textInput = input;
                         },
                         onChange: function onChange() {
-                            return _this2.saveChange();
+                            return _this2.select();
                         } })
                 ),
                 socialLink,
                 this.state.mouseOver && _react2.default.createElement(
                     'button',
-                    { type: 'submit', onClick: function onClick() {
+                    { type: 'submit',
+                        onClick: function onClick() {
                             return _this2.toggleEditMode();
                         } },
                     this.state.isEditing ? 'Done' : 'Edit'
@@ -10350,22 +10424,6 @@ var Social = function (_React$Component) {
 }(_react2.default.Component);
 
 exports.default = Social;
-
-
-var MyInput = function MyInput(props) {
-    return _react2.default.createElement(
-        'div',
-        { className: 'col-md-12 row' },
-        _react2.default.createElement('input', { className: 'col-md-12 socialInput', type: 'text', id: 'socialInput',
-            value: props.inputValue,
-            ref: function ref(input) {
-                return props.textInput.textInput = input;
-            },
-            onChange: function onChange() {
-                return props.saveChange();
-            } })
-    );
-};
 
 /***/ }),
 /* 85 */

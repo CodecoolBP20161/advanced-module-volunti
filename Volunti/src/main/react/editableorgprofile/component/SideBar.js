@@ -119,7 +119,7 @@ class SideBar extends React.Component {
                                 }
 
                                 {this.state.isEditing && this.state.editCategory &&
-                                <span className="subtitle col-xs-6">
+                                <span className="subtitle col-xs-5">
                                     <select defaultValue={this.props.category}
                                             required="required"
                                             name="category"
@@ -150,7 +150,7 @@ class SideBar extends React.Component {
                                 }
 
                                 {this.state.isEditing && this.state.editLocation &&
-                                <span className="subtitle col-xs-6">
+                                <span className="subtitle col-xs-5">
                                     <select defaultValue={this.props.country}
                                             required="required"
                                             name="country"
@@ -163,9 +163,10 @@ class SideBar extends React.Component {
                                 }
 
                                 <div  className="edit col-xs-3">
-                                    {this.state.editLocation &&  !this.state.isEditing &&
+                                    {this.state.editLocation &&
                                     <a type="submit" className="btn btn-small btn-success"
-                                       onClick={() => this.toggleEditMode()}>Edit</a>}
+                                       onClick={() => this.toggleEditMode()}>
+                                        {this.state.isEditing ? 'Save': 'Edit'}</a>}
                                 </div>
 
                             </li>
@@ -196,11 +197,6 @@ class SideBar extends React.Component {
                             </div>
                             }
 
-                            <div  className="edit col-xs-3">
-                                {this.state.editLocation && this.state.isEditing &&
-                                <a type="submit" className="btn btn-small btn-success"
-                                   onClick={() => this.toggleEditMode()}>Save</a>}
-                            </div>
                         </ul>
                     </div>
                 </div>

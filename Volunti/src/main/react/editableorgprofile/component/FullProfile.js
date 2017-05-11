@@ -21,7 +21,8 @@ class FullProfile extends React.Component {
             profilePicture: "/profile/organisation/image/profile",
             backgroundPicture: "/profile/organisation/image/background",
             video: [],
-            selectedSocial: 'facebook'
+            selectedSocial: 'facebook',
+            hasError: false
         };
 
         this.changeVideoUrl = this.changeVideoUrl.bind(this);
@@ -89,8 +90,17 @@ class FullProfile extends React.Component {
                     key: Math.random(),
                     backgroundPicture: "/profile/organisation/image/background"
                 })
+            }.bind(this),
+            error: function (response) {
+                this.handleError(response);
             }.bind(this)
         })
+    }
+
+    handleError(response) {
+        if(response.status === 413) {
+            alert(response.responseText);
+        }
     }
 
     handleDataChange(name, value) {

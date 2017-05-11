@@ -17,7 +17,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
@@ -72,15 +74,8 @@ public class OrganisationProfileController {
         log.info(editedOrganisation.toString());
         User user = userService.getByEmail(principal.getName());
         Organisation organisation = user.getOrganisation();
-            organisation.setMission(editedOrganisation.getMission());
-            organisation.setDescription1(editedOrganisation.getDescription1());
-            organisation.setDescription2(editedOrganisation.getDescription2());
-            organisation.setName(editedOrganisation.getName());
-            organisation.setCategory(editedOrganisation.getCategory());
-            organisation.setCountry(editedOrganisation.getCountry());
-            organisation.setAddress(editedOrganisation.getAddress());
-            organisation.setCity(editedOrganisation.getCity());
-            organisation.setZipcode(editedOrganisation.getZipcode());
+
+        organisationService.updateOrganisationProfile(organisation, editedOrganisation);
         organisationService.save(organisation);
         return true;
     }
@@ -159,22 +154,9 @@ public class OrganisationProfileController {
     }
 
     @PostMapping( value = "/profile/organisation/saveBackgroundImage")
-    public Boolean saveBackgroundImage(@RequestParam("file") MultipartFile file, Principal principal) throws IOException {
+    public boolean saveBackgroundImage(@RequestParam("file") MultipartFile file, Principal principal) throws IOException {
 
         log.info("file size: " + file.getSize());
-
-        /*if(bindingResult.hasErrors()){
-            log.error(file.getSize() + "error");
-        }*/
-
-        /*if(file.getSize() >= 1048576){
-            BindingResult bindingResult = new BeanPropertyBindingResult(file, "image to upload");
-            bindingResult.addError(new ObjectError("multipartFile","image size is bigger than 1048576"));
-            log.error(bindingResult.getErrorCount() + bindingResult.toString());
-            throw new FileUploadBase.SizeLimitExceededException("Too big picture", 1048576, file.getSize());
-        }*/
-
-
         log.info("saveBackgroundImage() method called...");
         log.info("File type: " + file.getContentType());
 
@@ -196,7 +178,6 @@ public class OrganisationProfileController {
         }else{
             return false;
         }
-
     }
 
     @PostMapping(value = "/profile/organisation/process")

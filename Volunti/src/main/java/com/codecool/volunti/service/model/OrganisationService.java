@@ -95,5 +95,16 @@ public class OrganisationService {
         return organisationVideoRepository.save(organisationVideo);
     }
 
+    public void updateOrganisationProfile(Organisation oldItem, Organisation newItem) {
+        oldItem.setMission(newItem.getMission());
+        oldItem.setDescription1(newItem.getDescription1());
+        oldItem.setDescription2(newItem.getDescription2());
+        oldItem.setName(newItem.getName());
+        oldItem.setCategory(newItem.getCategory());
+        oldItem.setCountry(newItem.getCountry());
+        oldItem.setAddress(newItem.getAddress());
+        oldItem.setCity(newItem.getCity());
+        oldItem.setZipcode(newItem.getZipcode());
+    }
 
 }
