@@ -14,4 +14,6 @@ public interface OrganisationSocialLinkRepository extends JpaRepository<Organisa
 
     List<OrganisationSocialLink> findAll();
 
+    void deleteByOrganisationId(Organisation organisation);
+
 }
