@@ -42,7 +42,7 @@ public class OrganisationRepositoryTest extends AbstractServiceTest {
 
         organisation = new Organisation();
         organisation.setName("Test 1");
-        organisation.setCategory(Category.TEACHING);
+        organisation.setCategory(Category.Educational);
         organisation.setCountry(Country.HUNGARY);
         organisation.setZipcode("zipcode");
         organisation.setCity("City");
@@ -54,7 +54,7 @@ public class OrganisationRepositoryTest extends AbstractServiceTest {
 
         organisation2 = new Organisation();
         organisation2.setName("Test 2");
-        organisation2.setCategory(Category.TEACHING);
+        organisation2.setCategory(Category.Educational);
         organisation2.setCountry(Country.HUNGARY);
         organisation2.setZipcode("zipcode");
         organisation2.setCity("City");
@@ -72,7 +72,7 @@ public class OrganisationRepositoryTest extends AbstractServiceTest {
         organisation = this.repository.save(organisation);
         organisation = this.repository.findByNameIgnoreCase("Test 1");
         assertThat(organisation.getName()).isEqualTo("Test 1");
-        assertThat(organisation.getCategory()).isEqualTo(Category.TEACHING);
+        assertThat(organisation.getCategory()).isEqualTo(Category.Educational);
         assertThat(organisation.getCountry()).isEqualTo(Country.HUNGARY);
         assertThat(organisation.getZipcode()).isEqualTo("zipcode");
         assertThat(organisation.getCity()).isEqualTo("City");
@@ -87,14 +87,14 @@ public class OrganisationRepositoryTest extends AbstractServiceTest {
     @Test (expected = ConstraintViolationException.class)
     public void test_OrganisationFirstFieldMissing_Should_Return_Exception(){
 
-        organisation = new Organisation("", Category.TEACHING, Country.HUNGARY, "zipcode", "City", "Address", spokenLanguages, "Mission minimum 10 character", "Desc 1 min 3 character", "Desc 2 min 3 character", "profilePicture", "backgroundPicture");
+        organisation = new Organisation("", Category.Educational, Country.HUNGARY, "zipcode", "City", "Address", spokenLanguages, "Mission minimum 10 character", "Desc 1 min 3 character", "Desc 2 min 3 character", "profilePicture", "backgroundPicture");
         organisation = this.repository.save(organisation);
     }
 
     @Test (expected = ConstraintViolationException.class)
     public void test_OrganisationCategoryIsNull_Should_Return_Exception(){
 
-        organisation = new Organisation("Test 2", Category.TEACHING, null, "zipcode", "City", "Address", spokenLanguages, "Mission minimum 10 character", "Desc 1 min 3 character", "Desc 2 min 3 character", "profilePicture", "backgroundPicture");
+        organisation = new Organisation("Test 2", Category.Educational, null, "zipcode", "City", "Address", spokenLanguages, "Mission minimum 10 character", "Desc 1 min 3 character", "Desc 2 min 3 character", "profilePicture", "backgroundPicture");
         organisation = this.repository.save(organisation);
     }
 

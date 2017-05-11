@@ -4,22 +4,18 @@ package com.codecool.volunti.service;
 import com.codecool.volunti.configuration.DataloaderProperties;
 import com.codecool.volunti.model.*;
 import com.codecool.volunti.model.enums.*;
-import com.codecool.volunti.service.model.*;
+import com.codecool.volunti.service.model.OrganisationService;
+import com.codecool.volunti.service.model.RoleService;
+import com.codecool.volunti.service.model.UserService;
+import com.codecool.volunti.service.model.VolunteerService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.core.io.InputStreamSource;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.PostConstruct;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -62,7 +58,7 @@ public class DataLoader {
 
 
         Organisation organisation1 = new Organisation("UNICEF",
-                Category.TEACHING,
+                Category.Educational,
                 Country.HUNGARY,
                 "1065",
                 "Isaszeg",
