@@ -20,12 +20,6 @@ class FullProfile extends React.Component {
             address: null,
             profilePicture: "/profile/organisation/image/profile",
             backgroundPicture: "/profile/organisation/image/background",
-            social: {
-                facebook: "",
-                twitter: "",
-                google: "",
-                linkedin: "",
-            },
             video: [],
             selectedSocial: 'facebook'
         };
@@ -56,34 +50,17 @@ class FullProfile extends React.Component {
                     city: response.city,
                     zipcode: response.zipcode,
                     address: response.address,
-                    social: {
-                        facebook: 'facebookURL',
-                        twitter: 'twitterURL',
-                        google: 'googleURL',
-                        linkedin: 'linkedinURL',
-                    },
                     video: response.organisationVideos,
                     mission: response.mission,
                     description1: response.description1,
                     description2: response.description2,
-
-                })
+                    })
             }.bind(this)
          });
     }
 
     componentDidMount(){
         this.fetchData()
-    }
-
-    saveSocial(value, selected){
-        const newSocial = this.state.social;
-        newSocial[this.state.selectedSocial] = value;
-        const newSelected = selected == null? this.state.selectedSocial : selected;
-        this.setState({
-            social: newSocial,
-            selectedSocial: newSelected
-        })
     }
 
     changeVideoUrl(embedCode){
@@ -167,7 +144,6 @@ class FullProfile extends React.Component {
                     category={this.state.category}
                     address={this.state.country + ", " + this.state.zipcode + ", " + this.state.city + ", " + this.state.address}
                     social={this.state.social}
-                    saveSocial={(value, newSelected) => this.saveSocial(value, newSelected)}
                     saveState={() => this.saveData()}
                     savePicture={(picture) => this.saveBackgroundPicture(picture)}
                     selectedSocial={this.state.selectedSocial}

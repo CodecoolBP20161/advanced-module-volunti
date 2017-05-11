@@ -4,6 +4,7 @@ package com.codecool.volunti.model;
 import com.codecool.volunti.model.enums.SocialLink;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
@@ -12,6 +13,7 @@ import javax.persistence.*;
 @Table(name="organisation_social_link")
 @Data
 @Slf4j
+@ToString(exclude = "organisationId")
 public class OrganisationSocialLink {
 
     @Id
@@ -31,4 +33,12 @@ public class OrganisationSocialLink {
     @JoinColumn(name="organisation_id")
     private Organisation organisationId;
 
+    public OrganisationSocialLink(SocialLink socialLinkType, String socialLinkUrl, Organisation organisationId) {
+        this.socialLinkType = socialLinkType;
+        this.socialLinkUrl = socialLinkUrl;
+        this.organisationId = organisationId;
+    }
+
+    public OrganisationSocialLink() {
+    }
 }

@@ -9501,12 +9501,6 @@ var FullProfile = function (_React$Component) {
             address: null,
             profilePicture: "/profile/organisation/image/profile",
             backgroundPicture: "/profile/organisation/image/background",
-            social: {
-                facebook: "",
-                twitter: "",
-                google: "",
-                linkedin: ""
-            },
             video: [],
             selectedSocial: 'facebook'
         };
@@ -9540,17 +9534,10 @@ var FullProfile = function (_React$Component) {
                         city: response.city,
                         zipcode: response.zipcode,
                         address: response.address,
-                        social: {
-                            facebook: 'facebookURL',
-                            twitter: 'twitterURL',
-                            google: 'googleURL',
-                            linkedin: 'linkedinURL'
-                        },
                         video: response.organisationVideos,
                         mission: response.mission,
                         description1: response.description1,
                         description2: response.description2
-
                     });
                 }.bind(this)
             });
@@ -9559,17 +9546,6 @@ var FullProfile = function (_React$Component) {
         key: 'componentDidMount',
         value: function componentDidMount() {
             this.fetchData();
-        }
-    }, {
-        key: 'saveSocial',
-        value: function saveSocial(value, selected) {
-            var newSocial = this.state.social;
-            newSocial[this.state.selectedSocial] = value;
-            var newSelected = selected == null ? this.state.selectedSocial : selected;
-            this.setState({
-                social: newSocial,
-                selectedSocial: newSelected
-            });
         }
     }, {
         key: 'changeVideoUrl',
@@ -9658,9 +9634,6 @@ var FullProfile = function (_React$Component) {
                     category: this.state.category,
                     address: this.state.country + ", " + this.state.zipcode + ", " + this.state.city + ", " + this.state.address,
                     social: this.state.social,
-                    saveSocial: function saveSocial(value, newSelected) {
-                        return _this2.saveSocial(value, newSelected);
-                    },
                     saveState: function saveState() {
                         return _this2.saveData();
                     },
