@@ -4,11 +4,13 @@ import com.codecool.volunti.model.Organisation;
 import com.codecool.volunti.model.User;
 import com.codecool.volunti.model.enums.Category;
 import com.codecool.volunti.model.enums.Country;
+import com.codecool.volunti.model.enums.SpokenLanguage;
 import com.codecool.volunti.model.enums.UserStatus;
 import com.codecool.volunti.repository.OrganisationRepository;
 import com.codecool.volunti.repository.UserRepository;
 import com.codecool.volunti.service.AbstractServiceTest;
 
+import com.codecool.volunti.service.model.OrganisationService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,10 +20,12 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import javax.annotation.Resource;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 import static org.hamcrest.CoreMatchers.containsString;
@@ -36,7 +40,7 @@ import static org.springframework.security.test.web.servlet.setup.SecurityMockMv
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-public class  RegistrationWorkflowTest extends AbstractServiceTest {
+public class RegistrationWorkflowTest extends AbstractServiceTest {
 
     @Resource
     private WebApplicationContext webApplicationContext;
@@ -74,16 +78,21 @@ public class  RegistrationWorkflowTest extends AbstractServiceTest {
                 .apply(springSecurity())
                 .build();
 
+        ArrayList<SpokenLanguage> spokenLanguages = new ArrayList<>();
+        spokenLanguages.add(SpokenLanguage.ENGLISH);
+
         organisation = new Organisation();
         organisation.setName("TestName");
-        organisation.setCategory(Category.ADVERTISING_AGENCY);
+        organisation.setCategory(Category.TEACHING);
         organisation.setCountry(Country.HUNGARY);
-        organisation.setZipcode("ZIPCODE");
+        organisation.setZipcode("1011");
         organisation.setCity("TestCity");
         organisation.setAddress("Address");
+        organisation.setSpokenLanguage(spokenLanguages);
         organisation.setMission("mission");
         organisation.setDescription1("Desc1");
         organisation.setDescription2("Desc2");
+
 
         user = new User("Test", "User", "test.user@gmail.com", "testPassword", organisation, null);
     }
@@ -155,6 +164,18 @@ public class  RegistrationWorkflowTest extends AbstractServiceTest {
     }
 
     @Test
+    public void test_step2_POST_ValidSession() throws Exception {
+        this.mockMvc.perform(post("/registration/organisation/step2/").sessionAttr("organisation", organisation)
+                .with(csrf())
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .content(validUserFormData))
+                .andExpect(status().isOk())
+                .andExpect(view().name("information"));
+        User userAfterRequest = userRepository.findByEmail("email@email.hu");
+        assertEquals(UserStatus.INACTIVE, userAfterRequest.getUserStatus());
+    }
+
+    @Test
     public void test_step3_GET_InValidActivationID() throws Exception {
         this.mockMvc.perform(get("/registration/organisation/step3/ThisIsDefinitelyNotAnUUID")
                 .with(csrf()))
@@ -165,11 +186,14 @@ public class  RegistrationWorkflowTest extends AbstractServiceTest {
 
     @Test
     public void test_step3_GET_ValidActivationID() throws Exception {
+        Organisation organisation = organisationRepository.save(this.organisation);
+
         String userUUID = UUID.randomUUID().toString();
         user.setActivationID(userUUID);
-        Organisation organisation = organisationRepository.findByNameIgnoreCase("UNICEF");
         user.setOrganisation(organisation);
         userRepository.save(user);
+
+        assertEquals(UserStatus.INACTIVE, user.getUserStatus());
         this.mockMvc.perform(get("/registration/organisation/step3/" + userUUID)
                 .with(csrf()))
                 .andExpect(content().string(containsString("Account Confirmation is done.")));
