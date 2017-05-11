@@ -18,10 +18,6 @@ class FullProfile extends React.Component {
             profilePicture: "/profile/organisation/image/profile",
             backgroundPicture: "/profile/organisation/image/background",
             social: {
-                facebook: "valamiLink",
-                twitter: "valamiLink",
-                google: "valamiLink",
-                linkedin: "valamiLink",
                 video: "valamiLink"
             },
             selectedSocial: 'facebook'
@@ -54,10 +50,6 @@ class FullProfile extends React.Component {
                     zipcode: response.zipcode,
                     address: response.address,
                     social: {
-                        facebook: 'facebookURL',
-                        twitter: 'twitterURL',
-                        google: 'googleURL',
-                        linkedin: 'linkedinURL',
                         video: response.organisationVideos,
                     }
 
@@ -70,19 +62,8 @@ class FullProfile extends React.Component {
         this.fetchData()
     }
 
-    saveSocial(value, selected){
-        const newSocial = this.state.social;
-        newSocial[this.state.selectedSocial] = value;
-        const newSelected = selected == null? this.state.selectedSocial : selected;
-        this.setState({
-            social: newSocial,
-            selectedSocial: newSelected
-        })
-    }
-
     changeVideoUrl(embedCode){
         this.setState({social:{video: embedCode}});
-
     }
 
     saveBackgroundPicture(picture){
@@ -159,7 +140,6 @@ class FullProfile extends React.Component {
                     category={this.state.category}
                     address={this.state.country + ", " + this.state.zipcode + ", " + this.state.city + ", " + this.state.address}
                     social={this.state.social}
-                    saveSocial={(value, newSelected) => this.saveSocial(value, newSelected)}
                     saveState={() => this.saveData()}
                     savePicture={(picture) => this.saveBackgroundPicture(picture)}
                     selectedSocial={this.state.selectedSocial}
