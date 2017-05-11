@@ -4,12 +4,16 @@ class SideBar extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            mouseOver: false,
             isEditing: false,
             countries: [],
-            categories: []
+            categories: [],
+            editName: false,
+            editCategory: false,
+            editLocation: false
         };
         this.handleChange = this.handleChange.bind(this);
+        this.toggleEdit = this.toggleEdit.bind(this);
+
     }
 
     fetchData() {
@@ -38,16 +42,22 @@ class SideBar extends React.Component {
     }
 
     toggleEditMode(){
-        if (this.state.isEditing){
-            this.props.saveData();
+        if (this.state.isEditing) {
+            this.props.saveData()
         }
         this.setState({
             isEditing: !this.state.isEditing
         });
     }
 
-    toggleEditButton(){
-        this.setState({mouseOver: !this.state.mouseOver});
+    toggleEdit(event) {
+        const listItem = $(event.target).closest("li").get(0).id;
+        const isEditing = this.state[listItem];
+        if (!this.state.isEditing) {
+            this.setState({
+                [listItem]: !isEditing
+            });
+        }
     }
 
     handleChange(event) {
@@ -56,62 +66,60 @@ class SideBar extends React.Component {
 
     render() {
         return (
-        <div className="col-md-4"
-             onMouseEnter={() => this.toggleEditButton()}
-             onMouseLeave={() => this.toggleEditButton()}>
+        <div className="col-md-4">
 
             {/*<!-- Company Information -->*/}
             <div className="sidebar">
                 <div className="filter-flower">
-                <div className="row">
+                <div className="row lined">
                     <ul>
-                        <li><h5 className="main-title">Organisation Information</h5></li>
-                        {(this.state.mouseOver  || this.state.isEditing) &&
-                        <button type="submit" className="btn btn-small btn-success" onClick={() => this.toggleEditMode()}>
-                            {this.state.isEditing? 'Done': 'Edit'}</button>
-                        }
+                        <li><h5>Organisation Information</h5></li>
                     </ul>
                 </div>
                 </div>
 
-                {!this.state.isEditing &&
-                    <div>
-                        <div className="sidebar-thumbnail"> <img src={this.props.profilePicture} /> </div>
-                        <div className="sidebar-information">
-                            <ul className="single-category">
-                                <li className="row">
-                                    <h6 className="title col-xs-4">Name</h6>
-                                    <span className="subtitle col-xs-6">{this.props.name}</span>
-                                </li>
-                                <li className="row">
-                                    <h6 className="title col-xs-4">Category</h6>
-                                    <span className="subtitle col-xs-6">{this.props.category}</span>
-                                </li>
-                                <li className="row">
-                                    <h6 className="title col-xs-4">Location</h6>
-                                    <span className="subtitle col-xs-6">{this.props.city}, {this.props.country}</span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                }
-
-                {this.state.isEditing &&
                 <div>
                     <div className="sidebar-thumbnail"> <img src={this.props.profilePicture} /> </div>
                     <div className="sidebar-information">
                         <ul className="single-category">
-                            <li className="row">
+
+                            {/*Name*/}
+                            <li className="row lined" id="editName" onMouseEnter={this.toggleEdit}
+                                onMouseLeave={this.toggleEdit}>
                                 <h6 className="title col-xs-4">Name</h6>
-                                <span className="subtitle col-xs-8">
-                                    <input defaultValue={this.props.name} name="name"
-                                           required="required"
-                                           onChange={this.handleChange}/>
+
+                                {!(this.state.isEditing && this.state.editName) &&
+                                <span className="subtitle col-xs-5">{this.props.name}</span>
+                                }
+
+                                {this.state.isEditing && this.state.editName &&
+                                <span className="subtitle col-xs-4">
+                                <input defaultValue={this.props.name} name="name"
+                                       required="required"
+                                       onChange={this.handleChange}/>
                                 </span>
+                                }
+
+                                <div  className="edit col-xs-3">
+                                    {this.state.editName &&
+                                    <a type="submit" className="btn btn-small btn-success"
+                                            onClick={() => this.toggleEditMode()}>
+                                        {this.state.isEditing ? 'Save': 'Edit'}
+                                    </a>}
+                                </div>
                             </li>
-                            <li className="row">
+
+                            {/*Category*/}
+                            <li className="row lined" id="editCategory" onMouseEnter={this.toggleEdit}
+                                onMouseLeave={this.toggleEdit}>
                                 <h6 className="title col-xs-4">Category</h6>
-                                <span className="subtitle col-xs-8">
+
+                                {!(this.state.isEditing && this.state.editCategory) &&
+                                <span className="subtitle col-xs-5">{this.props.category}</span>
+                                }
+
+                                {this.state.isEditing && this.state.editCategory &&
+                                <span className="subtitle col-xs-6">
                                     <select defaultValue={this.props.category}
                                             required="required"
                                             name="category"
@@ -121,10 +129,28 @@ class SideBar extends React.Component {
                                         })}
                                     </select>
                                 </span>
+                                }
+
+                                <div  className="edit col-xs-3">
+                                    {this.state.editCategory &&
+                                    <a type="submit" className="btn btn-small btn-success"
+                                            onClick={() => this.toggleEditMode()}>
+                                        {this.state.isEditing ? 'Save': 'Edit'}
+                                    </a>}
+                                </div>
                             </li>
-                            <li className="row">
+
+                            {/*Location*/}
+                            <li className="row"  id="editLocation" onMouseEnter={this.toggleEdit}
+                                onMouseLeave={this.toggleEdit}>
                                 <h6 className="title col-xs-4">Location</h6>
-                                <span className="subtitle col-xs-8">
+
+                                {!(this.state.isEditing && this.state.editLocation) &&
+                                <span className="subtitle col-xs-5">{this.props.city}, {this.props.country}</span>
+                                }
+
+                                {this.state.isEditing && this.state.editLocation &&
+                                <span className="subtitle col-xs-6">
                                     <select defaultValue={this.props.country}
                                             required="required"
                                             name="country"
@@ -134,32 +160,50 @@ class SideBar extends React.Component {
                                         })}
                                     </select>
                                 </span>
+                                }
+
+                                <div  className="edit col-xs-3">
+                                    {this.state.editLocation &&  !this.state.isEditing &&
+                                    <a type="submit" className="btn btn-small btn-success"
+                                       onClick={() => this.toggleEditMode()}>Edit</a>}
+                                </div>
+
                             </li>
-                            <li className="row">
-                                <h6 className="title col-xs-4">City</h6>
-                                <span className="subtitle col-xs-8">
+
+                            {this.state.isEditing && this.state.editLocation &&
+                            <div>
+                                <li className="row">
+                                    <h6 className="title col-xs-4">City</h6>
+                                    <span className="subtitle col-xs-5">
                                     <input defaultValue={this.props.city} name="city" onChange={this.handleChange}/>
-                                </span>
-                            </li>
-                            <li className="row">
-                                <h6 className="title col-xs-4">Address</h6>
-                                <span className="subtitle col-xs-8">
-                                    <input defaultValue={this.props.address} name="address" onChange={this.handleChange}/>
-                                </span>
-                            </li>
-                            <li className="row">
-                                <h6 className="title col-xs-4">ZipCode</h6>
-                                <span className="subtitle col-xs-8">
-                                    <input defaultValue={this.props.zipcode} name="zipcode"
-                                           maxLength="20"
-                                           type="text"
-                                           onChange={this.handleChange}/>
-                                </span>
-                            </li>
+                                    </span>
+                                </li>
+                                <li className="row">
+                                    <h6 className="title col-xs-4">Address</h6>
+                                    <span className="subtitle col-xs-5">
+                                        <input defaultValue={this.props.address} name="address" onChange={this.handleChange}/>
+                                    </span>
+                                </li>
+                                <li className="row">
+                                    <h6 className="title col-xs-4">ZipCode</h6>
+                                    <span className="subtitle col-xs-5">
+                                        <input defaultValue={this.props.zipcode} name="zipcode"
+                                                maxLength="20"
+                                                type="text"
+                                                onChange={this.handleChange}/>
+                                    </span>
+                                </li>
+                            </div>
+                            }
+
+                            <div  className="edit col-xs-3">
+                                {this.state.editLocation && this.state.isEditing &&
+                                <a type="submit" className="btn btn-small btn-success"
+                                   onClick={() => this.toggleEditMode()}>Save</a>}
+                            </div>
                         </ul>
                     </div>
                 </div>
-                }
             </div>
         </div>
         );

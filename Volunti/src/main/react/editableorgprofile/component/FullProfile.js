@@ -9,6 +9,9 @@ class FullProfile extends React.Component {
         super(props);
         this.state = {
             key: Math.random(),
+            mission: null,
+            description1: null,
+            description2: null,
             name: null,
             category: null,
             country: null,
@@ -18,18 +21,18 @@ class FullProfile extends React.Component {
             profilePicture: "/profile/organisation/image/profile",
             backgroundPicture: "/profile/organisation/image/background",
             social: {
-                facebook: "valamiLink",
-                twitter: "valamiLink",
-                google: "valamiLink",
-                linkedin: "valamiLink",
-                video: "valamiLink"
+                facebook: "",
+                twitter: "",
+                google: "",
+                linkedin: "",
             },
+            video: [],
             selectedSocial: 'facebook'
         };
 
         this.changeVideoUrl = this.changeVideoUrl.bind(this);
-        this.handleSideBarDataChange = this.handleSideBarDataChange.bind(this);
-        this.saveSideBarData = this.saveSideBarData.bind(this);
+        this.handleDataChange = this.handleDataChange.bind(this);
+        this.saveData = this.saveData.bind(this);
 
     }
 
@@ -58,8 +61,11 @@ class FullProfile extends React.Component {
                         twitter: 'twitterURL',
                         google: 'googleURL',
                         linkedin: 'linkedinURL',
-                        video: response.organisationVideos,
-                    }
+                    },
+                    video: response.organisationVideos,
+                    mission: response.mission,
+                    description1: response.description1,
+                    description2: response.description2,
 
                 })
             }.bind(this)
@@ -81,8 +87,7 @@ class FullProfile extends React.Component {
     }
 
     changeVideoUrl(embedCode){
-        this.setState({social:{video: embedCode}});
-
+        this.setState({video: embedCode});
     }
 
     saveBackgroundPicture(picture){
@@ -111,13 +116,13 @@ class FullProfile extends React.Component {
         })
     }
 
-    handleSideBarDataChange(name, value) {
+    handleDataChange(name, value) {
         this.setState({
             [name]: value
         });
     }
 
-    saveSideBarData() {
+    saveData() {
         const csrfHeader = $("meta[name='_csrf_header']").attr("content");
         const csrfToken = $("meta[name='_csrf']").attr("content");
         const headers = {};
@@ -130,6 +135,9 @@ class FullProfile extends React.Component {
         formData["address"] = this.state.address;
         formData["city"] = this.state.city;
         formData["zipcode"] = this.state.zipcode;
+        formData["mission"] = this.state.mission;
+        formData["description1"] = this.state.description1;
+        formData["description2"] = this.state.description2;
 
         $.ajax({
             url: "/profile/organisation/saveText",
@@ -189,15 +197,21 @@ class FullProfile extends React.Component {
                                      zipcode={this.state.zipcode}
                                      address={this.state.address}
                                      mission={this.state.mission}
-                                     saveData={this.saveSideBarData}
-                                     onChange={this.handleSideBarDataChange}/>
+                                     saveData={this.saveData}
+                                     onChange={this.handleDataChange}/>
 
                             {/*<!-- Tab Content -->*/}
                             <div className="col-md-8">
                                 <div className="tab-content">
 
                                     {/*<!-- PROFILE -->*/}
-                                    <Profile videoURL={this.state.social.video} changeVideo={this.changeVideoUrl}/>
+                                    <Profile videoURL={this.state.video}
+                                             mission={this.state.mission}
+                                             description1={this.state.description1}
+                                             description2={this.state.description2}
+                                             saveData={this.saveData}
+                                             onChange={this.handleDataChange}
+                                             changeVideo={this.changeVideoUrl}/>
 
                                     {/*<!-- Services -->*/}
                                     {/*<Services />*/}

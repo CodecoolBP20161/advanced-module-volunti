@@ -14,6 +14,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,12 +23,12 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.security.Principal;
-import java.util.Arrays;
 import java.util.List;
 
 
 @Slf4j
 @Controller
+@Transactional
 public class OrganisationProfileController {
 
     private OrganisationService organisationService;
@@ -66,20 +67,15 @@ public class OrganisationProfileController {
         log.info(editedOrganisation.toString());
         User user = userService.getByEmail(principal.getName());
         Organisation organisation = user.getOrganisation();
-        if(editedOrganisation.getName() == null) {
             organisation.setMission(editedOrganisation.getMission());
             organisation.setDescription1(editedOrganisation.getDescription1());
             organisation.setDescription2(editedOrganisation.getDescription2());
-        } else {
             organisation.setName(editedOrganisation.getName());
             organisation.setCategory(editedOrganisation.getCategory());
             organisation.setCountry(editedOrganisation.getCountry());
             organisation.setAddress(editedOrganisation.getAddress());
             organisation.setCity(editedOrganisation.getCity());
             organisation.setZipcode(editedOrganisation.getZipcode());
-
-        }
-
         organisationService.save(organisation);
         return true;
     }
