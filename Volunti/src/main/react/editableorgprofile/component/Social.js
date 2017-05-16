@@ -83,7 +83,6 @@ class Social extends React.Component {
         if (this.state.isEditing) {
             this.saveSocial();
             this.props.socialEditOff();
-
         }
         this.setState({
             isEditing: !this.state.isEditing
@@ -106,7 +105,6 @@ class Social extends React.Component {
         });
         console.log(this.state.selectedSocial)
     }
-
 
     render() {
         let socialLink = [];

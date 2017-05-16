@@ -21,14 +21,14 @@ public class ExceptionController {
     @ExceptionHandler(FileUploadBase.FileSizeLimitExceededException.class)
     public String handleSizeExceededException(HttpServletRequest request, Exception ex) {
         log.error("file size limit exception!");
-        return "Error! File size is too big.";
+        return "File size is too large.";
     }
 
     @ExceptionHandler(MultipartException.class)
     @ResponseStatus(value = HttpStatus.PAYLOAD_TOO_LARGE)
     public @ResponseBody String handleMultiPartException(MultipartException e) {
         log.error("multipart file exception!");
-        return "Error! File size is too big.";
+        return "File size is too large.";
     }
 
     @ExceptionHandler(IllegalStateException.class)
@@ -40,7 +40,7 @@ public class ExceptionController {
     @ExceptionHandler(IllegalArgumentException.class)
     public String handleIllegalArgumentException(HttpServletRequest request, Exception ex) {
         log.error("illegal argument ex!");
-//        ex.printStackTrace();
+        ex.printStackTrace();
         return "error";
     }
 

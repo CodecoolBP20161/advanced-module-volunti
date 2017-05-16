@@ -3319,7 +3319,43 @@ vivid green: #2ad482
 	display: inline-block;
 	color: #999999;
 }
-
 .lined {
 	border-bottom: 1px solid #f0f4f7;
 }
+.right-top-bnr .connect a:hover {
+	color: black;
+	background: #fff;
+	cursor: pointer;
+}
+.right-top-bnr .alert {
+	float: right;
+	margin-left: 10px;
+	margin-top: 30px;
+}
+.right-top-bnr .connect .inputFile {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+.right-top-bnr .connect a {
+	float: right;
+	border: 1px solid #999999;
+	font-family: 'Montserrat', sans-serif;
+	border-radius: 4px;
+	font-size: 12px;
+	display: inline-block;
+	text-transform: uppercase;
+	padding: 8px 15px;
+	margin-left: 10px;
+}
+.right-top-bnr .connect i {
+	color: #999999;
+	font-size: 28px;
+	display: inline-block;
+	padding: 8px 15px;
+	margin-left: 10px;
+}
+

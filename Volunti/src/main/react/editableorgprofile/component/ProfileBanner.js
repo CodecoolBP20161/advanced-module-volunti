@@ -8,42 +8,52 @@ class ProfileBanner extends React.Component {
         this.state = {
             mouseOver: false,
             isEditing: false
-        }
+        };
+        this.savePicture = this.savePicture.bind(this);
     }
+
     savePicture(e){
         e.preventDefault();
         this.props.savePicture(this.backGroundInput.files[0]);
+        if(this.props.hasErrorImg) {
+            this.props.dismissError();
+        }
     }
-    toggleEditButtonOn(){
+
+    toggleEditButton(){
         this.setState({
-            mouseOver: true
+            mouseOver: !this.state.mouseOver
         })
     }
-    toggleEditButtonOff(){
-        this.setState({
-            mouseOver: false
-        })
-    }
-    toggleEditMode(){
-        this.setState({
-            isEditing: !this.state.isEditing
-        })
+
+    changeBackground(){
+        $('#inputFile').click();
     }
 
     render(){
         return (
-            <div className="profile-bnr" style={this.props.divStyle} key={this.props.key}
-                 onMouseEnter={() => this.toggleEditButtonOn()}
-                 onMouseLeave={() => this.toggleEditButtonOff()}>
+            <div className="profile-bnr" style={this.props.divStyle}
+                 onMouseEnter={() => this.toggleEditButton()}
+                 onMouseLeave={() => this.toggleEditButton()}>
 
                 <div className="container">
-                    {this.state.isEditing &&
-                    <div className="btn-group btn-group-justified pull-right col-xs-12">
-                        <form method="POST" encType="multipart/form-data" action="/profile/organisation/saveBackgroundImage">
-                            <input className="btn btn-default btn-sm" ref={(input) => this.backGroundInput = input} type="file" required="required" name="file" accept=".png,.jpg"/>
-                            <input className="btn btn-default btn-sm" type="submit" onClick={(e) => this.savePicture(e)} value="upload" />
-                        </form>
-                    </div>}
+                    <div className="right-top-bnr">
+                        <div className="connect">
+                            <form method="POST" encType="multipart/form-data" action="/profile/organisation/saveBackgroundImage">
+                                <input className="inputFile" id="inputFile" ref={(input) => this.backGroundInput = input}
+                                       onChange={this.savePicture} type="file" required="required" name="file" accept=".png,.jpg"/>
+                            </form>
+
+                            {(this.state.mouseOver || this.props.hasErrorImg) ?
+                                <a type="submit" onClick={this.changeBackground}>Change background</a> :
+                                <i className="fa fa-camera fa-2" aria-hidden="true"></i>}
+                        </div>
+                        {this.props.hasErrorImg &&
+                            <div className="alert alert-error alert-dismissible" role="alert">
+                                <button type="button" className="close" onClick={this.props.dismissError}>&times;</button>
+                                <strong>Upload failed! </strong>{this.props.errorMessage}</div>
+                        }
+                    </div>
                     {/*<!-- User Info -->*/}
                     <TopLabel
                         organisationName={this.props.organisationName}
@@ -54,12 +64,8 @@ class ProfileBanner extends React.Component {
                         saveState={() => this.props.saveState}
                         selectedSocial={this.props.selectedSocial}
                     />
-                    {/*<!-- Place of Top Right Buttons -->*/}
+
                 </div>
-                { this.state.mouseOver &&
-                    <button type="submit" className="btn btn-default btn-sm"
-                            onClick={() => this.toggleEditMode()}>{this.state.isEditing? 'Done': 'Edit'}</button>
-                }
             </div>
         )
     }

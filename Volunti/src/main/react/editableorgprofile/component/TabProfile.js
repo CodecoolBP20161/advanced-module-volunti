@@ -1,11 +1,10 @@
-import React from 'react'
+import React from 'react';
 
 
 class TabProfile extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            mouseOver: false,
             isEditing: false,
             editVideoUrl: false,
             editMission: false,
@@ -14,8 +13,10 @@ class TabProfile extends React.Component {
             isOpen: false,
         };
         this.handleChange = this.handleChange.bind(this);
-        this.handleVideo = this.handleVideo.bind(this);
+        this.handleVideoInputChange = this.handleVideoInputChange.bind(this);
         this.toggleEdit = this.toggleEdit.bind(this);
+        this.openModal = this.openModal.bind(this);
+        this.hideModal = this.hideModal.bind(this);
     }
 
     toggleEditMode(){
@@ -37,50 +38,156 @@ class TabProfile extends React.Component {
         }
     }
 
-    toggleVideoEditMode() {
+    openModal() {
         this.setState({
-            isVideoEditing: !this.state.isVideoEditing
+            isOpen: true
         });
-        if (this.state.isVideoEditing){
+    };
 
-            this.saveVideoData(this.state.videoUrl);
-            this.props.changeVideo(this.state.videoUrl);
-        }
-    }
+    hideModal() {
+        this.setState({
+            isOpen: false
+        });
+        this.props.cancelVideo();
+    };
 
     handleChange(event) {
         this.props.onChange(event.target.name, event.target.value)
     }
 
-    handleVideo(event) {
-        this.setState({videoUrl: event.target.value })
+    handleVideoInputChange(event) {
+        this.props.changeVideo(event.target.value)
     }
 
-    saveVideoData(embedCode) {
-        const csrfHeader = $("meta[name='_csrf_header']").attr("content");
-        const csrfToken = $("meta[name='_csrf']").attr("content");
-        const headers = {};
+    saveVideoData() {
+        this.props.saveVideo();
+    }
 
-        headers[csrfHeader] = csrfToken;
-        const formData = {};
-        formData["embedCode"] = embedCode;
+    renderMission() {
+        return(
+            <li className="row lined" id="editMission" onMouseEnter={this.toggleEdit} onMouseLeave={this.toggleEdit}>
+                <div className="col-md-10">
+                    {!(this.state.isEditing && this.state.editMission) &&
+                    <p>{this.props.mission}</p>
+                    }
 
-        $.ajax({
-            url: "/profile/organisation/saveVideo",
-            cache: false,
-            type: "POST",
-            headers: headers,
-            data : JSON.stringify(formData),
-            dataType : 'json',
-            contentType: 'application/json',
-            processData: false,
-            async: true
-        });
+                    {(this.state.isEditing && this.state.editMission) &&
+                    <p>
+                        <textarea value={this.props.mission} name="mission" onChange={this.handleChange}/>
+                    </p>
+                    }
+                </div>
+                <div  className="edit col-xs-1">
+                    {this.state.editMission &&
+                    <a type="submit" className="btn btn-small btn-success"
+                       onClick={() => this.toggleEditMode()}>
+                        {this.state.isEditing ? 'Save': 'Edit'}
+                    </a>}
+                </div>
+            </li>
+        )
+    }
+
+    renderDescription1() {
+        return(
+            <li className="row lined" id="editDescription1" onMouseEnter={this.toggleEdit} onMouseLeave={this.toggleEdit}>
+                <div className="col-md-10">
+                    {!(this.state.isEditing && this.state.editDescription1) &&
+                    <p>{this.props.description1}</p>
+                    }
+
+                    {(this.state.isEditing && this.state.editDescription1) &&
+                    <p>
+                        <textarea value={this.props.description1} name="description1" onChange={this.handleChange}/>
+                    </p>
+                    }
+                </div>
+                <div  className="edit col-xs-1">
+                    {this.state.editDescription1 &&
+                    <a type="submit" className="btn btn-small btn-success"
+                       onClick={() => this.toggleEditMode()}>
+                        {this.state.isEditing ? 'Save': 'Edit'}
+                    </a>}
+                </div>
+            </li>
+        )
+    }
+
+    renderVideo() {
+        const videoURL = this.props.videoURL ? this.props.videoURL :
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/leQ8nEcYFOc" frameBorder="0" allowFullScreen></iframe>;
+        return(
+            <li className="row lined" id="editVideoUrl" onMouseEnter={this.toggleEdit} onMouseLeave={this.toggleEdit}>
+                <div className="col-sm-4">
+                    {this.state.editVideoUrl &&
+                    <button type="submit" className="btn btn-success" data-toggle="modal" data-target="#videoModal">Change video</button>
+                    }
+                </div>
+                <div className="col-md-10">
+                    {videoURL}
+                </div>
+            </li>
+        )
+    }
+
+    renderModal() {
+        return(
+            <div className="modal in col-sm-10" id="videoModal" tabIndex="-1" role="dialog">
+                <div className="modal-dialog" role="document">
+                    <div className="modal-content">
+                        <div className="container">
+                            <h6><a type="submit" className="close" data-dismiss="modal" aria-label="Close"
+                                    onClick={this.hideModal}><span aria-hidden="true">&times;</span></a>
+                            Add your video to your profile page</h6>
+
+
+                        <form action="#">
+                            <ul className="row">
+                                <li className="col-xs-12">
+                                    <input type="text" autoFocus="autoFocus" defaultValue={this.props.videoURL}
+                                        onChange={this.handleVideoInputChange}/>
+                                </li>
+                                <li className="col-xs-12">
+                                    <button type="submit" className="btn btn-default" data-dismiss="modal"
+                                            onClick={this.hideModal}>Close</button>
+                                    <button type="submit" className="btn btn-primary"
+                                            onClick={this.saveVideoData}>Save changes</button>
+                                </li>
+                            </ul>
+                        </form>
+                    </div>
+                </div>
+                </div>
+            </div>
+        )
+    }
+
+    renderDescription2() {
+        return(
+            <li className="row" id="editDescription2" onMouseEnter={this.toggleEdit} onMouseLeave={this.toggleEdit}>
+                <div className="col-md-10">
+                    {!(this.state.isEditing && this.state.editDescription2) &&
+                    <p>{this.props.description2}</p>
+                    }
+
+                    {(this.state.isEditing && this.state.editDescription2) &&
+                    <p>
+                        <textarea value={this.props.description1} name="description2" onChange={this.handleChange}/>
+                    </p>
+                    }
+                </div>
+                <div  className="edit col-xs-1">
+                    {this.state.editDescription2 &&
+                    <a type="submit" className="btn btn-small btn-success"
+                       onClick={() => this.toggleEditMode()}>
+                        {this.state.isEditing ? 'Save': 'Edit'}
+                    </a>}
+                </div>
+            </li>
+        )
     }
 
     render() {
-        const videoURL = this.props.videoURL ? this.props.videoURL:  "https://www.youtube.com/embed/leQ8nEcYFOc";
-
         return (
         <div id="profile" className="tab-pane fade in active">
             <div className="profile-main">
@@ -92,81 +199,16 @@ class TabProfile extends React.Component {
 
                 <div className="profile-in">
                     <ul>
-                        {/*Mission*/}
-                        <li className="row lined" id="editMission" onMouseEnter={this.toggleEdit} onMouseLeave={this.toggleEdit}>
-                            <div className="col-md-10">
-                                {!(this.state.isEditing && this.state.editMission) &&
-                                <p>{this.props.mission}</p>
-                                }
+                        {this.renderMission()}
 
-                                {(this.state.isEditing && this.state.editMission) &&
-                                <p>
-                                    <textarea value={this.props.mission} name="mission" onChange={this.handleChange}/>
-                                </p>
-                                }
-                            </div>
-                            <div  className="edit col-xs-1">
-                                {this.state.editMission &&
-                                <a type="submit" className="btn btn-small btn-success"
-                                   onClick={() => this.toggleEditMode()}>
-                                    {this.state.isEditing ? 'Save': 'Edit'}
-                                </a>}
-                            </div>
-                        </li>
+                        {this.renderDescription1()}
 
-                        {/*Description1*/}
-                        <li className="row lined" id="editDescription1" onMouseEnter={this.toggleEdit} onMouseLeave={this.toggleEdit}>
-                            <div className="col-md-10">
-                                {!(this.state.isEditing && this.state.editDescription1) &&
-                                <p>{this.props.description1}</p>
-                                }
+                        {this.renderVideo()}
 
-                                {(this.state.isEditing && this.state.editDescription1) &&
-                                <p>
-                                    <textarea value={this.props.description1} name="description1" onChange={this.handleChange}/>
-                                </p>
-                                }
-                            </div>
-                            <div  className="edit col-xs-1">
-                                {this.state.editDescription1 &&
-                                <a type="submit" className="btn btn-small btn-success"
-                                   onClick={() => this.toggleEditMode()}>
-                                    {this.state.isEditing ? 'Save': 'Edit'}
-                                </a>}
-                            </div>
-                        </li>
+                        <div className="col-md-6">{this.renderModal()}</div>
 
-                        {/*<!-- Video -->*/}
-                        {(this.state.mouseOver || this.state.isVideoEditing) &&
-                        <button type="submit" className="col-sm-4" onClick={() =>
-                            this.toggleVideoEditMode()}>{this.state.isVideoEditing ? 'Save' : 'Edit'}</button>
-                        }
-                        {this.state.isVideoEditing &&
-                        <input type="text" value={this.state.videoUrl} onChange={this.handleVideo}/>
-                        }
-                        <iframe src={videoURL} ></iframe>
+                        {this.renderDescription2()}
 
-                        {/*Description2*/}
-                        <li className="row" id="editDescription2" onMouseEnter={this.toggleEdit} onMouseLeave={this.toggleEdit}>
-                            <div className="col-md-10">
-                                {!(this.state.isEditing && this.state.editDescription2) &&
-                                <p>{this.props.description2}</p>
-                                }
-
-                                {(this.state.isEditing && this.state.editDescription2) &&
-                                <p>
-                                    <textarea value={this.props.description1} name="description2" onChange={this.handleChange}/>
-                                </p>
-                                }
-                            </div>
-                            <div  className="edit col-xs-1">
-                                {this.state.editDescription2 &&
-                                <a type="submit" className="btn btn-small btn-success"
-                                   onClick={() => this.toggleEditMode()}>
-                                    {this.state.isEditing ? 'Save': 'Edit'}
-                                </a>}
-                            </div>
-                        </li>
                     </ul>
                 </div>
             </div>
@@ -174,4 +216,5 @@ class TabProfile extends React.Component {
         )
     }
 }
+
 export default TabProfile

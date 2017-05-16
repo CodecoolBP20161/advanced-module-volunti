@@ -21,14 +21,19 @@ class FullProfile extends React.Component {
             profilePicture: "/profile/organisation/image/profile",
             backgroundPicture: "/profile/organisation/image/background",
             video: [],
+            singleVideo: null,
             selectedSocial: 'facebook',
-            hasError: false
+            hasErrorImg: false,
+            errorMessage: null
         };
 
         this.changeVideoUrl = this.changeVideoUrl.bind(this);
         this.handleDataChange = this.handleDataChange.bind(this);
         this.saveData = this.saveData.bind(this);
-
+        this.cancelVideo = this.cancelVideo.bind(this);
+        this.saveVideoData = this. saveVideoData.bind(this);
+        this.handleError = this.handleError.bind(this);
+        this.dismissError = this.dismissError.bind(this);
     }
 
     fetchData(){
@@ -52,6 +57,7 @@ class FullProfile extends React.Component {
                     zipcode: response.zipcode,
                     address: response.address,
                     video: response.organisationVideos,
+                    savedVideo: response.organisationVideos,
                     mission: response.mission,
                     description1: response.description1,
                     description2: response.description2,
@@ -65,7 +71,13 @@ class FullProfile extends React.Component {
     }
 
     changeVideoUrl(embedCode){
-        this.setState({video: embedCode});
+        const vid = [];
+        vid[0] = embedCode;
+        this.setState({video: vid});
+    }
+
+    cancelVideo() {
+        this.setState({video: this.state.savedVideo})
     }
 
     saveBackgroundPicture(picture){
@@ -99,8 +111,13 @@ class FullProfile extends React.Component {
 
     handleError(response) {
         if(response.status === 413) {
-            alert(response.responseText);
+            this.setState({errorMessage: response.responseText,
+                hasErrorImg: true});
         }
+    }
+
+    dismissError() {
+        this.setState({hasErrorImg: false})
     }
 
     handleDataChange(name, value) {
@@ -139,6 +156,28 @@ class FullProfile extends React.Component {
         });
     }
 
+    saveVideoData() {
+        const csrfHeader = $("meta[name='_csrf_header']").attr("content");
+        const csrfToken = $("meta[name='_csrf']").attr("content");
+        const headers = {};
+
+        headers[csrfHeader] = csrfToken;
+        const formData = {};
+        formData["embedCode"] = this.state.video[0];
+
+        $.ajax({
+            url: "/profile/organisation/saveVideo",
+            cache: false,
+            type: "POST",
+            headers: headers,
+            data : JSON.stringify(formData),
+            dataType : 'json',
+            contentType: 'application/json',
+            processData: false,
+            async: true
+        });
+    }
+
     render() {
         const divStyle = {
             background: 'url(' + this.state.backgroundPicture + ')',
@@ -157,8 +196,10 @@ class FullProfile extends React.Component {
                     saveState={() => this.saveData()}
                     savePicture={(picture) => this.saveBackgroundPicture(picture)}
                     selectedSocial={this.state.selectedSocial}
-                    divStyle={divStyle}
-                />
+                    hasErrorImg={this.state.hasErrorImg}
+                    errorMessage={this.state.errorMessage}
+                    dismissError={this.dismissError}
+                    divStyle={divStyle}/>
 
 
                 {/*<!-- Profile Company Content -->*/}
@@ -191,13 +232,14 @@ class FullProfile extends React.Component {
                                 <div className="tab-content">
 
                                     {/*<!-- PROFILE -->*/}
-                                    <Profile videoURL={this.state.video}
+                                    <Profile videoURL={this.state.video[0]}
                                              mission={this.state.mission}
                                              description1={this.state.description1}
                                              description2={this.state.description2}
                                              saveData={this.saveData}
                                              onChange={this.handleDataChange}
-                                             changeVideo={this.changeVideoUrl}/>
+                                             changeVideo={this.changeVideoUrl}
+                                             cancelVideo={this.cancelVideo}/>
 
                                     {/*<!-- Services -->*/}
                                     {/*<Services />*/}

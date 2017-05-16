@@ -129,11 +129,9 @@ public class OrganisationProfileController {
             File convFile2 = new File(String.valueOf(convFile));
             ImageIO.write(resizedImage, "jpg", convFile2);
 
-
             organisation.setProfilePictureFileForSave(convFile2);
             organisationService.save(organisation);
-            convFile2.delete();
-            return true;
+            return convFile2.delete();
         }else{
             return false;
         }
@@ -154,7 +152,8 @@ public class OrganisationProfileController {
     }
 
     @PostMapping( value = "/profile/organisation/saveBackgroundImage")
-    public boolean saveBackgroundImage(@RequestParam("file") MultipartFile file, Principal principal) throws IOException {
+    @ResponseBody
+    public Boolean saveBackgroundImage(@RequestParam("file") MultipartFile file, Principal principal) throws IOException {
 
         log.info("file size: " + file.getSize());
         log.info("saveBackgroundImage() method called...");
@@ -170,11 +169,9 @@ public class OrganisationProfileController {
 
             File convFile2 = new File(String.valueOf(convFile));
             ImageIO.write(resizedImage, "jpg", convFile2);
-
             organisation.setBackgroundPictureFileForSave(convFile2);
             organisationService.save(organisation);
-            convFile2.delete();
-            return true;
+            return convFile2.delete();
         }else{
             return false;
         }
@@ -182,7 +179,7 @@ public class OrganisationProfileController {
 
     @PostMapping(value = "/profile/organisation/process")
     @ResponseBody
-    public void saveSocialLinks(@RequestBody List<OrganisationSocialLink> organisationSocialLinks, Principal principal){
+    public Boolean saveSocialLinks(@RequestBody List<OrganisationSocialLink> organisationSocialLinks, Principal principal){
         User user = userService.getByEmail(principal.getName());
         Organisation organisation = user.getOrganisation();
 
@@ -199,6 +196,7 @@ public class OrganisationProfileController {
         organisation.setOrganisationSocialLinks(newOrgList);
 
         log.info(organisation.getOrganisationSocialLinks().toString());
+        return true;
     }
 
 }
