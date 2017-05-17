@@ -48,6 +48,8 @@ class SideBar extends React.Component {
         if (this.props.hasErrorProfileImg) {
             this.props.dismissError();
         }
+        $('#profileImg').get(0).value = null;
+
     }
 
     changeImage() {
@@ -73,9 +75,15 @@ class SideBar extends React.Component {
         }
     }
 
-    toggleEditButton() {
+    imageEditEnabled() {
         this.setState({
-            mouseOver: !this.state.mouseOver
+            mouseOver: true
+        })
+    }
+
+    imageEditDisabled() {
+        this.setState({
+            mouseOver: false
         })
     }
 
@@ -210,8 +218,8 @@ class SideBar extends React.Component {
 
     renderProfileImage() {
         return (
-            <div className="sidebar-thumbnail" onMouseEnter={() => this.toggleEditButton()}
-                 onMouseLeave={() => this.toggleEditButton()}>
+            <div className="sidebar-thumbnail" onMouseEnter={() => this.imageEditEnabled()}
+                 onMouseLeave={() => this.imageEditDisabled()}>
                 <div className="image-wrapper">
                     <img style={this.props.imgStyle}/>
 
@@ -235,8 +243,6 @@ class SideBar extends React.Component {
     }
 
     render() {
-        console.log(this.props.hasErrorProfileImg);
-        console.log(this.state.mouseOver);
         return (
             <div className="col-md-4">
 

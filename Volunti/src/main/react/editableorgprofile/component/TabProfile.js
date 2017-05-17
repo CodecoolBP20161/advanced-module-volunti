@@ -203,15 +203,10 @@ class TabProfile extends React.Component {
                 <div className="profile-in">
                     <ul>
                         {this.renderMission()}
-
                         {this.renderDescription1()}
-
                         {this.renderVideo()}
-
                         {this.renderModal()}
-
                         {this.renderDescription2()}
-
                     </ul>
                 </div>
             </div>

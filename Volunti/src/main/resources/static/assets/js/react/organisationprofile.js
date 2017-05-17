@@ -9918,8 +9918,7 @@ var ProfileBanner = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (ProfileBanner.__proto__ || Object.getPrototypeOf(ProfileBanner)).call(this, props));
 
         _this.state = {
-            mouseOver: false,
-            isEditing: false
+            mouseOver: false
         };
         _this.savePicture = _this.savePicture.bind(_this);
         return _this;
@@ -9933,12 +9932,20 @@ var ProfileBanner = function (_React$Component) {
             if (this.props.hasErrorBackgroundImg) {
                 this.props.dismissError();
             }
+            $('#inputFile').get(0).value = null;
         }
     }, {
-        key: 'toggleEditButton',
-        value: function toggleEditButton() {
+        key: 'imageEditEnabled',
+        value: function imageEditEnabled() {
             this.setState({
-                mouseOver: !this.state.mouseOver
+                mouseOver: true
+            });
+        }
+    }, {
+        key: 'imageEditDisabled',
+        value: function imageEditDisabled() {
+            this.setState({
+                mouseOver: false
             });
         }
     }, {
@@ -10001,10 +10008,10 @@ var ProfileBanner = function (_React$Component) {
                 'div',
                 { className: 'profile-bnr', style: this.props.divStyle,
                     onMouseEnter: function onMouseEnter() {
-                        return _this3.toggleEditButton();
+                        return _this3.imageEditEnabled();
                     },
                     onMouseLeave: function onMouseLeave() {
-                        return _this3.toggleEditButton();
+                        return _this3.imageEditDisabled();
                     } },
                 _react2.default.createElement(
                     'div',
@@ -10118,6 +10125,7 @@ var SideBar = function (_React$Component) {
             if (this.props.hasErrorProfileImg) {
                 this.props.dismissError();
             }
+            $('#profileImg').get(0).value = null;
         }
     }, {
         key: "changeImage",
@@ -10144,10 +10152,17 @@ var SideBar = function (_React$Component) {
             }
         }
     }, {
-        key: "toggleEditButton",
-        value: function toggleEditButton() {
+        key: "imageEditEnabled",
+        value: function imageEditEnabled() {
             this.setState({
-                mouseOver: !this.state.mouseOver
+                mouseOver: true
+            });
+        }
+    }, {
+        key: "imageEditDisabled",
+        value: function imageEditDisabled() {
+            this.setState({
+                mouseOver: false
             });
         }
     }, {
@@ -10360,10 +10375,10 @@ var SideBar = function (_React$Component) {
             return _react2.default.createElement(
                 "div",
                 { className: "sidebar-thumbnail", onMouseEnter: function onMouseEnter() {
-                        return _this5.toggleEditButton();
+                        return _this5.imageEditEnabled();
                     },
                     onMouseLeave: function onMouseLeave() {
-                        return _this5.toggleEditButton();
+                        return _this5.imageEditDisabled();
                     } },
                 _react2.default.createElement(
                     "div",
@@ -10408,8 +10423,6 @@ var SideBar = function (_React$Component) {
     }, {
         key: "render",
         value: function render() {
-            console.log(this.props.hasErrorProfileImg);
-            console.log(this.state.mouseOver);
             return _react2.default.createElement(
                 "div",
                 { className: "col-md-4" },

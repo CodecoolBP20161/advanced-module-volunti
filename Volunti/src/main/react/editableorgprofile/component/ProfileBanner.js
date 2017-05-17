@@ -7,7 +7,6 @@ class ProfileBanner extends React.Component {
         super(props);
         this.state = {
             mouseOver: false,
-            isEditing: false
         };
         this.savePicture = this.savePicture.bind(this);
     }
@@ -18,11 +17,19 @@ class ProfileBanner extends React.Component {
         if(this.props.hasErrorBackgroundImg) {
             this.props.dismissError();
         }
+        $('#inputFile').get(0).value = null;
+
     }
 
-    toggleEditButton(){
+    imageEditEnabled() {
         this.setState({
-            mouseOver: !this.state.mouseOver
+            mouseOver: true
+        })
+    }
+
+    imageEditDisabled() {
+        this.setState({
+            mouseOver: false
         })
     }
 
@@ -55,10 +62,9 @@ class ProfileBanner extends React.Component {
     render(){
         return (
             <div className="profile-bnr" style={this.props.divStyle}
-                 onMouseEnter={() => this.toggleEditButton()}
-                 onMouseLeave={() => this.toggleEditButton()}>
+                 onMouseEnter={() => this.imageEditEnabled()}
+                 onMouseLeave={() => this.imageEditDisabled()}>
                 <div className="container">
-
                     {this.renderBackgroundImage()}
                     {/*<!-- User Info -->*/}
                     <TopLabel
@@ -70,7 +76,6 @@ class ProfileBanner extends React.Component {
                         saveState={() => this.props.saveState}
                         selectedSocial={this.props.selectedSocial}
                     />
-
                 </div>
             </div>
         )
