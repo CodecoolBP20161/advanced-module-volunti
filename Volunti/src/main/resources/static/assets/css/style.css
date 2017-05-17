@@ -665,7 +665,7 @@ iframe {
 }
 .compny-profile .modal {
 	background: rgba(0,0,0,0.2);
-	padding: 0 !important;
+	/*padding: 0 !important;*/
 }
 .compny-profile .modal-backdrop.in {
 	background: none;
@@ -3357,5 +3357,52 @@ vivid green: #2ad482
 	display: inline-block;
 	padding: 8px 15px;
 	margin-left: 10px;
+}
+.image-wrapper {
+	display:inline-block;
+	/*position:relative;*/
+}
+.image-wrapper a {
+	position:absolute;
+	bottom: 10px;
+	left: 10px;
+	border: 1px solid #999999;
+	font-family: 'Montserrat', sans-serif;
+	border-radius: 4px;
+	font-size: 12px;
+	display: inline-block;
+	text-transform: uppercase;
+	padding: 8px 15px;
+}
+.image-wrapper a:hover {
+	color: black;
+	background: #fff;
+	cursor: pointer;
+}
+.image-wrapper i {
+	position:absolute;
+	bottom: 10px;
+	left: 10px;
+	color: #999999;
+	font-size: 28px;
+	display: inline-block;
+}
+.image-wrapper .profileImg {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+.image-wrapper .alert {
+	position: absolute;
+	top: 0;
+	left: 0;
+	margin-left: 10px;
+	margin-top: 30px;
+}
+.sidebar-thumbnail {
+	position: relative;
 }
 

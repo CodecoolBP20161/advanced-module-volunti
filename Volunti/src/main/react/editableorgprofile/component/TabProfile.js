@@ -31,7 +31,7 @@ class TabProfile extends React.Component {
     toggleEdit(event) {
         const listItem = $(event.target).closest("li").get(0).id;
         const isEditing = this.state[listItem];
-        if (!this.state.isEditing) {
+        if (!this.state.isEditing && !this.state.isOpen) {
             this.setState({
                 [listItem]: !isEditing
             });
@@ -48,7 +48,6 @@ class TabProfile extends React.Component {
         this.setState({
             isOpen: false
         });
-        this.props.cancelVideo();
     };
 
     handleChange(event) {
@@ -59,7 +58,13 @@ class TabProfile extends React.Component {
         this.props.changeVideo(event.target.value)
     }
 
+    cancelVideo() {
+        this.hideModal();
+        this.props.cancelVideo();
+    }
+
     saveVideoData() {
+        this.hideModal();
         this.props.saveVideo();
     }
 
@@ -118,13 +123,14 @@ class TabProfile extends React.Component {
             <iframe width="560" height="315" src="https://www.youtube.com/embed/leQ8nEcYFOc" frameBorder="0" allowFullScreen></iframe>;
         return(
             <li className="row lined" id="editVideoUrl" onMouseEnter={this.toggleEdit} onMouseLeave={this.toggleEdit}>
-                <div className="col-sm-4">
-                    {this.state.editVideoUrl &&
-                    <button type="submit" className="btn btn-success" data-toggle="modal" data-target="#videoModal">Change video</button>
-                    }
-                </div>
                 <div className="col-md-10">
                     {videoURL}
+                </div>
+                <div className="col-xs-2">
+                    {this.state.editVideoUrl &&
+                    <a type="submit" className="btn btn-small btn-success" data-toggle="modal" data-target="#myModal"
+                    onClick={this.openModal}>Change video</a>
+                    }
                 </div>
             </li>
         )
@@ -132,16 +138,14 @@ class TabProfile extends React.Component {
 
     renderModal() {
         return(
-            <div className="modal in col-sm-10" id="videoModal" tabIndex="-1" role="dialog">
+            <div className="modal" id="myModal" tabIndex="-1" role="dialog">
                 <div className="modal-dialog" role="document">
                     <div className="modal-content">
                         <div className="container">
                             <h6><a type="submit" className="close" data-dismiss="modal" aria-label="Close"
-                                    onClick={this.hideModal}><span aria-hidden="true">&times;</span></a>
+                                    onClick={this.cancelVideo}><span aria-hidden="true">&times;</span></a>
                             Add your video to your profile page</h6>
 
-
-                        <form action="#">
                             <ul className="row">
                                 <li className="col-xs-12">
                                     <input type="text" autoFocus="autoFocus" defaultValue={this.props.videoURL}
@@ -149,12 +153,11 @@ class TabProfile extends React.Component {
                                 </li>
                                 <li className="col-xs-12">
                                     <button type="submit" className="btn btn-default" data-dismiss="modal"
-                                            onClick={this.hideModal}>Close</button>
+                                            onClick={this.cancelVideo}>Close</button>
                                     <button type="submit" className="btn btn-primary"
                                             onClick={this.saveVideoData}>Save changes</button>
                                 </li>
                             </ul>
-                        </form>
                     </div>
                 </div>
                 </div>
@@ -205,7 +208,7 @@ class TabProfile extends React.Component {
 
                         {this.renderVideo()}
 
-                        <div className="col-md-6">{this.renderModal()}</div>
+                        {this.renderModal()}
 
                         {this.renderDescription2()}
 

@@ -9,6 +9,7 @@ class FullProfile extends React.Component {
         super(props);
         this.state = {
             key: Math.random(),
+            key2: Math.random(),
             mission: null,
             description1: null,
             description2: null,
@@ -23,7 +24,8 @@ class FullProfile extends React.Component {
             video: [],
             singleVideo: null,
             selectedSocial: 'facebook',
-            hasErrorImg: false,
+            hasErrorBackgroundImg: false,
+            hasErrorProfileImg: false,
             errorMessage: null
         };
 
@@ -70,6 +72,12 @@ class FullProfile extends React.Component {
         this.fetchData()
     }
 
+    handleDataChange(name, value) {
+        this.setState({
+            [name]: value
+        });
+    }
+
     changeVideoUrl(embedCode){
         const vid = [];
         vid[0] = embedCode;
@@ -78,6 +86,18 @@ class FullProfile extends React.Component {
 
     cancelVideo() {
         this.setState({video: this.state.savedVideo})
+    }
+
+    handleError(response, name) {
+        if(response.status === 413) {
+            this.setState({errorMessage: response.responseText,
+                [name]: true});
+        }
+    }
+
+    dismissError() {
+        this.setState({hasErrorBackgroundImg: false,
+        hasErrorProfileImg: false})
     }
 
     saveBackgroundPicture(picture){
@@ -104,26 +124,38 @@ class FullProfile extends React.Component {
                 })
             }.bind(this),
             error: function (response) {
-                this.handleError(response);
+                this.handleError(response, "hasErrorBackgroundImg");
             }.bind(this)
         })
     }
 
-    handleError(response) {
-        if(response.status === 413) {
-            this.setState({errorMessage: response.responseText,
-                hasErrorImg: true});
-        }
-    }
+    saveProfilePicture(picture){
+        const csrfHeader = $("meta[name='_csrf_header']").attr("content");
+        const csrfToken = $("meta[name='_csrf']").attr("content");
+        const headers = {};
 
-    dismissError() {
-        this.setState({hasErrorImg: false})
-    }
-
-    handleDataChange(name, value) {
-        this.setState({
-            [name]: value
-        });
+        headers[csrfHeader] = csrfToken;
+        const formData = new FormData();
+        formData.append("file", picture);
+        $.ajax({
+            url: "/profile/organisation/saveProfileImage",
+            cache: false,
+            type: "POST",
+            headers: headers,
+            contentType: false,
+            processData: false,
+            async: true,
+            data: formData,
+            success: function() {
+                this.setState({
+                    key2: Math.random(),
+                    profilePicture: "/profile/organisation/image/profile"
+                })
+            }.bind(this),
+            error: function (response) {
+                this.handleError(response, "hasErrorProfileImg");
+            }.bind(this)
+        })
     }
 
     saveData() {
@@ -184,6 +216,10 @@ class FullProfile extends React.Component {
             'backgroundSize': 'cover'
         };
 
+        const imgStyle = {
+            content: 'url(' + this.state.profilePicture + ')',
+        };
+
         return(
             <div className="compny-profile">
                 {/*<!-- SUB Banner -->*/}
@@ -196,7 +232,7 @@ class FullProfile extends React.Component {
                     saveState={() => this.saveData()}
                     savePicture={(picture) => this.saveBackgroundPicture(picture)}
                     selectedSocial={this.state.selectedSocial}
-                    hasErrorImg={this.state.hasErrorImg}
+                    hasErrorBackgroundImg={this.state.hasErrorBackgroundImg}
                     errorMessage={this.state.errorMessage}
                     dismissError={this.dismissError}
                     divStyle={divStyle}/>
@@ -216,7 +252,9 @@ class FullProfile extends React.Component {
                                 </ul>
                             </div>
 
-                            <SideBar profilePicture={this.state.profilePicture}
+                            <SideBar key={this.state.key2}
+                                     imgStyle={imgStyle}
+                                     saveProfilePicture={(picture) => this.saveProfilePicture(picture)}
                                      name={this.state.name}
                                      category={this.state.category}
                                      country={this.state.country}
@@ -225,6 +263,9 @@ class FullProfile extends React.Component {
                                      address={this.state.address}
                                      mission={this.state.mission}
                                      saveData={this.saveData}
+                                     hasErrorProfileImg={this.state.hasErrorProfileImg}
+                                     errorMessage={this.state.errorMessage}
+                                     dismissError={this.dismissError}
                                      onChange={this.handleDataChange}/>
 
                             {/*<!-- Tab Content -->*/}
@@ -238,11 +279,10 @@ class FullProfile extends React.Component {
                                              description2={this.state.description2}
                                              saveData={this.saveData}
                                              onChange={this.handleDataChange}
+                                             saveVideo={this.saveVideoData}
                                              changeVideo={this.changeVideoUrl}
                                              cancelVideo={this.cancelVideo}/>
 
-                                    {/*<!-- Services -->*/}
-                                    {/*<Services />*/}
                                 </div>
                             </div>
                         </div>

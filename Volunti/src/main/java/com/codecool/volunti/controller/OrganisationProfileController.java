@@ -114,7 +114,8 @@ public class OrganisationProfileController {
     }
 
     @PostMapping( value = "/profile/organisation/saveProfileImage")
-    public boolean saveProfileImage(@RequestParam("file") MultipartFile file, Principal principal) throws IOException {
+    @ResponseBody
+    public Boolean saveProfileImage(@RequestParam("file") MultipartFile file, Principal principal) throws IOException {
         log.info("saveProfileImage() method called...");
         log.info("File type: " + file.getContentType());
 

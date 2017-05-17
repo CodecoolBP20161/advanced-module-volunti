@@ -15,7 +15,7 @@ class ProfileBanner extends React.Component {
     savePicture(e){
         e.preventDefault();
         this.props.savePicture(this.backGroundInput.files[0]);
-        if(this.props.hasErrorImg) {
+        if(this.props.hasErrorBackgroundImg) {
             this.props.dismissError();
         }
     }
@@ -30,30 +30,36 @@ class ProfileBanner extends React.Component {
         $('#inputFile').click();
     }
 
+    renderBackgroundImage() {
+        return(
+            <div className="right-top-bnr">
+                <div className="connect">
+                    <form method="POST" encType="multipart/form-data" action="/profile/organisation/saveBackgroundImage">
+                        <input className="inputFile" id="inputFile" ref={(input) => this.backGroundInput = input}
+                               onChange={this.savePicture} type="file" required="required" name="file" accept=".png,.jpg"/>
+                    </form>
+
+                    {(this.state.mouseOver || this.props.hasErrorBackgroundImg) ?
+                        <a type="submit" onClick={this.changeBackground}>Change background</a> :
+                        <i className="fa fa-camera fa-2" aria-hidden="true"> </i>}
+                </div>
+                {this.props.hasErrorBackgroundImg &&
+                <div className="alert alert-error alert-dismissible" role="alert">
+                    <button type="button" className="close" onClick={this.props.dismissError}>&times;</button>
+                    <strong>Upload failed! </strong>{this.props.errorMessage}</div>
+                }
+            </div>
+        )
+    }
+
     render(){
         return (
             <div className="profile-bnr" style={this.props.divStyle}
                  onMouseEnter={() => this.toggleEditButton()}
                  onMouseLeave={() => this.toggleEditButton()}>
-
                 <div className="container">
-                    <div className="right-top-bnr">
-                        <div className="connect">
-                            <form method="POST" encType="multipart/form-data" action="/profile/organisation/saveBackgroundImage">
-                                <input className="inputFile" id="inputFile" ref={(input) => this.backGroundInput = input}
-                                       onChange={this.savePicture} type="file" required="required" name="file" accept=".png,.jpg"/>
-                            </form>
 
-                            {(this.state.mouseOver || this.props.hasErrorImg) ?
-                                <a type="submit" onClick={this.changeBackground}>Change background</a> :
-                                <i className="fa fa-camera fa-2" aria-hidden="true"></i>}
-                        </div>
-                        {this.props.hasErrorImg &&
-                            <div className="alert alert-error alert-dismissible" role="alert">
-                                <button type="button" className="close" onClick={this.props.dismissError}>&times;</button>
-                                <strong>Upload failed! </strong>{this.props.errorMessage}</div>
-                        }
-                    </div>
+                    {this.renderBackgroundImage()}
                     {/*<!-- User Info -->*/}
                     <TopLabel
                         organisationName={this.props.organisationName}

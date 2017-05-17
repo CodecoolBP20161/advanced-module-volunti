@@ -9545,6 +9545,7 @@ var FullProfile = function (_React$Component) {
 
         _this.state = {
             key: Math.random(),
+            key2: Math.random(),
             mission: null,
             description1: null,
             description2: null,
@@ -9559,7 +9560,8 @@ var FullProfile = function (_React$Component) {
             video: [],
             singleVideo: null,
             selectedSocial: 'facebook',
-            hasErrorImg: false,
+            hasErrorBackgroundImg: false,
+            hasErrorProfileImg: false,
             errorMessage: null
         };
 
@@ -9610,6 +9612,11 @@ var FullProfile = function (_React$Component) {
             this.fetchData();
         }
     }, {
+        key: 'handleDataChange',
+        value: function handleDataChange(name, value) {
+            this.setState(_defineProperty({}, name, value));
+        }
+    }, {
         key: 'changeVideoUrl',
         value: function changeVideoUrl(embedCode) {
             var vid = [];
@@ -9620,6 +9627,20 @@ var FullProfile = function (_React$Component) {
         key: 'cancelVideo',
         value: function cancelVideo() {
             this.setState({ video: this.state.savedVideo });
+        }
+    }, {
+        key: 'handleError',
+        value: function handleError(response, name) {
+            if (response.status === 413) {
+                this.setState(_defineProperty({ errorMessage: response.responseText
+                }, name, true));
+            }
+        }
+    }, {
+        key: 'dismissError',
+        value: function dismissError() {
+            this.setState({ hasErrorBackgroundImg: false,
+                hasErrorProfileImg: false });
         }
     }, {
         key: 'saveBackgroundPicture',
@@ -9647,27 +9668,39 @@ var FullProfile = function (_React$Component) {
                     });
                 }.bind(this),
                 error: function (response) {
-                    this.handleError(response);
+                    this.handleError(response, "hasErrorBackgroundImg");
                 }.bind(this)
             });
         }
     }, {
-        key: 'handleError',
-        value: function handleError(response) {
-            if (response.status === 413) {
-                this.setState({ errorMessage: response.responseText,
-                    hasErrorImg: true });
-            }
-        }
-    }, {
-        key: 'dismissError',
-        value: function dismissError() {
-            this.setState({ hasErrorImg: false });
-        }
-    }, {
-        key: 'handleDataChange',
-        value: function handleDataChange(name, value) {
-            this.setState(_defineProperty({}, name, value));
+        key: 'saveProfilePicture',
+        value: function saveProfilePicture(picture) {
+            var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+            var csrfToken = $("meta[name='_csrf']").attr("content");
+            var headers = {};
+
+            headers[csrfHeader] = csrfToken;
+            var formData = new FormData();
+            formData.append("file", picture);
+            $.ajax({
+                url: "/profile/organisation/saveProfileImage",
+                cache: false,
+                type: "POST",
+                headers: headers,
+                contentType: false,
+                processData: false,
+                async: true,
+                data: formData,
+                success: function () {
+                    this.setState({
+                        key2: Math.random(),
+                        profilePicture: "/profile/organisation/image/profile"
+                    });
+                }.bind(this),
+                error: function (response) {
+                    this.handleError(response, "hasErrorProfileImg");
+                }.bind(this)
+            });
         }
     }, {
         key: 'saveData',
@@ -9733,6 +9766,10 @@ var FullProfile = function (_React$Component) {
                 'backgroundSize': 'cover'
             };
 
+            var imgStyle = {
+                content: 'url(' + this.state.profilePicture + ')'
+            };
+
             return _react2.default.createElement(
                 'div',
                 { className: 'compny-profile' },
@@ -9749,7 +9786,7 @@ var FullProfile = function (_React$Component) {
                         return _this2.saveBackgroundPicture(picture);
                     },
                     selectedSocial: this.state.selectedSocial,
-                    hasErrorImg: this.state.hasErrorImg,
+                    hasErrorBackgroundImg: this.state.hasErrorBackgroundImg,
                     errorMessage: this.state.errorMessage,
                     dismissError: this.dismissError,
                     divStyle: divStyle }),
@@ -9797,7 +9834,11 @@ var FullProfile = function (_React$Component) {
                                     )
                                 )
                             ),
-                            _react2.default.createElement(_SideBar2.default, { profilePicture: this.state.profilePicture,
+                            _react2.default.createElement(_SideBar2.default, { key: this.state.key2,
+                                imgStyle: imgStyle,
+                                saveProfilePicture: function saveProfilePicture(picture) {
+                                    return _this2.saveProfilePicture(picture);
+                                },
                                 name: this.state.name,
                                 category: this.state.category,
                                 country: this.state.country,
@@ -9806,6 +9847,9 @@ var FullProfile = function (_React$Component) {
                                 address: this.state.address,
                                 mission: this.state.mission,
                                 saveData: this.saveData,
+                                hasErrorProfileImg: this.state.hasErrorProfileImg,
+                                errorMessage: this.state.errorMessage,
+                                dismissError: this.dismissError,
                                 onChange: this.handleDataChange }),
                             _react2.default.createElement(
                                 'div',
@@ -9819,6 +9863,7 @@ var FullProfile = function (_React$Component) {
                                         description2: this.state.description2,
                                         saveData: this.saveData,
                                         onChange: this.handleDataChange,
+                                        saveVideo: this.saveVideoData,
                                         changeVideo: this.changeVideoUrl,
                                         cancelVideo: this.cancelVideo })
                                 )
@@ -9885,7 +9930,7 @@ var ProfileBanner = function (_React$Component) {
         value: function savePicture(e) {
             e.preventDefault();
             this.props.savePicture(this.backGroundInput.files[0]);
-            if (this.props.hasErrorImg) {
+            if (this.props.hasErrorBackgroundImg) {
                 this.props.dismissError();
             }
         }
@@ -9902,68 +9947,79 @@ var ProfileBanner = function (_React$Component) {
             $('#inputFile').click();
         }
     }, {
+        key: 'renderBackgroundImage',
+        value: function renderBackgroundImage() {
+            var _this2 = this;
+
+            return _react2.default.createElement(
+                'div',
+                { className: 'right-top-bnr' },
+                _react2.default.createElement(
+                    'div',
+                    { className: 'connect' },
+                    _react2.default.createElement(
+                        'form',
+                        { method: 'POST', encType: 'multipart/form-data', action: '/profile/organisation/saveBackgroundImage' },
+                        _react2.default.createElement('input', { className: 'inputFile', id: 'inputFile', ref: function ref(input) {
+                                return _this2.backGroundInput = input;
+                            },
+                            onChange: this.savePicture, type: 'file', required: 'required', name: 'file', accept: '.png,.jpg' })
+                    ),
+                    this.state.mouseOver || this.props.hasErrorBackgroundImg ? _react2.default.createElement(
+                        'a',
+                        { type: 'submit', onClick: this.changeBackground },
+                        'Change background'
+                    ) : _react2.default.createElement(
+                        'i',
+                        { className: 'fa fa-camera fa-2', 'aria-hidden': 'true' },
+                        ' '
+                    )
+                ),
+                this.props.hasErrorBackgroundImg && _react2.default.createElement(
+                    'div',
+                    { className: 'alert alert-error alert-dismissible', role: 'alert' },
+                    _react2.default.createElement(
+                        'button',
+                        { type: 'button', className: 'close', onClick: this.props.dismissError },
+                        '\xD7'
+                    ),
+                    _react2.default.createElement(
+                        'strong',
+                        null,
+                        'Upload failed! '
+                    ),
+                    this.props.errorMessage
+                )
+            );
+        }
+    }, {
         key: 'render',
         value: function render() {
-            var _this2 = this;
+            var _this3 = this;
 
             return _react2.default.createElement(
                 'div',
                 { className: 'profile-bnr', style: this.props.divStyle,
                     onMouseEnter: function onMouseEnter() {
-                        return _this2.toggleEditButton();
+                        return _this3.toggleEditButton();
                     },
                     onMouseLeave: function onMouseLeave() {
-                        return _this2.toggleEditButton();
+                        return _this3.toggleEditButton();
                     } },
                 _react2.default.createElement(
                     'div',
                     { className: 'container' },
-                    _react2.default.createElement(
-                        'div',
-                        { className: 'right-top-bnr' },
-                        _react2.default.createElement(
-                            'div',
-                            { className: 'connect' },
-                            _react2.default.createElement(
-                                'form',
-                                { method: 'POST', encType: 'multipart/form-data', action: '/profile/organisation/saveBackgroundImage' },
-                                _react2.default.createElement('input', { className: 'inputFile', id: 'inputFile', ref: function ref(input) {
-                                        return _this2.backGroundInput = input;
-                                    },
-                                    onChange: this.savePicture, type: 'file', required: 'required', name: 'file', accept: '.png,.jpg' })
-                            ),
-                            this.state.mouseOver || this.props.hasErrorImg ? _react2.default.createElement(
-                                'a',
-                                { type: 'submit', onClick: this.changeBackground },
-                                'Change background'
-                            ) : _react2.default.createElement('i', { className: 'fa fa-camera fa-2', 'aria-hidden': 'true' })
-                        ),
-                        this.props.hasErrorImg && _react2.default.createElement(
-                            'div',
-                            { className: 'alert alert-error alert-dismissible', role: 'alert' },
-                            _react2.default.createElement(
-                                'button',
-                                { type: 'button', className: 'close', onClick: this.props.dismissError },
-                                '\xD7'
-                            ),
-                            _react2.default.createElement(
-                                'strong',
-                                null,
-                                'Upload failed! '
-                            ),
-                            this.props.errorMessage
-                        )
-                    ),
+                    this.renderBackgroundImage(),
                     _react2.default.createElement(_TopLabel2.default, {
                         organisationName: this.props.organisationName,
                         category: this.props.category,
                         address: this.props.address,
                         social: this.props.social,
                         saveSocial: function saveSocial(value, newSelected) {
-                            return _this2.props.saveSocial(value, newSelected);
+                            return _this3.props.saveSocial(value, newSelected);
                         },
                         saveState: function saveState() {
-                            return _this2.props.saveState;
+                            return _this3.props.saveState;
                         },
                         selectedSocial: this.props.selectedSocial
                     })
@@ -10018,11 +10074,12 @@ var SideBar = function (_React$Component) {
             categories: [],
             editName: false,
             editCategory: false,
-            editLocation: false
+            editLocation: false,
+            mouseOver: false
         };
         _this.handleChange = _this.handleChange.bind(_this);
         _this.toggleEdit = _this.toggleEdit.bind(_this);
-
+        _this.savePicture = _this.savePicture.bind(_this);
         return _this;
     }
 
@@ -10054,6 +10111,20 @@ var SideBar = function (_React$Component) {
             this.fetchData();
         }
     }, {
+        key: "savePicture",
+        value: function savePicture(e) {
+            e.preventDefault();
+            this.props.saveProfilePicture(this.profileInput.files[0]);
+            if (this.props.hasErrorProfileImg) {
+                this.props.dismissError();
+            }
+        }
+    }, {
+        key: "changeImage",
+        value: function changeImage() {
+            $('#profileImg').click();
+        }
+    }, {
         key: "toggleEditMode",
         value: function toggleEditMode() {
             if (this.state.isEditing) {
@@ -10073,15 +10144,272 @@ var SideBar = function (_React$Component) {
             }
         }
     }, {
+        key: "toggleEditButton",
+        value: function toggleEditButton() {
+            this.setState({
+                mouseOver: !this.state.mouseOver
+            });
+        }
+    }, {
         key: "handleChange",
         value: function handleChange(event) {
             this.props.onChange(event.target.name, event.target.value);
         }
     }, {
-        key: "render",
-        value: function render() {
+        key: "renderName",
+        value: function renderName() {
             var _this2 = this;
 
+            return _react2.default.createElement(
+                "li",
+                { className: "row lined", id: "editName", onMouseEnter: this.toggleEdit,
+                    onMouseLeave: this.toggleEdit },
+                _react2.default.createElement(
+                    "h6",
+                    { className: "title col-xs-4" },
+                    "Name"
+                ),
+                !(this.state.isEditing && this.state.editName) && _react2.default.createElement(
+                    "span",
+                    { className: "subtitle col-xs-5" },
+                    this.props.name
+                ),
+                this.state.isEditing && this.state.editName && _react2.default.createElement(
+                    "span",
+                    { className: "subtitle col-xs-4" },
+                    _react2.default.createElement("input", { defaultValue: this.props.name, name: "name",
+                        required: "required",
+                        onChange: this.handleChange })
+                ),
+                _react2.default.createElement(
+                    "div",
+                    { className: "edit col-xs-3" },
+                    this.state.editName && _react2.default.createElement(
+                        "a",
+                        { type: "submit", className: "btn btn-small btn-success",
+                            onClick: function onClick() {
+                                return _this2.toggleEditMode();
+                            } },
+                        this.state.isEditing ? 'Save' : 'Edit'
+                    )
+                )
+            );
+        }
+    }, {
+        key: "renderCategory",
+        value: function renderCategory() {
+            var _this3 = this;
+
+            return _react2.default.createElement(
+                "li",
+                { className: "row lined", id: "editCategory", onMouseEnter: this.toggleEdit,
+                    onMouseLeave: this.toggleEdit },
+                _react2.default.createElement(
+                    "h6",
+                    { className: "title col-xs-4" },
+                    "Category"
+                ),
+                !(this.state.isEditing && this.state.editCategory) && _react2.default.createElement(
+                    "span",
+                    { className: "subtitle col-xs-5" },
+                    this.props.category
+                ),
+                this.state.isEditing && this.state.editCategory && _react2.default.createElement(
+                    "span",
+                    { className: "subtitle col-xs-5" },
+                    _react2.default.createElement(
+                        "select",
+                        { defaultValue: this.props.category,
+                            required: "required",
+                            name: "category",
+                            onChange: this.handleChange },
+                        this.state.categories.map(function (category, i) {
+                            return _react2.default.createElement(
+                                "option",
+                                { key: i },
+                                category
+                            );
+                        })
+                    )
+                ),
+                _react2.default.createElement(
+                    "div",
+                    { className: "edit col-xs-3" },
+                    this.state.editCategory && _react2.default.createElement(
+                        "a",
+                        { type: "submit", className: "btn btn-small btn-success",
+                            onClick: function onClick() {
+                                return _this3.toggleEditMode();
+                            } },
+                        this.state.isEditing ? 'Save' : 'Edit'
+                    )
+                )
+            );
+        }
+    }, {
+        key: "renderLocationWithoutDetails",
+        value: function renderLocationWithoutDetails() {
+            var _this4 = this;
+
+            return _react2.default.createElement(
+                "li",
+                { className: "row", id: "editLocation", onMouseEnter: this.toggleEdit,
+                    onMouseLeave: this.toggleEdit },
+                _react2.default.createElement(
+                    "h6",
+                    { className: "title col-xs-4" },
+                    "Location"
+                ),
+                !(this.state.isEditing && this.state.editLocation) && _react2.default.createElement(
+                    "span",
+                    { className: "subtitle col-xs-5" },
+                    this.props.city,
+                    ", ",
+                    this.props.country
+                ),
+                this.state.isEditing && this.state.editLocation && _react2.default.createElement(
+                    "span",
+                    { className: "subtitle col-xs-5" },
+                    _react2.default.createElement(
+                        "select",
+                        { defaultValue: this.props.country,
+                            required: "required",
+                            name: "country",
+                            onChange: this.handleChange },
+                        this.state.countries.map(function (country, i) {
+                            return _react2.default.createElement(
+                                "option",
+                                { key: i },
+                                country
+                            );
+                        })
+                    )
+                ),
+                _react2.default.createElement(
+                    "div",
+                    { className: "edit col-xs-3" },
+                    this.state.editLocation && _react2.default.createElement(
+                        "a",
+                        { type: "submit", className: "btn btn-small btn-success",
+                            onClick: function onClick() {
+                                return _this4.toggleEditMode();
+                            } },
+                        this.state.isEditing ? 'Save' : 'Edit'
+                    )
+                )
+            );
+        }
+    }, {
+        key: "renderLocationDetails",
+        value: function renderLocationDetails() {
+            return _react2.default.createElement(
+                "div",
+                null,
+                _react2.default.createElement(
+                    "li",
+                    { className: "row" },
+                    _react2.default.createElement(
+                        "h6",
+                        { className: "title col-xs-4" },
+                        "City"
+                    ),
+                    _react2.default.createElement(
+                        "span",
+                        { className: "subtitle col-xs-5" },
+                        _react2.default.createElement("input", { defaultValue: this.props.city, name: "city", onChange: this.handleChange })
+                    )
+                ),
+                _react2.default.createElement(
+                    "li",
+                    { className: "row" },
+                    _react2.default.createElement(
+                        "h6",
+                        { className: "title col-xs-4" },
+                        "Address"
+                    ),
+                    _react2.default.createElement(
+                        "span",
+                        { className: "subtitle col-xs-5" },
+                        _react2.default.createElement("input", { defaultValue: this.props.address, name: "address", onChange: this.handleChange })
+                    )
+                ),
+                _react2.default.createElement(
+                    "li",
+                    { className: "row" },
+                    _react2.default.createElement(
+                        "h6",
+                        { className: "title col-xs-4" },
+                        "ZipCode"
+                    ),
+                    _react2.default.createElement(
+                        "span",
+                        { className: "subtitle col-xs-5" },
+                        _react2.default.createElement("input", { defaultValue: this.props.zipcode, name: "zipcode",
+                            maxLength: "20",
+                            type: "text",
+                            onChange: this.handleChange })
+                    )
+                )
+            );
+        }
+    }, {
+        key: "renderProfileImage",
+        value: function renderProfileImage() {
+            var _this5 = this;
+
+            return _react2.default.createElement(
+                "div",
+                { className: "sidebar-thumbnail", onMouseEnter: function onMouseEnter() {
+                        return _this5.toggleEditButton();
+                    },
+                    onMouseLeave: function onMouseLeave() {
+                        return _this5.toggleEditButton();
+                    } },
+                _react2.default.createElement(
+                    "div",
+                    { className: "image-wrapper" },
+                    _react2.default.createElement("img", { style: this.props.imgStyle }),
+                    _react2.default.createElement(
+                        "form",
+                        { method: "POST", encType: "multipart/form-data", action: "/profile/organisation/saveProfileImage" },
+                        _react2.default.createElement("input", { className: "profileImg", id: "profileImg", ref: function ref(input) {
+                                return _this5.profileInput = input;
+                            },
+                            onChange: this.savePicture, type: "file", required: "required", name: "file",
+                            accept: ".png,.jpg" })
+                    ),
+                    this.state.mouseOver || this.props.hasErrorProfileImg ? _react2.default.createElement(
+                        "a",
+                        { type: "submit", onClick: this.changeImage },
+                        "Change picture"
+                    ) : _react2.default.createElement(
+                        "i",
+                        { className: "fa fa-camera fa-2", "aria-hidden": "true" },
+                        " "
+                    ),
+                    this.props.hasErrorProfileImg && _react2.default.createElement(
+                        "div",
+                        { className: "alert alert-error alert-dismissible", role: "alert" },
+                        _react2.default.createElement(
+                            "button",
+                            { type: "button", className: "close", onClick: this.props.dismissError },
+                            "\xD7"
+                        ),
+                        _react2.default.createElement(
+                            "strong",
+                            null,
+                            "Upload failed! "
+                        ),
+                        this.props.errorMessage
+                    )
+                )
+            );
+        }
+    }, {
+        key: "render",
+        value: function render() {
+            console.log(this.props.hasErrorProfileImg);
+            console.log(this.state.mouseOver);
             return _react2.default.createElement(
                 "div",
                 { className: "col-md-4" },
@@ -10112,194 +10440,17 @@ var SideBar = function (_React$Component) {
                     _react2.default.createElement(
                         "div",
                         null,
-                        _react2.default.createElement(
-                            "div",
-                            { className: "sidebar-thumbnail" },
-                            " ",
-                            _react2.default.createElement("img", { src: this.props.profilePicture }),
-                            " "
-                        ),
+                        this.renderProfileImage(),
                         _react2.default.createElement(
                             "div",
                             { className: "sidebar-information" },
                             _react2.default.createElement(
                                 "ul",
                                 { className: "single-category" },
-                                _react2.default.createElement(
-                                    "li",
-                                    { className: "row lined", id: "editName", onMouseEnter: this.toggleEdit,
-                                        onMouseLeave: this.toggleEdit },
-                                    _react2.default.createElement(
-                                        "h6",
-                                        { className: "title col-xs-4" },
-                                        "Name"
-                                    ),
-                                    !(this.state.isEditing && this.state.editName) && _react2.default.createElement(
-                                        "span",
-                                        { className: "subtitle col-xs-5" },
-                                        this.props.name
-                                    ),
-                                    this.state.isEditing && this.state.editName && _react2.default.createElement(
-                                        "span",
-                                        { className: "subtitle col-xs-4" },
-                                        _react2.default.createElement("input", { defaultValue: this.props.name, name: "name",
-                                            required: "required",
-                                            onChange: this.handleChange })
-                                    ),
-                                    _react2.default.createElement(
-                                        "div",
-                                        { className: "edit col-xs-3" },
-                                        this.state.editName && _react2.default.createElement(
-                                            "a",
-                                            { type: "submit", className: "btn btn-small btn-success",
-                                                onClick: function onClick() {
-                                                    return _this2.toggleEditMode();
-                                                } },
-                                            this.state.isEditing ? 'Save' : 'Edit'
-                                        )
-                                    )
-                                ),
-                                _react2.default.createElement(
-                                    "li",
-                                    { className: "row lined", id: "editCategory", onMouseEnter: this.toggleEdit,
-                                        onMouseLeave: this.toggleEdit },
-                                    _react2.default.createElement(
-                                        "h6",
-                                        { className: "title col-xs-4" },
-                                        "Category"
-                                    ),
-                                    !(this.state.isEditing && this.state.editCategory) && _react2.default.createElement(
-                                        "span",
-                                        { className: "subtitle col-xs-5" },
-                                        this.props.category
-                                    ),
-                                    this.state.isEditing && this.state.editCategory && _react2.default.createElement(
-                                        "span",
-                                        { className: "subtitle col-xs-5" },
-                                        _react2.default.createElement(
-                                            "select",
-                                            { defaultValue: this.props.category,
-                                                required: "required",
-                                                name: "category",
-                                                onChange: this.handleChange },
-                                            this.state.categories.map(function (category, i) {
-                                                return _react2.default.createElement(
-                                                    "option",
-                                                    { key: i },
-                                                    category
-                                                );
-                                            })
-                                        )
-                                    ),
-                                    _react2.default.createElement(
-                                        "div",
-                                        { className: "edit col-xs-3" },
-                                        this.state.editCategory && _react2.default.createElement(
-                                            "a",
-                                            { type: "submit", className: "btn btn-small btn-success",
-                                                onClick: function onClick() {
-                                                    return _this2.toggleEditMode();
-                                                } },
-                                            this.state.isEditing ? 'Save' : 'Edit'
-                                        )
-                                    )
-                                ),
-                                _react2.default.createElement(
-                                    "li",
-                                    { className: "row", id: "editLocation", onMouseEnter: this.toggleEdit,
-                                        onMouseLeave: this.toggleEdit },
-                                    _react2.default.createElement(
-                                        "h6",
-                                        { className: "title col-xs-4" },
-                                        "Location"
-                                    ),
-                                    !(this.state.isEditing && this.state.editLocation) && _react2.default.createElement(
-                                        "span",
-                                        { className: "subtitle col-xs-5" },
-                                        this.props.city,
-                                        ", ",
-                                        this.props.country
-                                    ),
-                                    this.state.isEditing && this.state.editLocation && _react2.default.createElement(
-                                        "span",
-                                        { className: "subtitle col-xs-5" },
-                                        _react2.default.createElement(
-                                            "select",
-                                            { defaultValue: this.props.country,
-                                                required: "required",
-                                                name: "country",
-                                                onChange: this.handleChange },
-                                            this.state.countries.map(function (country, i) {
-                                                return _react2.default.createElement(
-                                                    "option",
-                                                    { key: i },
-                                                    country
-                                                );
-                                            })
-                                        )
-                                    ),
-                                    _react2.default.createElement(
-                                        "div",
-                                        { className: "edit col-xs-3" },
-                                        this.state.editLocation && _react2.default.createElement(
-                                            "a",
-                                            { type: "submit", className: "btn btn-small btn-success",
-                                                onClick: function onClick() {
-                                                    return _this2.toggleEditMode();
-                                                } },
-                                            this.state.isEditing ? 'Save' : 'Edit'
-                                        )
-                                    )
-                                ),
-                                this.state.isEditing && this.state.editLocation && _react2.default.createElement(
-                                    "div",
-                                    null,
-                                    _react2.default.createElement(
-                                        "li",
-                                        { className: "row" },
-                                        _react2.default.createElement(
-                                            "h6",
-                                            { className: "title col-xs-4" },
-                                            "City"
-                                        ),
-                                        _react2.default.createElement(
-                                            "span",
-                                            { className: "subtitle col-xs-5" },
-                                            _react2.default.createElement("input", { defaultValue: this.props.city, name: "city", onChange: this.handleChange })
-                                        )
-                                    ),
-                                    _react2.default.createElement(
-                                        "li",
-                                        { className: "row" },
-                                        _react2.default.createElement(
-                                            "h6",
-                                            { className: "title col-xs-4" },
-                                            "Address"
-                                        ),
-                                        _react2.default.createElement(
-                                            "span",
-                                            { className: "subtitle col-xs-5" },
-                                            _react2.default.createElement("input", { defaultValue: this.props.address, name: "address", onChange: this.handleChange })
-                                        )
-                                    ),
-                                    _react2.default.createElement(
-                                        "li",
-                                        { className: "row" },
-                                        _react2.default.createElement(
-                                            "h6",
-                                            { className: "title col-xs-4" },
-                                            "ZipCode"
-                                        ),
-                                        _react2.default.createElement(
-                                            "span",
-                                            { className: "subtitle col-xs-5" },
-                                            _react2.default.createElement("input", { defaultValue: this.props.zipcode, name: "zipcode",
-                                                maxLength: "20",
-                                                type: "text",
-                                                onChange: this.handleChange })
-                                        )
-                                    )
-                                )
+                                this.renderName(),
+                                this.renderCategory(),
+                                this.renderLocationWithoutDetails(),
+                                this.state.isEditing && this.state.editLocation && this.renderLocationDetails()
                             )
                         )
                     )
@@ -10590,7 +10741,7 @@ var TabProfile = function (_React$Component) {
         value: function toggleEdit(event) {
             var listItem = $(event.target).closest("li").get(0).id;
             var isEditing = this.state[listItem];
-            if (!this.state.isEditing) {
+            if (!this.state.isEditing && !this.state.isOpen) {
                 this.setState(_defineProperty({}, listItem, !isEditing));
             }
         }
@@ -10607,7 +10758,6 @@ var TabProfile = function (_React$Component) {
             this.setState({
                 isOpen: false
             });
-            this.props.cancelVideo();
         }
     }, {
         key: "handleChange",
@@ -10620,8 +10770,15 @@ var TabProfile = function (_React$Component) {
             this.props.changeVideo(event.target.value);
         }
     }, {
+        key: "cancelVideo",
+        value: function cancelVideo() {
+            this.hideModal();
+            this.props.cancelVideo();
+        }
+    }, {
         key: "saveVideoData",
         value: function saveVideoData() {
+            this.hideModal();
             this.props.saveVideo();
         }
     }, {
@@ -10705,17 +10862,18 @@ var TabProfile = function (_React$Component) {
                 { className: "row lined", id: "editVideoUrl", onMouseEnter: this.toggleEdit, onMouseLeave: this.toggleEdit },
                 _react2.default.createElement(
                     "div",
-                    { className: "col-sm-4" },
-                    this.state.editVideoUrl && _react2.default.createElement(
-                        "button",
-                        { type: "submit", className: "btn btn-success", "data-toggle": "modal", "data-target": "#videoModal" },
-                        "Change video"
-                    )
+                    { className: "col-md-10" },
+                    videoURL
                 ),
                 _react2.default.createElement(
                     "div",
-                    { className: "col-md-10" },
-                    videoURL
+                    { className: "col-xs-2" },
+                    this.state.editVideoUrl && _react2.default.createElement(
+                        "a",
+                        { type: "submit", className: "btn btn-small btn-success", "data-toggle": "modal", "data-target": "#myModal",
+                            onClick: this.openModal },
+                        "Change video"
+                    )
                 )
             );
         }
@@ -10724,7 +10882,7 @@ var TabProfile = function (_React$Component) {
         value: function renderModal() {
             return _react2.default.createElement(
                 "div",
-                { className: "modal in col-sm-10", id: "videoModal", tabIndex: "-1", role: "dialog" },
+                { className: "modal", id: "myModal", tabIndex: "-1", role: "dialog" },
                 _react2.default.createElement(
                     "div",
                     { className: "modal-dialog", role: "document" },
@@ -10740,7 +10898,7 @@ var TabProfile = function (_React$Component) {
                                 _react2.default.createElement(
                                     "a",
                                     { type: "submit", className: "close", "data-dismiss": "modal", "aria-label": "Close",
-                                        onClick: this.hideModal },
+                                        onClick: this.cancelVideo },
                                     _react2.default.createElement(
                                         "span",
                                         { "aria-hidden": "true" },
@@ -10750,32 +10908,28 @@ var TabProfile = function (_React$Component) {
                                 "Add your video to your profile page"
                             ),
                             _react2.default.createElement(
-                                "form",
-                                { action: "#" },
+                                "ul",
+                                { className: "row" },
                                 _react2.default.createElement(
-                                    "ul",
-                                    { className: "row" },
+                                    "li",
+                                    { className: "col-xs-12" },
+                                    _react2.default.createElement("input", { type: "text", autoFocus: "autoFocus", defaultValue: this.props.videoURL,
+                                        onChange: this.handleVideoInputChange })
+                                ),
+                                _react2.default.createElement(
+                                    "li",
+                                    { className: "col-xs-12" },
                                     _react2.default.createElement(
-                                        "li",
-                                        { className: "col-xs-12" },
-                                        _react2.default.createElement("input", { type: "text", autoFocus: "autoFocus", defaultValue: this.props.videoURL,
-                                            onChange: this.handleVideoInputChange })
+                                        "button",
+                                        { type: "submit", className: "btn btn-default", "data-dismiss": "modal",
+                                            onClick: this.cancelVideo },
+                                        "Close"
                                     ),
                                     _react2.default.createElement(
-                                        "li",
-                                        { className: "col-xs-12" },
-                                        _react2.default.createElement(
-                                            "button",
-                                            { type: "submit", className: "btn btn-default", "data-dismiss": "modal",
-                                                onClick: this.hideModal },
-                                            "Close"
-                                        ),
-                                        _react2.default.createElement(
-                                            "button",
-                                            { type: "submit", className: "btn btn-primary",
-                                                onClick: this.saveVideoData },
-                                            "Save changes"
-                                        )
+                                        "button",
+                                        { type: "submit", className: "btn btn-primary",
+                                            onClick: this.saveVideoData },
+                                        "Save changes"
                                     )
                                 )
                             )
@@ -10851,11 +11005,7 @@ var TabProfile = function (_React$Component) {
                             this.renderMission(),
                             this.renderDescription1(),
                             this.renderVideo(),
-                            _react2.default.createElement(
-                                "div",
-                                { className: "col-md-6" },
-                                this.renderModal()
-                            ),
+                            this.renderModal(),
                             this.renderDescription2()
                         )
                     )
