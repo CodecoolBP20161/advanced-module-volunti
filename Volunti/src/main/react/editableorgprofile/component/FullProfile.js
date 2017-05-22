@@ -21,8 +21,8 @@ class FullProfile extends React.Component {
             address: null,
             profilePicture: "/profile/organisation/image/profile",
             backgroundPicture: "/profile/organisation/image/background",
-            video: [],
-            singleVideo: null,
+            video: {},
+            tempVideo: {},
             selectedSocial: 'facebook',
             hasErrorBackgroundImg: false,
             hasErrorProfileImg: false,
@@ -44,13 +44,15 @@ class FullProfile extends React.Component {
         const headers = {};
 
         headers[csrfHeader] = csrfToken;
-         $.ajax({
+        $.ajax({
             url: "/profile/organisation/text",
             cache: false,
             type: "GET",
             headers: headers,
             dataType: "json",
             success: function (response) {
+                if(response.organisationVideos.length !== 0)
+                    this.setState({video: response.organisationVideos[0]});
                 this.setState({
                     name: response.name,
                     category: response.category,
@@ -58,14 +60,13 @@ class FullProfile extends React.Component {
                     city: response.city,
                     zipcode: response.zipcode,
                     address: response.address,
-                    video: response.organisationVideos,
-                    savedVideo: response.organisationVideos,
+                    tempVideo: response.organisationVideos[0],
                     mission: response.mission,
                     description1: response.description1,
                     description2: response.description2,
-                    })
+                })
             }.bind(this)
-         });
+        });
     }
 
     componentDidMount(){
@@ -79,13 +80,13 @@ class FullProfile extends React.Component {
     }
 
     changeVideoUrl(embedCode){
-        const vid = [];
-        vid[0] = embedCode;
-        this.setState({video: vid});
+        const vid = {};
+        vid["embedCode"] = embedCode;
+        this.setState({tempVideo: vid});
     }
 
     cancelVideo() {
-        this.setState({video: this.state.savedVideo})
+        this.setState({tempVideo: this.state.video})
     }
 
     handleError(response, name) {
@@ -97,7 +98,7 @@ class FullProfile extends React.Component {
 
     dismissError() {
         this.setState({hasErrorBackgroundImg: false,
-        hasErrorProfileImg: false})
+            hasErrorProfileImg: false})
     }
 
     saveBackgroundPicture(picture){
@@ -195,7 +196,8 @@ class FullProfile extends React.Component {
 
         headers[csrfHeader] = csrfToken;
         const formData = {};
-        formData["embedCode"] = this.state.video[0];
+        this.setState({video: this.state.tempVideo});
+        formData["embedCode"] = this.state.tempVideo["embedCode"];
 
         $.ajax({
             url: "/profile/organisation/saveVideo",
@@ -273,7 +275,7 @@ class FullProfile extends React.Component {
                                 <div className="tab-content">
 
                                     {/*<!-- PROFILE -->*/}
-                                    <Profile videoURL={this.state.video[0]}
+                                    <Profile videoURL={this.state.video}
                                              mission={this.state.mission}
                                              description1={this.state.description1}
                                              description2={this.state.description2}

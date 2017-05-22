@@ -10,18 +10,18 @@ class TabProfile extends React.Component {
             editMission: false,
             editDescription1: false,
             editDescription2: false,
-            isOpen: false,
+            hasVideoInputError: false,
+            isVideoEditEnabled: true
         };
         this.handleChange = this.handleChange.bind(this);
-        this.handleVideoInputChange = this.handleVideoInputChange.bind(this);
+        this.handleVideoChange = this.handleVideoChange.bind(this);
         this.toggleEdit = this.toggleEdit.bind(this);
-        this.openModal = this.openModal.bind(this);
-        this.hideModal = this.hideModal.bind(this);
+        this.dismissError = this.dismissError.bind(this)
     }
 
     toggleEditMode(){
         if (this.state.isEditing){
-           this.props.saveData();
+            this.props.saveData();
         }
         this.setState({
             isEditing: !this.state.isEditing
@@ -31,41 +31,77 @@ class TabProfile extends React.Component {
     toggleEdit(event) {
         const listItem = $(event.target).closest("li").get(0).id;
         const isEditing = this.state[listItem];
-        if (!this.state.isEditing && !this.state.isOpen) {
+        if (!this.state.isEditing) {
             this.setState({
                 [listItem]: !isEditing
             });
         }
     }
 
-    openModal() {
+    toggleVideoEditMode(){
+        if (this.state.isEditing){
+            this.props.saveVideo();
+        } else {
+            this.setState({
+                isVideoEditEnabled: false
+            })
+        }
         this.setState({
-            isOpen: true
+            isEditing: !this.state.isEditing,
         });
-    };
-
-    hideModal() {
-        this.setState({
-            isOpen: false
-        });
-    };
+    }
 
     handleChange(event) {
         this.props.onChange(event.target.name, event.target.value)
     }
 
-    handleVideoInputChange(event) {
-        this.props.changeVideo(event.target.value)
+    handleVideoChange(event) {
+        if(! /<iframe[^>]+src="http[s]?:\/\/(www\.)?(youtube|player\.vimeo){1}([^"\s]+)"?[^>]*><\/iframe>/g.test(event.target.value)){
+            this.setState({hasVideoInputError: true,
+                isVideoEditEnabled: false,
+                errorMessage: "Not gooooood! Please provide valid embed code."})
+        } else {
+            this.setState({hasVideoInputError: false,
+                isVideoEditEnabled: true
+            });
+            this.props.changeVideo(event.target.value);
+        }
+    }
+
+    getAttributes(text) {
+        const doc = document.createElement('div');
+        doc.innerHTML = text;
+        const iframe = doc.getElementsByTagName('iframe')[0];
+
+        const attributes = {};
+        [].slice.call(iframe.attributes).forEach(function (element) {
+            attributes[element.name] = element.value;
+        });
+
+        return attributes
+    }
+
+    getVideoCode() {
+        let videoURL;
+        if(!this.props.videoURL.hasOwnProperty("embedCode")) {
+            videoURL = '<iframe src="https://www.youtube.com/embed/leQ8nEcYFOc"></iframe>'
+        } else {
+            videoURL = this.props.videoURL.embedCode;
+        }
+        return videoURL;
     }
 
     cancelVideo() {
-        this.hideModal();
+        this.setState({
+            isEditing: !this.state.isEditing,
+            isVideoEditEnabled: true,
+            hasVideoInputError: false
+        });
         this.props.cancelVideo();
     }
 
-    saveVideoData() {
-        this.hideModal();
-        this.props.saveVideo();
+    dismissError() {
+        this.setState({hasVideoInputError: false});
     }
 
     renderMission() {
@@ -103,7 +139,7 @@ class TabProfile extends React.Component {
 
                     {(this.state.isEditing && this.state.editDescription1) &&
                     <p>
-                        <textarea value={this.props.description1} name="description1" onChange={this.handleChange}/>
+                        <textarea defaultValue={this.props.description1} name="description1" onChange={this.handleChange}/>
                     </p>
                     }
                 </div>
@@ -119,49 +155,40 @@ class TabProfile extends React.Component {
     }
 
     renderVideo() {
-        const videoURL = this.props.videoURL ? this.props.videoURL :
-            <iframe width="560" height="315" src="https://www.youtube.com/embed/leQ8nEcYFOc" frameBorder="0" allowFullScreen></iframe>;
+        const videoURL = this.getVideoCode();
         return(
             <li className="row lined" id="editVideoUrl" onMouseEnter={this.toggleEdit} onMouseLeave={this.toggleEdit}>
-                <div className="col-md-10">
-                    {videoURL}
-                </div>
-                <div className="col-xs-2">
-                    {this.state.editVideoUrl &&
-                    <a type="submit" className="btn btn-small btn-success" data-toggle="modal" data-target="#myModal"
-                    onClick={this.openModal}>Change video</a>
+                <div className="row video-input">
+                    <div  className="edit col-xs-2">
+                        {(this.state.hasVideoInputError || !this.state.isVideoEditEnabled) &&
+                        <a type="submit" className="btn btn-small btn-success" disabled>
+                            {this.state.isEditing ? 'Set video': 'Change video'}</a>
+                        }
+                        {!this.state.hasVideoInputError && this.state.isVideoEditEnabled &&
+                        <a type="submit" className="btn btn-small btn-success"
+                           onClick={() => this.toggleVideoEditMode()}>
+                            {this.state.isEditing ? 'Set video' : 'Change video'}
+                        </a>
+                        }
+                    </div>
+                    <div className="col-xs-10">
+                        {(this.state.isEditing && this.state.editVideoUrl) &&
+                        <div className="col-xs-12">
+                            <input className="col-xs-10" defaultValue={videoURL} name="video" onChange={this.handleVideoChange}/>
+                            <a type="submit" className="btn btn-small btn-default col-xs-2" onClick={() => this.cancelVideo()}>Cancel</a>
+                        </div>
+                        }
+                    </div>
+                    {this.state.hasVideoInputError &&
+                    <div className="alert alert-error alert-dismissible video-input-alert" role="alert">
+                        <button type="button" className="close" onClick={this.dismissError}>&times;</button>
+                        <strong>Upload failed! </strong>{this.state.errorMessage}</div>
                     }
                 </div>
+                <div className="col-md-12">
+                    <iframe {...this.getAttributes(videoURL)} />
+                </div>
             </li>
-        )
-    }
-
-    renderModal() {
-        return(
-            <div className="modal" id="myModal" tabIndex="-1" role="dialog">
-                <div className="modal-dialog" role="document">
-                    <div className="modal-content">
-                        <div className="container">
-                            <h6><a type="submit" className="close" data-dismiss="modal" aria-label="Close"
-                                    onClick={this.cancelVideo}><span aria-hidden="true">&times;</span></a>
-                            Add your video to your profile page</h6>
-
-                            <ul className="row">
-                                <li className="col-xs-12">
-                                    <input type="text" autoFocus="autoFocus" defaultValue={this.props.videoURL}
-                                        onChange={this.handleVideoInputChange}/>
-                                </li>
-                                <li className="col-xs-12">
-                                    <button type="submit" className="btn btn-default" data-dismiss="modal"
-                                            onClick={this.cancelVideo}>Close</button>
-                                    <button type="submit" className="btn btn-primary"
-                                            onClick={this.saveVideoData}>Save changes</button>
-                                </li>
-                            </ul>
-                    </div>
-                </div>
-                </div>
-            </div>
         )
     }
 
@@ -192,25 +219,24 @@ class TabProfile extends React.Component {
 
     render() {
         return (
-        <div id="profile" className="tab-pane fade in active">
-            <div className="profile-main">
-                <div className="filter-flower">
-                    <div className="row lined">
-                        <h5>About the Company</h5>
+            <div id="profile" className="tab-pane fade in active">
+                <div className="profile-main">
+                    <div className="filter-flower">
+                        <div className="row lined">
+                            <h5>About the Company</h5>
+                        </div>
+                    </div>
+
+                    <div className="profile-in">
+                        <ul>
+                            {this.renderMission()}
+                            {this.renderDescription1()}
+                            {this.renderVideo()}
+                            {this.renderDescription2()}
+                        </ul>
                     </div>
                 </div>
-
-                <div className="profile-in">
-                    <ul>
-                        {this.renderMission()}
-                        {this.renderDescription1()}
-                        {this.renderVideo()}
-                        {this.renderModal()}
-                        {this.renderDescription2()}
-                    </ul>
-                </div>
             </div>
-        </div>
         )
     }
 }

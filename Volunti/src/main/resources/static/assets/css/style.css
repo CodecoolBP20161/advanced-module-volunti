@@ -3406,3 +3406,10 @@ vivid green: #2ad482
 	position: relative;
 }
 
+.video-input-alert {
+	position: relative;
+	top: 35px;
+}
+.video-input {
+	padding-bottom: 20px;
+}
