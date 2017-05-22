@@ -95,6 +95,10 @@ public class OrganisationService {
         return organisationVideoRepository.save(organisationVideo);
     }
 
+    public void removeVideo(OrganisationVideo organisationVideo) {
+        organisationVideoRepository.delete(organisationVideo);
+    }
+
     public void updateOrganisationProfile(Organisation oldItem, Organisation newItem) {
         oldItem.setMission(newItem.getMission());
         oldItem.setDescription1(newItem.getDescription1());

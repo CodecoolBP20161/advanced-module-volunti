@@ -88,15 +88,11 @@ public class OrganisationProfileController {
         User user = userService.getByEmail(principal.getName());
         Organisation organisation = user.getOrganisation();
         List<OrganisationVideo> organisationVideos = organisationService.findVideoByOrganisationId(organisation);
-//        if (!organisationVideos.isEmpty()){
-//            for (OrganisationVideo video : organisationVideos) {
-//                organisationVideoRepository.delete(video);
-//            }
-//        }
+        if(!organisationVideos.isEmpty()) organisationService.removeVideo(organisationVideos.get(0));
+        log.info(editedOrganisationVideo.toString());
         editedOrganisationVideo.setOrganisationId(organisation);
         organisationService.save(editedOrganisationVideo);
         return true;
-
     }
 
     @GetMapping("/profile/organisation/image/profile")
