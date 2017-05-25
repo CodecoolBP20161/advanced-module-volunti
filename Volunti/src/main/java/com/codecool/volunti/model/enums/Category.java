@@ -6,6 +6,7 @@ public enum Category {
     Animal_Charity,
     Agricultural,
     Arts_and_Culture,
+    Childcare,
     Development_and_Housing,
     Environmental,
     Educational,

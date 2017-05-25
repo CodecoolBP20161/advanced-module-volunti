@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
+import java.io.File;
 import java.util.HashMap;
 
 @Slf4j
@@ -98,6 +99,7 @@ public class RegistrationController {
 
         //save the organisation from the session into database
         organisation = (Organisation) session.getAttribute("organisation");
+        organisationService.setDefaultBackgroundImage(organisation);
         Organisation savedOrganisation = organisationService.save(organisation);
         log.info("organisation saved: {}", savedOrganisation);
 
@@ -138,13 +140,7 @@ public class RegistrationController {
         model.addAttribute("message", "Account Confirmation is done.");
         return "information";
     }
-    /* Expected Request body:
-    {
-        entityName: entityName,
-        fieldName: fieldName,
-        value: value
-    }
-    */
+
     @PostMapping( value = "/registration/ValidateFieldIfExists")
     @ResponseBody
     public String validateFieldIfExists(@RequestBody HashMap<String, String> payload){
