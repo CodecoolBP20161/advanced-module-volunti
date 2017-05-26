@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.ToString;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -16,6 +18,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "opportunities")
@@ -77,4 +80,8 @@ public class Opportunity{
         this.title = title;
         this.requirements = requirements;
     }
+
+    @OneToMany(mappedBy = "opportunity")
+    @Fetch(FetchMode.SELECT)
+    private Set<Applying> opportunityApplications;
 }

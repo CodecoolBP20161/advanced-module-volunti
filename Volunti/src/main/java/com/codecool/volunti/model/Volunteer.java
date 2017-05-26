@@ -4,6 +4,8 @@ import com.codecool.volunti.model.enums.SpokenLanguage;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
@@ -11,6 +13,7 @@ import javax.validation.constraints.Size;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name="volunteers")
@@ -50,6 +53,10 @@ public class Volunteer {
     @JoinTable(name = "volunteers_skills", joinColumns = @JoinColumn(name = "volunteer_id"),
             inverseJoinColumns = @JoinColumn(name = "skill_id"))
     private List<Skill> volunteerSkills;
+
+    @OneToMany
+    @Fetch(FetchMode.SELECT)
+    private Set<Applying> volunteerApplications;
 }
 
 
