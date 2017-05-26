@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head th:replace="fragments/head :: head"></head>
-<head> <title>Opportunity Deatils</title></head>
+<head><title>Opportunity Deatils</title></head>
 <body>
 <div id="main-wrapper">
     <div th:replace="fragments/navbar :: navbar"></div>
@@ -14,102 +14,160 @@
     </div>
 
 
-        <div class="compny-profile">
+    <div class="compny-profile">
 
 
-            <!-- Profile Company Content -->
-            <div class="profile-company-content" data-bg-color="f5f5f5">
-                <div class="container">
-                    <div class="row">
+        <!-- Profile Company Content -->
+        <div class="profile-company-content" data-bg-color="f5f5f5">
+            <div class="container">
+                <div class="row">
 
 
-                        <!-- SIDE BAR -->
-                        <div class="col-md-4">
+                    <!-- SIDE BAR -->
+                    <div class="col-md-4">
 
 
-                            <!-- Company Information -->
-                            <div class="sidebar">
-                                <h5 class="main-title">Opportunity Information</h5>
-                                <div class="sidebar-thumbnail"><img src="/assets/images/logo.png" alt=""/></div>
-                                <div class="sidebar-information">
-                                    <ul class="single-category">
-                                       <!-- <li class="row">
-                                            <h6 class="title col-xs-6">Title</h6>
-                                            <span class="subtitle col-xs-6" th:text="${foundOppObject.title}"></span> </li>-->
-<!--                                        <li class="row">
-                                            <h6 class="title col-xs-6">Location</h6>
-                                            <span class="subtitle col-xs-6" th:text="${foundOppObject.location}"></span> </li>-->
-                                        <li class="row">
-                                            <h6 class="title col-xs-6">Availability from</h6>
-                                            <span class="subtitle col-xs-6" th:text="${#dates.format(foundOppObject.availabilityFrom,'yyyy-MM-dd')}"></span> </li>
-                                        <li class="row">
-                                            <h6 class="title col-xs-6">Availability to</h6>
-                                            <span class="subtitle col-xs-6" th:text="${#dates.format(foundOppObject.dateAvailabilityTo, 'yyyy-MM-dd')}"></span> </li>
-                                        <li class="row">
-                                            <h6 class="title col-xs-6">Hours expected</h6>
-                                            <span class="subtitle col-xs-6" th:text="${foundOppObject.hoursExpected} +' ' + ${foundOppObject.hoursExpectedType}"> </span></li>
+                        <!-- Company Information -->
+                        <div class="sidebar">
+                            <h5 class="main-title">Opportunity Information</h5>
+                            <div class="sidebar-thumbnail"><img src="/assets/images/logo.png" alt=""/></div>
+                            <div class="sidebar-information">
+                                <ul class="single-category">
+                                    <!-- <li class="row">
+                                         <h6 class="title col-xs-6">Title</h6>
+                                         <span class="subtitle col-xs-6" th:text="${foundOppObject.title}"></span> </li>-->
+                                    <!--                                        <li class="row">
+                                                                                <h6 class="title col-xs-6">Location</h6>
+                                                                                <span class="subtitle col-xs-6" th:text="${foundOppObject.location}"></span> </li>-->
+                                    <li class="row">
+                                        <h6 class="title col-xs-6">Availability from</h6>
+                                        <span class="subtitle col-xs-6"
+                                              th:text="${#dates.format(foundOppObject.availabilityFrom,'yyyy-MM-dd')}"></span>
+                                    </li>
+                                    <li class="row">
+                                        <h6 class="title col-xs-6">Availability to</h6>
+                                        <span class="subtitle col-xs-6"
+                                              th:text="${#dates.format(foundOppObject.dateAvailabilityTo, 'yyyy-MM-dd')}"></span>
+                                    </li>
+                                    <li class="row">
+                                        <h6 class="title col-xs-6">Hours expected</h6>
+                                        <span class="subtitle col-xs-6"
+                                              th:text="${foundOppObject.hoursExpected} +' ' + ${foundOppObject.hoursExpectedType}"> </span>
+                                    </li>
 
-                                        <li class="row">
-                                            <h6 class="title col-xs-6">Number of voluntiers</h6>
-                                            <span class="subtitle col-xs-6" th:text="${foundOppObject.numberOfVolunteers}"></span> </li>
-                                        <li class="row">
-                                            <h6 class="title col-xs-6">Food type</h6>
-                                            <span class="subtitle col-xs-6" th:text="${foundOppObject.foodType}"></span> </li>
-                                        <!--<li class="row">
-                                            <h6 class="title col-xs-6">Requirements</h6>
-                                            <span class="subtitle col-xs-6" th:text="${foundOppObject.requirements}"></span> </li>-->
-<!--                                        <li class="row">
-                                            <h6 class="title col-xs-6">Skill</h6>
-                                            <span class="subtitle col-xs-6" th:text="${foundOppObject.skill}"></span> </li>-->
-                                        <li class="row">
-                                            <h6 class="title col-xs-6">Costs</h6>
-                                            <span class="subtitle col-xs-6" th:text="${foundOppObject.costs}"></span> </li>
-                                        <li class="row">
-                                            <h6 class="title col-xs-6">Accommodation type</h6>
-                                            <span class="subtitle col-xs-6" th:text="${foundOppObject.accommodationType}"></span> </li>
-                                        <li class="row">
-                                            <h6 class="title col-xs-6">Minimum stay in days</h6>
-                                            <span class="subtitle col-xs-6" th:text="${foundOppObject.minimumStayInDays}"></span> </li>
+                                    <li class="row">
+                                        <h6 class="title col-xs-6">Number of voluntiers</h6>
+                                        <span class="subtitle col-xs-6"
+                                              th:text="${foundOppObject.numberOfVolunteers}"></span></li>
+                                    <li class="row">
+                                        <h6 class="title col-xs-6">Food type</h6>
+                                        <span class="subtitle col-xs-6" th:text="${foundOppObject.foodType}"></span>
+                                    </li>
+                                    <!--<li class="row">
+                                        <h6 class="title col-xs-6">Requirements</h6>
+                                        <span class="subtitle col-xs-6" th:text="${foundOppObject.requirements}"></span> </li>-->
+                                    <!--                                        <li class="row">
+                                                                                <h6 class="title col-xs-6">Skill</h6>
+                                                                                <span class="subtitle col-xs-6" th:text="${foundOppObject.skill}"></span> </li>-->
+                                    <li class="row">
+                                        <h6 class="title col-xs-6">Costs</h6>
+                                        <span class="subtitle col-xs-6" th:text="${foundOppObject.costs}"></span></li>
+                                    <li class="row">
+                                        <h6 class="title col-xs-6">Accommodation type</h6>
+                                        <span class="subtitle col-xs-6"
+                                              th:text="${foundOppObject.accommodationType}"></span></li>
+                                    <li class="row">
+                                        <h6 class="title col-xs-6">Minimum stay in days</h6>
+                                        <span class="subtitle col-xs-6"
+                                              th:text="${foundOppObject.minimumStayInDays}"></span></li>
 
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Tab Content -->
-                        <div class="col-md-8">
-                            <div class="tab-content">
-
-                                <!-- PROFILE -->
-                                <div id="profile" class="tab-pane fade in active">
-                                    <div class="profile-main">
-                                        <h3 th:text="'About ' + ${foundOppObject.title}"></h3>
-                                        <div class="profile-in">
-                                            <p th:text="${foundOppObject.requirements}"></p>
-                                        </div>
-
-                                        <h3 th:text="'About ' + ${foundOrgObject.name}"></h3>
-                                        <div class="profile-in">
-                                            <p th:text="${foundOrgObject.mission}"></p>
-                                            <p th:text="'Address: ' + ${foundOrgObject.country}+' '+ ${foundOrgObject.zipcode} + ' ' + ${foundOrgObject.city} + ' ' + ${foundOrgObject.address}"></p>
-                                        </div>
-                                        <!--<p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ea, nihil, dolores, culpa ullam vero ipsum placeat
-                                            accusamus nemoitate id molestiae consectetur quae pariatur repudi andae vel ex quaerat nam iusto aliquid
-                                            laborum quia adipisci aut ut imcati nisi deleniti tempore maxime sequi fugit reiciendis libero quo. Rerum
-                                            assumenda.</p>-->
-                                    </div>
-                                </div>
-
-
+                                </ul>
                             </div>
                         </div>
                     </div>
+
+                    <!-- Tab Content -->
+                    <div class="col-md-8">
+                        <div class="tab-content">
+
+                            <!-- PROFILE -->
+                            <div id="profile" class="tab-pane fade in active">
+                                <div class="profile-main">
+                                    <h3 th:text="'About ' + ${foundOppObject.title}"></h3>
+                                    <div class="profile-in">
+                                        <p th:text="${foundOppObject.requirements}"></p>
+                                    </div>
+
+                                    <h3 th:text="'About ' + ${foundOrgObject.name}"></h3>
+                                    <div class="profile-in">
+                                        <p th:text="${foundOrgObject.mission}"></p>
+                                        <p th:text="'Address: ' + ${foundOrgObject.country}+' '+ ${foundOrgObject.zipcode} + ' ' + ${foundOrgObject.city} + ' ' + ${foundOrgObject.address}"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-content">
+
+                            <!-- PROFILE -->
+                            <div id="profile1" class="tab-pane fade in active">
+                                <div class="profile-main">
+                                    <h3>Applying to job</h3>
+
+
+                                    <form role="form"
+                                          th:action="${action}"
+                                          th:object="${opportunity}"
+                                          method="post"
+                                          class="opportunity-filters">
+
+                                        <div class="row">
+                                            <div class="col-sm-4">
+                                                <h3>Start date</h3>
+                                                <input type="date" name="applyingStart"/>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <h3>End date</h3>
+                                                <input type="date" name="applyingEnd"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <h3>Questions, comments</h3>
+                                                <textarea name="questions"
+                                                          placeholder="If you have any question or comment, let the company know that"
+                                                          class="requirements"></textarea>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <h3>Why would you like to join?</h3>
+                                                <textarea name="whyToJoin"
+                                                          placeholder="Write some interesting thing about yourself, why would you like to apply for this position"
+                                                          class="requirements"></textarea>
+                                            </div>
+
+
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="btn-group">
+                                    <button class="btn mb20 btn-small btn-transparent-primary" value="right">
+                                        <a>Apply</a>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+
                 </div>
             </div>
         </div>
+    </div>
 
 </div>
 <div th:replace="fragments/footer :: footer"></div>
 </body>
 </html>
-
