@@ -6,6 +6,7 @@ import com.codecool.volunti.model.enums.SpokenLanguage;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
 import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
@@ -17,6 +18,7 @@ import java.util.List;
 @Entity
 @Table(name="organisations")
 @Data
+@Slf4j
 @ToString(exclude = {"organisationSocialLinks", "organisationVideos"})
 public class Organisation {
 
@@ -94,6 +96,15 @@ public class Organisation {
 
     @OneToMany(mappedBy = "organisationId")
     private List<OrganisationVideo> organisationVideos;
+
+    @PrePersist
+    public void prePersist() {
+        log.info("Setting images in Organisation model prepersist");
+        this.setProfilePicture("profile_image/test_profile_image.png");
+        String staticPath = "background_image/";
+        String path = staticPath + this.getCategory().name() + ".jpg";
+        this.setBackgroundPicture(path);
+    }
 
     public Organisation(){}
 

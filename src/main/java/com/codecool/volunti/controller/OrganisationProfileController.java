@@ -127,6 +127,9 @@ public class OrganisationProfileController {
             ImageIO.write(resizedImage, "jpg", convFile2);
 
             organisation.setProfilePictureFileForSave(convFile2);
+            if (organisation.getProfilePictureFileForSave() != null ) {
+                organisationService.saveProfilePicture(organisation);
+            }
             organisationService.save(organisation);
             return convFile2.delete();
         }else{
@@ -167,6 +170,9 @@ public class OrganisationProfileController {
             File convFile2 = new File(String.valueOf(convFile));
             ImageIO.write(resizedImage, "jpg", convFile2);
             organisation.setBackgroundPictureFileForSave(convFile2);
+            if (organisation.getBackgroundPictureFileForSave() != null ) {
+                organisationService.saveBackgroundImage(organisation);
+            }
             organisationService.save(organisation);
             return convFile2.delete();
         }else{

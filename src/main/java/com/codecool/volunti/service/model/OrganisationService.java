@@ -43,22 +43,22 @@ public class OrganisationService {
         return organisationRepository.findByNameIgnoreCase(name);
     }
 
+    public void saveProfilePicture(Organisation organisation) {
+        String oldProfilePicture = organisation.getProfilePicture();
+        String newFileName = storageService.store(organisation.getProfilePictureFileForSave());
+        organisation.setProfilePicture(newFileName);
+        storageService.deleteOne(oldProfilePicture);
+    }
+
+    public void saveBackgroundImage(Organisation organisation) {
+        String oldBackgroundPicture = organisation.getBackgroundPicture();
+        String newFileName = storageService.store(organisation.getBackgroundPictureFileForSave());
+        organisation.setBackgroundPicture(newFileName);
+        if(oldBackgroundPicture != null) storageService.deleteOne(oldBackgroundPicture);
+
+    }
+
     public Organisation save(Organisation organisation) {
-        if (organisation.getProfilePictureFileForSave() != null ) {
-
-            String oldProfilePicture = organisation.getProfilePicture();
-            String newFileName = storageService.store(organisation.getProfilePictureFileForSave());
-            organisation.setProfilePicture(newFileName);
-            storageService.deleteOne(oldProfilePicture);
-
-        }
-        if (organisation.getBackgroundPictureFileForSave() != null ) {
-
-            String oldBackgroundPicture = organisation.getBackgroundPicture();
-            String newFileName = storageService.store(organisation.getBackgroundPictureFileForSave());
-            organisation.setBackgroundPicture(newFileName);
-            if(oldBackgroundPicture != null) storageService.deleteOne(oldBackgroundPicture);
-        }
         return organisationRepository.save(organisation);
     }
 
@@ -111,11 +111,11 @@ public class OrganisationService {
         oldItem.setZipcode(newItem.getZipcode());
     }
 
-    public void setDefaultBackgroundImage(Organisation organisation) {
-        String staticPath = "Volunti/src/main/resources/static/images/background_image/";
-        File testBackgroundImageFile = new File(staticPath + organisation.getCategory().name() + ".jpg" );
-        organisation.setBackgroundPictureFileForSave(testBackgroundImageFile);
-        save(organisation);
-    }
+//    public void setDefaultBackgroundImage(Organisation organisation) {
+//        String staticPath = "src/main/resources/static/images/background_image/";
+//        File testBackgroundImageFile = new File(staticPath + organisation.getCategory().name() + ".jpg" );
+//        organisation.setBackgroundPictureFileForSave(testBackgroundImageFile);
+//        save(organisation);
+//    }
 
 }

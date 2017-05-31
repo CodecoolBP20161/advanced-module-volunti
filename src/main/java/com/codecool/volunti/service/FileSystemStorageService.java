@@ -75,6 +75,10 @@ public class FileSystemStorageService implements StorageService{
         return rootLocation.resolve(filename);
     }
 
+    public Path loadFromResources(String filename) {
+        return Paths.get("src/main/resources/static/images/").resolve(filename);
+    }
+
     @Override
     public void deleteAll() {
         FileSystemUtils.deleteRecursively(rootLocation.toFile());
@@ -106,7 +110,13 @@ public class FileSystemStorageService implements StorageService{
     @Override
     public Resource loadAsResource(String filename) {
         try {
-            Path file = load(filename);
+            Path file;
+            if(filename.contains("image")) {
+                file = loadFromResources(filename);
+            } else {
+                file = load(filename);
+            }
+            log.info(file.toAbsolutePath().toString());
             Resource resource = new UrlResource(file.toUri());
             if(resource.exists() || resource.isReadable()) {
                 return resource;

@@ -69,17 +69,8 @@ public class DataLoader {
                         "UNICEF is a non profit organisation helping mainly children.",
                 "description 2: We provide the basic needs for every children: we prevent starvation, child-abuse, we grant education,  etc." +
                         "We provide the basic needs for every children: we prevent starvation, child-abuse, we grant education,  etc.",
-                "",
+                null,
                 null);
-
-        try {
-            File testImageFile = new File( "Volunti/src/main/resources/static/images/profile_image/test_profile_image.png" );
-            organisationService.setDefaultBackgroundImage(organisation1);
-            log.info(testImageFile.getAbsolutePath());
-            organisation1.setProfilePictureFileForSave(testImageFile);
-        } catch (Exception e) {
-            log.error("Cannot save test image: ", e);
-        }
 
         Volunteer volunteer = new Volunteer();
         organisationService.save(organisation1);

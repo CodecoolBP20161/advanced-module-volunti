@@ -5,9 +5,6 @@ import com.codecool.volunti.model.enums.UserStatus;
 import com.codecool.volunti.service.email.EmailType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import org.springframework.data.rest.core.annotation.RepositoryRestResource;
-
-import java.util.UUID;
 
 
 @Repository
