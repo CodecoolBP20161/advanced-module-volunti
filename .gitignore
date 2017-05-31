@@ -42,14 +42,14 @@ crashlytics-build.properties
 fabric.properties
 
 .idea/
-Volunti/target/
-Volunti/volunti.iml
+target/
+volunti.iml
 /filestorage
 
 
-/Volunti/src/main/resources/application.properties
+src/main/resources/application.properties
 /advanced-module-volunti.iml
 
 # OS-X files
 .DS_Store
-/Volunti/filestorage/
+filestorage/
