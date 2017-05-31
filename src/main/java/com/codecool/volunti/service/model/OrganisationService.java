@@ -13,8 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.io.File;
 import java.util.List;
 
 @Slf4j
@@ -110,12 +108,5 @@ public class OrganisationService {
         oldItem.setCity(newItem.getCity());
         oldItem.setZipcode(newItem.getZipcode());
     }
-
-//    public void setDefaultBackgroundImage(Organisation organisation) {
-//        String staticPath = "src/main/resources/static/images/background_image/";
-//        File testBackgroundImageFile = new File(staticPath + organisation.getCategory().name() + ".jpg" );
-//        organisation.setBackgroundPictureFileForSave(testBackgroundImageFile);
-//        save(organisation);
-//    }
 
 }
